@@ -1,0 +1,89 @@
+
+  .cards.charts-cont {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .chart-container {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 100%;
+      background: white;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    canvas#weeklyLeaveChart {
+      display: block;
+      margin: auto;
+      background: white;
+    }
+
+  .chart, .admin-chart {
+    padding: var(--padding-2);
+    border-radius: var(--border-radius-card);
+    box-shadow: var(--shadow-1);
+    margin-bottom: var(--margin-bottom-2);
+    width: 49%;
+  }
+
+  .charts-cont .insights {
+    background: white;
+    box-shadow: var(--shadow-1);
+    border-radius: var(--border-radius-card);
+    width: 49%;
+    height: 100%;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .insights .top {
+    margin-bottom: 10px;
+  }
+
+  .insights .middle {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid black;
+    padding: 0.5rem 2rem;
+  }
+
+  .insights .bot {
+    display: flex;
+    flex-direction: column;
+    max-height: 11.7rem;
+    overflow: auto;
+  }
+
+  .insights .bot .insight-item {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid gray;
+    padding: 1rem 0;
+  }
+
+  .table {
+    background-color: white;
+    padding: var(--padding-2);
+    border-radius: var(--border-radius-card);
+    box-shadow: var(--shadow-1);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    padding: var(--padding-1);
+    border-bottom: 1px solid #ddd;
+  }
+
+  th {
+    background-color: #ccc;
+  }

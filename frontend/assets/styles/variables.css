@@ -1,0 +1,11 @@
+:root {
+    --primary-background: #2f3e46;
+    --primary-gray: #f5f5f5;
+    --border-radius-card: 10px;
+    --border-radius-form: 20px;
+    --padding-1: 10px;
+    --padding-2: 20px;
+    --margin-bottom-2: 20px;
+    
+    --shadow-1: 0 2px 5px rgba(0,0,0,0.1);
+}

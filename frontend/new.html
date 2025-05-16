@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weekly Leave Pattern</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .chart-container {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 700px;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    canvas {
+      display: block;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="chart-container">
+    <h2>Weekly Leave Pattern</h2>
+    <canvas id="leaveChart" width="600" height="400"></canvas>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('leaveChart');
+    const ctx = canvas.getContext('2d');
+
+    // Sample leave data
+    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const leaves = [12, 7, 5, 8, 14, 6, 3]; // Number of leave requests per day
+
+    // Chart settings
+    const barWidth = 50;
+    const gap = 30;
+    const chartHeight = canvas.height - 50;
+    const maxLeave = Math.max(...leaves);
+
+    // Draw axes
+    ctx.beginPath();
+    ctx.moveTo(50, 20);
+    ctx.lineTo(50, chartHeight);
+    ctx.lineTo(canvas.width - 20, chartHeight);
+    ctx.stroke();
+
+    // Draw bars
+    leaves.forEach((value, index) => {
+      const barHeight = (value / maxLeave) * (chartHeight - 40);
+      const x = 60 + index * (barWidth + gap);
+      const y = chartHeight - barHeight;
+
+      // Bar
+      ctx.fillStyle = "#4CAF50";
+      ctx.fillRect(x, y, barWidth, barHeight);
+
+      // Value label
+      ctx.fillStyle = "#000";
+      ctx.font = "14px Arial";
+      ctx.fillText(value, x + 12, y - 5);
+
+      // Day label
+      ctx.fillText(days[index], x + 10, chartHeight + 20);
+    });
+  </script>
+</body>
+</html>
