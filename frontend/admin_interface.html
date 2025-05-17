@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <link rel="stylesheet" href="./assets/styles/general.css">
-  <link rel="stylesheet" href="./assets/styles/user_interface.css">
+  <link rel="stylesheet" href="./assets/styles/admin_interface.css">
 </head>
 <body>
 
@@ -48,10 +48,10 @@
       </div>
     </div>
     <div class="button-cont">
-      <button>
+      <a href="login_interface.html">
         Log Out
         <i class="fa-solid fa-right-from-bracket"></i>
-      </button>
+      </a>
     </div>
   </div>
 
@@ -73,6 +73,18 @@
             <p class="popup">Analytics</p>
           </div>
           <div class="button-cont">
+            <button class="notif-btn">
+              <i class="fa-solid fa-users"></i>
+            </button>
+            <p class="popup">Manage Users</p>
+          </div>
+          <div class="button-cont">
+            <button class="notif-btn">
+              <i class="fa-solid fa-check-double"></i>
+            </button>
+            <p class="popup">Attendance Maintenance</p>
+          </div>
+          <div class="button-cont">
             <button class="notif-btn" id="notification-btn">
               <i class="fa-solid fa-bell"></i>
             </button>
@@ -82,7 +94,7 @@
         </div>
       </div>
   
-      <div class="dashboard active">  
+      <div class="dashboard ">  
         <div class="middle-section">  
           <div class="cards attendance-card">
             <div class="chart-container">
@@ -109,16 +121,34 @@
               <button class="pending-btn">Pending</button>
               <button class="reject-btn">Rejected</button>
             </div>
-            <div class="flip-container" id="flipContainer">
-              <div class="flipper">
-                <button class="apply-leave-btn">
-                  <i class="fa-solid fa-plus"></i>
-                  Apply Leave
-                </button>
-                <button class="leave-table-btn">
-                  <i class="fa-solid fa-arrow-left"></i>
-                  Back to Table
-                </button>
+
+            <div class="right">
+              <div class="filter-label-cont">
+                <a href="" id="filter-btn">
+                  <i class="fa-solid fa-filter"></i>
+                  Filters
+                </a>
+              </div>
+              <div class="inputs-cont">
+                <select disabled name="" id="department-filter">
+                  <option value="" disabled selected>Department</option>
+                  <option value="">CABA</option>
+                  <option value="">BSCS</option>
+                  <option value="">BSED</option>
+                  <option value="">BSIT</option>
+                </select>
+              </div>
+              <div class="inputs-cont">
+                <select disabled name="" id="vacation-type-filter">
+                  <option value="" disabled selected>Leave Type</option>
+                  <option value="">Sick Leave</option>
+                  <option value="">Casual Leave</option>
+                  <option value="">Vacation Leave</option>
+                  <option value="">Emergency Leave</option>
+                  <option value="">Maternity Leave</option>
+                  <option value="">Solo Parent Leave</option>
+                  <option value="">Study Leave</option>
+                </select>
               </div>
             </div>
           </div>
@@ -128,6 +158,7 @@
               <table class="approved_table active">
                 <thead>
                   <tr>
+                    <th>Name</th>
                     <th>Date</th>
                     <th>From</th>
                     <th>To</th>
@@ -138,6 +169,16 @@
                 </thead>
                 <tbody>
                   <tr>
+                    <td class="table-name-td">
+                      <div class="table-name-wrapper">
+                        <div class="img-cont">
+                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                        </div>
+                        <p class="bot">
+                          Hannah Denielle Teodoro
+                        </p>
+                      </div>
+                    </td>
                     <td>2025-05-01</td>
                     <td>June 10</td>
                     <td>June 20</td>
@@ -160,26 +201,31 @@
               <table class="pending_table ">
                 <thead>
                   <tr>
+                    <th>Name</th>
                     <th>Date</th>
                     <th>From</th>
                     <th>To</th>
                     <th>Type</th>
-                    <th>Comment</th>
                     <th>Status</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
+                    <td class="table-name-td">
+                      <div class="table-name-wrapper">
+                        <div class="img-cont">
+                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                        </div>
+                        <p class="bot">
+                          Hannah Denielle Teodoro
+                        </p>
+                      </div>
+                    </td>
                     <td>2025-05-01</td>
                     <td>June 10</td>
                     <td>June 20</td>
                     <td>Vacation Leave</td>
-                    <td>
-                    <p class="comment">
-                        Going to asdfasd sdaf
-                    </p>
-                    </td>
                     <td class="status">
                       <p class="status-pending">
                         Pending
@@ -187,11 +233,9 @@
                       
                     </td>
                     <td>
-                      <button id="edit_btn">
-                        <i class="fa-solid fa-pencil"></i>
-                      </button>
-                      <button id="delete_btn">
-                        <i class="fa-solid fa-trash-can-arrow-up"></i>
+                      <button id="edit_btn" class="details-btn">
+                        <i class="fa-regular fa-eye"></i>
+                        View Details
                       </button>
                     </td>
                   </tr>        
@@ -201,6 +245,7 @@
               <table class="rejected_table ">
                 <thead>
                   <tr>
+                    <th>Name</th>
                     <th>Date</th>
                     <th>From</th>
                     <th>To</th>
@@ -211,6 +256,16 @@
                 </thead>
                 <tbody>
                   <tr>
+                    <td class="table-name-td">
+                      <div class="table-name-wrapper">
+                        <div class="img-cont">
+                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                        </div>
+                        <p class="bot">
+                          Hannah Denielle Teodoro
+                        </p>
+                      </div>
+                    </td>
                     <td>2025-05-01</td>
                     <td>June 10</td>
                     <td>June 20</td>
@@ -268,6 +323,10 @@
                     <option value="">Sick Leave</option>
                     <option value="">Casual Leave</option>
                     <option value="">Vacation Leave</option>
+                    <option value="">Emergency Leave</option>
+                    <option value="">Maternity Leave</option>
+                    <option value="">Solo Parent Leave</option>
+                    <option value="">Study Leave</option>
                   </select>
                 </div>
                 <div class="inputs-cont">
@@ -295,9 +354,325 @@
         </div>
       </div>
 
-      <div class="analytics ">
+      <div class="analytics active">
+        <div class="cards total-leaves-graph-cont">
+          <div class="total-leave-graph">
+            <canvas id="leavesChart"></canvas>
+          </div>
+          <div class="total-leave-summary">
+            <h3>Leave Summary</h3>
+            <div class="leave-summary-cont">
+              
+            </div>
+          </div>
+        </div>
         <div class="cards">
-          <h1>Attendance</h1>
+          <div class="cards-cont">
+            <div class="card">
+              <div class="leave-credits">
+                <div class="header">
+                  <h4>Sick Leave</h4>
+                  <button class="view-analytics-dets">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                  </button>
+                </div>
+                <div class="donut-cont">
+                  <div class="donut-chart">
+                    <div class="donut-center-value" id="centerValue">
+                      <i class="fa-solid fa-infinity"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="summary-cont">
+                <div class="summary">
+                  <div class="top">
+                    Used leaves
+                  </div>
+                  <div class="bot">
+                    29
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Total Credits Used
+                  </div>
+                  <div class="bot">
+                    23
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Monthly leave
+                  </div>
+                  <div class="bot">
+                    23
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="leave-credits">
+                <div class="header">
+                  <h4>Vacation Leave</h4>
+                  <button class="view-analytics-dets">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                  </button>
+                </div>
+                <div class="donut-cont">
+                  <div class="donut-chart">
+                    <div class="donut-center-value" id="centerValue">
+                      <i class="fa-solid fa-infinity"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="summary-cont">
+                <div class="summary">
+                  <div class="top">
+                    Used leaves
+                  </div>
+                  <div class="bot">
+                    29
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Total Credits Used
+                  </div>
+                  <div class="bot">
+                    23
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Monthly leave
+                  </div>
+                  <div class="bot">
+                    23
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="card">
+              <div class="leave-credits">
+                <div class="header">
+                  <h4>Casual Leave</h4>
+                  <button class="view-analytics-dets">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                  </button>
+                </div>
+                <div class="donut-cont">
+                  <div class="donut-chart">
+                    <div class="donut-center-value" id="centerValue">
+                      <i class="fa-solid fa-infinity"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="summary-cont">
+                <div class="summary">
+                  <div class="top">
+                    Used leaves
+                  </div>
+                  <div class="bot">
+                    29
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Total Credits Used
+                  </div>
+                  <div class="bot">
+                    23
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Monthly leave
+                  </div>
+                  <div class="bot">
+                    23
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="leave-credits">
+                <div class="header">
+                  <h4>Emergency Leave</h4>
+                  <button class="view-analytics-dets">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                  </button>
+                </div>
+                <div class="donut-cont">
+                  <div class="donut-chart">
+                    <div class="donut-center-value" id="centerValue">
+                      <i class="fa-solid fa-infinity"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="summary-cont">
+                <div class="summary">
+                  <div class="top">
+                    Used leaves
+                  </div>
+                  <div class="bot">
+                    29
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Total Credits Used
+                  </div>
+                  <div class="bot">
+                    23
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Monthly leave
+                  </div>
+                  <div class="bot">
+                    23
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="leave-credits">
+                <div class="header">
+                  <h4>Maternity Leave</h4>
+                  <button class="view-analytics-dets">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                  </button>
+                </div>
+                <div class="donut-cont">
+                  <div class="donut-chart">
+                    <div class="donut-center-value" id="centerValue">
+                      <i class="fa-solid fa-infinity"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="summary-cont">
+                <div class="summary">
+                  <div class="top">
+                    Used leaves
+                  </div>
+                  <div class="bot">
+                    29
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Total Credits Used
+                  </div>
+                  <div class="bot">
+                    23
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Monthly leave
+                  </div>
+                  <div class="bot">
+                    23
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="leave-credits">
+                <div class="header">
+                  <h4>Solo Parent Leave</h4>
+                  <button class="view-analytics-dets">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                  </button>
+                </div>
+                <div class="donut-cont">
+                  <div class="donut-chart">
+                    <div class="donut-center-value" id="centerValue">
+                      <i class="fa-solid fa-infinity"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="summary-cont">
+                <div class="summary">
+                  <div class="top">
+                    Used leaves
+                  </div>
+                  <div class="bot">
+                    29
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Total Credits Used
+                  </div>
+                  <div class="bot">
+                    23
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Monthly leave
+                  </div>
+                  <div class="bot">
+                    23
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="leave-credits">
+                <div class="header">
+                  <h4>Study Leave</h4>
+                  <button class="view-analytics-dets">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                  </button>
+                </div>
+                <div class="donut-cont">
+                  <div class="donut-chart">
+                    <div class="donut-center-value" id="centerValue">
+                      <i class="fa-solid fa-infinity"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="summary-cont">
+                <div class="summary">
+                  <div class="top">
+                    Used leaves
+                  </div>
+                  <div class="bot">
+                    29
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Total Credits Used
+                  </div>
+                  <div class="bot">
+                    23
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Monthly leave
+                  </div>
+                  <div class="bot">
+                    23
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
 
@@ -307,11 +682,29 @@
   <div class="edit-modal">
     <div class="edit-leave-cont ">
       <header>
-        <h1>Edit Leave</h1>
+        <h1>Request Leave</h1>
         <button id="close-edit-modal">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </header>
+      <div class="profile-dets">
+        <div class="profile">
+          <div class="img-cont">
+            <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+          </div>
+          <div class="details-cont">
+            <p class="name">Hannah Denielle Teodoro</p>
+            <p>Department: <span>CABA</span></p>
+            <p>Job title: <span>Loving Christian</span></p>
+          </div>
+        </div>
+        <div class="leave-credits">
+          <h4>Leave Credits</h4>
+          <div class="donut-chart">
+            <div class="donut-center-value" id="centerValue">1.25</div>
+          </div>
+        </div>
+      </div>
       <div class="inputs-main">
         <div class="inputs-cont">
           <label for="leave_type">Leave Type</label>
@@ -320,6 +713,10 @@
             <option value="">Sick Leave</option>
             <option value="">Casual Leave</option>
             <option value="">Vacation Leave</option>
+            <option value="">Emergency Leave</option>
+            <option value="">Maternity Leave</option>
+            <option value="">Solo Parent Leave</option>
+            <option value="">Study Leave</option>
           </select>
         </div>
         <div class="inputs-cont">
@@ -338,7 +735,10 @@
           <textarea name="" id="reason_for_leaving"></textarea>
         </div>
       </div>
-      <button class="submit_leave">Save & Exit</button>
+      <div class="edit-buttons">
+        <button class="submit_leave">Approve</button>
+        <button class="submit_leave">Reject</button>
+      </div>
     </div>
   </div>
 
@@ -491,6 +891,129 @@
         <p class="time">
           1min ago
         </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="analytics-modal">
+    <div class="analytics-cont">
+      <header>
+        <h3>Employees who use sick leave this month</h3>
+        <button class="close-analytic-modal">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </header>
+
+      <div class="employees-main-cont">
+        <table class="leave-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Department</th>
+              <th>Job Title</th>
+              <th>From</th>
+              <th>To</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="table-name-td">
+                <div class="table-name-wrapper">
+                  <div class="img-cont">
+                    <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                  </div>
+                  <p class="bot">
+                    Hannah Denielle Teodoro
+                  </p>
+                </div>
+              </td>
+              <td>CABA</td>
+              <td>Lover ni christian</td>
+              <td>June 10</td>
+              <td>June 20</td>
+            </tr>           
+            <tr>
+              <td class="table-name-td">
+                <div class="table-name-wrapper">
+                  <div class="img-cont">
+                    <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                  </div>
+                  <p class="bot">
+                    Hannah Denielle Teodoro
+                  </p>
+                </div>
+              </td>
+              <td>CABA</td>
+              <td>Lover ni christian</td>
+              <td>June 10</td>
+              <td>June 20</td>
+            </tr>           
+            <tr>
+              <td class="table-name-td">
+                <div class="table-name-wrapper">
+                  <div class="img-cont">
+                    <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                  </div>
+                  <p class="bot">
+                    Hannah Denielle Teodoro
+                  </p>
+                </div>
+              </td>
+              <td>CABA</td>
+              <td>Lover ni christian</td>
+              <td>June 10</td>
+              <td>June 20</td>
+            </tr>           
+            <tr>
+              <td class="table-name-td">
+                <div class="table-name-wrapper">
+                  <div class="img-cont">
+                    <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                  </div>
+                  <p class="bot">
+                    Hannah Denielle Teodoro
+                  </p>
+                </div>
+              </td>
+              <td>CABA</td>
+              <td>Lover ni christian</td>
+              <td>June 10</td>
+              <td>June 20</td>
+            </tr>           
+            <tr>
+              <td class="table-name-td">
+                <div class="table-name-wrapper">
+                  <div class="img-cont">
+                    <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                  </div>
+                  <p class="bot">
+                    Hannah Denielle Teodoro
+                  </p>
+                </div>
+              </td>
+              <td>CABA</td>
+              <td>Lover ni christian</td>
+              <td>June 10</td>
+              <td>June 20</td>
+            </tr>           
+            <tr>
+              <td class="table-name-td">
+                <div class="table-name-wrapper">
+                  <div class="img-cont">
+                    <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                  </div>
+                  <p class="bot">
+                    Hannah Denielle Teodoro
+                  </p>
+                </div>
+              </td>
+              <td>CABA</td>
+              <td>Lover ni christian</td>
+              <td>June 10</td>
+              <td>June 20</td>
+            </tr>           
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

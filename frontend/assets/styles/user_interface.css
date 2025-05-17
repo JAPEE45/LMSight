@@ -3,6 +3,7 @@
 .main-cont {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .main.active {
@@ -370,6 +371,7 @@ tr .status p {
   border-radius: 50%;
   cursor: pointer;
   border: 1px solid transparent;
+  font-size: 1.3rem;
 }
 
 .edit-modal .edit-leave-cont .inputs-main {
@@ -489,35 +491,27 @@ tr .status p {
   position: relative;
 }
 
-.header .button-cont .notif-marker {
-  position: absolute;
-  height: 8px;
-  width: 8px;
-  background: red;
-  /* box-shadow: 0 0 0.1rem red; */
-  border-radius: 50%;
-  right: 8px;
-  top: 9px;
-}
-
-.sidebar .button-cont button {
+.sidebar .button-cont a {
   color: white;
   border-radius: unset;
-  padding: 1.2rem;
+  padding: 1rem;
   width: 100%;
-  font-weight: 600;
+  font-weight: 550;
   letter-spacing: 1px;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  display: flex;
+  font-size: 0.9rem;
+  gap: 1px;
 }
 
-.sidebar .button-cont button:hover {
+.sidebar .button-cont a:hover {
   background: rgba(10,10,10, 0.2);
 }
 
-.sidebar .button-cont button i {
+.sidebar .button-cont a i {
   background: transparent;
   color: white;
 }

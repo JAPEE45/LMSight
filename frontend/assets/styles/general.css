@@ -80,8 +80,8 @@ body {
   }
 
   .card:first-child {
-    background: #008AD8;
-    box-shadow: 0 0 0.2rem #008AD8;
+    background: var(--twitter-blue);
+    box-shadow: 0 0 0.2rem var(--twitter-blue);
 
   }
 
@@ -185,3 +185,13 @@ body {
     opacity: 1;
   }
 
+.notif-marker {
+  position: absolute;
+  height: 8px;
+  width: 8px;
+  background: red;
+  border-radius: 50%;
+  right: 8px;
+  top: 9px;
+  pointer-events: none;
+}
