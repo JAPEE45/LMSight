@@ -61,7 +61,7 @@ body {
   .cards {
     display: flex;
     gap: 20px;
-    margin-bottom: var(--margin-bottom-2);
+    margin-bottom: var(--margin-bottom-1);
     background: white;
     box-shadow: var(--shadow-1);
     padding: 1rem;

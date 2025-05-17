@@ -58,28 +58,28 @@
   <main class="main-cont">
     <div class="main active">
       <div class="header">
-        <h1>Welcome, Admin</h1>
+        <h1 class="main-title">Welcome, Admin</h1>
         <div class="button-main-cont">
           <div class="button-cont">
-            <button class="notif-btn ">
+            <button id="dashboard_nav">
               <i class="fa-solid fa-table-columns active"></i>
             </button>
             <p class="popup">Dashboard</p>
           </div>
           <div class="button-cont">
-            <button class="notif-btn">
+            <button id="analytics_nav">
               <i class="fa-solid fa-chart-line"></i>
             </button>
             <p class="popup">Analytics</p>
           </div>
           <div class="button-cont">
-            <button class="notif-btn">
+            <button id="manage_users_nav">
               <i class="fa-solid fa-users"></i>
             </button>
             <p class="popup">Manage Users</p>
           </div>
           <div class="button-cont">
-            <button class="notif-btn">
+            <button id="attendance_maintenance_nav">
               <i class="fa-solid fa-check-double"></i>
             </button>
             <p class="popup">Attendance Maintenance</p>
@@ -94,7 +94,7 @@
         </div>
       </div>
   
-      <div class="dashboard ">  
+      <div class="dashboard active">  
         <div class="middle-section">  
           <div class="cards attendance-card">
             <div class="chart-container">
@@ -106,7 +106,7 @@
           <div class="cards attendance-history">
             <div class="charts-cont">
               <div class="admin-chart">
-                <h3>Monthly Leave Trends</h3>
+                <h3>Monthly Leave Pattern</h3>
                 <canvas id="leaveChart" width="600" height="200"></canvas>
               </div>
             </div>
@@ -354,20 +354,177 @@
         </div>
       </div>
 
-      <div class="analytics active">
+      <div class="analytics ">
         <div class="cards total-leaves-graph-cont">
           <div class="total-leave-graph">
             <canvas id="leavesChart"></canvas>
           </div>
+        </div>
+        
+        <div class="cards summary-main-cont">
           <div class="total-leave-summary">
-            <h3>Leave Summary</h3>
-            <div class="leave-summary-cont">
-              
+            <div class="summaries">
+              <h3>Leave Summary</h3>
+              <div class="leave-summary-cont">
+                <div class="summary-cont">
+                  <p>1. Vacation Leave: <span>20</span></p>
+                  <p>2. Mandatory/Forced Leave: <span>20</span></p>
+                  <p>3. Sick Leave: <span>20</span></p>
+                  <p>4. Maternity Leave: <span>20</span></p>
+                  <p>5. Paternity Leave: <span>20</span></p>
+                  <p>6. Special Priviledge Leave: <span>20</span></p>
+                  <p>7. Solo Parent Leave: <span>20</span></p>
+                  <p>8. Study Leave: <span>20</span></p>
+                  <p>9. VAWC Leave: <span>20</span></p>
+                  <p>10. Rehabilitation Leave: <span>20</span></p>
+                  <p>11. Special Leave benefits for women: <span>20</span></p>
+                  <p>12. Special Emergency (Calamity) Leave: <span>20</span></p>
+                  <p>13. Terminal Leave: <span>20</span></p>
+                  <p>14. Adoption Leave: <span>20</span></p>
+                </div>
+              </div>
+              <p class="total-leaves">Total: <span>180</span> leave approved</p>
             </div>
           </div>
+          <div class="total-leave-summary employee-best-cont">
+            <div class="best-employee-cont">
+              <div class="headers">
+                <h3>Most Leaves This Month</h3>
+                <button class="show-more-btn">
+                  <i class="fa-solid fa-arrow-up-wide-short"></i>
+                  Show More
+                </button>
+              </div>
+              <div class="profile-cont">
+                <div class="img-cont">
+                  <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                </div>
+                <div class="profile-details">
+                  <h3>Hannah Denielle Teodoro</h3>
+                  <div class="personal-info-cont">
+                    <p>Employee ID: <span>E90G-9OH25</span></p>
+                    <p>Department: <span>CABA</span></p>
+                    <p>Job Title: <span>Loving Christian</span></p>
+                    <p>Age: <span>20</span></p>
+                    <p>Employment Type: <span>Regular</span></p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="middle-details-cont">
+                <div class="left">
+                  <div class="top-sec">
+                    <h3>Total Credits Used</h3>
+                    <p>2.80</p>
+                  </div>
+                </div>
+                <div class="right">
+                  <div class="top-sec">
+                    <h3>Credit Balance</h3>
+                    <p>1.20</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bottom-details-cont">
+                <h3>Leaves Taken:</h3>
+                <p>Sick leave, Maternity leave, Vacation leave</p>
+              </div>
+            </div>
+          </div>  
         </div>
-        <div class="cards">
+
+        <div class="cards summaries-container">
           <div class="cards-cont">
+            <div class="card">
+              <div class="leave-credits">
+                <div class="header">
+                  <h4>Vacation Leave</h4>
+                  <button class="view-analytics-dets">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                  </button>
+                </div>
+                <div class="donut-cont">
+                  <div class="donut-chart">
+                    <div class="donut-center-value" id="centerValue">
+                      <!-- <i class="fa-solid fa-infinity"></i> -->
+                      75%
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="summary-cont">
+                <div class="summary">
+                  <div class="top">
+                    No. of employee
+                  </div>
+                  <div class="bot">
+                    29
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Rank
+                  </div>
+                  <div class="bot">
+                    1
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Total Credits Used
+                  </div>
+                  <div class="bot">
+                    23
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="leave-credits">
+                <div class="header">
+                  <h4>Mandatory Leave</h4>
+                  <button class="view-analytics-dets">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                  </button>
+                </div>
+                <div class="donut-cont">
+                  <div class="donut-chart">
+                    <div class="donut-center-value" id="centerValue">
+                      <i class="fa-solid fa-infinity"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="summary-cont">
+                <div class="summary">
+                  <div class="top">
+                    No. of employee
+                  </div>
+                  <div class="bot">
+                    29
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Rank
+                  </div>
+                  <div class="bot">
+                    2
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Total Credits Used
+                  </div>
+                  <div class="bot">
+                    23
+                  </div>
+                </div>
+              </div>
+            </div>
+            
             <div class="card">
               <div class="leave-credits">
                 <div class="header">
@@ -387,7 +544,7 @@
               <div class="summary-cont">
                 <div class="summary">
                   <div class="top">
-                    Used leaves
+                    No. of employee
                   </div>
                   <div class="bot">
                     29
@@ -395,15 +552,15 @@
                 </div>
                 <div class="summary">
                   <div class="top">
-                    Total Credits Used
+                    Rank
                   </div>
                   <div class="bot">
-                    23
+                    7
                   </div>
                 </div>
                 <div class="summary">
                   <div class="top">
-                    Monthly leave
+                    Total Credits Used
                   </div>
                   <div class="bot">
                     23
@@ -412,136 +569,6 @@
               </div>
             </div>
 
-            <div class="card">
-              <div class="leave-credits">
-                <div class="header">
-                  <h4>Vacation Leave</h4>
-                  <button class="view-analytics-dets">
-                    <i class="fa-solid fa-ellipsis-vertical"></i>
-                  </button>
-                </div>
-                <div class="donut-cont">
-                  <div class="donut-chart">
-                    <div class="donut-center-value" id="centerValue">
-                      <i class="fa-solid fa-infinity"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="summary-cont">
-                <div class="summary">
-                  <div class="top">
-                    Used leaves
-                  </div>
-                  <div class="bot">
-                    29
-                  </div>
-                </div>
-                <div class="summary">
-                  <div class="top">
-                    Total Credits Used
-                  </div>
-                  <div class="bot">
-                    23
-                  </div>
-                </div>
-                <div class="summary">
-                  <div class="top">
-                    Monthly leave
-                  </div>
-                  <div class="bot">
-                    23
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div class="card">
-              <div class="leave-credits">
-                <div class="header">
-                  <h4>Casual Leave</h4>
-                  <button class="view-analytics-dets">
-                    <i class="fa-solid fa-ellipsis-vertical"></i>
-                  </button>
-                </div>
-                <div class="donut-cont">
-                  <div class="donut-chart">
-                    <div class="donut-center-value" id="centerValue">
-                      <i class="fa-solid fa-infinity"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="summary-cont">
-                <div class="summary">
-                  <div class="top">
-                    Used leaves
-                  </div>
-                  <div class="bot">
-                    29
-                  </div>
-                </div>
-                <div class="summary">
-                  <div class="top">
-                    Total Credits Used
-                  </div>
-                  <div class="bot">
-                    23
-                  </div>
-                </div>
-                <div class="summary">
-                  <div class="top">
-                    Monthly leave
-                  </div>
-                  <div class="bot">
-                    23
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="leave-credits">
-                <div class="header">
-                  <h4>Emergency Leave</h4>
-                  <button class="view-analytics-dets">
-                    <i class="fa-solid fa-ellipsis-vertical"></i>
-                  </button>
-                </div>
-                <div class="donut-cont">
-                  <div class="donut-chart">
-                    <div class="donut-center-value" id="centerValue">
-                      <i class="fa-solid fa-infinity"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="summary-cont">
-                <div class="summary">
-                  <div class="top">
-                    Used leaves
-                  </div>
-                  <div class="bot">
-                    29
-                  </div>
-                </div>
-                <div class="summary">
-                  <div class="top">
-                    Total Credits Used
-                  </div>
-                  <div class="bot">
-                    23
-                  </div>
-                </div>
-                <div class="summary">
-                  <div class="top">
-                    Monthly leave
-                  </div>
-                  <div class="bot">
-                    23
-                  </div>
-                </div>
-              </div>
-            </div>
             <div class="card">
               <div class="leave-credits">
                 <div class="header">
@@ -561,10 +588,18 @@
               <div class="summary-cont">
                 <div class="summary">
                   <div class="top">
-                    Used leaves
+                    No. of employee
                   </div>
                   <div class="bot">
                     29
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Rank
+                  </div>
+                  <div class="bot">
+                    5
                   </div>
                 </div>
                 <div class="summary">
@@ -575,9 +610,45 @@
                     23
                   </div>
                 </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="leave-credits">
+                <div class="header">
+                  <h4>Paternity Leave</h4>
+                  <button class="view-analytics-dets">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                  </button>
+                </div>
+                <div class="donut-cont">
+                  <div class="donut-chart">
+                    <div class="donut-center-value" id="centerValue">
+                      <i class="fa-solid fa-infinity"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="summary-cont">
                 <div class="summary">
                   <div class="top">
-                    Monthly leave
+                    No. of employee
+                  </div>
+                  <div class="bot">
+                    29
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Rank
+                  </div>
+                  <div class="bot">
+                    8
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Total Credits
                   </div>
                   <div class="bot">
                     23
@@ -585,6 +656,51 @@
                 </div>
               </div>
             </div>
+
+            <div class="card">
+              <div class="leave-credits">
+                <div class="header">
+                  <h4>Special Priviledge Leave</h4>
+                  <button class="view-analytics-dets">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                  </button>
+                </div>
+                <div class="donut-cont">
+                  <div class="donut-chart">
+                    <div class="donut-center-value" id="centerValue">
+                      <i class="fa-solid fa-infinity"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="summary-cont">
+                <div class="summary">
+                  <div class="top">
+                    No. of employee
+                  </div>
+                  <div class="bot">
+                    29
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Rank
+                  </div>
+                  <div class="bot">
+                    10
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Total Credits Used
+                  </div>
+                  <div class="bot">
+                    23
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div class="card">
               <div class="leave-credits">
                 <div class="header">
@@ -604,10 +720,18 @@
               <div class="summary-cont">
                 <div class="summary">
                   <div class="top">
-                    Used leaves
+                    No. of employee
                   </div>
                   <div class="bot">
                     29
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Rank
+                  </div>
+                  <div class="bot">
+                    11
                   </div>
                 </div>
                 <div class="summary">
@@ -618,16 +742,9 @@
                     23
                   </div>
                 </div>
-                <div class="summary">
-                  <div class="top">
-                    Monthly leave
-                  </div>
-                  <div class="bot">
-                    23
-                  </div>
-                </div>
               </div>
             </div>
+            
             <div class="card">
               <div class="leave-credits">
                 <div class="header">
@@ -647,10 +764,18 @@
               <div class="summary-cont">
                 <div class="summary">
                   <div class="top">
-                    Used leaves
+                    No. of employee
                   </div>
                   <div class="bot">
                     29
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Rank
+                  </div>
+                  <div class="bot">
+                    6
                   </div>
                 </div>
                 <div class="summary">
@@ -661,9 +786,265 @@
                     23
                   </div>
                 </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="leave-credits">
+                <div class="header">
+                  <h4>VAWC Leave</h4>
+                  <button class="view-analytics-dets">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                  </button>
+                </div>
+                <div class="donut-cont">
+                  <div class="donut-chart">
+                    <div class="donut-center-value" id="centerValue">
+                      <i class="fa-solid fa-infinity"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="summary-cont">
                 <div class="summary">
                   <div class="top">
-                    Monthly leave
+                    No. of employee
+                  </div>
+                  <div class="bot">
+                    29
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Rank
+                  </div>
+                  <div class="bot">
+                    12
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Total Credits Used
+                  </div>
+                  <div class="bot">
+                    23
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="leave-credits">
+                <div class="header">
+                  <h4>Rehabilitation Leave</h4>
+                  <button class="view-analytics-dets">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                  </button>
+                </div>
+                <div class="donut-cont">
+                  <div class="donut-chart">
+                    <div class="donut-center-value" id="centerValue">
+                      <i class="fa-solid fa-infinity"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="summary-cont">
+                <div class="summary">
+                  <div class="top">
+                    No. of employee
+                  </div>
+                  <div class="bot">
+                    29
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Rank
+                  </div>
+                  <div class="bot">
+                    3
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Total Credits Used
+                  </div>
+                  <div class="bot">
+                    23
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="leave-credits">
+                <div class="header">
+                  <h4>Special Leave</h4>
+                  <button class="view-analytics-dets">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                  </button>
+                </div>
+                <div class="donut-cont">
+                  <div class="donut-chart">
+                    <div class="donut-center-value" id="centerValue">
+                      <i class="fa-solid fa-infinity"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="summary-cont">
+                <div class="summary">
+                  <div class="top">
+                    No. of employee
+                  </div>
+                  <div class="bot">
+                    29
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Rank
+                  </div>
+                  <div class="bot">
+                    10
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Total Credits Used
+                  </div>
+                  <div class="bot">
+                    23
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="leave-credits">
+                <div class="header">
+                  <h4>Special Emergency Leave</h4>
+                  <button class="view-analytics-dets">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                  </button>
+                </div>
+                <div class="donut-cont">
+                  <div class="donut-chart">
+                    <div class="donut-center-value" id="centerValue">
+                      <i class="fa-solid fa-infinity"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="summary-cont">
+                <div class="summary">
+                  <div class="top">
+                    No. of employee
+                  </div>
+                  <div class="bot">
+                    29
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Rank
+                  </div>
+                  <div class="bot">
+                    14
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Total Credits Used
+                  </div>
+                  <div class="bot">
+                    23
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="leave-credits">
+                <div class="header">
+                  <h4>Terminal Leave</h4>
+                  <button class="view-analytics-dets">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                  </button>
+                </div>
+                <div class="donut-cont">
+                  <div class="donut-chart">
+                    <div class="donut-center-value" id="centerValue">
+                      <i class="fa-solid fa-infinity"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="summary-cont">
+                <div class="summary">
+                  <div class="top">
+                    No. of employee
+                  </div>
+                  <div class="bot">
+                    29
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Rank
+                  </div>
+                  <div class="bot">
+                    13
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Total Credits Used
+                  </div>
+                  <div class="bot">
+                    23
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="leave-credits">
+                <div class="header">
+                  <h4>Adoption Leave</h4>
+                  <button class="view-analytics-dets">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                  </button>
+                </div>
+                <div class="donut-cont">
+                  <div class="donut-chart">
+                    <div class="donut-center-value" id="centerValue">
+                      <i class="fa-solid fa-infinity"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="summary-cont">
+                <div class="summary">
+                  <div class="top">
+                    No. of employee
+                  </div>
+                  <div class="bot">
+                    29
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Rank
+                  </div>
+                  <div class="bot">
+                    4
+                  </div>
+                </div>
+                <div class="summary">
+                  <div class="top">
+                    Total Credits Used
                   </div>
                   <div class="bot">
                     23
@@ -1018,6 +1399,195 @@
     </div>
   </div>
 
+  <div class="employee-most-leave-modal ">
+    <div class="employee-most-leave-cont">
+      <div class="headers">
+        <h3>Most Leaves This Month</h3>
+        <button class="employee-most-leave-close-btn">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="main-cont">
+        <div class="left">
+          <div class="profile-cont">
+            1.
+            <div class="img-cont">
+              <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+            </div>
+            <div class="name-cont">
+              Hannah Denielle Teodoros adfk as
+            </div>
+          </div>
+          <div class="profile-cont">
+            2.
+            <div class="img-cont">
+              <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+            </div>
+            <div class="name-cont">
+              Hannah Denielle Teodoros adfk as
+            </div>
+          </div>
+          <div class="profile-cont">
+            3.
+            <div class="img-cont">
+              <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+            </div>
+            <div class="name-cont">
+              Hannah Denielle Teodoros adfk as
+            </div>
+          </div>
+          <div class="profile-cont">
+            4.
+            <div class="img-cont">
+              <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+            </div>
+            <div class="name-cont">
+              Hannah Denielle Teodoros adfk as
+            </div>
+          </div>
+          <div class="profile-cont">
+            5.
+            <div class="img-cont">
+              <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+            </div>
+            <div class="name-cont">
+              Hannah Denielle Teodoros adfk as
+            </div>
+          </div>
+          <div class="profile-cont">
+            6.
+            <div class="img-cont">
+              <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+            </div>
+            <div class="name-cont">
+              Hannah Denielle Teodoros adfk as
+            </div>
+          </div>
+          <div class="profile-cont">
+            7.
+            <div class="img-cont">
+              <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+            </div>
+            <div class="name-cont">
+              Hannah Denielle Teodoros adfk as
+            </div>
+          </div>
+          <div class="profile-cont">
+            8.
+            <div class="img-cont">
+              <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+            </div>
+            <div class="name-cont">
+              Hannah Denielle Teodoros adfk as
+            </div>
+          </div>
+          <div class="profile-cont">
+            9.
+            <div class="img-cont">
+              <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+            </div>
+            <div class="name-cont">
+              Hannah Denielle Teodoros adfk as
+            </div>
+          </div>
+          <div class="profile-cont">
+            10.
+            <div class="img-cont">
+              <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+            </div>
+            <div class="name-cont">
+              Hannah Denielle Teodoros adfk as
+            </div>
+          </div>
+          <div class="profile-cont">
+            11.
+            <div class="img-cont">
+              <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+            </div>
+            <div class="name-cont">
+              Hannah Denielle Teodoros adfk as
+            </div>
+          </div>
+          <div class="profile-cont">
+            12.
+            <div class="img-cont">
+              <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+            </div>
+            <div class="name-cont">
+              Hannah Denielle Teodoros adfk as
+            </div>
+          </div>
+          <div class="profile-cont">
+            13.
+            <div class="img-cont">
+              <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+            </div>
+            <div class="name-cont">
+              Hannah Denielle Teodoros adfk as
+            </div>
+          </div>
+          <div class="profile-cont">
+            14.
+            <div class="img-cont">
+              <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+            </div>
+            <div class="name-cont">
+              Hannah Denielle Teodoros adfk as
+            </div>
+          </div>
+          <div class="profile-cont">
+            15.
+            <div class="img-cont">
+              <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+            </div>
+            <div class="name-cont">
+              Hannah Denielle Teodoro
+            </div>
+          </div>
+        </div>
+
+        <div class="right">
+          <div class="profile-cont">
+            <div class="img-cont">
+              <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+            </div>
+            <div class="profile-details">
+              <h3>Hannah Denielle Teodoro</h3>
+              <div class="personal-info-cont">
+                <p>Employee ID: <span>E90G-9OH25</span></p>
+                <p>Department: <span>CABA</span></p>
+                <p>Job Title: <span>Loving Christian</span></p>
+                <p>Age: <span>20</span></p>
+                <p>Employment Type: <span>Regular</span></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="middle-details-cont">
+            <div class="left">
+              <div class="top-sec">
+                <h3>Total Credits Used</h3>
+                <p>2.80</p>
+              </div>
+            </div>
+            <div class="right">
+              <div class="top-sec">
+                <h3>Credit Balance</h3>
+                <p>1.20</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bottom-details-cont">
+            <h3>Leaves Taken:</h3>
+            <p>Sick leave, Maternity leave, Vacation leave</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="./assets/scripts/admin_interface.js"></script>
 

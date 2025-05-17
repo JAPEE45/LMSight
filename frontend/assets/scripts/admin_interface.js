@@ -1,3 +1,4 @@
+const main_title = document.querySelector(".main-title");
 
 const ctx = document.getElementById('leaveChart').getContext('2d');
 const canvas = document.getElementById('weeklyLeaveChart');
@@ -23,14 +24,99 @@ const analytics_modal = document.querySelector(".analytics-modal");
 const close_analytic_modal_btn = document.querySelector(".close-analytic-modal");
 
 const ctx3 = document.getElementById('leavesChart').getContext('2d');
+const show_more_btn = document.querySelector(".show-more-btn");
+const employee_most_leave_modal = document.querySelector(".employee-most-leave-modal");
+const employee_most_leave_close_btn = document.querySelector(".employee-most-leave-close-btn");
+
+const dashboard_nav = document.getElementById("dashboard_nav");
+const analytics_nav = document.getElementById("analytics_nav");
+const manage_users_nav = document.getElementById("manage_users_nav");
+const attendance_maintenance_nav = document.getElementById("attendance_maintenance_nav");
+
+const dashboard_btn = document.querySelector("#dashboard_nav i");
+const analytics_btn = document.querySelector("#analytics_nav i");
+const manage_users_btn = document.querySelector("#manage_users_nav i");
+const attendance_maintenance_btn = document.querySelector("#attendance_maintenance_nav i");
+
+const dashboard_page = document.querySelector(".dashboard");
+const analytics_page = document.querySelector(".analytics");
+// const manage_users_page = document.querySelector("#manage_users_nav i");
+// const attendance_maintenance_page = document.querySelector("#attendance_maintenance_nav i");
+
+
+const leaveData = [25, 120, 75, 30, 90, 150, 10, 5, 8, 30, 32, 97, 21, 56]; // Example values over 200
+const maxLeaves = Math.max(...leaveData);
+
+dashboard_nav.addEventListener("click", () => {
+  dashboard_btn.classList.add("active");
+  analytics_btn.classList.remove("active");
+  manage_users_btn.classList.remove("active");
+  attendance_maintenance_btn.classList.remove("active");
+
+  dashboard_page.classList.add("active");
+  analytics_page.classList.remove("active");
+
+  main_title.innerHTML = "Welcome, Admin!"
+})
+
+analytics_nav.addEventListener("click", () => {
+  dashboard_btn.classList.remove("active");
+  analytics_btn.classList.add("active");
+  manage_users_btn.classList.remove("active");
+  attendance_maintenance_btn.classList.remove("active");
+
+  dashboard_page.classList.remove("active");
+  analytics_page.classList.add("active");
+
+  main_title.innerHTML = "Descriptive Analysis"
+})
+
+manage_users_nav.addEventListener("click", () => {
+  dashboard_btn.classList.remove("active");
+  analytics_btn.classList.remove("active");
+  manage_users_btn.classList.add("active");
+  attendance_maintenance_btn.classList.remove("active");
+})
+
+attendance_maintenance_nav.addEventListener("click", () => {
+  dashboard_btn.classList.remove("active");
+  analytics_btn.classList.remove("active");
+  manage_users_btn.classList.remove("active");
+  attendance_maintenance_btn.classList.add("active");
+})
+
+
+show_more_btn.addEventListener("click", () => {
+  employee_most_leave_modal.classList.add("active");
+})
+
+employee_most_leave_close_btn.addEventListener("click", () => {
+  employee_most_leave_modal.classList.remove("active");
+})
+
+// Dynamic color function based on percentage of max value
+function getColor(value) {
+  const ratio = value / maxLeaves;
+
+  if (ratio >= 0.9) return '#1e3a8a'; // darkest
+  if (ratio >= 0.7) return '#2563eb';
+  if (ratio >= 0.5) return '#3b82f6';
+  if (ratio >= 0.3) return '#60a5fa';
+  if (ratio >= 0.1) return '#bfdbfe';
+  return '#dbeafe'; // lightest
+}
+
+const dynamicColors = leaveData.map(getColor);
+
 new Chart(ctx3, {
   type: 'bar',
   data: {
-    labels: ['Sick', 'Casual', 'Vacation', 'Emergency', 'Maternity', "Solo Parent", "Study"],
+    labels: ['Vacation', 'Mandatory/Forced', 'Sick', 'Maternity', 'Paternity', "Special Priviledge", "Solo Parent", "Study", "VAWC", "Rehabilitation", "Special Leave", "Special Emergency", "Terminal", "Adoption"],
     datasets: [{
       label: 'Leaves Taken',
-      data: [2, 1, 4, 3, 2, 5, 0.1],
-      backgroundColor: '#fff'
+      data: leaveData,
+      backgroundColor: dynamicColors,
+      borderRadius: 6
     }]
   },
   options: {
@@ -41,24 +127,31 @@ new Chart(ctx3, {
       },
       title: {
         display: true,
-        text: 'Leave Summary Graph',
-        color: "white"
+        text: 'Most Leaves Taken (May 2025)',
+        color: "black",
+        font: {
+    size: 18,        // font size in pixels
+    family: 'Arial', // optional, default system font
+    weight: 'bold'   // optional
+  }
       }
     },
-     scales: {
+    scales: {
       x: {
         ticks: {
-          color: '#fff' // X-axis label color
+          color: 'black'
         }
       },
       y: {
         ticks: {
-          color: '#fff' // Y-axis label color
-        }
+          color: 'black'
+        },
+        beginAtZero: true
       }
     }
   }
 });
+
 
 view_analytics_dets.forEach((menu) => {
   menu.addEventListener("click", () => {
