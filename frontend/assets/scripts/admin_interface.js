@@ -40,72 +40,159 @@ const attendance_maintenance_btn = document.querySelector("#attendance_maintenan
 
 const dashboard_page = document.querySelector(".dashboard");
 const analytics_page = document.querySelector(".analytics");
-// const manage_users_page = document.querySelector("#manage_users_nav i");
-// const attendance_maintenance_page = document.querySelector("#attendance_maintenance_nav i");
+const manage_users_page = document.querySelector(".manage-users");
+const attendance_maintenance_page = document.querySelector(".attendance-management");
+
+const emp_id_cont = document.getElementById("emp-id-cont");
+const save_user_btn = document.getElementById("save-user-btn");
+const show_saved = document.querySelector(".show-saved");
+const show_not_saved = document.querySelector(".show-not-saved");
+const add_user_btn = document.getElementById("add-user-btn");
+const manage_user_table = document.querySelector(".bottom-section-attendance .table-container");
+const add_edit_user_cont = document.querySelector(".add-edit-user-cont");
+const flipContainer3 = document.getElementById('flip-container3');
+const cancelBtn = document.getElementById('cancel-user-btn');
+
+const submit_leave = document.querySelector(".submit_leave.reject");
+const approve_leave = document.querySelector(".submit_leave.approve");
+const cancel_reject_btn = document.getElementById("cancel_reject_btn");
+const submit_reject_btn = document.getElementById("submit_reject_btn");
+const rejection_reason_modal = document.querySelector(".rejection-reason-modal");
+
+const checkboxes = document.querySelectorAll('.user-checkbox');
+const delete_select_cont = document.querySelector('.delete-select-cont');
+const select_all_chbx = document.querySelector('.select-all');
+
+const edit_delete_btn = document.querySelectorAll(".edit_delete_btn");
+const options = document.querySelectorAll(".options");
+const edit_user_btn = document.querySelectorAll(".edit_user_btn");
 
 
-const leaveData = [25, 120, 75, 30, 90, 150, 10, 5, 8, 30, 32, 97, 21, 56]; // Example values over 200
-const maxLeaves = Math.max(...leaveData);
+// Utility functions
+function toggleActiveClass(elements, target) {
+  elements.forEach(el => el.classList.remove("active"));
+  if (target) target.classList.add("active");
+}
 
-dashboard_nav.addEventListener("click", () => {
-  dashboard_btn.classList.add("active");
-  analytics_btn.classList.remove("active");
-  manage_users_btn.classList.remove("active");
-  attendance_maintenance_btn.classList.remove("active");
+function setNavigation(activeBtn, activePage, title) {
+  toggleActiveClass([dashboard_btn, analytics_btn, manage_users_btn, attendance_maintenance_btn], activeBtn);
+  toggleActiveClass([dashboard_page, analytics_page, manage_users_page, attendance_maintenance_page], activePage);
+  main_title.innerHTML = title;
+}
 
-  dashboard_page.classList.add("active");
-  analytics_page.classList.remove("active");
+function toggleModal(modal, show = true) {
+  modal.classList.toggle("active", show);
+}
 
-  main_title.innerHTML = "Welcome, Admin!"
-})
+function toggleTables(activeTable) {
+  toggleActiveClass([approved_table, pending_table, rejected_table], activeTable);
+}
 
-analytics_nav.addEventListener("click", () => {
-  dashboard_btn.classList.remove("active");
-  analytics_btn.classList.add("active");
-  manage_users_btn.classList.remove("active");
-  attendance_maintenance_btn.classList.remove("active");
+// Navigation
+dashboard_nav.addEventListener("click", () => setNavigation(dashboard_btn, dashboard_page, "Welcome, Admin!"));
+analytics_nav.addEventListener("click", () => setNavigation(analytics_btn, analytics_page, "Descriptive Analysis"));
+manage_users_nav.addEventListener("click", () => setNavigation(manage_users_btn, manage_users_page, "User Management"));
+attendance_maintenance_nav.addEventListener("click", () => setNavigation(attendance_maintenance_btn, attendance_maintenance_page, "Attendance Management"));
 
-  dashboard_page.classList.remove("active");
-  analytics_page.classList.add("active");
+// Table toggles
+approve_btn.addEventListener("click", () => toggleTables(approved_table));
+pending_btn.addEventListener("click", () => toggleTables(pending_table));
+reject_btn.addEventListener("click", () => toggleTables(rejected_table));
 
-  main_title.innerHTML = "Descriptive Analysis"
-})
+// Modals
+edit_btn.addEventListener("click", () => toggleModal(edit_modal, true));
+close_modal.addEventListener("click", () => toggleModal(edit_modal, false));
+submit_leave.addEventListener("click", () => toggleModal(rejection_reason_modal, true));
+approve_leave.addEventListener("click", () => toggleModal(edit_modal, false));
+cancel_reject_btn.addEventListener("click", () => toggleModal(rejection_reason_modal, false));
+submit_reject_btn.addEventListener("click", () => toggleModal(rejection_reason_modal, false));
+show_more_btn.addEventListener("click", () => toggleModal(employee_most_leave_modal, true));
+employee_most_leave_close_btn.addEventListener("click", () => toggleModal(employee_most_leave_modal, false));
+view_analytics_dets.forEach(menu => menu.addEventListener("click", () => toggleModal(analytics_modal, true)));
+close_analytic_modal_btn.addEventListener("click", () => toggleModal(analytics_modal, false));
 
-manage_users_nav.addEventListener("click", () => {
-  dashboard_btn.classList.remove("active");
-  analytics_btn.classList.remove("active");
-  manage_users_btn.classList.add("active");
-  attendance_maintenance_btn.classList.remove("active");
-})
+// Checkbox select all
+select_all_chbx.addEventListener('change', () => {
+  checkboxes.forEach(cb => {
+    cb.checked = select_all_chbx.checked;
+    cb.dispatchEvent(new Event('change'));
+  });
+});
 
-attendance_maintenance_nav.addEventListener("click", () => {
-  dashboard_btn.classList.remove("active");
-  analytics_btn.classList.remove("active");
-  manage_users_btn.classList.remove("active");
-  attendance_maintenance_btn.classList.add("active");
-})
+// Toggle delete select container
+checkboxes.forEach(cb => {
+  cb.addEventListener('change', () => {
+    const anyChecked = [...checkboxes].some(c => c.checked);
+    delete_select_cont.classList.toggle('active', anyChecked);
+  });
+});
 
+// Option menu (⋮)
+edit_delete_btn.forEach(btn => {
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const option = btn.nextElementSibling;
+    const isActive = option.classList.contains("active");
+    options.forEach(opt => opt.classList.remove("active"));
+    if (!isActive) option.classList.add("active");
+  });
+});
+document.addEventListener("click", () => options.forEach(opt => opt.classList.remove("active")));
 
-show_more_btn.addEventListener("click", () => {
-  employee_most_leave_modal.classList.add("active");
-})
+// Manage/Add User
+[...edit_user_btn].forEach(btn => {
+  btn.addEventListener("click", () => {
+    add_edit_user_cont.classList.add("active");
+    manage_user_table.classList.remove("active");
+    flipContainer3.classList.add("flipped");
+    delete_select_cont.classList.remove("active");
+  });
+});
 
-employee_most_leave_close_btn.addEventListener("click", () => {
-  employee_most_leave_modal.classList.remove("active");
-})
+add_user_btn.addEventListener("click", () => {
+  manage_user_table.classList.remove("active");
+  add_edit_user_cont.classList.add("active");
+  flipContainer3.classList.add("flipped");
+  delete_select_cont.classList.remove("active");
+});
 
-// Dynamic color function based on percentage of max value
+cancelBtn.addEventListener('click', () => {
+  flipContainer3.classList.remove('flipped');
+  manage_user_table.classList.add("active");
+  add_edit_user_cont.classList.remove("active");
+});
+
+save_user_btn.addEventListener("click", () => {
+  emp_id_cont.classList.add("active");
+  show_saved.classList.add("active");
+  setTimeout(() => show_saved.classList.remove("active"), 2000);
+});
+
+// Filter toggle
+filter_btn.addEventListener("click", (e) => {
+  e.preventDefault();
+  const isEnabled = department_select.disabled && vacation_type_select.disabled;
+  department_select.disabled = !isEnabled;
+  vacation_type_select.disabled = !isEnabled;
+  filter_btn.style.color = isEnabled ? "black" : "";
+  if (!isEnabled) location.reload();
+});
+
+// CHARTS ----------------------------------------------
+
+// Dynamic color for analytics chart
 function getColor(value) {
   const ratio = value / maxLeaves;
-
-  if (ratio >= 0.9) return '#1e3a8a'; // darkest
+  if (ratio >= 0.9) return '#1e3a8a';
   if (ratio >= 0.7) return '#2563eb';
   if (ratio >= 0.5) return '#3b82f6';
   if (ratio >= 0.3) return '#60a5fa';
   if (ratio >= 0.1) return '#bfdbfe';
-  return '#dbeafe'; // lightest
+  return '#dbeafe';
 }
 
+const leaveData = [25, 120, 75, 30, 90, 150, 10, 5, 8, 30, 32, 97, 21, 56];
+const maxLeaves = Math.max(...leaveData);
 const dynamicColors = leaveData.map(getColor);
 
 new Chart(ctx3, {
@@ -122,121 +209,52 @@ new Chart(ctx3, {
   options: {
     responsive: true,
     plugins: {
-      legend: {
-        display: false
-      },
+      legend: { display: false },
       title: {
         display: true,
         text: 'Most Leaves Taken (May 2025)',
         color: "black",
-        font: {
-    size: 18,        // font size in pixels
-    family: 'Arial', // optional, default system font
-    weight: 'bold'   // optional
-  }
+        font: { size: 18, family: 'Arial', weight: 'bold' }
       }
     },
     scales: {
-      x: {
-        ticks: {
-          color: 'black'
-        }
-      },
-      y: {
-        ticks: {
-          color: 'black'
-        },
-        beginAtZero: true
-      }
+      x: { ticks: { color: 'black' } },
+      y: { beginAtZero: true, ticks: { color: 'black' } }
     }
   }
 });
 
-
-view_analytics_dets.forEach((menu) => {
-  menu.addEventListener("click", () => {
-    analytics_modal.classList.add("active");
-  })
-})
-
-close_analytic_modal_btn.addEventListener("click", () => {
-  analytics_modal.classList.remove("active")
-})
-
-filter_btn.addEventListener("click", function(e) {
-    e.preventDefault();
-    department_select.disabled = !department_select.disabled;
-    vacation_type_select.disabled = !vacation_type_select.disabled;
-
-    const isEnabled = !department_select.disabled && !vacation_type_select.disabled;
-
-    filter_btn.style.color = isEnabled ? "black" : "";
-
-      if (!isEnabled) location.reload();
-  });
-
-edit_btn.addEventListener("click", () => {
-    edit_modal.classList.add("active");
-})
-
-close_modal.addEventListener("click", () => {
-    edit_modal.classList.remove("active");
-})
-
-approve_btn.addEventListener("click", () => {
-    approved_table.classList.add("active");
-    rejected_table.classList.remove("active");
-    pending_table.classList.remove("active");
-})
-pending_btn.addEventListener("click", () => {
-    pending_table.classList.add("active");
-    rejected_table.classList.remove("active");
-    approved_table.classList.remove("active");
-})
-reject_btn.addEventListener("click", () => {
-    rejected_table.classList.add("active");
-    approved_table .classList.remove("active");
-    pending_table.classList.remove("active");
-})
-
-// Sample leave data
+// Bar chart (custom canvas drawing)
 const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-const leaves = [12, 7, 5, 8, 14, 6, 3]; // Number of leave requests per day
-
-// Chart settings
+const leaves = [12, 7, 5, 8, 14, 6, 3];
 const barWidth = 30;
 const gap = 10;
 const chartHeight = canvas.height - 50;
 const maxLeave = Math.max(...leaves);
 
-// Draw axes
 ctx2.beginPath();
-ctx2.strokeStyle = '#fff'
+ctx2.strokeStyle = '#fff';
 ctx2.moveTo(0, 20);
 ctx2.lineTo(0, chartHeight);
 ctx2.lineTo(canvas.width - 320, chartHeight);
 ctx2.stroke();
 
-// Draw bars
 leaves.forEach((value, index) => {
   const barHeight = (value / maxLeave) * (chartHeight - 40);
   const x = 10 + index * (barWidth + gap);
   const y = chartHeight - barHeight;
 
-  // Bar
   ctx2.fillStyle = "#F0DAAE";
   ctx2.fillRect(x, y, barWidth, barHeight);
 
-  // Value label
   ctx2.fillStyle = "#fff";
   ctx2.font = "0.7rem Arial";
   ctx2.fillText(value, x + 12, y - 5);
-
-  // Day label
   ctx2.fillText(days[index], x + 2, chartHeight + 30);
 });
 
-const leaveChart = new Chart(ctx, {
+// Line chart
+new Chart(ctx, {
   type: 'line',
   data: {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
@@ -252,9 +270,7 @@ const leaveChart = new Chart(ctx, {
   options: {
     responsive: true,
     scales: {
-      y: {
-        beginAtZero: true
-      }
+      y: { beginAtZero: true }
     }
   }
 });

@@ -282,7 +282,9 @@ tr .status p {
 
   .table-nav-cont .apply-leave-btn:active,
   .leave-table-btn:active,
-  .submit_leave:active {
+  .submit_leave:active,
+  
+  .edit-modal .rejection-reason-modal .rejection-reason-cont .submit_cancel button:active {
     background: rgb(30,30,30);
     box-shadow: 0 0 0.2rem black;
   }
@@ -302,6 +304,54 @@ tr .status p {
 
   .table-nav button:hover {
     background: white;
+  }
+
+  .edit-modal .rejection-reason-modal {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0, 0.3);
+    z-index: 201;
+  }
+
+  .edit-modal .rejection-reason-modal.active {
+    display: block;
+  }
+
+  .edit-modal .rejection-reason-modal .rejection-reason-cont {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 450px;
+    height: 350px;
+    background: white;
+    padding: 1rem;
+    border-radius: var(--border-radius-card);
+    box-shadow: var(--shadow-1);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .edit-modal .rejection-reason-modal .rejection-reason-cont textarea {
+    width: 100%;
+    height: 100px;
+    padding: 0.5rem;
+  }
+  
+  .edit-modal .rejection-reason-modal .rejection-reason-cont .buttons-cont {
+    display: grid;
+    grid-template-columns: 2fr 2fr;
+    gap: 0.5rem;
+  }
+
+  .edit-modal .rejection-reason-modal .rejection-reason-cont .buttons-cont button {
+    padding: 0.3rem;
+    cursor: pointer;
   }
 
   .apply-leave-cont .inputs-reason-cont,
@@ -360,7 +410,8 @@ tr .status p {
     height: 100px;
   }
 
-  .submit_leave {
+  .submit_leave,
+  .edit-modal .rejection-reason-modal .rejection-reason-cont .submit_cancel button {
     padding: var(--padding-1);
     background: green;
     border: none;
@@ -382,7 +433,7 @@ tr .status p {
   left: 0;
   right: 0;
   background: rgba(0,0,0,0.8);
-  z-index: 99;
+  z-index: 201;
   pointer-events: none;
 }
 
@@ -518,7 +569,7 @@ tr .status p {
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 100;
+    z-index: 201;
     background: rgba(0,0,0,0.7);
     pointer-events: none;
 }
@@ -569,7 +620,7 @@ tr .status p {
 
   .delete-modal .delete-modal-cont button:last-child {
     background: green;
-  box-shadow: 0 0 0.2rem green;
+    box-shadow: 0 0 0.2rem green;
   }
 
 
@@ -1013,6 +1064,14 @@ tr:nth-child(even) {
   box-shadow: unset;
 }
 
+
+.analytics .cards .card .leave-credits .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
 .analytics .cards .card {
   height: 100%;
   flex-shrink: 0;
@@ -1149,7 +1208,7 @@ tr:nth-child(even) {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 100;
+  z-index: 201;
   background: rgba(0,0,0, 0.8);
 }
 
@@ -1237,19 +1296,22 @@ tr:nth-child(even) {
 }
 
 .analytics .total-leave-summary {
-  background: white;
+  background: transparent;
   color: black;
   padding: 1rem;
   height: 100%;
   width: 50%;
   border-radius: var(--border-radius-card);
-  box-shadow: 0 0 0.2rem #4caf50;
+  /* box-shadow: 0 0 0.2rem maroon; */
 }
 
 .analytics .cards.summary-main-cont {
   width: 100%;
   height: 450px;
   padding: 1rem 0.5rem;
+  background: white;
+  margin-bottom: 1rem;
+  padding-right: 1rem;
 }
 
 .analytics .cards.summary-main-cont .total-leave-summary .summaries {
@@ -1394,6 +1456,7 @@ tr:nth-child(even) {
   left: 0;
   right: 0;
   background: rgba(0,0,0,0.8);
+  z-index: 201;
 }
 
 .employee-most-leave-modal.active {
@@ -1594,4 +1657,502 @@ tr:nth-child(even) {
   font-size: 0.9rem;
   letter-spacing: 1px;
   margin-top: 5px;
+}
+
+.manage-users {
+  display: none;
+}
+
+.manage-users.active {
+  display: flex;
+}
+
+.manage-users-cont {
+  padding: 1rem;
+  background: white;
+  width: 100vw;
+  border-radius: var(--border-radius-card);
+  box-shadow: var(--shadow-1);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.manage-users-cont .top-section {
+  border-bottom: 1px solid #dddddd;
+  padding-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.manage-users-cont .top-section .top-right .search-cont {
+  background: rgb(250, 250, 250);
+  box-shadow: 0 0 0.2rem rgb(240, 240, 240);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid transparent;
+}
+
+.manage-users-cont .top-section .top-right .search-cont .input-cont {
+  padding: 0.5rem;
+  padding-right: 0.3rem;
+}
+
+.manage-users-cont .top-section .top-right .search-cont input {
+  border: none;
+  outline: none;
+  padding: 0 0.8rem;
+  padding-right: 0;
+  font-size: 1rem;
+  background: rgb(250,250,250);
+}
+
+.manage-users-cont .top-section .top-right .search-cont:has(input:focus) {
+  border: 1px solid black !important;
+}
+
+
+.manage-users-cont .top-section .top-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.manage-users-cont .top-section .top-left h2 {
+  color: var(--primary-background);
+}
+.manage-users-cont .top-section .top-left p {
+  background: rgb(238, 238, 238);
+  padding: 0.3rem;
+  font-size: 0.7rem;
+  color: rgb(78, 78, 78);
+  border-radius: 3px;
+  box-shadow: 0 0 0.2rem rgb(167, 167, 167);
+}
+
+.manage-users-cont .top-section .top-right .search-cont button {
+  padding: 0.6rem 0.8rem;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  color: rgb(39, 39, 39);
+  border-radius: unset;
+}
+
+.manage-users-cont .top-section .top-right .search-cont button:hover {
+  background: rgb(245, 245, 245);
+  box-shadow: unset;
+}
+
+.manage-users-cont .top-section .top-right .search-cont button:active {
+  background: rgb(235, 235, 235);
+}
+
+.manage-users-cont .top-section .top-right {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.manage-users-cont .top-section .top-right select {
+  padding: 0.5rem;
+  cursor: pointer;
+  background: rgb(250,250,250);
+  border: 1px solid rgb(216, 216, 216);
+  outline: none;
+  color: #555555;
+}
+
+.manage-users-cont .top-section .top-right .filter-options {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+
+.manage-users-cont .top-section .top-right .filter-options a {
+  color: #525252;
+  font-size: 0.9rem;
+}
+
+.manage-users-cont .top-section .top-right .flip-container {
+  perspective: 1000px;
+  display: inline-block;
+}
+
+.manage-users-cont .top-section .top-right .flipper {
+  position: relative;
+  width: 100%;
+  height: 40px;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+}
+
+.manage-users-cont .top-section .top-right .flip-container.flipped .flipper {
+  transform: rotateY(180deg);
+}
+
+.manage-users-cont .top-section .top-right .front,
+.manage-users-cont .top-section .top-right .back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.manage-users-cont .top-section .top-right .back {
+  transform: rotateY(180deg);
+}
+
+
+.manage-users-cont .top-section .top-right button {
+  padding: 0.6rem 0.8rem;
+  border-radius: 15px;
+  border: none;
+  background: black;
+  color: white;
+  font-weight: 550;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.manage-users-cont .top-section .top-right button:hover {
+  box-shadow: 0 0 0.2rem black;
+}
+
+
+
+.manage-users-cont table input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.manage-users-cont table {
+  border: 1px solid #dddddd;
+  position: relative;
+}
+
+
+.manage-users-cont table th .select-all {
+  position: absolute;
+  left: 10px;
+  top: 11px;
+}
+
+.manage-users-cont table th {
+  background: white;
+  font-size: 0.9rem;
+  color: #707070;
+}
+
+.manage-users-cont table td {
+  color: #707070;
+}
+
+
+.manage-users-cont table td  .table-name-wrapper .bot {
+  color: rgb(49, 49, 49);
+}
+
+.manage-users-cont table td .edit_delete_cont {
+  position: relative;
+}
+
+.manage-users-cont table td .edit_delete_cont .options {
+  background: white;
+  width: max-content;
+  text-align: left;
+  padding: 0.5rem;
+  position: absolute;
+  box-shadow: var(--shadow-1);
+  right: 35%;
+  display: none;
+  z-index: 50;
+}
+
+.manage-users-cont table td .edit_delete_cont .options.active {
+  display: block;
+}
+
+.manage-users-cont table td .edit_delete_cont .options p {
+  padding: 0.5rem 2rem;
+  padding-left: 0.3rem;
+  cursor: pointer;
+}
+
+.manage-users-cont table td .edit_delete_cont .options p:hover {
+  opacity: 0.8;
+}
+
+.manage-users-cont table td .edit_delete_cont .options p:active {
+  opacity: 0.5;
+}
+
+.manage-users-cont table button {
+  border: none;
+  color: rgb(70, 70, 70);
+}
+
+.manage-users-cont .bottom-section-attendance {
+  flex: 1;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.manage-users-cont .bottom-section-attendance .delete-select-cont {
+  display: none;
+}
+
+
+.manage-users-cont .bottom-section-attendance .delete-select-cont.active {
+  display: block;
+  align-self: flex-end;
+  margin-bottom: 1rem;
+}
+
+.manage-users-cont .bottom-section-attendance .delete-select-cont .delete-select {
+  text-align: end;
+
+}
+
+.manage-users-cont .bottom-section-attendance .table-container {
+  display: none;
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+.manage-users-cont .bottom-section-attendance .table-container.active {
+  display: block;
+}
+
+.manage-users-cont .bottom-section-attendance .add-edit-user-cont {
+  display: none;
+  height: 100%;
+  width: 100%;
+}
+
+.manage-users-cont .bottom-section-attendance .add-edit-user-cont.active {
+  display: block;
+}
+
+.add-edit-user-cont .personal-info-cont {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding-bottom: 2rem;
+}
+
+.add-edit-user-cont .personal-info-cont .top-personal-infos,
+.add-edit-user-cont .personal-info-cont .bottom-personal-infos .inputs-cont {
+  display: flex;
+  gap: 2rem;
+}
+
+.add-edit-user-cont .personal-info-cont .bottom-personal-infos .note-user {
+  font-size: 0.7rem;
+}
+
+.add-edit-user-cont .inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.add-edit-user-cont h2 {
+  color: var(--primary-background);
+}
+
+.add-edit-user-cont label {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: rgb(46, 46, 46);
+}
+
+.add-edit-user-cont input {
+  padding: 0.5rem;
+  border-radius: 10px;
+  border: none;
+  box-shadow: 0 0 0.1rem black;
+  background: transparent;
+}
+
+.add-edit-user-cont input[type="file"] {
+  padding: 0.3rem;
+  box-shadow: unset;
+  border: 1px solid rgba(0,0,0, 0.3);
+  border-radius: unset;
+  cursor: pointer;
+}
+
+.add-edit-user-cont .personal-info-cont .inputs select {
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.add-edit-user-cont input {
+  max-width: max-content;
+}
+
+.add-edit-user-cont button {
+  padding: 0.8rem 1rem;
+  border-radius: 5px;
+  border: 1px solid black;
+  cursor: pointer;
+  color: white;
+  background: black;
+}
+
+.add-edit-user-cont .button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+}
+
+.add-edit-user-cont .button-container p {
+  position: absolute;
+  bottom: -25px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.add-edit-user-cont .button-container p span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-edit-user-cont .button-container p.show-saved,
+.add-edit-user-cont .button-container p.show-not-saved {
+  opacity: 0;
+  transition: all 0.15s ease-in-out;
+}
+
+.add-edit-user-cont .button-container p.show-saved.active,
+.add-edit-user-cont .button-container p.show-not-saved.active {
+  opacity: 1;
+}
+
+.add-edit-user-cont .button-container p.show-saved.active {
+  color: green;
+}
+
+.add-edit-user-cont .button-container p.show-not-saved.active {
+  color: red;
+}
+
+.add-edit-user-cont .button-container .show-saved i,
+.add-edit-user-cont .button-container .show-not-saved i {
+  padding: 3px 5px;
+  border-radius: 50%;
+  color: white;
+}
+
+.add-edit-user-cont .button-container .show-saved i {
+  background: green;
+}
+
+
+.add-edit-user-cont .button-container .show-not-saved i {
+  background: red;
+}
+
+.add-edit-user-cont button:hover {
+  opacity: 0.9;
+}
+
+.add-edit-user-cont button:active {
+  box-shadow: 0 0 0.5rem black;
+}
+
+.add-edit-user-cont .emp-id-cont {
+  display: none;
+}
+
+.add-edit-user-cont .emp-id-cont.active {
+  display: flex;
+}
+
+.attendance-management {
+  display: none;
+  background: transparent;
+  height: 85vh;
+  width: 100%;
+}
+
+.attendance-management.active {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.attendance-management .top-section .search-cont {
+  box-shadow: var(--shadow-1);
+  display: flex;
+  border-radius: 20px;
+  overflow: hidden;
+  align-items: center;
+  max-width: max-content;
+  background: white;
+}
+
+.attendance-management .top-section .search-cont .input-cont {
+  padding: 0.6rem 0.8rem;
+  padding-right: 0;
+  /* flex: 1; */
+}
+
+.attendance-management .top-section .search-cont .input-cont input {
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  padding-left: 0.3rem;
+  width: 350px;
+}
+
+.attendance-management .top-section .search-cont button {
+  padding: 0.7rem 0.9rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.attendance-management .top-section .search-cont button:hover {
+  background: rgb(248, 248, 248);
+}
+
+.attendance-management .top-section .search-cont button:active {
+  background: rgb(240,240,240);
+}
+
+.attendance-management .bottom-section {
+  background: white;
+  height: 70%;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  border-radius: var(--border-radius-card);
+  box-shadow: var(--shadow-1);
+}
+
+.attendance-management .bottom-section .img-cont {
+  height: 60%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.5;
+}
+
+.attendance-management .bottom-section .img-cont img {
+  height:100%;
 }

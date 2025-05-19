@@ -317,6 +317,18 @@ tr .status p {
     height: 100px;
   }
 
+  .checkbx-cont {
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .checkbx-cont label,
+  .checkbx-cont input {
+    cursor: pointer;
+  }
+
   .submit_leave {
     padding: var(--padding-1);
     background: green;
@@ -329,6 +341,14 @@ tr .status p {
     border-radius: 5px;
   }
 
+  .submit_leave:disabled {
+  background-color: #ccc;   /* Light gray background */
+  color: #666;              /* Optional: dim text */
+  cursor: not-allowed;      /* Optional: show disabled cursor */
+  opacity: 0.7;             /* Optional: make it look inactive */
+}
+
+
 
 
 .edit-modal {
@@ -339,7 +359,7 @@ tr .status p {
   left: 0;
   right: 0;
   background: rgba(0,0,0,0.8);
-  z-index: 99;
+  z-index: 201;
   pointer-events: none;
 }
 
@@ -400,7 +420,7 @@ tr .status p {
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 100;
+    z-index: 201;
     background: rgba(0,0,0,0.7);
     pointer-events: none;
 }

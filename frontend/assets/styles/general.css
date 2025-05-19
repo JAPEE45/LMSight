@@ -27,11 +27,18 @@ body {
     padding: var(--padding-2);
   }
 
-  .header {
+  .main-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: var(--margin-bottom-2);
+    position: sticky;
+    top: 0;
+    background: var(--primary-gray);
+    left: 0;
+    right: 0;
+    padding: 0.1rem 0;
+    z-index: 200;
   }
 
   .sidebar {

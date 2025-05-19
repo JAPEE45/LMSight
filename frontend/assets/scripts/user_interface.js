@@ -1,108 +1,108 @@
-const approved_table = document.querySelector(".approved_table");
-const rejected_table = document.querySelector(".rejected_table");
-const pending_table = document.querySelector(".pending_table");
+// === DOM Elements grouped by functionality ===
 
-const approve_btn = document.querySelector(".approve-btn");
-const pending_btn = document.querySelector(".pending-btn");
-const reject_btn = document.querySelector(".reject-btn");
+// Tables
+const tables = {
+  approved: document.querySelector(".approved_table"),
+  rejected: document.querySelector(".rejected_table"),
+  pending: document.querySelector(".pending_table"),
+};
 
-const applyLeaveCont = document.querySelector(".apply-leave-cont");
-const tableContainer = document.querySelector(".table-cont");
-const table_nav = document.querySelector(".table-nav");
+// Buttons
+const buttons = {
+  approve: document.querySelector(".approve-btn"),
+  pending: document.querySelector(".pending-btn"),
+  reject: document.querySelector(".reject-btn"),
+  edit: document.getElementById("edit_btn"),
+  delete: document.getElementById("delete_btn"),
+  closeModal: document.getElementById("close-edit-modal"),
+  flipBack: document.getElementById("flipToBack"),
+  flipFront: document.getElementById("flipToFront"),
+  notif: document.getElementById("notification-btn"),
+  submitLeave: document.querySelector(".submit_leave"),
+};
 
-const flipContainer = document.getElementById('flipContainer');
-const flipContainer2 = document.getElementById('flipContainer2');
-const edit_btn = document.getElementById("edit_btn");
-const edit_modal = document.querySelector(".edit-modal");
-const close_modal = document.getElementById("close-edit-modal");
-const delete_modal = document.querySelector(".delete-modal");
-const delete_btn = document.getElementById("delete_btn");
+// Modals
+const modals = {
+  edit: document.querySelector(".edit-modal"),
+  delete: document.querySelector(".delete-modal"),
+};
 
-const delete_modal_btn = document.querySelectorAll(".delete-modal-btn");
+// Containers
+const containers = {
+  applyLeave: document.querySelector(".apply-leave-cont"),
+  table: document.querySelector(".table-cont"),
+  nav: document.querySelector(".table-nav"),
+  flip1: document.getElementById("flipContainer"),
+  flip2: document.getElementById("flipContainer2"),
+  notifPopup: document.querySelector(".notification-popup-cont"),
+};
 
-const flipToBack = document.getElementById("flipToBack");
-const flipToFront = document.getElementById("flipToFront");
+// Form checkbox
+const omnibus_rules = document.getElementById("omnibus-rules");
 
-const notif_btn = document.getElementById("notification-btn");
-const notification_popup = document.querySelector(".notification-popup-cont");
+// === Event Listeners ===
 
-notif_btn.addEventListener("click", (e) => {
+// Notification popup toggle
+buttons.notif.addEventListener("click", (e) => {
   e.stopPropagation();
-  notification_popup.classList.toggle("active");
+  containers.notifPopup.classList.toggle("active");
 });
 
-
-flipToBack.addEventListener("click", () => {
-    flipContainer2.classList.add("flipped");
-});
-
-flipToFront.addEventListener("click", () => {
-    flipContainer2.classList.remove("flipped");
-});
-
-flipContainer.addEventListener('click', () => {
-    flipContainer.classList.toggle('flipped');
-  applyLeaveCont.classList.toggle("active");
-  tableContainer.classList.toggle("active");
-  table_nav.classList.toggle("active");
-});
-
-
-approve_btn.addEventListener("click", () => {
-    approved_table.classList.add("active");
-    rejected_table.classList.remove("active");
-    pending_table.classList.remove("active");
-})
-pending_btn.addEventListener("click", () => {
-    pending_table.classList.add("active");
-    rejected_table.classList.remove("active");
-    approved_table.classList.remove("active");
-})
-reject_btn.addEventListener("click", () => {
-    rejected_table.classList.add("active");
-    approved_table .classList.remove("active");
-    pending_table.classList.remove("active");
-})
-
-edit_btn.addEventListener("click", () => {
-    edit_modal.classList.add("active");
-})
-
-close_modal.addEventListener("click", () => {
-    edit_modal.classList.remove("active");
-})
-
-delete_btn.addEventListener("click", () => {
-    delete_modal.classList.add("active");
-})
-
-delete_modal_btn.forEach((button) => {
-    button.addEventListener("click", () => {
-        delete_modal.classList.remove("active");
-    })
-})
-
-function updateClock() {
-  const now = new Date();
-  let hours = now.getHours();
-  let minutes = now.getMinutes();
-  let seconds = now.getSeconds();
-
-  hours = hours < 10 ? "0" + hours : hours;
-  minutes = minutes < 10 ? "0" + minutes : minutes;
-  seconds = seconds < 10 ? "0" + seconds : seconds;
-
-  const timeString = `${hours}:${minutes}:${seconds}`;
-  document.getElementById("clock").textContent = timeString;
-}
-
-
+// Close popup on outside click
 window.addEventListener("click", (e) => {
-  if (!notification_popup.contains(e.target) && e.target !== notif_btn) {
-    notification_popup.classList.remove("active");
+  if (!containers.notifPopup.contains(e.target) && e.target !== buttons.notif) {
+    containers.notifPopup.classList.remove("active");
   }
 });
 
+// Flip animations
+buttons.flipBack.addEventListener("click", () => containers.flip2.classList.add("flipped"));
+buttons.flipFront.addEventListener("click", () => containers.flip2.classList.remove("flipped"));
+
+containers.flip1.addEventListener("click", () => {
+  containers.flip1.classList.toggle("flipped");
+  containers.applyLeave.classList.toggle("active");
+  containers.table.classList.toggle("active");
+  containers.nav.classList.toggle("active");
+});
+
+// Toggle leave status tables
+function toggleTable(type) {
+  Object.entries(tables).forEach(([key, table]) => {
+    table.classList.toggle("active", key === type);
+  });
+}
+
+buttons.approve.addEventListener("click", () => toggleTable("approved"));
+buttons.pending.addEventListener("click", () => toggleTable("pending"));
+buttons.reject.addEventListener("click", () => toggleTable("rejected"));
+
+// Edit modal logic
+buttons.edit.addEventListener("click", () => modals.edit.classList.add("active"));
+buttons.closeModal.addEventListener("click", () => modals.edit.classList.remove("active"));
+
+// Delete modal logic
+buttons.delete.addEventListener("click", () => modals.delete.classList.add("active"));
+document.querySelectorAll(".delete-modal-btn").forEach((btn) =>
+  btn.addEventListener("click", () => modals.delete.classList.remove("active"))
+);
+
+// Clock
+function updateClock() {
+  const now = new Date();
+  const pad = (n) => (n < 10 ? "0" + n : n);
+  const timeString = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+  document.getElementById("clock").textContent = timeString;
+}
 updateClock();
 setInterval(updateClock, 1000);
 
+// Enable/disable leave submission based on checkbox
+function updateSubmitLeaveState() {
+  buttons.submitLeave.disabled = !omnibus_rules.checked;
+}
+
+omnibus_rules.addEventListener("change", updateSubmitLeaveState);
+
+// Set initial state on page load
+updateSubmitLeaveState();

@@ -25,7 +25,7 @@
       </div>
     </div>
     <div class="name-cont">
-      <h3 class="name">Hannah Denielle Teodoro</h3>
+      <h3 class="name">Juan Dela Cruz</h3>
     </div>
 
     <div class="bot-sec">
@@ -57,7 +57,7 @@
 
   <main class="main-cont">
     <div class="main active">
-      <div class="header">
+      <div class="main-header">
         <h1 class="main-title">Welcome, Admin</h1>
         <div class="button-main-cont">
           <div class="button-cont">
@@ -140,14 +140,21 @@
               </div>
               <div class="inputs-cont">
                 <select disabled name="" id="vacation-type-filter">
-                  <option value="" disabled selected>Leave Type</option>
-                  <option value="">Sick Leave</option>
-                  <option value="">Casual Leave</option>
+                  <option value="" disabled selected>-- Please Select --</option>
                   <option value="">Vacation Leave</option>
-                  <option value="">Emergency Leave</option>
+                  <option value="">Mandatory Leave</option>
+                  <option value="">Sick Leave</option>
                   <option value="">Maternity Leave</option>
+                  <option value="">Paternity Leave</option>
+                  <option value="">Special Priviledge Leave</option>
                   <option value="">Solo Parent Leave</option>
                   <option value="">Study Leave</option>
+                  <option value="">VAWC Leave</option>
+                  <option value="">Rehabilitation Leave</option>
+                  <option value="">Special Leave</option>
+                  <option value="">Special Emergency Leave</option>
+                  <option value="">Terminal Leave</option>
+                  <option value="">Adoption Leave</option>
                 </select>
               </div>
             </div>
@@ -175,7 +182,7 @@
                           <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
                         </div>
                         <p class="bot">
-                          Hannah Denielle Teodoro
+                          Juan Dela Cruz
                         </p>
                       </div>
                     </td>
@@ -218,7 +225,7 @@
                           <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
                         </div>
                         <p class="bot">
-                          Hannah Denielle Teodoro
+                          Juan Dela Cruz
                         </p>
                       </div>
                     </td>
@@ -262,7 +269,7 @@
                           <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
                         </div>
                         <p class="bot">
-                          Hannah Denielle Teodoro
+                          Juan Dela Cruz
                         </p>
                       </div>
                     </td>
@@ -320,13 +327,20 @@
                   <label for="leave_type">Leave Type</label>
                   <select name="" id="leave_type">
                     <option value="" disabled selected>-- Please Select --</option>
-                    <option value="">Sick Leave</option>
-                    <option value="">Casual Leave</option>
                     <option value="">Vacation Leave</option>
-                    <option value="">Emergency Leave</option>
+                    <option value="">Mandatory Leave</option>
+                    <option value="">Sick Leave</option>
                     <option value="">Maternity Leave</option>
+                    <option value="">Paternity Leave</option>
+                    <option value="">Special Priviledge Leave</option>
                     <option value="">Solo Parent Leave</option>
                     <option value="">Study Leave</option>
+                    <option value="">VAWC Leave</option>
+                    <option value="">Rehabilitation Leave</option>
+                    <option value="">Special Leave</option>
+                    <option value="">Special Emergency Leave</option>
+                    <option value="">Terminal Leave</option>
+                    <option value="">Adoption Leave</option>
                   </select>
                 </div>
                 <div class="inputs-cont">
@@ -400,7 +414,7 @@
                   <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
                 </div>
                 <div class="profile-details">
-                  <h3>Hannah Denielle Teodoro</h3>
+                  <h3>Juan Dela Cruz</h3>
                   <div class="personal-info-cont">
                     <p>Employee ID: <span>E90G-9OH25</span></p>
                     <p>Department: <span>CABA</span></p>
@@ -1052,7 +1066,264 @@
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
 
+      <div class="manage-users ">
+        <div class="manage-users-cont">
+          <div class="top-section">
+            <div class="top-left">
+              <h2>User list</h2>
+              <p>180 users</p>
+            </div>
+            <div class="top-right">
+              <div class="search-cont">
+                <div class="input-cont">
+                  <input type="text" placeholder="Search...">
+                </div>
+                <button>
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+              </div>
+              <div class="filter-options">
+                <a href="#" id="filter-user-btn">
+                  <i class="fa-solid fa-filter"></i>
+                  Filters
+                </a>
+                <select name="" id="department-user">
+                  <option value="" disabled selected>Department</option>
+                </select>
+                <select name="" id="job-title-user">
+                  <option value="" disabled selected>Job Title</option>
+                </select>
+              </div>
+
+              <div class="flip-container" id="flip-container3">
+                <div class="flipper">
+                  <button class="front" id="add-user-btn">
+                    <i class="fa-solid fa-plus"></i> Add user
+                  </button>
+                  <button class="back" id="cancel-user-btn">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    User Table
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bottom-section-attendance">
+            <div class="delete-select-cont ">
+              <a href="#" class="delete-select">Delete selected</a>
+            </div>
+            <div class="table-container active">
+              <table class="active">
+                <thead>
+                  <tr>
+                    <th>
+                      <input type="checkbox" class="select-all user-checkbox">
+                      Name
+                    </th>
+                    <th>Email</th>
+                    <th>Department</th>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Joined Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="table-name-td">
+                      <div class="table-name-wrapper">
+                        <input type="checkbox" class="user-checkbox">
+                        <div class="img-cont">
+                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                        </div>
+                        <p class="bot">
+                          Juan Dela Cruz
+                        </p>
+                      </div>
+                    </td>
+                    <td>example@example.com</td>
+                    <td>CABA</td>
+                    <td>Loving christian</td>
+                    <td class="status">
+                      <p class="status-approved">Active</p>
+                    </td>
+                    <td>10-15-2025</td>
+                    <td>
+                      <div class="edit_delete_cont">
+                        <button class="edit_delete_btn">
+                            <i class="fa-solid fa-ellipsis"></i>
+                        </button>
+                        <div class="options ">
+                          <p class="edit_user_btn">Edit</p>
+                          <p>Delete</p>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>        
+                  <tr>
+                    <td class="table-name-td">
+                      <div class="table-name-wrapper">
+                        <input type="checkbox" class="user-checkbox">
+                        <div class="img-cont">
+                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                        </div>
+                        <p class="bot">
+                          Juan Dela Cruz
+                        </p>
+                      </div>
+                    </td>
+                    <td>example@example.com</td>
+                    <td>CABA</td>
+                    <td>Loving christian</td>
+                    <td class="status">
+                      <p class="status-approved">Active</p>
+                    </td>
+                    <td>10-15-2025</td>
+                    <td>
+                      <div class="edit_delete_cont">
+                        <button class="edit_delete_btn">
+                            <i class="fa-solid fa-ellipsis"></i>
+                        </button>
+                        <div class="options">
+                          <p class="edit_user_btn">Edit</p>
+                          <p>Delete</p>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>        
+                </tbody>
+              </table>
+            </div>
+
+            <div class="add-edit-user-cont ">
+              <div class="personal-info-cont">
+                <h2>Personal Information</h2>
+                <div class="inputs emp-id-cont " id="emp-id-cont">
+                  <input class="emp-id-input" type="text" id="emp-id">
+                  <label for="emp-id">Employee ID</label>
+                </div>
+                <div class="top-personal-infos">
+                  <div class="inputs">
+                    <input id="last_name" type="text" placeholder="Dela Cruz">
+                    <label for="last_name">Last Name</label>
+                  </div>
+                  <div class="inputs">
+                    <input id="first_name" type="text" placeholder="Juan">
+                    <label for="first_name">First Name</label>
+                  </div>
+                  <div class="inputs">
+                    <input id="middle_name" type="text" placeholder="Pimentel">
+                    <label for="middle_name">Middle Name</label>
+                  </div>
+                  <div class="inputs">
+                    <input id="suffix_name" type="text" placeholder="Jr.">
+                    <label for="suffix_name">Suffix</label>
+                  </div>
+                </div>
+                <div class="bottom-personal-infos">
+                  <div class="inputs-cont">
+                    <div class="inputs">
+                      <input id="email_name" type="email" placeholder="example@example.com">
+                      <label for="email_name">Email</label>
+                    </div>
+                    <div class="inputs">
+                      <input id="birthday-input-user" type="date">
+                      <label for="birthday-input-user">Birthday</label>
+                    </div>
+                    <div class="inputs">
+                      <input id="phone_no" type="text" placeholder="09123456789">
+                      <label for="phone_no">Phone number</label>
+                    </div>
+                    <div class="inputs">
+                      <input id="profile_pic" type="file" accept="image/*">
+                      <label for="profile_pic">Valid picture</label>
+                    </div>
+                  </div>
+                  <label class="note-user">
+                    Note: Username and password of this user will be sent to the email provided.
+                  </label>
+                </div>
+              </div>
+
+              <div class="personal-info-cont">
+                <h2>Role & Department</h2>
+                <div class="top-personal-infos">
+                  <div class="inputs">
+                    <select name="" id="create-department-user">
+                      <option value="" disabled selected>--Please Select--</option>
+                      <option value="">IT</option>
+                      <option value="">Finance</option>
+                      <option value="">Marketing</option>
+                      <option value="">HR</option>
+                      <option value="">Operations</option>
+                    </select>
+                    <label for="create-department-user">Department</label>
+                  </div>
+                  <div class="inputs">
+                    <select name="" id="create-department-user">
+                      <option value="" disabled selected>--Please Select--</option>
+                      <option value="">IT</option>
+                      <option value="">Finance</option>
+                      <option value="">Marketing</option>
+                      <option value="">HR</option>
+                      <option value="">Operations</option>
+                    </select>
+                    <label for="create-department-user">Job Title</label>
+                  </div>
+                  <div class="inputs">
+                    <select name="" id="employment-type">
+                      <option value="" disabled selected>--Please Select--</option>
+                      <option value="">Regular</option>
+                      <option value="">Casual</option>
+                      <option value="">Project-Based</option>
+                      <option value="">Seasonal</option>
+                      <option value="">Probationary</option>
+                      <option value="">Contractual</option>
+                      <option value="">Part-Time</option>
+                      <option value="">Intern</option>
+                    </select>
+                    <label for="employment-type">Employment Type</label>
+                  </div>
+                </div>
+              </div>
+              <div class="button-container">
+                <button id="save-user-btn">Save user</button>
+                <p class="show-saved ">
+                  <span>
+                    <i class="fa-solid fa-check"></i>
+                  </span>
+                  User succesfully saved!
+                </p>
+                <p class="show-not-saved">
+                  <span>
+                    <i class="fa-solid fa-xmark"></i>
+                  </span>
+                  User unsuccesfully registered</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="attendance-management ">
+        <div class="top-section">
+          <div class="search-cont">
+            <div class="input-cont">
+              <input type="text" placeholder="Search employee...">
+            </div>
+            <button>
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+          </div>
+        </div>
+        <div class="bottom-section">
+          <div class="img-cont">
+            <img src="./assets/images/undraw_people-search_xpq4.svg" alt="">
           </div>
         </div>
       </div>
@@ -1060,7 +1331,7 @@
     </div>
   </main>
 
-  <div class="edit-modal">
+  <div class="edit-modal ">
     <div class="edit-leave-cont ">
       <header>
         <h1>Request Leave</h1>
@@ -1074,7 +1345,7 @@
             <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
           </div>
           <div class="details-cont">
-            <p class="name">Hannah Denielle Teodoro</p>
+            <p class="name">Juan Dela Cruz</p>
             <p>Department: <span>CABA</span></p>
             <p>Job title: <span>Loving Christian</span></p>
           </div>
@@ -1089,38 +1360,65 @@
       <div class="inputs-main">
         <div class="inputs-cont">
           <label for="leave_type">Leave Type</label>
-          <select name="" id="leave_type">
+          <select disabled name="" id="leave_type">
             <option value="" disabled selected>-- Please Select --</option>
-            <option value="">Sick Leave</option>
-            <option value="">Casual Leave</option>
             <option value="">Vacation Leave</option>
-            <option value="">Emergency Leave</option>
+            <option value="">Mandatory Leave</option>
+            <option value="">Sick Leave</option>
             <option value="">Maternity Leave</option>
+            <option value="">Paternity Leave</option>
+            <option value="">Special Priviledge Leave</option>
             <option value="">Solo Parent Leave</option>
             <option value="">Study Leave</option>
+            <option value="">VAWC Leave</option>
+            <option value="">Rehabilitation Leave</option>
+            <option value="">Special Leave</option>
+            <option value="">Special Emergency Leave</option>
+            <option value="">Terminal Leave</option>
+            <option value="">Adoption Leave</option>
           </select>
         </div>
         <div class="inputs-cont">
           <label for="leave_type">Start Date</label>
-          <input type="date">
+          <input type="date" disabled>
         </div>
         <div class="inputs-cont">
           <label for="leave_type">End Date</label>
-          <input type="date">
+          <input type="date" disabled>
         </div>
       </div>
   
       <div class="inputs-main">
         <div class="inputs-reason-cont">
           <label for="reason_for_leaving">Comment</label>
-          <textarea name="" id="reason_for_leaving"></textarea>
+          <textarea disabled name="" id="reason_for_leaving"></textarea>
         </div>
       </div>
       <div class="edit-buttons">
-        <button class="submit_leave">Approve</button>
-        <button class="submit_leave">Reject</button>
+        <button class="submit_leave approve">Approve</button>
+        <button class="submit_leave reject">Reject</button>
+      </div>
+      <div class="rejection-reason-modal ">
+        <div class="rejection-reason-cont">
+          <h3>Reason for rejecting request</h3>
+          <div class="buttons-cont">
+            <button>Insufficient Leave Credits</button>
+            <button>Unreasonable/Vague excuse</button>
+            <button>Lack of supporting documents</button>
+            <button>Operational needs</button>
+            <button>Short notice</button>
+            <button>Doesnt follow oblivion rules</button>
+          </div>
+          <h4>Other concerns:</h4>
+          <textarea name="" id=""></textarea>
+          <div class="submit_cancel">
+            <button id="cancel_reject_btn">Cancel</button>
+            <button id="submit_reject_btn">Submit</button>
+          </div>
+        </div>
       </div>
     </div>
+
   </div>
 
   <div class="delete-modal ">
@@ -1304,7 +1602,7 @@
                     <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
                   </div>
                   <p class="bot">
-                    Hannah Denielle Teodoro
+                    Juan Dela Cruz
                   </p>
                 </div>
               </td>
@@ -1320,7 +1618,7 @@
                     <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
                   </div>
                   <p class="bot">
-                    Hannah Denielle Teodoro
+                    Juan Dela Cruz
                   </p>
                 </div>
               </td>
@@ -1335,8 +1633,7 @@
                   <div class="img-cont">
                     <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
                   </div>
-                  <p class="bot">
-                    Hannah Denielle Teodoro
+                  <p class="bot">Juan Dela Cruz
                   </p>
                 </div>
               </td>
@@ -1351,8 +1648,7 @@
                   <div class="img-cont">
                     <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
                   </div>
-                  <p class="bot">
-                    Hannah Denielle Teodoro
+                  <p class="bot">Juan Dela Cruz
                   </p>
                 </div>
               </td>
@@ -1367,8 +1663,7 @@
                   <div class="img-cont">
                     <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
                   </div>
-                  <p class="bot">
-                    Hannah Denielle Teodoro
+                  <p class="bot">Juan Dela Cruz
                   </p>
                 </div>
               </td>
@@ -1383,8 +1678,7 @@
                   <div class="img-cont">
                     <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
                   </div>
-                  <p class="bot">
-                    Hannah Denielle Teodoro
+                  <p class="bot">Juan Dela Cruz
                   </p>
                 </div>
               </td>
@@ -1415,8 +1709,7 @@
             <div class="img-cont">
               <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
             </div>
-            <div class="name-cont">
-              Hannah Denielle Teodoros adfk as
+            <div class="name-cont">Juan Dela Cruz
             </div>
           </div>
           <div class="profile-cont">
@@ -1424,8 +1717,7 @@
             <div class="img-cont">
               <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
             </div>
-            <div class="name-cont">
-              Hannah Denielle Teodoros adfk as
+            <div class="name-cont">Juan Dela Cruz
             </div>
           </div>
           <div class="profile-cont">
@@ -1433,8 +1725,7 @@
             <div class="img-cont">
               <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
             </div>
-            <div class="name-cont">
-              Hannah Denielle Teodoros adfk as
+            <div class="name-cont">Juan Dela Cruz
             </div>
           </div>
           <div class="profile-cont">
@@ -1442,8 +1733,7 @@
             <div class="img-cont">
               <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
             </div>
-            <div class="name-cont">
-              Hannah Denielle Teodoros adfk as
+            <div class="name-cont">Juan Dela Cruz
             </div>
           </div>
           <div class="profile-cont">
@@ -1451,8 +1741,7 @@
             <div class="img-cont">
               <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
             </div>
-            <div class="name-cont">
-              Hannah Denielle Teodoros adfk as
+            <div class="name-cont">Juan Dela Cruz
             </div>
           </div>
           <div class="profile-cont">
@@ -1460,8 +1749,7 @@
             <div class="img-cont">
               <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
             </div>
-            <div class="name-cont">
-              Hannah Denielle Teodoros adfk as
+            <div class="name-cont">Juan Dela Cruz
             </div>
           </div>
           <div class="profile-cont">
@@ -1469,8 +1757,7 @@
             <div class="img-cont">
               <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
             </div>
-            <div class="name-cont">
-              Hannah Denielle Teodoros adfk as
+            <div class="name-cont">Juan Dela Cruz
             </div>
           </div>
           <div class="profile-cont">
@@ -1478,8 +1765,7 @@
             <div class="img-cont">
               <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
             </div>
-            <div class="name-cont">
-              Hannah Denielle Teodoros adfk as
+            <div class="name-cont">Juan Dela Cruz
             </div>
           </div>
           <div class="profile-cont">
@@ -1487,8 +1773,7 @@
             <div class="img-cont">
               <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
             </div>
-            <div class="name-cont">
-              Hannah Denielle Teodoros adfk as
+            <div class="name-cont">Juan Dela Cruz
             </div>
           </div>
           <div class="profile-cont">
@@ -1496,8 +1781,7 @@
             <div class="img-cont">
               <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
             </div>
-            <div class="name-cont">
-              Hannah Denielle Teodoros adfk as
+            <div class="name-cont">Juan Dela Cruz
             </div>
           </div>
           <div class="profile-cont">
@@ -1505,8 +1789,7 @@
             <div class="img-cont">
               <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
             </div>
-            <div class="name-cont">
-              Hannah Denielle Teodoros adfk as
+            <div class="name-cont">Juan Dela Cruz
             </div>
           </div>
           <div class="profile-cont">
@@ -1514,8 +1797,7 @@
             <div class="img-cont">
               <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
             </div>
-            <div class="name-cont">
-              Hannah Denielle Teodoros adfk as
+            <div class="name-cont">Juan Dela Cruz
             </div>
           </div>
           <div class="profile-cont">
@@ -1523,8 +1805,7 @@
             <div class="img-cont">
               <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
             </div>
-            <div class="name-cont">
-              Hannah Denielle Teodoros adfk as
+            <div class="name-cont">Juan Dela Cruz
             </div>
           </div>
           <div class="profile-cont">
@@ -1532,8 +1813,7 @@
             <div class="img-cont">
               <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
             </div>
-            <div class="name-cont">
-              Hannah Denielle Teodoros adfk as
+            <div class="name-cont">Juan Dela Cruz
             </div>
           </div>
           <div class="profile-cont">
@@ -1541,8 +1821,7 @@
             <div class="img-cont">
               <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
             </div>
-            <div class="name-cont">
-              Hannah Denielle Teodoro
+            <div class="name-cont">Juan Dela Cruz
             </div>
           </div>
         </div>
@@ -1553,7 +1832,7 @@
               <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
             </div>
             <div class="profile-details">
-              <h3>Hannah Denielle Teodoro</h3>
+              <h3>Juan Dela Cruz</h3>
               <div class="personal-info-cont">
                 <p>Employee ID: <span>E90G-9OH25</span></p>
                 <p>Department: <span>CABA</span></p>
