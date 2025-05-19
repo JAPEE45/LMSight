@@ -15,6 +15,7 @@ const buttons = {
   flipFront: document.getElementById("flipToFront"),
   notif: document.getElementById("notification-btn"),
   submitLeave: document.querySelector(".submit_leave"),
+  omnibusRules: document.getElementById("omnibus-rules")
 };
 
 const modals = {
@@ -30,8 +31,6 @@ const containers = {
   flip2: document.getElementById("flipContainer2"),
   notifPopup: document.querySelector(".notification-popup-cont"),
 };
-
-const omnibus_rules = document.getElementById("omnibus-rules");
 
 
 buttons.notif.addEventListener("click", (e) => {
@@ -84,11 +83,10 @@ function updateClock() {
 updateClock();
 setInterval(updateClock, 1000);
 
-
 function updateSubmitLeaveState() {
-  buttons.submitLeave.disabled = !omnibus_rules.checked;
+  buttons.submitLeave.disabled = !buttons.omnibusRules.checked;
 }
 
-omnibus_rules.addEventListener("change", updateSubmitLeaveState);
+buttons.omnibusRules.addEventListener("change", updateSubmitLeaveState);
 
 updateSubmitLeaveState();
