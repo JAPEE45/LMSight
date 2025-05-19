@@ -1,9 +1,5 @@
 const main_title = document.querySelector(".main-title");
 
-const ctx = document.getElementById('leaveChart').getContext('2d');
-const canvas = document.getElementById('weeklyLeaveChart');
-const ctx2 = canvas.getContext('2d');
-
 const approved_table = document.querySelector(".approved_table");
 const rejected_table = document.querySelector(".rejected_table");
 const pending_table = document.querySelector(".pending_table");
@@ -23,7 +19,6 @@ const view_analytics_dets = document.querySelectorAll(".view-analytics-dets");
 const analytics_modal = document.querySelector(".analytics-modal");
 const close_analytic_modal_btn = document.querySelector(".close-analytic-modal");
 
-const ctx3 = document.getElementById('leavesChart').getContext('2d');
 const show_more_btn = document.querySelector(".show-more-btn");
 const employee_most_leave_modal = document.querySelector(".employee-most-leave-modal");
 const employee_most_leave_close_btn = document.querySelector(".employee-most-leave-close-btn");
@@ -67,8 +62,21 @@ const edit_delete_btn = document.querySelectorAll(".edit_delete_btn");
 const options = document.querySelectorAll(".options");
 const edit_user_btn = document.querySelectorAll(".edit_user_btn");
 
+const notifPopup = document.querySelector(".notification-popup-cont");
+const notif = document.getElementById("notification-btn");
 
-// Utility functions
+notif.addEventListener("click", (e) => {
+  e.stopPropagation()
+  notifPopup.classList.toggle("active");
+  console.log("dd")
+})
+
+window.addEventListener("click", (e) => {
+  if (!notifPopup.contains(e.target) && e.target !== notif) {
+    notifPopup.classList.remove("active");
+  }
+});
+
 function toggleActiveClass(elements, target) {
   elements.forEach(el => el.classList.remove("active"));
   if (target) target.classList.add("active");
@@ -88,18 +96,15 @@ function toggleTables(activeTable) {
   toggleActiveClass([approved_table, pending_table, rejected_table], activeTable);
 }
 
-// Navigation
 dashboard_nav.addEventListener("click", () => setNavigation(dashboard_btn, dashboard_page, "Welcome, Admin!"));
 analytics_nav.addEventListener("click", () => setNavigation(analytics_btn, analytics_page, "Descriptive Analysis"));
 manage_users_nav.addEventListener("click", () => setNavigation(manage_users_btn, manage_users_page, "User Management"));
 attendance_maintenance_nav.addEventListener("click", () => setNavigation(attendance_maintenance_btn, attendance_maintenance_page, "Attendance Management"));
 
-// Table toggles
 approve_btn.addEventListener("click", () => toggleTables(approved_table));
 pending_btn.addEventListener("click", () => toggleTables(pending_table));
 reject_btn.addEventListener("click", () => toggleTables(rejected_table));
 
-// Modals
 edit_btn.addEventListener("click", () => toggleModal(edit_modal, true));
 close_modal.addEventListener("click", () => toggleModal(edit_modal, false));
 submit_leave.addEventListener("click", () => toggleModal(rejection_reason_modal, true));
@@ -111,7 +116,6 @@ employee_most_leave_close_btn.addEventListener("click", () => toggleModal(employ
 view_analytics_dets.forEach(menu => menu.addEventListener("click", () => toggleModal(analytics_modal, true)));
 close_analytic_modal_btn.addEventListener("click", () => toggleModal(analytics_modal, false));
 
-// Checkbox select all
 select_all_chbx.addEventListener('change', () => {
   checkboxes.forEach(cb => {
     cb.checked = select_all_chbx.checked;
@@ -119,7 +123,6 @@ select_all_chbx.addEventListener('change', () => {
   });
 });
 
-// Toggle delete select container
 checkboxes.forEach(cb => {
   cb.addEventListener('change', () => {
     const anyChecked = [...checkboxes].some(c => c.checked);
@@ -127,7 +130,6 @@ checkboxes.forEach(cb => {
   });
 });
 
-// Option menu (⋮)
 edit_delete_btn.forEach(btn => {
   btn.addEventListener("click", (e) => {
     e.stopPropagation();
@@ -139,7 +141,6 @@ edit_delete_btn.forEach(btn => {
 });
 document.addEventListener("click", () => options.forEach(opt => opt.classList.remove("active")));
 
-// Manage/Add User
 [...edit_user_btn].forEach(btn => {
   btn.addEventListener("click", () => {
     add_edit_user_cont.classList.add("active");
@@ -168,7 +169,6 @@ save_user_btn.addEventListener("click", () => {
   setTimeout(() => show_saved.classList.remove("active"), 2000);
 });
 
-// Filter toggle
 filter_btn.addEventListener("click", (e) => {
   e.preventDefault();
   const isEnabled = department_select.disabled && vacation_type_select.disabled;
@@ -178,9 +178,16 @@ filter_btn.addEventListener("click", (e) => {
   if (!isEnabled) location.reload();
 });
 
+
 // CHARTS ----------------------------------------------
 
-// Dynamic color for analytics chart
+const ctx = document.getElementById('leaveChart').getContext('2d');
+const canvas = document.getElementById('weeklyLeaveChart');
+const ctx2 = canvas.getContext('2d');
+
+const ctx3 = document.getElementById('leavesChart').getContext('2d');
+
+
 function getColor(value) {
   const ratio = value / maxLeaves;
   if (ratio >= 0.9) return '#1e3a8a';
@@ -224,7 +231,7 @@ new Chart(ctx3, {
   }
 });
 
-// Bar chart (custom canvas drawing)
+
 const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const leaves = [12, 7, 5, 8, 14, 6, 3];
 const barWidth = 30;
@@ -253,7 +260,6 @@ leaves.forEach((value, index) => {
   ctx2.fillText(days[index], x + 2, chartHeight + 30);
 });
 
-// Line chart
 new Chart(ctx, {
   type: 'line',
   data: {

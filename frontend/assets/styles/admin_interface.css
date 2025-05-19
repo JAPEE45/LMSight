@@ -1184,23 +1184,6 @@ tr:nth-child(even) {
   scroll-behavior: smooth;
 }
 
-::-webkit-scrollbar {
-  height: 10px;
-  width: 13px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: var(--primary-background);
-  border-radius: 10px;
-  border: 2px solid transparent;
-  background-clip: content-box;
-}
-
 .analytics-modal {
   display: none;
   position: absolute;
