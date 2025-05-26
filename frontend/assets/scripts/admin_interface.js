@@ -31,7 +31,6 @@ const attendance_maintenance_nav = document.getElementById("attendance_maintenan
 const dashboard_btn = document.querySelector("#dashboard_nav i");
 const analytics_btn = document.querySelector("#analytics_nav i");
 const manage_users_btn = document.querySelector("#manage_users_nav i");
-const attendance_maintenance_btn = document.querySelector("#attendance_maintenance_nav i");
 
 const dashboard_page = document.querySelector(".dashboard");
 const analytics_page = document.querySelector(".analytics");
@@ -83,8 +82,8 @@ function toggleActiveClass(elements, target) {
 }
 
 function setNavigation(activeBtn, activePage, title) {
-  toggleActiveClass([dashboard_btn, analytics_btn, manage_users_btn, attendance_maintenance_btn], activeBtn);
-  toggleActiveClass([dashboard_page, analytics_page, manage_users_page, attendance_maintenance_page], activePage);
+  toggleActiveClass([dashboard_btn, analytics_btn, manage_users_btn], activeBtn);
+  toggleActiveClass([dashboard_page, analytics_page, manage_users_page], activePage);
   main_title.innerHTML = title;
 }
 
@@ -97,9 +96,8 @@ function toggleTables(activeTable) {
 }
 
 dashboard_nav.addEventListener("click", () => setNavigation(dashboard_btn, dashboard_page, "Welcome, Admin!"));
-analytics_nav.addEventListener("click", () => setNavigation(analytics_btn, analytics_page, "Descriptive Analysis"));
+analytics_nav.addEventListener("click", () => setNavigation(analytics_btn, analytics_page, "Data Visualization"));
 manage_users_nav.addEventListener("click", () => setNavigation(manage_users_btn, manage_users_page, "User Management"));
-attendance_maintenance_nav.addEventListener("click", () => setNavigation(attendance_maintenance_btn, attendance_maintenance_page, "Attendance Management"));
 
 approve_btn.addEventListener("click", () => toggleTables(approved_table));
 pending_btn.addEventListener("click", () => toggleTables(pending_table));
@@ -143,6 +141,7 @@ document.addEventListener("click", () => options.forEach(opt => opt.classList.re
 
 [...edit_user_btn].forEach(btn => {
   btn.addEventListener("click", () => {
+    emp_id_cont.classList.add("active");
     add_edit_user_cont.classList.add("active");
     manage_user_table.classList.remove("active");
     flipContainer3.classList.add("flipped");
@@ -151,6 +150,7 @@ document.addEventListener("click", () => options.forEach(opt => opt.classList.re
 });
 
 add_user_btn.addEventListener("click", () => {
+  emp_id_cont.classList.remove("active");
   manage_user_table.classList.remove("active");
   add_edit_user_cont.classList.add("active");
   flipContainer3.classList.add("flipped");

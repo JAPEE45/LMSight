@@ -725,7 +725,7 @@ tr .status p {
   justify-content: space-between;
 }
 
-.attendance-cont table th {
+.table-cont table th {
   background: #AD1457;
   font-size: 0.9rem;
   color: white;
@@ -813,13 +813,5 @@ tr:nth-child(even) {
 }
 
 .dashboard.active {
-  display: block;
-}
-
-.analytics {
-  display: none;
-}
-
-.analytics.active {
   display: block;
 }

@@ -45,9 +45,6 @@ window.addEventListener("click", (e) => {
   }
 });
 
-buttons.flipBack.addEventListener("click", () => containers.flip2.classList.add("flipped"));
-buttons.flipFront.addEventListener("click", () => containers.flip2.classList.remove("flipped"));
-
 containers.flip1.addEventListener("click", () => {
   containers.flip1.classList.toggle("flipped");
   containers.applyLeave.classList.toggle("active");
@@ -73,15 +70,6 @@ buttons.delete.addEventListener("click", () => modals.delete.classList.add("acti
 document.querySelectorAll(".delete-modal-btn").forEach((btn) =>
   btn.addEventListener("click", () => modals.delete.classList.remove("active"))
 );
-
-function updateClock() {
-  const now = new Date();
-  const pad = (n) => (n < 10 ? "0" + n : n);
-  const timeString = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-  document.getElementById("clock").textContent = timeString;
-}
-updateClock();
-setInterval(updateClock, 1000);
 
 function updateSubmitLeaveState() {
   buttons.submitLeave.disabled = !buttons.omnibusRules.checked;

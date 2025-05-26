@@ -79,12 +79,6 @@
             <p class="popup">Manage Users</p>
           </div>
           <div class="button-cont">
-            <button id="attendance_maintenance_nav">
-              <i class="fa-solid fa-check-double"></i>
-            </button>
-            <p class="popup">Attendance Maintenance</p>
-          </div>
-          <div class="button-cont">
             <button class="notif-btn" id="notification-btn">
               <i class="fa-solid fa-bell"></i>
             </button>
@@ -108,6 +102,76 @@
               <div class="admin-chart">
                 <h3>Monthly Leave Pattern</h3>
                 <canvas id="leaveChart" width="600" height="200"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="middle-section">  
+          
+  
+          <div class="cards attendance-history">
+            <h3>Upcoming Leave</h3>
+            <div class="attendance-cont">
+              <table class="attendance_table active">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Leave Type</th>
+                    <th>From</th>
+                    <th>To</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <div class="profile-cont">
+                        <div class="img-cont">
+                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                        </div>
+                        <span>Hannah Denielle Teodoro</span>
+                      </div>
+                    </td>
+                    <td>IT</td>
+                    <td>Sick Leave</td>
+                    <td>10-20-2025</td>
+                    <td>10-30-2025</td>
+                  </tr>                
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="cards on_in_leave">
+            <button class="left_arrow"><i class="fa-solid fa-arrow-left"></i></button>
+            <button class="right_arrow"><i class="fa-solid fa-arrow-right"></i></button>
+            <div class="top-sec">
+              <h3>Ongoing Leave</h3>
+              <p class="type_of_leave_header">Sick Leave</p>
+            </div>
+            <div class="bottom">
+              <div class="bottom-card">
+                <div class="bottom-top">
+                  <div class="img-cont">
+                    <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                  </div>
+                </div>
+                <div class="bottom-bot">
+                  <div class="name-cont">
+                    <p class="ongoing_leave_name">Divine R. Torcuator</p>
+                    <p class="ongoing_dept_name">IT</p>
+                  </div>
+                   <div class="sections">
+                      <div class="left-section">
+                        <p class="start_from_txt">Start From</p>
+                        <p class="start_from_val">June 5, 2025</p>
+                      </div>
+                      <div class="right-section">
+                        <p class="end_to_txt">End To</p>
+                        <p class="end_to_val">June 10, 2025</p>
+                      </div>
+                   </div>
+                </div>
               </div>
             </div>
           </div>
@@ -506,7 +570,8 @@
                 <div class="donut-cont">
                   <div class="donut-chart">
                     <div class="donut-center-value" id="centerValue">
-                      <i class="fa-solid fa-infinity"></i>
+                      <!-- <i class="fa-solid fa-infinity"></i> -->
+                       54%
                     </div>
                   </div>
                 </div>
@@ -1306,24 +1371,6 @@
                   User unsuccesfully registered</p>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="attendance-management ">
-        <div class="top-section">
-          <div class="search-cont">
-            <div class="input-cont">
-              <input type="text" placeholder="Search employee...">
-            </div>
-            <button>
-              <i class="fa-solid fa-magnifying-glass"></i>
-            </button>
-          </div>
-        </div>
-        <div class="bottom-section">
-          <div class="img-cont">
-            <img src="./assets/images/undraw_people-search_xpq4.svg" alt="">
           </div>
         </div>
       </div>
