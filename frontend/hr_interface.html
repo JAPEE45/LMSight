@@ -58,7 +58,7 @@
   <main class="main-cont">
     <div class="main active">
       <div class="main-header">
-        <h1 class="main-title">Welcome, Admin!</h1>
+        <h1 class="main-title">HR Dashboard</h1>
         <div class="button-main-cont">
           <div class="button-cont">
             <button id="dashboard_nav">
@@ -88,37 +88,95 @@
         </div>
       </div>
   
-      <div class="dashboard active">
-        <div class="cards">
-          <div class="card">
-            <div class="top-sec">
-              <h3>Total Users</h3>
-            </div>
-            <div class="bot-sec">
-              <p class="notif-nums">180</p>
-              <p class="this-month-txt">This month</p>
+      <div class="dashboard active">  
+        <div class="middle-section">  
+          <div class="cards attendance-card">
+            <div class="chart-container">
+              <h2>Weekly Leave Pattern</h2>
+              <canvas id="weeklyLeaveChart" width="600" height="200"></canvas>
             </div>
           </div>
-          <div class="card">
-            <div class="top-sec">
-              <h3>Leave Balance</h3>
-            </div>
-            <div class="bot-sec">
-              <p class="notif-nums">10</p>
-              <p class="this-month-txt">This month</p>
-            </div>
-          </div>
-          <div class="card">
-            <div class="top-sec">
-              <h3>Pending Requests</h3>
-            </div>
-            <div class="bot-sec">
-              <p class="notif-nums">2</p>
-              <p class="this-month-txt">This month</p>
+          
+          <div class="cards attendance-history">
+            <div class="charts-cont">
+              <div class="admin-chart">
+                <h3>Monthly Leave Pattern</h3>
+                <canvas id="leaveChart" width="600" height="200"></canvas>
+              </div>
             </div>
           </div>
-        </div>        
-    
+        </div>
+
+        <div class="middle-section">  
+          
+  
+          <div class="cards attendance-history">
+            <h3>Upcoming Leave</h3>
+            <div class="attendance-cont">
+              <table class="attendance_table active">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Leave Type</th>
+                    <th>From</th>
+                    <th>To</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <div class="profile-cont">
+                        <div class="img-cont">
+                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                        </div>
+                        <span>Hannah Denielle Teodoro</span>
+                      </div>
+                    </td>
+                    <td>IT</td>
+                    <td>Sick Leave</td>
+                    <td>10-20-2025</td>
+                    <td>10-30-2025</td>
+                  </tr>                
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="cards on_in_leave">
+            <button class="left_arrow"><i class="fa-solid fa-arrow-left"></i></button>
+            <button class="right_arrow"><i class="fa-solid fa-arrow-right"></i></button>
+            <div class="top-sec">
+              <h3>Ongoing Leave</h3>
+              <p class="type_of_leave_header">Sick Leave</p>
+            </div>
+            <div class="bottom">
+              <div class="bottom-card">
+                <div class="bottom-top">
+                  <div class="img-cont">
+                    <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                  </div>
+                </div>
+                <div class="bottom-bot">
+                  <div class="name-cont">
+                    <p class="ongoing_leave_name">Divine R. Torcuator</p>
+                    <p class="ongoing_dept_name">IT</p>
+                  </div>
+                   <div class="sections">
+                      <div class="left-section">
+                        <p class="start_from_txt">Start From</p>
+                        <p class="start_from_val">June 5, 2025</p>
+                      </div>
+                      <div class="right-section">
+                        <p class="end_to_txt">End To</p>
+                        <p class="end_to_val">June 10, 2025</p>
+                      </div>
+                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
         <div class="table">
           <h3>Leave History</h3>
           <div class="table-nav-cont">
@@ -127,16 +185,41 @@
               <button class="pending-btn">Pending</button>
               <button class="reject-btn">Rejected</button>
             </div>
-            <div class="flip-container" id="flipContainer">
-              <div class="flipper">
-                <button class="apply-leave-btn">
-                  <i class="fa-solid fa-plus"></i>
-                  Apply Leave
-                </button>
-                <button class="leave-table-btn">
-                  <i class="fa-solid fa-arrow-left"></i>
-                  Back to Table
-                </button>
+
+            <div class="right">
+              <div class="filter-label-cont">
+                <a href="" id="filter-btn">
+                  <i class="fa-solid fa-filter"></i>
+                  Filters
+                </a>
+              </div>
+              <div class="inputs-cont">
+                <select disabled name="" id="department-filter">
+                  <option value="" disabled selected>Department</option>
+                  <option value="">CABA</option>
+                  <option value="">BSCS</option>
+                  <option value="">BSED</option>
+                  <option value="">BSIT</option>
+                </select>
+              </div>
+              <div class="inputs-cont">
+                <select disabled name="" id="vacation-type-filter">
+                  <option value="" disabled selected>-- Please Select --</option>
+                  <option value="">Vacation Leave</option>
+                  <option value="">Mandatory Leave</option>
+                  <option value="">Sick Leave</option>
+                  <option value="">Maternity Leave</option>
+                  <option value="">Paternity Leave</option>
+                  <option value="">Special Priviledge Leave</option>
+                  <option value="">Solo Parent Leave</option>
+                  <option value="">Study Leave</option>
+                  <option value="">VAWC Leave</option>
+                  <option value="">Rehabilitation Leave</option>
+                  <option value="">Special Leave</option>
+                  <option value="">Special Emergency Leave</option>
+                  <option value="">Terminal Leave</option>
+                  <option value="">Adoption Leave</option>
+                </select>
               </div>
             </div>
           </div>
@@ -146,6 +229,7 @@
               <table class="approved_table active">
                 <thead>
                   <tr>
+                    <th>Name</th>
                     <th>Date</th>
                     <th>From</th>
                     <th>To</th>
@@ -156,397 +240,16 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td>2025-05-01</td>
-                    <td>June 10</td>
-                    <td>June 20</td>
-                    <td>Vacation Leave</td>
-                    <td>
-                    <p class="comment">
-                        Going to asdfasd sdaf
-                    </p>
+                    <td class="table-name-td">
+                      <div class="table-name-wrapper">
+                        <div class="img-cont">
+                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                        </div>
+                        <p class="bot">
+                          Juan Dela Cruz
+                        </p>
+                      </div>
                     </td>
-                    <td class="status">
-                      <p class="status-approved">
-                        Approved
-                      </p>
-                      
-                    </td>
-                  </tr>                
-                  <tr>
-                    <td>2025-05-01</td>
-                    <td>June 10</td>
-                    <td>June 20</td>
-                    <td>Vacation Leave</td>
-                    <td>
-                    <p class="comment">
-                        Going to asdfasd sdaf
-                    </p>
-                    </td>
-                    <td class="status">
-                      <p class="status-approved">
-                        Approved
-                      </p>
-                      
-                    </td>
-                  </tr>                
-                  <tr>
-                    <td>2025-05-01</td>
-                    <td>June 10</td>
-                    <td>June 20</td>
-                    <td>Vacation Leave</td>
-                    <td>
-                    <p class="comment">
-                        Going to asdfasd sdaf
-                    </p>
-                    </td>
-                    <td class="status">
-                      <p class="status-approved">
-                        Approved
-                      </p>
-                      
-                    </td>
-                  </tr>                
-                  <tr>
-                    <td>2025-05-01</td>
-                    <td>June 10</td>
-                    <td>June 20</td>
-                    <td>Vacation Leave</td>
-                    <td>
-                    <p class="comment">
-                        Going to asdfasd sdaf
-                    </p>
-                    </td>
-                    <td class="status">
-                      <p class="status-approved">
-                        Approved
-                      </p>
-                      
-                    </td>
-                  </tr>                
-                  <tr>
-                    <td>2025-05-01</td>
-                    <td>June 10</td>
-                    <td>June 20</td>
-                    <td>Vacation Leave</td>
-                    <td>
-                    <p class="comment">
-                        Going to asdfasd sdaf
-                    </p>
-                    </td>
-                    <td class="status">
-                      <p class="status-approved">
-                        Approved
-                      </p>
-                      
-                    </td>
-                  </tr>                
-                  <tr>
-                    <td>2025-05-01</td>
-                    <td>June 10</td>
-                    <td>June 20</td>
-                    <td>Vacation Leave</td>
-                    <td>
-                    <p class="comment">
-                        Going to asdfasd sdaf
-                    </p>
-                    </td>
-                    <td class="status">
-                      <p class="status-approved">
-                        Approved
-                      </p>
-                      
-                    </td>
-                  </tr>                
-                  <tr>
-                    <td>2025-05-01</td>
-                    <td>June 10</td>
-                    <td>June 20</td>
-                    <td>Vacation Leave</td>
-                    <td>
-                    <p class="comment">
-                        Going to asdfasd sdaf
-                    </p>
-                    </td>
-                    <td class="status">
-                      <p class="status-approved">
-                        Approved
-                      </p>
-                      
-                    </td>
-                  </tr>                
-                  <tr>
-                    <td>2025-05-01</td>
-                    <td>June 10</td>
-                    <td>June 20</td>
-                    <td>Vacation Leave</td>
-                    <td>
-                    <p class="comment">
-                        Going to asdfasd sdaf
-                    </p>
-                    </td>
-                    <td class="status">
-                      <p class="status-approved">
-                        Approved
-                      </p>
-                      
-                    </td>
-                  </tr>                
-                  <tr>
-                    <td>2025-05-01</td>
-                    <td>June 10</td>
-                    <td>June 20</td>
-                    <td>Vacation Leave</td>
-                    <td>
-                    <p class="comment">
-                        Going to asdfasd sdaf
-                    </p>
-                    </td>
-                    <td class="status">
-                      <p class="status-approved">
-                        Approved
-                      </p>
-                      
-                    </td>
-                  </tr>                
-                  <tr>
-                    <td>2025-05-01</td>
-                    <td>June 10</td>
-                    <td>June 20</td>
-                    <td>Vacation Leave</td>
-                    <td>
-                    <p class="comment">
-                        Going to asdfasd sdaf
-                    </p>
-                    </td>
-                    <td class="status">
-                      <p class="status-approved">
-                        Approved
-                      </p>
-                      
-                    </td>
-                  </tr>                
-                  <tr>
-                    <td>2025-05-01</td>
-                    <td>June 10</td>
-                    <td>June 20</td>
-                    <td>Vacation Leave</td>
-                    <td>
-                    <p class="comment">
-                        Going to asdfasd sdaf
-                    </p>
-                    </td>
-                    <td class="status">
-                      <p class="status-approved">
-                        Approved
-                      </p>
-                      
-                    </td>
-                  </tr>                
-                  <tr>
-                    <td>2025-05-01</td>
-                    <td>June 10</td>
-                    <td>June 20</td>
-                    <td>Vacation Leave</td>
-                    <td>
-                    <p class="comment">
-                        Going to asdfasd sdaf
-                    </p>
-                    </td>
-                    <td class="status">
-                      <p class="status-approved">
-                        Approved
-                      </p>
-                      
-                    </td>
-                  </tr>                
-                  <tr>
-                    <td>2025-05-01</td>
-                    <td>June 10</td>
-                    <td>June 20</td>
-                    <td>Vacation Leave</td>
-                    <td>
-                    <p class="comment">
-                        Going to asdfasd sdaf
-                    </p>
-                    </td>
-                    <td class="status">
-                      <p class="status-approved">
-                        Approved
-                      </p>
-                      
-                    </td>
-                  </tr>                
-                  <tr>
-                    <td>2025-05-01</td>
-                    <td>June 10</td>
-                    <td>June 20</td>
-                    <td>Vacation Leave</td>
-                    <td>
-                    <p class="comment">
-                        Going to asdfasd sdaf
-                    </p>
-                    </td>
-                    <td class="status">
-                      <p class="status-approved">
-                        Approved
-                      </p>
-                      
-                    </td>
-                  </tr>                
-                  <tr>
-                    <td>2025-05-01</td>
-                    <td>June 10</td>
-                    <td>June 20</td>
-                    <td>Vacation Leave</td>
-                    <td>
-                    <p class="comment">
-                        Going to asdfasd sdaf
-                    </p>
-                    </td>
-                    <td class="status">
-                      <p class="status-approved">
-                        Approved
-                      </p>
-                      
-                    </td>
-                  </tr>                
-                  <tr>
-                    <td>2025-05-01</td>
-                    <td>June 10</td>
-                    <td>June 20</td>
-                    <td>Vacation Leave</td>
-                    <td>
-                    <p class="comment">
-                        Going to asdfasd sdaf
-                    </p>
-                    </td>
-                    <td class="status">
-                      <p class="status-approved">
-                        Approved
-                      </p>
-                      
-                    </td>
-                  </tr>                
-                  <tr>
-                    <td>2025-05-01</td>
-                    <td>June 10</td>
-                    <td>June 20</td>
-                    <td>Vacation Leave</td>
-                    <td>
-                    <p class="comment">
-                        Going to asdfasd sdaf
-                    </p>
-                    </td>
-                    <td class="status">
-                      <p class="status-approved">
-                        Approved
-                      </p>
-                      
-                    </td>
-                  </tr>                
-                  <tr>
-                    <td>2025-05-01</td>
-                    <td>June 10</td>
-                    <td>June 20</td>
-                    <td>Vacation Leave</td>
-                    <td>
-                    <p class="comment">
-                        Going to asdfasd sdaf
-                    </p>
-                    </td>
-                    <td class="status">
-                      <p class="status-approved">
-                        Approved
-                      </p>
-                      
-                    </td>
-                  </tr>                
-                  <tr>
-                    <td>2025-05-01</td>
-                    <td>June 10</td>
-                    <td>June 20</td>
-                    <td>Vacation Leave</td>
-                    <td>
-                    <p class="comment">
-                        Going to asdfasd sdaf
-                    </p>
-                    </td>
-                    <td class="status">
-                      <p class="status-approved">
-                        Approved
-                      </p>
-                      
-                    </td>
-                  </tr>                
-                  <tr>
-                    <td>2025-05-01</td>
-                    <td>June 10</td>
-                    <td>June 20</td>
-                    <td>Vacation Leave</td>
-                    <td>
-                    <p class="comment">
-                        Going to asdfasd sdaf
-                    </p>
-                    </td>
-                    <td class="status">
-                      <p class="status-approved">
-                        Approved
-                      </p>
-                      
-                    </td>
-                  </tr>                
-                  <tr>
-                    <td>2025-05-01</td>
-                    <td>June 10</td>
-                    <td>June 20</td>
-                    <td>Vacation Leave</td>
-                    <td>
-                    <p class="comment">
-                        Going to asdfasd sdaf
-                    </p>
-                    </td>
-                    <td class="status">
-                      <p class="status-approved">
-                        Approved
-                      </p>
-                      
-                    </td>
-                  </tr>                
-                  <tr>
-                    <td>2025-05-01</td>
-                    <td>June 10</td>
-                    <td>June 20</td>
-                    <td>Vacation Leave</td>
-                    <td>
-                    <p class="comment">
-                        Going to asdfasd sdaf
-                    </p>
-                    </td>
-                    <td class="status">
-                      <p class="status-approved">
-                        Approved
-                      </p>
-                      
-                    </td>
-                  </tr>                
-                  <tr>
-                    <td>2025-05-01</td>
-                    <td>June 10</td>
-                    <td>June 20</td>
-                    <td>Vacation Leave</td>
-                    <td>
-                    <p class="comment">
-                        Going to asdfasd sdaf
-                    </p>
-                    </td>
-                    <td class="status">
-                      <p class="status-approved">
-                        Approved
-                      </p>
-                      
-                    </td>
-                  </tr>                
-                  <tr>
                     <td>2025-05-01</td>
                     <td>June 10</td>
                     <td>June 20</td>
@@ -569,26 +272,31 @@
               <table class="pending_table ">
                 <thead>
                   <tr>
+                    <th>Name</th>
                     <th>Date</th>
                     <th>From</th>
                     <th>To</th>
                     <th>Type</th>
-                    <th>Comment</th>
                     <th>Status</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
+                    <td class="table-name-td">
+                      <div class="table-name-wrapper">
+                        <div class="img-cont">
+                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                        </div>
+                        <p class="bot">
+                          LeBron James
+                        </p>
+                      </div>
+                    </td>
                     <td>2025-05-01</td>
                     <td>June 10</td>
                     <td>June 20</td>
                     <td>Vacation Leave</td>
-                    <td>
-                    <p class="comment">
-                        Going to asdfasd sdaf
-                    </p>
-                    </td>
                     <td class="status">
                       <p class="status-pending">
                         Pending
@@ -596,11 +304,9 @@
                       
                     </td>
                     <td>
-                      <button id="edit_btn">
-                        <i class="fa-solid fa-pencil"></i>
-                      </button>
-                      <button id="delete_btn">
-                        <i class="fa-solid fa-trash-can-arrow-up"></i>
+                      <button id="edit_btn" class="details-btn">
+                        <i class="fa-regular fa-eye"></i>
+                        View Details
                       </button>
                     </td>
                   </tr>        
@@ -610,6 +316,7 @@
               <table class="rejected_table ">
                 <thead>
                   <tr>
+                    <th>Name</th>
                     <th>Date</th>
                     <th>From</th>
                     <th>To</th>
@@ -620,6 +327,16 @@
                 </thead>
                 <tbody>
                   <tr>
+                    <td class="table-name-td">
+                      <div class="table-name-wrapper">
+                        <div class="img-cont">
+                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                        </div>
+                        <p class="bot">
+                          Juan Dela Cruz
+                        </p>
+                      </div>
+                    </td>
                     <td>2025-05-01</td>
                     <td>June 10</td>
                     <td>June 20</td>
@@ -653,19 +370,19 @@
               <div class="inputs-main">
                 <div class="inputs-cont">
                   <label for="emp_id">Last name</label>
-                  <input disabled class="name-input" type="text" value="James">
+                  <input disabled class="name-input" type="text" value="Briol">
                 </div>
                 <div class="inputs-cont">
                   <label for="emp_id">First name</label>
-                  <input disabled class="name-input" type="text" value="LeBron">
+                  <input disabled class="name-input" type="text" value="0902-EMS0-5425">
                 </div>
                 <div class="inputs-cont">
                   <label for="emp_id">Middle name</label>
-                  <input disabled class="name-input" type="text" value="Dela Cruz">
+                  <input disabled class="name-input" type="text" value="0902-EMS0-5425">
                 </div>
                 <div class="inputs-cont">
                   <label for="emp_id">Suffix</label>
-                  <input disabled class="name-input" type="text">
+                  <input disabled class="name-input" type="text" value="0902-EMS0-5425">
                 </div>
               </div>
     
@@ -698,10 +415,6 @@
                   <label for="leave_type">End Date</label>
                   <input type="date">
                 </div>
-                <div class="inputs-cont">
-                  <label for="leave_type">Attach document</label>
-                  <input type="file">
-                </div>
               </div>
     
               <div class="inputs-main">
@@ -710,21 +423,14 @@
                   <textarea name="" id="reason_for_leaving"></textarea>
                 </div>
               </div>
-              <div class="checkbx-cont">
-                <input type="checkbox" id="omnibus-rules">
-                <label for="omnibus-rules">
-                  I have read and agree to the <b>Omnibus rules</b> of leave
-                </label>
-              </div>
+    
               <!-- <div class="inputs-main"> -->
-                <button class="submit_leave" disabled>Submit</button>
+                <button class="submit_leave">Submit</button>
               <!-- </div> -->
             </div>
           </div>
         </div>
       </div>
-
-    </div>
 
       <div class="analytics ">
         <div class="cards total-leaves-graph-cont">
