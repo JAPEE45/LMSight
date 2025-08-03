@@ -58,7 +58,7 @@
   <main class="main-cont">
     <div class="main active">
       <div class="main-header">
-        <h1 class="main-title">Welcome, Admin</h1>
+        <h1 class="main-title">HR Dashboard</h1>
         <div class="button-main-cont">
           <div class="button-cont">
             <button id="dashboard_nav">
@@ -1434,6 +1434,13 @@
           <input type="date" disabled>
         </div>
       </div>
+
+      <div class="inputs-main">
+        <div class="inputs-cont">
+          <label for="">Attached Document</label>
+          <button class="download-btn" onclick="downloadReport('inspection_summary_q1.pdf')">Click here to download</button>
+        </div>
+      </div>
   
       <div class="inputs-main">
         <div class="inputs-reason-cont">
@@ -1916,6 +1923,16 @@
   </div>
 
   <script src="./assets/scripts/admin_interface.js"></script>
+  <script>
+    function downloadReport(filename) {
+    const link = document.createElement('a');
+    link.href = `/path/to/reports/${filename}`;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+  </script>
 
 </body>
 </html>

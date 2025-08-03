@@ -2212,6 +2212,22 @@ tr:nth-child(even) {
   overflow: hidden;
   text-wrap: nowrap;
 }
+
+.download-btn {
+  padding: 0.5rem 0.3rem;
+  background: var(--twitter-blue);
+  border-radius: 3px;
+  border: none;
+  box-shadow: 0 0 0.2rem white;
+  font-size: 0.8rem;
+  color: white;
+  cursor: pointer;
+}
+
+.download-btn:hover {
+  box-shadow: 0 0 0.2rem var(--twitter-blue);
+}
+
 /* 
 #manage_users_nav {
   display: none;
@@ -2220,3 +2236,4 @@ tr:nth-child(even) {
 #analytics_nav {
   display: none;
 } */
+

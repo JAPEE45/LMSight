@@ -206,3 +206,33 @@ footer p {
     content: "";
     margin: 0;
   }
+
+@media (max-width: 1024px) {
+    .form {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        max-width: 100%;
+        height: max-content;
+    }
+
+    .front {
+        display: none;
+    }
+}
+
+@media (max-width: 540px) {
+    .main h1:not(.form h1) {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 450px) {
+    .form {
+        width: 100%;
+    }
+}
+
+@media (max-width: 360px) {
+    
+}
