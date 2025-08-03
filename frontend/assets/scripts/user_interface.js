@@ -1,0 +1,80 @@
+const tables = {
+  approved: document.querySelector(".approved_table"),
+  rejected: document.querySelector(".rejected_table"),
+  pending: document.querySelector(".pending_table"),
+};
+
+const buttons = {
+  approve: document.querySelector(".approve-btn"),
+  pending: document.querySelector(".pending-btn"),
+  reject: document.querySelector(".reject-btn"),
+  edit: document.getElementById("edit_btn"),
+  delete: document.getElementById("delete_btn"),
+  closeModal: document.getElementById("close-edit-modal"),
+  flipBack: document.getElementById("flipToBack"),
+  flipFront: document.getElementById("flipToFront"),
+  notif: document.getElementById("notification-btn"),
+  submitLeave: document.querySelector(".submit_leave"),
+  omnibusRules: document.getElementById("omnibus-rules")
+};
+
+const modals = {
+  edit: document.querySelector(".edit-modal"),
+  delete: document.querySelector(".delete-modal"),
+};
+
+const containers = {
+  applyLeave: document.querySelector(".apply-leave-cont"),
+  table: document.querySelector(".table-cont"),
+  nav: document.querySelector(".table-nav"),
+  flip1: document.getElementById("flipContainer"),
+  flip2: document.getElementById("flipContainer2"),
+  notifPopup: document.querySelector(".notification-popup-cont"),
+};
+
+
+buttons.notif.addEventListener("click", (e) => {
+  e.stopPropagation();
+  containers.notifPopup.classList.toggle("active");
+  console.log("hi")
+});
+
+window.addEventListener("click", (e) => {
+  if (!containers.notifPopup.contains(e.target) && e.target !== buttons.notif) {
+    containers.notifPopup.classList.remove("active");
+  }
+});
+
+containers.flip1.addEventListener("click", () => {
+  containers.flip1.classList.toggle("flipped");
+  containers.applyLeave.classList.toggle("active");
+  containers.table.classList.toggle("active");
+  containers.nav.classList.toggle("active");
+});
+
+function toggleTable(type) {
+  Object.entries(tables).forEach(([key, table]) => {
+    table.classList.toggle("active", key === type);
+  });
+}
+
+buttons.approve.addEventListener("click", () => toggleTable("approved"));
+buttons.pending.addEventListener("click", () => toggleTable("pending"));
+buttons.reject.addEventListener("click", () => toggleTable("rejected"));
+
+buttons.edit.addEventListener("click", () => modals.edit.classList.add("active"));
+buttons.closeModal.addEventListener("click", () => modals.edit.classList.remove("active"));
+
+
+buttons.delete.addEventListener("click", () => modals.delete.classList.add("active"));
+document.querySelectorAll(".delete-modal-btn").forEach((btn) =>
+  btn.addEventListener("click", () => modals.delete.classList.remove("active"))
+);
+
+function updateSubmitLeaveState() {
+  buttons.submitLeave.disabled = !buttons.omnibusRules.checked;
+}
+
+buttons.omnibusRules.addEventListener("change", updateSubmitLeaveState);
+
+updateSubmitLeaveState();
