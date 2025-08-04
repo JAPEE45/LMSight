@@ -7,9 +7,6 @@ const pending_table = document.querySelector(".pending_table");
 const approve_btn = document.querySelector(".approve-btn");
 const pending_btn = document.querySelector(".pending-btn");
 const reject_btn = document.querySelector(".reject-btn");
-const filter_btn = document.getElementById("filter-btn");
-const department_select = document.getElementById("department-filter");
-const vacation_type_select = document.getElementById("vacation-type-filter")
 
 const edit_btn = document.getElementById("edit_btn");
 const edit_modal = document.querySelector(".edit-modal");
@@ -99,11 +96,6 @@ dashboard_nav.addEventListener("click", () => setNavigation(dashboard_btn, dashb
 analytics_nav.addEventListener("click", () => setNavigation(analytics_btn, analytics_page, "Data Visualization"));
 manage_users_nav.addEventListener("click", () => setNavigation(manage_users_btn, manage_users_page, "User Management"));
 
-approve_btn.addEventListener("click", () => toggleTables(approved_table));
-pending_btn.addEventListener("click", () => toggleTables(pending_table));
-reject_btn.addEventListener("click", () => toggleTables(rejected_table));
-
-edit_btn.addEventListener("click", () => toggleModal(edit_modal, true));
 close_modal.addEventListener("click", () => toggleModal(edit_modal, false));
 submit_leave.addEventListener("click", () => toggleModal(rejection_reason_modal, true));
 approve_leave.addEventListener("click", () => toggleModal(edit_modal, false));
@@ -169,24 +161,9 @@ save_user_btn.addEventListener("click", () => {
   setTimeout(() => show_saved.classList.remove("active"), 2000);
 });
 
-filter_btn.addEventListener("click", (e) => {
-  e.preventDefault();
-  const isEnabled = department_select.disabled && vacation_type_select.disabled;
-  department_select.disabled = !isEnabled;
-  vacation_type_select.disabled = !isEnabled;
-  filter_btn.style.color = isEnabled ? "black" : "";
-  if (!isEnabled) location.reload();
-});
-
 
 // CHARTS ----------------------------------------------
-
-const ctx = document.getElementById('leaveChart').getContext('2d');
-const canvas = document.getElementById('weeklyLeaveChart');
-const ctx2 = canvas.getContext('2d');
-
-const ctx3 = document.getElementById('leavesChart').getContext('2d');
-
+const ctx = document.getElementById('leavesChart').getContext('2d');
 
 function getColor(value) {
   const ratio = value / maxLeaves;
@@ -202,7 +179,7 @@ const leaveData = [25, 120, 75, 30, 90, 150, 10, 5, 8, 30, 32, 97, 21, 56];
 const maxLeaves = Math.max(...leaveData);
 const dynamicColors = leaveData.map(getColor);
 
-new Chart(ctx3, {
+new Chart(ctx, {
   type: 'bar',
   data: {
     labels: ['Vacation', 'Mandatory/Forced', 'Sick', 'Maternity', 'Paternity', "Special Priviledge", "Solo Parent", "Study", "VAWC", "Rehabilitation", "Special Leave", "Special Emergency", "Terminal", "Adoption"],
@@ -236,47 +213,4 @@ const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const leaves = [12, 7, 5, 8, 14, 6, 3];
 const barWidth = 30;
 const gap = 10;
-const chartHeight = canvas.height - 50;
 const maxLeave = Math.max(...leaves);
-
-ctx2.beginPath();
-ctx2.strokeStyle = '#fff';
-ctx2.moveTo(0, 20);
-ctx2.lineTo(0, chartHeight);
-ctx2.lineTo(canvas.width - 320, chartHeight);
-ctx2.stroke();
-
-leaves.forEach((value, index) => {
-  const barHeight = (value / maxLeave) * (chartHeight - 40);
-  const x = 10 + index * (barWidth + gap);
-  const y = chartHeight - barHeight;
-
-  ctx2.fillStyle = "#F0DAAE";
-  ctx2.fillRect(x, y, barWidth, barHeight);
-
-  ctx2.fillStyle = "#fff";
-  ctx2.font = "0.7rem Arial";
-  ctx2.fillText(value, x + 12, y - 5);
-  ctx2.fillText(days[index], x + 2, chartHeight + 30);
-});
-
-new Chart(ctx, {
-  type: 'line',
-  data: {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-    datasets: [{
-      label: 'Leaves Taken',
-      data: [5, 9, 6, 3, 7, 4],
-      borderColor: 'rgba(75, 192, 192, 1)',
-      backgroundColor: 'rgba(75, 192, 192, 0.2)',
-      tension: 0.3,
-      fill: true
-    }]
-  },
-  options: {
-    responsive: true,
-    scales: {
-      y: { beginAtZero: true }
-    }
-  }
-});

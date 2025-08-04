@@ -1,3 +1,5 @@
+const view_apply_leave_header = document.getElementById("view-apply-leave-header");
+
 const details_of_leave = document.getElementById("details-of-leave");
 const specify_container = document.getElementById("specify-container");
 const illness_p = document.querySelector(".illness-p");
@@ -73,6 +75,7 @@ containers.flip1.addEventListener("click", () => {
   containers.applyLeave.classList.toggle("active");
   containers.table.classList.toggle("active");
   containers.nav.classList.toggle("active");
+  containers.flip1.classList.contains("flipped") ? view_apply_leave_header.textContent = "Apply Leave" : view_apply_leave_header.textContent = "Leave History";
 });
 
 function toggleTable(type) {
