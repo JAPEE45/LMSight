@@ -1,3 +1,26 @@
+const details_of_leave = document.getElementById("details-of-leave");
+const specify_container = document.getElementById("specify-container");
+const illness_p = document.querySelector(".illness-p");
+const specify_input = document.getElementById("specify-input");
+const specify_error = document.querySelector(".specify-error");
+
+details_of_leave.addEventListener("change", () => {
+  if (
+      details_of_leave.value === "Within the Philippines" ||
+      details_of_leave.value === "Abroad" ||
+      details_of_leave.value === "In Hospital" ||
+      details_of_leave.value === "Out Patient" ||
+      details_of_leave.value === "Other Purpose"
+     )
+  {
+    specify_container.classList.add("active");
+  } else {
+    specify_container.classList.remove("active");
+  }
+
+  details_of_leave.value === "Out Patient" ? illness_p.classList.add("active") : illness_p.classList.remove("active");   buttons.omnibusRules.classList.add("active");
+});
+
 const tables = {
   approved: document.querySelector(".approved_table"),
   rejected: document.querySelector(".rejected_table"),
@@ -76,5 +99,13 @@ function updateSubmitLeaveState() {
 }
 
 buttons.omnibusRules.addEventListener("change", updateSubmitLeaveState);
+buttons.submitLeave.addEventListener("click", () => {
+  if (specify_container.classList.contains("active")) {
+    specify_input.value.trim() === "" ? specify_error.classList.add("active") : specify_error.classList.remove("active");
+  } else {
+    alert("Leave Submitted");
+    specify_error.classList.remove("active");
+  }
+})
 
 updateSubmitLeaveState();

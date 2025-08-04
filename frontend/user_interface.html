@@ -679,6 +679,14 @@
                   </select>
                 </div>
                 <div class="inputs-cont">
+                  <label for="">Commutation</label>
+                  <select name="" id="">
+                    <option value="" disabled selected>--Please Select--</option>
+                    <option value="">Requested</option>
+                    <option value="">Not Requested</option>
+                  </select>
+                </div>
+                <div class="inputs-cont">
                   <label for="leave_type">Start Date</label>
                   <input type="date">
                 </div>
@@ -686,23 +694,48 @@
                   <label for="leave_type">End Date</label>
                   <input type="date">
                 </div>
-                <div class="inputs-cont">
-                  <label for="leave_type">Attach document</label>
-                  <input type="file">
-                </div>
               </div>
     
-              <div class="inputs-main">
+              <div class="inputs-main inputs-reason-main">
                 <div class="inputs-reason-cont">
                   <label for="reason_for_leaving">Comment</label>
                   <textarea name="" id="reason_for_leaving"></textarea>
                 </div>
+                <div class="add-infos">
+                  <div class="inputs-cont">
+                    <label for="leave_type">Attach document</label>
+                    <input type="file">
+                  </div>
+                  <div class="inputs-cont">
+                    <label for="">Details of Leave</label>
+                    <select name="" id="details-of-leave">
+                      <option value="" disabled selected>--Please Select--</option>
+                      <option value="Within the Philippines">Within the Philippines</option>
+                      <option value="Abroad">Abroad</option>
+                      <option value="In Hospital">In Hospital</option>
+                      <option value="Out Patient">Out Patient</option>
+                      <option value="Completion of Master's Degree">Completion of Master's Degree</option>
+                      <option value="BAR/Board Examination Review">BAR/Board Examination Review</option>
+                      <option value="Monetization of Leave Credits">Monetization of Leave Credits</option>
+                      <option value="Terminal Leave">Terminal Leave</option>
+                      <option value="Other Purpose">Other Purpose</option>
+                    </select>
+                  </div>
+                </div>
               </div>
+
               <div class="checkbx-cont">
-                <input type="checkbox" id="omnibus-rules">
-                <label for="omnibus-rules">
-                  I have read and agree to the <b>Omnibus rules</b> of leave
-                </label>
+                <div class="condition-cont">
+                  <input type="checkbox" id="omnibus-rules">
+                  <label for="omnibus-rules" class="omnibus-rules-condition">
+                    I have read and agree to the <a href=""><b>Omnibus rules</b></a> and <a href=""><b>Instructions and Requirements</b></a> of leave
+                  </label>
+                </div>
+                <div class="inputs-cont specify-cont " id="specify-container">
+                  <label class="specify-label" for="">Please Specify<span class="illness-p">Illness</span>:</label>
+                  <input type="text" id="specify-input">
+                  <label for="" class="specify-error">This field is required*</label>
+                </div>
               </div>
               <!-- <div class="inputs-main"> -->
                 <button class="submit_leave" disabled>Submit</button>
