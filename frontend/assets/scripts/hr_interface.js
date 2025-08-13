@@ -64,7 +64,6 @@ const notif = document.getElementById("notification-btn");
 notif.addEventListener("click", (e) => {
   e.stopPropagation()
   notifPopup.classList.toggle("active");
-  console.log("dd")
 })
 
 window.addEventListener("click", (e) => {
@@ -77,10 +76,9 @@ function toggleActiveClass(elements, target) {
   if (target) target.classList.add("active");
 }
 
-function setNavigation(activeBtn, activePage, title) {
+function setNavigation(activeBtn, activePage) {
   toggleActiveClass([dashboard_btn, analytics_btn, manage_users_btn], activeBtn);
   toggleActiveClass([dashboard_page, analytics_page, manage_users_page], activePage);
-  main_title.innerHTML = title;
 }
 
 function toggleModal(modal, show = true) {
@@ -91,7 +89,7 @@ function toggleTables(activeTable) {
   toggleActiveClass([approved_table, pending_table, rejected_table], activeTable);
 }
 
-dashboard_nav.addEventListener("click", () => setNavigation(dashboard_btn, dashboard_page, "Welcome, Admin!"));
+dashboard_nav.addEventListener("click", () => setNavigation(dashboard_btn, dashboard_page));
 
 close_modal.addEventListener("click", () => toggleModal(edit_modal, false));
 submit_leave.addEventListener("click", () => toggleModal(rejection_reason_modal, true));
@@ -133,79 +131,188 @@ document.addEventListener("click", () => options.forEach(opt => opt.classList.re
 
 // CHARTS ----------------------------------------------
 
-const data = {
-  labels: ['Employee', 'HR', 'Admin'],
-  datasets: [{
-    label: 'Sample Data',
-    data: [30, 45, 25],
-    backgroundColor: ['#ff6384', '#36a2eb', '#ffce56'],
-    borderWidth: 1
-  }]
-};
-
-const config = {
-  type: 'doughnut',
-  data: data,
-  options: {
+// Common options for pie/donut charts with percentage labels
+  const pieDonutOptions = {
     responsive: true,
     plugins: {
       legend: {
-        position: 'bottom'
+        position: 'right'
+      },
+      datalabels: {
+        color: '#fff',
+        font: {
+          weight: 'bold',
+          size: 14
+        },
+        formatter: (value, context) => {
+          const dataArr = context.chart.data.datasets[0].data;
+          const total = dataArr.reduce((sum, val) => sum + val, 0);
+          const percentage = ((value / total) * 100).toFixed(1) + '%';
+          return percentage;
+        }
       }
     }
-  }
-};
+  };
 
-const ctx = document.getElementById('leavesChart').getContext('2d');
-
-function getColor(value) {
-  const ratio = value / maxLeaves;
-  if (ratio >= 0.9) return '#1e3a8a';
-  if (ratio >= 0.7) return '#2563eb';
-  if (ratio >= 0.5) return '#3b82f6';
-  if (ratio >= 0.3) return '#60a5fa';
-  if (ratio >= 0.1) return '#bfdbfe';
-  return '#dbeafe';
-}
-
-const leaveData = [25, 120, 75, 30, 90, 150, 10, 5, 8, 30, 32, 97, 21, 56];
-const maxLeaves = Math.max(...leaveData);
-const dynamicColors = leaveData.map(getColor);
-
-
-
-new Chart(ctx, {
-  type: 'bar',
+  new Chart(document.getElementById('vacationLeaveUtilizationChart'), {
+  type: 'doughnut',
   data: {
-    labels: ['Vacation', 'Mandatory/Forced', 'Sick', 'Maternity', 'Paternity', "Special Priviledge", "Solo Parent", "Study", "VAWC", "Rehabilitation", "Special Leave", "Special Emergency", "Terminal", "Adoption"],
+    labels: ['Remaining', 'Used'],
     datasets: [{
-      label: 'Leaves Taken',
-      data: leaveData,
-      backgroundColor: dynamicColors,
-      borderRadius: 6
+      data: [25, 8],
+      backgroundColor: ['#5D0565', '#29AA53'] // Removed extra color
     }]
   },
   options: {
     responsive: true,
     plugins: {
-      legend: { display: false },
-      title: {
-        display: true,
-        text: 'Most Leaves Taken (May 2025)',
-        color: "black",
-        font: { size: 18, family: 'Arial', weight: 'bold' }
+      legend: {
+        display: false // 🚫 Hides the rectangular label
+      },
+      datalabels: {
+        color: '#fff',
+        font: {
+          weight: 'bold',
+          size: 14
+        },
+        formatter: (value, context) => {
+          const total = context.chart.data.datasets[0].data
+            .reduce((sum, val) => sum + val, 0);
+          return ((value / total) * 100).toFixed(1) + '%';
+        }
       }
-    },
-    scales: {
-      x: { ticks: { color: 'black' } },
-      y: { beginAtZero: true, ticks: { color: 'black' } }
     }
-  }
+  },
+  plugins: [ChartDataLabels]
 });
 
 
-const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-const leaves = [12, 7, 5, 8, 14, 6, 3];
-const barWidth = 30;
-const gap = 10;
-const maxLeave = Math.max(...leaves);
+  // Leave Types (Pie Chart)
+  new Chart(document.getElementById('leaveTypesChart'), {
+    type: 'pie',
+    data: {
+      labels: ['Sick Leave', 'Casual Leave', 'Maternity Leave', 'Annual Leave'],
+      datasets: [{
+        data: [10, 15, 5, 20],
+        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50']
+      }]
+    },
+    options: pieDonutOptions,
+    plugins: [ChartDataLabels]
+  });
+
+  // Leave Status (Donut Chart)
+  new Chart(document.getElementById('leaveStatusChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Approved', 'Pending', 'Rejected'],
+      datasets: [{
+        data: [25, 8, 3],
+        backgroundColor: ['#4CAF50', '#FF9800', '#F44336']
+      }]
+    },
+    options: pieDonutOptions,
+    plugins: [ChartDataLabels]
+  });
+
+  // Monthly Leaves Requests (Bar Chart)
+  new Chart(document.getElementById('monthlyLeavesRequestsChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      datasets: [{
+        label: 'Leave Requests',
+        data: [5, 8, 6, 10, 7, 9],
+        backgroundColor: '#36A2EB'
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+
+  // Department-Wise Leave (Stacked Bar Chart)
+  new Chart(document.getElementById('departmentWiseChart'), {
+    type: 'bar',
+    data: {
+      labels: ['HR', 'IT', 'Finance', 'Operations'],
+      datasets: [
+        {
+          label: 'Sick Leave',
+          data: [2, 4, 1, 3],
+          backgroundColor: '#FF6384'
+        },
+        {
+          label: 'Casual Leave',
+          data: [3, 2, 2, 4],
+          backgroundColor: '#36A2EB'
+        },
+        {
+          label: 'Annual Leave',
+          data: [1, 3, 4, 2],
+          backgroundColor: '#FFCE56'
+        },
+        {
+          label: 'Others',
+          data: [1, 1, 2, 1],
+          backgroundColor: '#4CAF50'
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: { stacked: true },
+        y: { stacked: true, beginAtZero: true }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('averageLeaveDurationChart'), {
+  type: 'line',
+  data: {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'], // X-axis months
+    datasets: [{
+      label: 'Average Leave Duration (Days)',
+      data: [2.5, 3, 1.8, 2.2, 2.9, 3.5, 2.7, 3.1], // Y-axis values
+      borderColor: '#36A2EB',
+      backgroundColor: 'rgba(54, 162, 235, 0.2)',
+      fill: true,
+      tension: 0.3, // Smooth curves
+      pointBackgroundColor: '#36A2EB',
+      pointBorderWidth: 2,
+      pointRadius: 4
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top'
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) => context.parsed.y + ' days'
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: 'Days'
+        }
+      },
+      x: {
+        title: {
+          display: true,
+          text: 'Month'
+        }
+      }
+    }
+  }
+});

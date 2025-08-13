@@ -64,7 +64,6 @@ const notif = document.getElementById("notification-btn");
 notif.addEventListener("click", (e) => {
   e.stopPropagation()
   notifPopup.classList.toggle("active");
-  console.log("dd")
 })
 
 window.addEventListener("click", (e) => {
