@@ -1,0 +1,204 @@
+<div class="dashboard active">  
+        <div class="middle-section">
+          <div class="top">
+            <div class="profile-cont">
+              <div class="left">
+                <div class="img-cont">
+                  <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                </div>
+                <h4>LeBron James</h4>
+              </div>
+              <div class="right">
+                <i class="fa-solid fa-calendar-week"></i>
+                <h4>MASSO</h4>
+              </div>
+            </div>
+          </div>
+
+          <div class="middle leave-credits">
+            <h2>Leave Credits as of June 2025</h2>
+            <div class="cards-cont">
+              <div class="card">
+                <h5>Earned Leave</h5>
+                <span class="highlight">11.167 days</span>
+                <p>(as of <span>June</span>)</p>
+              </div>
+              <div class="card">
+                <h5>Used Leave</h5>
+                <span class="highlight">3 days</span>
+              </div>
+              <div class="card">
+                <h5>Remaining Balance</h5>
+                <span class="highlight">9.417 days</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="middle chart-cont">
+            <h2>Vacation Leave Utilization</h2>
+            <div class="charts-conts">
+              <div class="chart">
+                <canvas id="vacationLeaveUtilizationChart"></canvas>
+              </div>
+  
+              <div class="chart-details">
+                <p>Date & Action Take on Application for Leave <span>6/28, 29, 30/2025</span></p>
+                <p>Monthly Accrual Rasl <span>1.25 days/month</span></p>
+                <p>Next Accrual Date <span>July 1, 2025</span></p>
+                <div class="data">
+                  <p><span class="remaining"></span> Remaining: <span>9.417 days</span></p>
+                </div>
+                <div class="data">
+                  <p><span class="used"></span> Used: <span>3 days</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-cont active">
+            <h2>Leave History</h2>
+
+            <div class="table active">
+              <table class="active">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Days</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>2025-06-03</td>
+                    <td>Sick Leave</td>
+                    <td>2</td>
+                    <td>Approved</td>
+                  </tr>
+                  <tr>
+                    <td>2025-06-03</td>
+                    <td>Vacation Leave</td>
+                    <td>3</td>
+                    <td>Approved</td>
+                  </tr>
+                  <tr>
+                    <td>2025-06-03</td>
+                    <td>Vacation Leave</td>
+                    <td>3</td>
+                    <td>Approved</td>
+                  </tr>
+                  <tr>
+                    <td>2025-06-03</td>
+                    <td>Vacation Leave</td>
+                    <td>3</td>
+                    <td>Approved</td>
+                  </tr>
+                  <tr>
+                    <td>2025-06-03</td>
+                    <td>Vacation Leave</td>
+                    <td>3</td>
+                    <td>Approved</td>
+                  </tr>
+                  <tr>
+                    <td>2025-06-03</td>
+                    <td>Vacation Leave</td>
+                    <td>3</td>
+                    <td>Approved</td>
+                  </tr>
+                  <tr>
+                    <td>2025-06-03</td>
+                    <td>Vacation Leave</td>
+                    <td>3</td>
+                    <td>Approved</td>
+                  </tr>
+                  <tr>
+                    <td>2025-06-03</td>
+                    <td>Vacation Leave</td>
+                    <td>3</td>
+                    <td>Approved</td>
+                  </tr>
+                  <tr>
+                    <td>2025-06-03</td>
+                    <td>Vacation Leave</td>
+                    <td>3</td>
+                    <td>Approved</td>
+                  </tr>
+                  <tr>
+                    <td>2025-06-03</td>
+                    <td>Vacation Leave</td>
+                    <td>3</td>
+                    <td>Approved</td>
+                  </tr>
+                  <tr>
+                    <td>2025-06-03</td>
+                    <td>Vacation Leave</td>
+                    <td>3</td>
+                    <td>Approved</td>
+                  </tr>
+                  <tr>
+                    <td>2025-06-03</td>
+                    <td>Vacation Leave</td>
+                    <td>3</td>
+                    <td>Approved</td>
+                  </tr>
+                  <tr>
+                    <td>2025-06-03</td>
+                    <td>Vacation Leave</td>
+                    <td>3</td>
+                    <td>Approved</td>
+                  </tr>
+                  <tr>
+                    <td>2025-06-03</td>
+                    <td>Vacation Leave</td>
+                    <td>3</td>
+                    <td>Approved</td>
+                  </tr>
+                  <tr>
+                    <td>2025-06-03</td>
+                    <td>Vacation Leave</td>
+                    <td>3</td>
+                    <td>Approved</td>
+                  </tr>
+                  <tr>
+                    <td>2025-06-03</td>
+                    <td>Vacation Leave</td>
+                    <td>3</td>
+                    <td>Approved</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="middle leave-management-container">
+            <h2>Leave Management</h2>
+            <div class="charts-cont">
+              <div class="chart">
+                <h3>Leave Types</h3>
+                <canvas id="leaveTypesChart"></canvas>
+                <!-- PIE CHART -->
+              </div>
+              <div class="chart">
+                <h3>Leave Status</h3>
+                <canvas id="leaveStatusChart"></canvas>
+                <!-- DONUT CHART -->
+              </div>
+              <div class="chart">
+                <h3>Monthly Leaves Requests</h3>
+                <canvas id="monthlyLeavesRequestsChart"></canvas>
+                <!-- BAR CHART -->
+              </div>
+              <div class="chart">
+                <h3>Department-Wise Leave</h3>
+                <canvas id="departmentWiseChart"></canvas>
+                <!-- STACKED BAR CHART -->
+              </div>
+              <div class="chart chart-full">
+                <h3>Average Leave Duration Over Time</h3>
+                <canvas height="70" id="averageLeaveDurationChart"></canvas>
+                <!-- LINE CHART -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>

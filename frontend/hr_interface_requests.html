@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ALIS</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <link rel="stylesheet" href="./assets/styles/general.css">
+  <link rel="stylesheet" href="./assets/styles/hr_interface.css">
+</head>
+<body>
+
+  <div class="sidebar">
+    <h2>ALIS</h2>
+    <div class="main-img-cont">
+      <div class="img-cont">
+        <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+        <input type="file" accept="image/*" id="image_file">
+        <label for="image_file">
+          <i class="fa-solid fa-camera"></i>
+        </label>
+      </div>
+    </div>
+    <div class="name-cont">
+      <h3 class="name">Juan Dela Cruz</h3>
+    </div>
+
+    <div class="bot-sec">
+      <div class="jobs-desc-cont">
+        <p>Employee ID: E0956-T25</p>
+        <p>Department: HR</p>
+        <p>Job title: HR Manager</p>
+        <p>Employment Type: Regular</p>
+      </div>
+      <div class="details-cont">
+        <p>
+          Vacation Leave: 3 / 5 used
+        </p>
+        <p>
+          Sick Leave: 3 / 5 used
+        </p>
+        <p>
+          Casual Leave: 5 / 10 used
+        </p>
+      </div>
+    </div>
+    <div class="button-cont">
+      <a href="login_interface.html">
+        Log Out
+        <i class="fa-solid fa-right-from-bracket"></i>
+      </a>
+    </div>
+  </div>
+
+  <main class="main-cont">
+    <div class="main active">
+      <div class="main-header">
+        <h1 class="main-title">Pending Requests</h1>
+        <div class="button-main-cont">
+          <div class="button-cont">
+            <a id="dashboard_nav" href="./hr_interface.html">
+              <i class="fa-solid fa-table-columns"></i>
+            </a>
+            <p class="popup">Dashboard</p>
+          </div>
+          <div class="button-cont">
+            <a id="requests_nav" href="./hr_interface_requests.html">
+              <i class="fa-solid fa-file-circle-check active"></i>
+            </a>
+            <p class="popup">Requests</p>
+          </div>
+          <div class="button-cont">
+            <button class="notif-btn" id="notification-btn">
+              <i class="fa-solid fa-bell"></i>
+            </button>
+            <p class="popup">Notification</p>
+            <div class="notif-marker"></div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="dashboard active">  
+        <div class="pending table">
+          <div class="table-nav-cont">
+            <div class="table-nav active">
+              <button class="pending-btn active">Pending</button>
+            </div>
+
+            <div class="right">
+              <div class="filter-label-cont">
+                <p href="" id="filter-btn">
+                  <i class="fa-solid fa-filter"></i>
+                  Filters
+                </p>
+              </div>
+              <div class="inputs-cont">
+                <select name="" id="department-filter">
+                  <option value="" disabled selected>Department</option>
+                  <option value="">CABA</option>
+                  <option value="">BSCS</option>
+                  <option value="">BSED</option>
+                  <option value="">BSIT</option>
+                </select>
+              </div>
+              <div class="inputs-cont">
+                <select name="" id="vacation-type-filter">
+                  <option value="" disabled selected>-- Please Select --</option>
+                  <option value="">Vacation Leave</option>
+                  <option value="">Mandatory Leave</option>
+                  <option value="">Sick Leave</option>
+                  <option value="">Maternity Leave</option>
+                  <option value="">Paternity Leave</option>
+                  <option value="">Special Priviledge Leave</option>
+                  <option value="">Solo Parent Leave</option>
+                  <option value="">Study Leave</option>
+                  <option value="">VAWC Leave</option>
+                  <option value="">Rehabilitation Leave</option>
+                  <option value="">Special Leave</option>
+                  <option value="">Special Emergency Leave</option>
+                  <option value="">Terminal Leave</option>
+                  <option value="">Adoption Leave</option>
+                </select>
+              </div>
+            </div>
+          </div>
+    
+          <div class="table-form-cont">
+            <div class="table-cont active">
+              <table class="pending_table active">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="table-name-td">
+                      <div class="table-name-wrapper">
+                        <div class="img-cont">
+                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                        </div>
+                        <p class="bot">
+                          LeBron James
+                        </p>
+                      </div>
+                    </td>
+                    <td>2025-05-01</td>
+                    <td>June 10</td>
+                    <td>June 20</td>
+                    <td>Vacation Leave</td>
+                    <td class="status">
+                      <p class="status-pending">
+                        Pending
+                      </p>
+                      
+                    </td>
+                    <td>
+                      <button id="edit_btn" class="details-btn">
+                        <i class="fa-regular fa-eye"></i>
+                        View Details
+                      </button>
+                    </td>
+                  </tr>        
+                  <tr>
+                    <td class="table-name-td">
+                      <div class="table-name-wrapper">
+                        <div class="img-cont">
+                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                        </div>
+                        <p class="bot">
+                          LeBron James
+                        </p>
+                      </div>
+                    </td>
+                    <td>2025-05-01</td>
+                    <td>June 10</td>
+                    <td>June 20</td>
+                    <td>Vacation Leave</td>
+                    <td class="status">
+                      <p class="status-pending">
+                        Pending
+                      </p>
+                      
+                    </td>
+                    <td>
+                      <button id="edit_btn" class="details-btn">
+                        <i class="fa-regular fa-eye"></i>
+                        View Details
+                      </button>
+                    </td>
+                  </tr>        
+                  <tr>
+                    <td class="table-name-td">
+                      <div class="table-name-wrapper">
+                        <div class="img-cont">
+                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                        </div>
+                        <p class="bot">
+                          LeBron James
+                        </p>
+                      </div>
+                    </td>
+                    <td>2025-05-01</td>
+                    <td>June 10</td>
+                    <td>June 20</td>
+                    <td>Vacation Leave</td>
+                    <td class="status">
+                      <p class="status-pending">
+                        Pending
+                      </p>
+                      
+                    </td>
+                    <td>
+                      <button id="edit_btn" class="details-btn">
+                        <i class="fa-regular fa-eye"></i>
+                        View Details
+                      </button>
+                    </td>
+                  </tr>        
+                  <tr>
+                    <td class="table-name-td">
+                      <div class="table-name-wrapper">
+                        <div class="img-cont">
+                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                        </div>
+                        <p class="bot">
+                          LeBron James
+                        </p>
+                      </div>
+                    </td>
+                    <td>2025-05-01</td>
+                    <td>June 10</td>
+                    <td>June 20</td>
+                    <td>Vacation Leave</td>
+                    <td class="status">
+                      <p class="status-pending">
+                        Pending
+                      </p>
+                      
+                    </td>
+                    <td>
+                      <button id="edit_btn" class="details-btn">
+                        <i class="fa-regular fa-eye"></i>
+                        View Details
+                      </button>
+                    </td>
+                  </tr>        
+                  <tr>
+                    <td class="table-name-td">
+                      <div class="table-name-wrapper">
+                        <div class="img-cont">
+                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                        </div>
+                        <p class="bot">
+                          LeBron James
+                        </p>
+                      </div>
+                    </td>
+                    <td>2025-05-01</td>
+                    <td>June 10</td>
+                    <td>June 20</td>
+                    <td>Vacation Leave</td>
+                    <td class="status">
+                      <p class="status-pending">
+                        Pending
+                      </p>
+                      
+                    </td>
+                    <td>
+                      <button id="edit_btn" class="details-btn">
+                        <i class="fa-regular fa-eye"></i>
+                        View Details
+                      </button>
+                    </td>
+                  </tr>        
+                  <tr>
+                    <td class="table-name-td">
+                      <div class="table-name-wrapper">
+                        <div class="img-cont">
+                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                        </div>
+                        <p class="bot">
+                          LeBron James
+                        </p>
+                      </div>
+                    </td>
+                    <td>2025-05-01</td>
+                    <td>June 10</td>
+                    <td>June 20</td>
+                    <td>Vacation Leave</td>
+                    <td class="status">
+                      <p class="status-pending">
+                        Pending
+                      </p>
+                      
+                    </td>
+                    <td>
+                      <button id="edit_btn" class="details-btn">
+                        <i class="fa-regular fa-eye"></i>
+                        View Details
+                      </button>
+                    </td>
+                  </tr>        
+                  <tr>
+                    <td class="table-name-td">
+                      <div class="table-name-wrapper">
+                        <div class="img-cont">
+                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                        </div>
+                        <p class="bot">
+                          LeBron James
+                        </p>
+                      </div>
+                    </td>
+                    <td>2025-05-01</td>
+                    <td>June 10</td>
+                    <td>June 20</td>
+                    <td>Vacation Leave</td>
+                    <td class="status">
+                      <p class="status-pending">
+                        Pending
+                      </p>
+                      
+                    </td>
+                    <td>
+                      <button id="edit_btn" class="details-btn">
+                        <i class="fa-regular fa-eye"></i>
+                        View Details
+                      </button>
+                    </td>
+                  </tr>        
+                  <tr>
+                    <td class="table-name-td">
+                      <div class="table-name-wrapper">
+                        <div class="img-cont">
+                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                        </div>
+                        <p class="bot">
+                          LeBron James
+                        </p>
+                      </div>
+                    </td>
+                    <td>2025-05-01</td>
+                    <td>June 10</td>
+                    <td>June 20</td>
+                    <td>Vacation Leave</td>
+                    <td class="status">
+                      <p class="status-pending">
+                        Pending
+                      </p>
+                      
+                    </td>
+                    <td>
+                      <button id="edit_btn" class="details-btn">
+                        <i class="fa-regular fa-eye"></i>
+                        View Details
+                      </button>
+                    </td>
+                  </tr>        
+                  <tr>
+                    <td class="table-name-td">
+                      <div class="table-name-wrapper">
+                        <div class="img-cont">
+                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                        </div>
+                        <p class="bot">
+                          LeBron James
+                        </p>
+                      </div>
+                    </td>
+                    <td>2025-05-01</td>
+                    <td>June 10</td>
+                    <td>June 20</td>
+                    <td>Vacation Leave</td>
+                    <td class="status">
+                      <p class="status-pending">
+                        Pending
+                      </p>
+                      
+                    </td>
+                    <td>
+                      <button id="edit_btn" class="details-btn">
+                        <i class="fa-regular fa-eye"></i>
+                        View Details
+                      </button>
+                    </td>
+                  </tr>        
+                  <tr>
+                    <td class="table-name-td">
+                      <div class="table-name-wrapper">
+                        <div class="img-cont">
+                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                        </div>
+                        <p class="bot">
+                          LeBron James
+                        </p>
+                      </div>
+                    </td>
+                    <td>2025-05-01</td>
+                    <td>June 10</td>
+                    <td>June 20</td>
+                    <td>Vacation Leave</td>
+                    <td class="status">
+                      <p class="status-pending">
+                        Pending
+                      </p>
+                      
+                    </td>
+                    <td>
+                      <button id="edit_btn" class="details-btn">
+                        <i class="fa-regular fa-eye"></i>
+                        View Details
+                      </button>
+                    </td>
+                  </tr>        
+                  <tr>
+                    <td class="table-name-td">
+                      <div class="table-name-wrapper">
+                        <div class="img-cont">
+                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                        </div>
+                        <p class="bot">
+                          LeBron James
+                        </p>
+                      </div>
+                    </td>
+                    <td>2025-05-01</td>
+                    <td>June 10</td>
+                    <td>June 20</td>
+                    <td>Vacation Leave</td>
+                    <td class="status">
+                      <p class="status-pending">
+                        Pending
+                      </p>
+                      
+                    </td>
+                    <td>
+                      <button id="edit_btn" class="details-btn">
+                        <i class="fa-regular fa-eye"></i>
+                        View Details
+                      </button>
+                    </td>
+                  </tr>        
+                  <tr>
+                    <td class="table-name-td">
+                      <div class="table-name-wrapper">
+                        <div class="img-cont">
+                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                        </div>
+                        <p class="bot">
+                          LeBron James
+                        </p>
+                      </div>
+                    </td>
+                    <td>2025-05-01</td>
+                    <td>June 10</td>
+                    <td>June 20</td>
+                    <td>Vacation Leave</td>
+                    <td class="status">
+                      <p class="status-pending">
+                        Pending
+                      </p>
+                      
+                    </td>
+                    <td>
+                      <button id="edit_btn" class="details-btn">
+                        <i class="fa-regular fa-eye"></i>
+                        View Details
+                      </button>
+                    </td>
+                  </tr>        
+                  <tr>
+                    <td class="table-name-td">
+                      <div class="table-name-wrapper">
+                        <div class="img-cont">
+                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                        </div>
+                        <p class="bot">
+                          LeBron James
+                        </p>
+                      </div>
+                    </td>
+                    <td>2025-05-01</td>
+                    <td>June 10</td>
+                    <td>June 20</td>
+                    <td>Vacation Leave</td>
+                    <td class="status">
+                      <p class="status-pending">
+                        Pending
+                      </p>
+                      
+                    </td>
+                    <td>
+                      <button id="edit_btn" class="details-btn">
+                        <i class="fa-regular fa-eye"></i>
+                        View Details
+                      </button>
+                    </td>
+                  </tr>        
+                  <tr>
+                    <td class="table-name-td">
+                      <div class="table-name-wrapper">
+                        <div class="img-cont">
+                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                        </div>
+                        <p class="bot">
+                          LeBron James
+                        </p>
+                      </div>
+                    </td>
+                    <td>2025-05-01</td>
+                    <td>June 10</td>
+                    <td>June 20</td>
+                    <td>Vacation Leave</td>
+                    <td class="status">
+                      <p class="status-pending">
+                        Pending
+                      </p>
+                      
+                    </td>
+                    <td>
+                      <button id="edit_btn" class="details-btn">
+                        <i class="fa-regular fa-eye"></i>
+                        View Details
+                      </button>
+                    </td>
+                  </tr>        
+                  <tr>
+                    <td class="table-name-td">
+                      <div class="table-name-wrapper">
+                        <div class="img-cont">
+                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                        </div>
+                        <p class="bot">
+                          LeBron James
+                        </p>
+                      </div>
+                    </td>
+                    <td>2025-05-01</td>
+                    <td>June 10</td>
+                    <td>June 20</td>
+                    <td>Vacation Leave</td>
+                    <td class="status">
+                      <p class="status-pending">
+                        Pending
+                      </p>
+                      
+                    </td>
+                    <td>
+                      <button id="edit_btn" class="details-btn">
+                        <i class="fa-regular fa-eye"></i>
+                        View Details
+                      </button>
+                    </td>
+                  </tr>        
+                  <tr>
+                    <td class="table-name-td">
+                      <div class="table-name-wrapper">
+                        <div class="img-cont">
+                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                        </div>
+                        <p class="bot">
+                          LeBron James
+                        </p>
+                      </div>
+                    </td>
+                    <td>2025-05-01</td>
+                    <td>June 10</td>
+                    <td>June 20</td>
+                    <td>Vacation Leave</td>
+                    <td class="status">
+                      <p class="status-pending">
+                        Pending
+                      </p>
+                      
+                    </td>
+                    <td>
+                      <button id="edit_btn" class="details-btn">
+                        <i class="fa-regular fa-eye"></i>
+                        View Details
+                      </button>
+                    </td>
+                  </tr>        
+                  <tr>
+                    <td class="table-name-td">
+                      <div class="table-name-wrapper">
+                        <div class="img-cont">
+                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                        </div>
+                        <p class="bot">
+                          LeBron James
+                        </p>
+                      </div>
+                    </td>
+                    <td>2025-05-01</td>
+                    <td>June 10</td>
+                    <td>June 20</td>
+                    <td>Vacation Leave</td>
+                    <td class="status">
+                      <p class="status-pending">
+                        Pending
+                      </p>
+                      
+                    </td>
+                    <td>
+                      <button id="edit_btn" class="details-btn">
+                        <i class="fa-regular fa-eye"></i>
+                        View Details
+                      </button>
+                    </td>
+                  </tr>        
+                  <tr>
+                    <td class="table-name-td">
+                      <div class="table-name-wrapper">
+                        <div class="img-cont">
+                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                        </div>
+                        <p class="bot">
+                          LeBron James
+                        </p>
+                      </div>
+                    </td>
+                    <td>2025-05-01</td>
+                    <td>June 10</td>
+                    <td>June 20</td>
+                    <td>Vacation Leave</td>
+                    <td class="status">
+                      <p class="status-pending">
+                        Pending
+                      </p>
+                      
+                    </td>
+                    <td>
+                      <button id="edit_btn" class="details-btn">
+                        <i class="fa-regular fa-eye"></i>
+                        View Details
+                      </button>
+                    </td>
+                  </tr>        
+                </tbody>
+              </table>
+      
+            </div>
+    
+            <div class="apply-leave-cont ">
+              <div class="inputs-main">
+                <div class="inputs-cont">
+                  <label for="emp_id">ID</label>
+                  <input disabled type="text" value="0902-EMS0-5425">
+                </div>
+                <!-- <div class="img-cont">
+                  <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+                </div> -->
+              </div>
+              <div class="inputs-main">
+                <div class="inputs-cont">
+                  <label for="emp_id">Last name</label>
+                  <input disabled class="name-input" type="text" value="Briol">
+                </div>
+                <div class="inputs-cont">
+                  <label for="emp_id">First name</label>
+                  <input disabled class="name-input" type="text" value="0902-EMS0-5425">
+                </div>
+                <div class="inputs-cont">
+                  <label for="emp_id">Middle name</label>
+                  <input disabled class="name-input" type="text" value="0902-EMS0-5425">
+                </div>
+                <div class="inputs-cont">
+                  <label for="emp_id">Suffix</label>
+                  <input disabled class="name-input" type="text" value="0902-EMS0-5425">
+                </div>
+              </div>
+    
+              <div class="inputs-main">
+                <div class="inputs-cont">
+                  <label for="leave_type">Leave Type</label>
+                  <select name="" id="leave_type">
+                    <option value="" disabled selected>-- Please Select --</option>
+                    <option value="">Vacation Leave</option>
+                    <option value="">Mandatory Leave</option>
+                    <option value="">Sick Leave</option>
+                    <option value="">Maternity Leave</option>
+                    <option value="">Paternity Leave</option>
+                    <option value="">Special Priviledge Leave</option>
+                    <option value="">Solo Parent Leave</option>
+                    <option value="">Study Leave</option>
+                    <option value="">VAWC Leave</option>
+                    <option value="">Rehabilitation Leave</option>
+                    <option value="">Special Leave</option>
+                    <option value="">Special Emergency Leave</option>
+                    <option value="">Terminal Leave</option>
+                    <option value="">Adoption Leave</option>
+                  </select>
+                </div>
+                <div class="inputs-cont">
+                  <label for="leave_type">Start Date</label>
+                  <input type="date">
+                </div>
+                <div class="inputs-cont">
+                  <label for="leave_type">End Date</label>
+                  <input type="date">
+                </div>
+              </div>
+    
+              <div class="inputs-main">
+                <div class="inputs-reason-cont">
+                  <label for="reason_for_leaving">Comment</label>
+                  <textarea name="" id="reason_for_leaving"></textarea>
+                </div>
+              </div>
+    
+              <!-- <div class="inputs-main"> -->
+                <button class="submit_leave">Submit</button>
+              <!-- </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <div class="edit-modal ">
+    <div class="edit-leave-cont ">
+      <header>
+        <h1>Request Leave</h1>
+        <button id="close-edit-modal">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </header>
+      <div class="profile-dets">
+        <div class="profile">
+          <div class="img-cont">
+            <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+          </div>
+          <div class="details-cont">
+            <p class="name">Juan Dela Cruz</p>
+            <p>Department: <span>Sales and Marketing</span></p>
+            <p>Job title: <span>Sales Manager</span></p>
+          </div>
+        </div>
+        <div class="leave-credits">
+          <h4>Leave Credits</h4>
+          <div class="donut-chart">
+            <div class="donut-center-value" id="centerValue">1.25</div>
+          </div>
+        </div>
+      </div>
+      <div class="inputs-main">
+        <div class="inputs-cont">
+          <label for="leave_type">Leave Type</label>
+          <input type="text" placeholder="Leave Type" disabled>
+        </div>
+        <div class="inputs-cont">
+          <label for="leave_type">Start Date</label>
+          <input type="text" placeholder="start date" disabled>
+        </div>
+        <div class="inputs-cont">
+          <label for="leave_type">End Date</label>
+          <input type="text" placeholder="end date" disabled>
+        </div>
+      </div>
+
+      <div class="inputs-main">
+        <div class="inputs-cont">
+          <label for="">Attached Document</label>
+          <button class="download-btn" onclick="downloadReport('inspection_summary_q1.pdf')">Click here to download</button>
+        </div>
+      </div>
+  
+      <div class="inputs-main">
+        <div class="inputs-reason-cont">
+          <label for="reason_for_leaving">Comment</label>
+          <textarea disabled name="" id="reason_for_leaving"></textarea>
+        </div>
+      </div>
+      <div class="edit-buttons">
+        <button class="submit_leave approve">Approve</button>
+        <button class="submit_leave reject">Reject</button>
+      </div>
+      
+    </div>  
+  </div>
+  
+  <div class="rejection-reason-modal ">
+      <div class="rejection-reason-cont">
+        <h3>Reason for rejecting request</h3>
+        <div class="buttons-cont">
+          <button>Insufficient Leave Credits</button>
+          <button>Unreasonable/Vague excuse</button>
+          <button>Lack of supporting documents</button>
+          <button>Operational needs</button>
+          <button>Short notice</button>
+          <button>Doesnt follow Omnibus rules</button>
+        </div>
+        <h4>Other concerns:</h4>
+        <textarea name="" id=""></textarea>
+        <div class="submit_cancel">
+          <button id="cancel_reject_btn">Cancel</button>
+          <button id="submit_reject_btn">Submit</button>
+        </div>
+      </div>
+    </div>
+
+  <div class="delete-modal ">
+    <div class="delete-modal-cont">
+      <div class="top-sec">
+        <div class="icon">
+          <i class="fa-solid fa-circle-exclamation"></i>
+        </div>
+        <div class="question">
+          <p>Are you sure you want to cancel this request?</p>
+        </div>
+      </div>
+      <div class="bot-sec">
+        <button class="delete-modal-btn">
+          <!-- <i class="fa-solid fa-xmark"></i> -->
+          No
+        </button>
+        <button class="delete-modal-btn">
+          Yes
+          <!-- <i class="fa-solid fa-check"></i> -->
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="notification-popup-cont ">
+    <h3>Notifications</h3>
+    <div class="notif-item-cont">
+      <div class="left">
+        <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+      </div>
+      <div class="right">
+        <p class="approver_name">
+          LeBron James
+          <span class="notif-dets">has requested for love request</span>
+        </p>
+        <p class="time">
+          1min ago
+        </p>
+      </div>
+    </div>
+    <div class="notif-item-cont">
+      <div class="left">
+        <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+      </div>
+      <div class="right">
+        <p class="approver_name">
+          LeBron James
+          <span class="notif-dets">has requested for love request</span>
+        </p>
+        <p class="time">
+          1min ago
+        </p>
+      </div>
+    </div>
+    <div class="notif-item-cont">
+      <div class="left">
+        <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+      </div>
+      <div class="right">
+        <p class="approver_name">
+          LeBron James
+          <span class="notif-dets">has requested for love request</span>
+        </p>
+        <p class="time">
+          1min ago
+        </p>
+      </div>
+    </div>
+    <div class="notif-item-cont">
+      <div class="left">
+        <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+      </div>
+      <div class="right">
+        <p class="approver_name">
+          LeBron James
+          <span class="notif-dets">has requested for love request</span>
+        </p>
+        <p class="time">
+          1min ago
+        </p>
+      </div>
+    </div>
+    <div class="notif-item-cont">
+      <div class="left">
+        <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+      </div>
+      <div class="right">
+        <p class="approver_name">
+          LeBron James
+          <span class="notif-dets">has requested for love request</span>
+        </p>
+        <p class="time">
+          1min ago
+        </p>
+      </div>
+    </div>
+    <div class="notif-item-cont">
+      <div class="left">
+        <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+      </div>
+      <div class="right">
+        <p class="approver_name">
+          LeBron James
+          <span class="notif-dets">has requested for love request</span>
+        </p>
+        <p class="time">
+          1min ago
+        </p>
+      </div>
+    </div>
+    <div class="notif-item-cont">
+      <div class="left">
+        <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+      </div>
+      <div class="right">
+        <p class="approver_name">
+          LeBron James
+          <span class="notif-dets">has requested for love request</span>
+        </p>
+        <p class="time">
+          1min ago
+        </p>
+      </div>
+    </div>
+    <div class="notif-item-cont">
+      <div class="left">
+        <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+      </div>
+      <div class="right">
+        <p class="approver_name">
+          LeBron James
+          <span class="notif-dets">has requested for love request</span>
+        </p>
+        <p class="time">
+          1min ago
+        </p>
+      </div>
+    </div>
+    <div class="notif-item-cont">
+      <div class="left">
+        <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
+      </div>
+      <div class="right">
+        <p class="approver_name">
+          LeBron James
+          <span class="notif-dets">has requested for love request</span>
+        </p>
+        <p class="time">
+          1min ago
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="./assets/scripts/hr_interface_requests.js"></script>
+  <script>
+    function downloadReport(filename) {
+    const link = document.createElement('a');
+    link.href = `/path/to/reports/${filename}`;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+  </script>
+
+</body>
+</html>
