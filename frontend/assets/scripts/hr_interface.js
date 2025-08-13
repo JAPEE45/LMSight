@@ -74,7 +74,6 @@ window.addEventListener("click", (e) => {
 });
 
 function toggleActiveClass(elements, target) {
-  elements.forEach(el => el.classList.remove("active"));
   if (target) target.classList.add("active");
 }
 
@@ -93,8 +92,6 @@ function toggleTables(activeTable) {
 }
 
 dashboard_nav.addEventListener("click", () => setNavigation(dashboard_btn, dashboard_page, "Welcome, Admin!"));
-analytics_nav.addEventListener("click", () => setNavigation(analytics_btn, analytics_page, "Data Visualization"));
-manage_users_nav.addEventListener("click", () => setNavigation(manage_users_btn, manage_users_page, "User Management"));
 
 close_modal.addEventListener("click", () => toggleModal(edit_modal, false));
 submit_leave.addEventListener("click", () => toggleModal(rejection_reason_modal, true));
@@ -105,13 +102,6 @@ show_more_btn.addEventListener("click", () => toggleModal(employee_most_leave_mo
 employee_most_leave_close_btn.addEventListener("click", () => toggleModal(employee_most_leave_modal, false));
 view_analytics_dets.forEach(menu => menu.addEventListener("click", () => toggleModal(analytics_modal, true)));
 close_analytic_modal_btn.addEventListener("click", () => toggleModal(analytics_modal, false));
-
-select_all_chbx.addEventListener('change', () => {
-  checkboxes.forEach(cb => {
-    cb.checked = select_all_chbx.checked;
-    cb.dispatchEvent(new Event('change'));
-  });
-});
 
 checkboxes.forEach(cb => {
   cb.addEventListener('change', () => {
@@ -141,29 +131,7 @@ document.addEventListener("click", () => options.forEach(opt => opt.classList.re
   });
 });
 
-add_user_btn.addEventListener("click", () => {
-  emp_id_cont.classList.remove("active");
-  manage_user_table.classList.remove("active");
-  add_edit_user_cont.classList.add("active");
-  flipContainer3.classList.add("flipped");
-  delete_select_cont.classList.remove("active");
-});
-
-cancelBtn.addEventListener('click', () => {
-  flipContainer3.classList.remove('flipped');
-  manage_user_table.classList.add("active");
-  add_edit_user_cont.classList.remove("active");
-});
-
-save_user_btn.addEventListener("click", () => {
-  emp_id_cont.classList.add("active");
-  show_saved.classList.add("active");
-  setTimeout(() => show_saved.classList.remove("active"), 2000);
-});
-
-
 // CHARTS ----------------------------------------------
-const ctx1 = document.getElementById('userRoleChart').getContext('2d');
 
 const data = {
   labels: ['Employee', 'HR', 'Admin'],
@@ -187,8 +155,6 @@ const config = {
     }
   }
 };
-
-new Chart(ctx1, config);
 
 const ctx = document.getElementById('leavesChart').getContext('2d');
 

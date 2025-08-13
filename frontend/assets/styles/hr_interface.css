@@ -2236,6 +2236,50 @@ tr:nth-child(even) {
   display: none;
 } */
 
+.dashboard .middle-section {
+  display: flex;
+  flex-direction: column;
+  align-items: unset;
+  width: 100%;
+  gap: 2rem;
+}
+
+.middle-section .top {
+  display: flex;
+  width: 100%;
+}
+
+.middle-section .top .profile-cont {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--primary-background);
+  border-radius: var(--border-radius-card);
+  padding: var(--padding-1);
+  width: 100%;
+  justify-content: space-between;
+  color: white;
+}
+
+.middle-section .top .profile-cont .left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.middle-section .top .profile-cont .right {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.middle-section .top .profile-cont .left .img-cont {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: white;
+}
+
 .middle-section .left {
   width: 40%;
 }
@@ -2246,6 +2290,43 @@ tr:nth-child(even) {
   padding: var(--padding-2);
   border-radius: var(--border-radius-card);
   width: 100%;
+}
+
+.middle.leave-credits {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.middle.leave-credits .cards-cont {
+  display: flex;
+  gap: 1rem;
+}
+
+.middle.leave-credits .card {
+  justify-content: unset;
+  gap: 0.5rem;
+}
+
+.middle.leave-credits .card h5 {
+  font-size: 1rem;
+  font-weight: 550;
+}
+
+.middle.leave-credits .card .highlight {
+  font-size: 1.5rem;
+  font-weight: 550;
+}
+
+.middle.leave-credits .card p {
+  font-size: 0.8rem;
+  color: rgb(200, 200, 200);
+  font-weight: 550;
+}
+
+.middle.chart-cont {
+  display: flex;
+  margin: unset;
 }
 
 .middle-card .header {
@@ -2261,14 +2342,6 @@ tr:nth-child(even) {
 .middle-card .chart-cont canvas {
   width: 100% !important;
   height: 100% !important;
-}
-
-.middle-section .right {
-  width: 55%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 1.5rem;
 }
 
 .middle-card .status-cont {

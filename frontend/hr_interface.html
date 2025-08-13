@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <link rel="stylesheet" href="./assets/styles/general.css">
-  <link rel="stylesheet" href="./assets/styles/admin_interface.css">
+  <link rel="stylesheet" href="./assets/styles/hr_interface.css">
 </head>
 <body>
 
@@ -67,18 +67,6 @@
             <p class="popup">Dashboard</p>
           </div>
           <div class="button-cont">
-            <button id="analytics_nav">
-              <i class="fa-solid fa-chart-line"></i>
-            </button>
-            <p class="popup">Analytics</p>
-          </div>
-          <div class="button-cont">
-            <button id="manage_users_nav">
-              <i class="fa-solid fa-users"></i>
-            </button>
-            <p class="popup">Manage Users</p>
-          </div>
-          <div class="button-cont">
             <button class="notif-btn" id="notification-btn">
               <i class="fa-solid fa-bell"></i>
             </button>
@@ -89,344 +77,83 @@
       </div>
   
       <div class="dashboard active">  
-        <div class="middle-section">  
-          <div class="cards attendance-card">
-            <div class="chart-container">
-              <h2>Weekly Leave Pattern</h2>
-              <canvas id="weeklyLeaveChart" width="600" height="200"></canvas>
-            </div>
-          </div>
-          
-          <div class="cards attendance-history">
-            <div class="charts-cont">
-              <div class="admin-chart">
-                <h3>Monthly Leave Pattern</h3>
-                <canvas id="leaveChart" width="600" height="200"></canvas>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="middle-section">  
-          
-  
-          <div class="cards attendance-history">
-            <h3>Upcoming Leave</h3>
-            <div class="attendance-cont">
-              <table class="attendance_table active">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Department</th>
-                    <th>Leave Type</th>
-                    <th>From</th>
-                    <th>To</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      <div class="profile-cont">
-                        <div class="img-cont">
-                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
-                        </div>
-                        <span>Hannah Denielle Teodoro</span>
-                      </div>
-                    </td>
-                    <td>IT</td>
-                    <td>Sick Leave</td>
-                    <td>10-20-2025</td>
-                    <td>10-30-2025</td>
-                  </tr>                
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div class="cards on_in_leave">
-            <button class="left_arrow"><i class="fa-solid fa-arrow-left"></i></button>
-            <button class="right_arrow"><i class="fa-solid fa-arrow-right"></i></button>
-            <div class="top-sec">
-              <h3>Ongoing Leave</h3>
-              <p class="type_of_leave_header">Sick Leave</p>
-            </div>
-            <div class="bottom">
-              <div class="bottom-card">
-                <div class="bottom-top">
-                  <div class="img-cont">
-                    <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
-                  </div>
-                </div>
-                <div class="bottom-bot">
-                  <div class="name-cont">
-                    <p class="ongoing_leave_name">Divine R. Torcuator</p>
-                    <p class="ongoing_dept_name">IT</p>
-                  </div>
-                   <div class="sections">
-                      <div class="left-section">
-                        <p class="start_from_txt">Start From</p>
-                        <p class="start_from_val">June 5, 2025</p>
-                      </div>
-                      <div class="right-section">
-                        <p class="end_to_txt">End To</p>
-                        <p class="end_to_val">June 10, 2025</p>
-                      </div>
-                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="table">
-          <h3>Leave History</h3>
-          <div class="table-nav-cont">
-            <div class="table-nav active">
-              <button class="approve-btn active">Approved</button>
-              <button class="pending-btn">Pending</button>
-              <button class="reject-btn">Rejected</button>
-            </div>
-
-            <div class="right">
-              <div class="filter-label-cont">
-                <a href="" id="filter-btn">
-                  <i class="fa-solid fa-filter"></i>
-                  Filters
-                </a>
-              </div>
-              <div class="inputs-cont">
-                <select disabled name="" id="department-filter">
-                  <option value="" disabled selected>Department</option>
-                  <option value="">CABA</option>
-                  <option value="">BSCS</option>
-                  <option value="">BSED</option>
-                  <option value="">BSIT</option>
-                </select>
-              </div>
-              <div class="inputs-cont">
-                <select disabled name="" id="vacation-type-filter">
-                  <option value="" disabled selected>-- Please Select --</option>
-                  <option value="">Vacation Leave</option>
-                  <option value="">Mandatory Leave</option>
-                  <option value="">Sick Leave</option>
-                  <option value="">Maternity Leave</option>
-                  <option value="">Paternity Leave</option>
-                  <option value="">Special Priviledge Leave</option>
-                  <option value="">Solo Parent Leave</option>
-                  <option value="">Study Leave</option>
-                  <option value="">VAWC Leave</option>
-                  <option value="">Rehabilitation Leave</option>
-                  <option value="">Special Leave</option>
-                  <option value="">Special Emergency Leave</option>
-                  <option value="">Terminal Leave</option>
-                  <option value="">Adoption Leave</option>
-                </select>
-              </div>
-            </div>
-          </div>
-    
-          <div class="table-form-cont">
-            <div class="table-cont active">
-              <table class="approved_table active">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Date</th>
-                    <th>From</th>
-                    <th>To</th>
-                    <th>Type</th>
-                    <th>Comment</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="table-name-td">
-                      <div class="table-name-wrapper">
-                        <div class="img-cont">
-                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
-                        </div>
-                        <p class="bot">
-                          Juan Dela Cruz
-                        </p>
-                      </div>
-                    </td>
-                    <td>2025-05-01</td>
-                    <td>June 10</td>
-                    <td>June 20</td>
-                    <td>Vacation Leave</td>
-                    <td>
-                    <p class="comment">
-                        Going to asdfasd sdaf
-                    </p>
-                    </td>
-                    <td class="status">
-                      <p class="status-approved">
-                        Approved
-                      </p>
-                      
-                    </td>
-                  </tr>                
-                </tbody>
-              </table>
-      
-              <table class="pending_table ">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Date</th>
-                    <th>From</th>
-                    <th>To</th>
-                    <th>Type</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="table-name-td">
-                      <div class="table-name-wrapper">
-                        <div class="img-cont">
-                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
-                        </div>
-                        <p class="bot">
-                          LeBron James
-                        </p>
-                      </div>
-                    </td>
-                    <td>2025-05-01</td>
-                    <td>June 10</td>
-                    <td>June 20</td>
-                    <td>Vacation Leave</td>
-                    <td class="status">
-                      <p class="status-pending">
-                        Pending
-                      </p>
-                      
-                    </td>
-                    <td>
-                      <button id="edit_btn" class="details-btn">
-                        <i class="fa-regular fa-eye"></i>
-                        View Details
-                      </button>
-                    </td>
-                  </tr>        
-                </tbody>
-              </table>
-      
-              <table class="rejected_table ">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Date</th>
-                    <th>From</th>
-                    <th>To</th>
-                    <th>Type</th>
-                    <th>Comment</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="table-name-td">
-                      <div class="table-name-wrapper">
-                        <div class="img-cont">
-                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
-                        </div>
-                        <p class="bot">
-                          Juan Dela Cruz
-                        </p>
-                      </div>
-                    </td>
-                    <td>2025-05-01</td>
-                    <td>June 10</td>
-                    <td>June 20</td>
-                    <td>Vacation Leave</td>
-                    <td>
-                    <p class="comment">
-                        Going to asdfasd sdaf
-                    </p>
-                    </td>
-                    <td class="status">
-                      <p class="status-rejected">
-                        Rejected
-                      </p>
-                      
-                    </td>
-                  </tr>        
-                </tbody>
-              </table>
-            </div>
-    
-            <div class="apply-leave-cont ">
-              <div class="inputs-main">
-                <div class="inputs-cont">
-                  <label for="emp_id">ID</label>
-                  <input disabled type="text" value="0902-EMS0-5425">
-                </div>
-                <!-- <div class="img-cont">
+        <div class="middle-section">
+          <div class="top">
+            <div class="profile-cont">
+              <div class="left">
+                <div class="img-cont">
                   <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
-                </div> -->
+                </div>
+                <h4>LeBron James</h4>
               </div>
-              <div class="inputs-main">
-                <div class="inputs-cont">
-                  <label for="emp_id">Last name</label>
-                  <input disabled class="name-input" type="text" value="Briol">
-                </div>
-                <div class="inputs-cont">
-                  <label for="emp_id">First name</label>
-                  <input disabled class="name-input" type="text" value="0902-EMS0-5425">
-                </div>
-                <div class="inputs-cont">
-                  <label for="emp_id">Middle name</label>
-                  <input disabled class="name-input" type="text" value="0902-EMS0-5425">
-                </div>
-                <div class="inputs-cont">
-                  <label for="emp_id">Suffix</label>
-                  <input disabled class="name-input" type="text" value="0902-EMS0-5425">
-                </div>
+              <div class="right">
+                <i class="fa-solid fa-calendar-week"></i>
+                <h4>MASSO</h4>
               </div>
-    
-              <div class="inputs-main">
-                <div class="inputs-cont">
-                  <label for="leave_type">Leave Type</label>
-                  <select name="" id="leave_type">
-                    <option value="" disabled selected>-- Please Select --</option>
-                    <option value="">Vacation Leave</option>
-                    <option value="">Mandatory Leave</option>
-                    <option value="">Sick Leave</option>
-                    <option value="">Maternity Leave</option>
-                    <option value="">Paternity Leave</option>
-                    <option value="">Special Priviledge Leave</option>
-                    <option value="">Solo Parent Leave</option>
-                    <option value="">Study Leave</option>
-                    <option value="">VAWC Leave</option>
-                    <option value="">Rehabilitation Leave</option>
-                    <option value="">Special Leave</option>
-                    <option value="">Special Emergency Leave</option>
-                    <option value="">Terminal Leave</option>
-                    <option value="">Adoption Leave</option>
-                  </select>
-                </div>
-                <div class="inputs-cont">
-                  <label for="leave_type">Start Date</label>
-                  <input type="date">
-                </div>
-                <div class="inputs-cont">
-                  <label for="leave_type">End Date</label>
-                  <input type="date">
-                </div>
+            </div>
+          </div>
+
+          <div class="middle leave-credits">
+            <h2>Leave Credits as of June 2025</h2>
+            <div class="cards-cont">
+              <div class="card">
+                <h5>Earned Leave</h5>
+                <span class="highlight">11.167 days</span>
+                <p>(as of <span>June</span>)</p>
               </div>
-    
-              <div class="inputs-main">
-                <div class="inputs-reason-cont">
-                  <label for="reason_for_leaving">Comment</label>
-                  <textarea name="" id="reason_for_leaving"></textarea>
-                </div>
+              <div class="card">
+                <h5>Used Leave</h5>
+                <span class="highlight">3 days</span>
               </div>
-    
-              <!-- <div class="inputs-main"> -->
-                <button class="submit_leave">Submit</button>
-              <!-- </div> -->
+              <div class="card">
+                <h5>Remaining Balance</h5>
+                <span class="highlight">9.417 days</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="middle chart-cont">
+            <div class="chart">
+              <canvas id=""></canvas>
+            </div>
+
+            <div class="chart-details">
+              <p>Date & Action Take on Application for Leave <span>6/28, 29, 30/2025</span></p>
+              <p>Monthly Accrual Resl <span>1.25 days/month</span></p>
+              <p>Next Accrual Date <span>July 1, 2025</span></p>
+              <div class="data">
+                <span></span>
+                <p>Remaining: <span>9.417 days</span></p>
+              </div>
+              <div class="data">
+                <span></span>
+                <p>Used: <span>3 days</span></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-cont ">
+            <h3>Leave History</h3>
+
+            <div class="table active">
+              <table class="active">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Days</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>2025-06-03</td>
+                    <td>Sick Leave</td>
+                    <td>2</td>
+                    <td>Approved</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -1136,243 +863,7 @@
       </div>
 
       <div class="manage-users ">
-        <div class="manage-users-cont">
-          <div class="top-section">
-            <div class="top-left">
-              <h2>User list</h2>
-              <p>180 users</p>
-            </div>
-            <div class="top-right">
-              <div class="search-cont">
-                <div class="input-cont">
-                  <input type="text" placeholder="Search...">
-                </div>
-                <button>
-                  <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-              </div>
-              <div class="filter-options">
-                <a href="#" id="filter-user-btn">
-                  <i class="fa-solid fa-filter"></i>
-                  Filters
-                </a>
-                <select name="" id="department-user">
-                  <option value="" disabled selected>Department</option>
-                </select>
-                <select name="" id="job-title-user">
-                  <option value="" disabled selected>Job Title</option>
-                </select>
-              </div>
-
-              <div class="flip-container" id="flip-container3">
-                <div class="flipper">
-                  <button class="front" id="add-user-btn">
-                    <i class="fa-solid fa-plus"></i> Add user
-                  </button>
-                  <button class="back" id="cancel-user-btn">
-                    <i class="fa-solid fa-arrow-left"></i>
-                    User Table
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="bottom-section-attendance">
-            <div class="delete-select-cont ">
-              <a href="#" class="delete-select">Delete selected</a>
-            </div>
-            <div class="table-container active">
-              <table class="active">
-                <thead>
-                  <tr>
-                    <th>
-                      <input type="checkbox" class="select-all user-checkbox">
-                      Name
-                    </th>
-                    <th>Email</th>
-                    <th>Department</th>
-                    <th>Title</th>
-                    <th>Status</th>
-                    <th>Joined Date</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="table-name-td">
-                      <div class="table-name-wrapper">
-                        <input type="checkbox" class="user-checkbox">
-                        <div class="img-cont">
-                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
-                        </div>
-                        <p class="bot">
-                          Juan Dela Cruz
-                        </p>
-                      </div>
-                    </td>
-                    <td>example@example.com</td>
-                    <td>IT</td>
-                    <td>Technician</td>
-                    <td class="status">
-                      <p class="status-approved">Active</p>
-                    </td>
-                    <td>10-15-2025</td>
-                    <td>
-                      <div class="edit_delete_cont">
-                        <button class="edit_delete_btn">
-                            <i class="fa-solid fa-ellipsis"></i>
-                        </button>
-                        <div class="options ">
-                          <p class="edit_user_btn">Edit</p>
-                          <p>Delete</p>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>        
-                  <tr>
-                    <td class="table-name-td">
-                      <div class="table-name-wrapper">
-                        <input type="checkbox" class="user-checkbox">
-                        <div class="img-cont">
-                          <img src="./assets/images/blank-profile-picture-973460.svg" alt="">
-                        </div>
-                        <p class="bot">
-                          Juan Dela Cruz
-                        </p>
-                      </div>
-                    </td>
-                    <td>example@example.com</td>
-                    <td>HR</td>
-                    <td>HR Manager</td>
-                    <td class="status">
-                      <p class="status-approved">Active</p>
-                    </td>
-                    <td>10-15-2025</td>
-                    <td>
-                      <div class="edit_delete_cont">
-                        <button class="edit_delete_btn">
-                            <i class="fa-solid fa-ellipsis"></i>
-                        </button>
-                        <div class="options">
-                          <p class="edit_user_btn">Edit</p>
-                          <p>Delete</p>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>        
-                </tbody>
-              </table>
-            </div>
-
-            <div class="add-edit-user-cont ">
-              <div class="personal-info-cont">
-                <h2>Personal Information</h2>
-                <div class="inputs emp-id-cont " id="emp-id-cont">
-                  <input class="emp-id-input" type="text" id="emp-id" disabled value="E0PQ9-234Ki25">
-                  <label for="emp-id">Employee ID</label>
-                </div>
-                <div class="top-personal-infos">
-                  <div class="inputs">
-                    <input id="last_name" type="text" placeholder="Dela Cruz">
-                    <label for="last_name">Last Name</label>
-                  </div>
-                  <div class="inputs">
-                    <input id="first_name" type="text" placeholder="Juan">
-                    <label for="first_name">First Name</label>
-                  </div>
-                  <div class="inputs">
-                    <input id="middle_name" type="text" placeholder="Pimentel">
-                    <label for="middle_name">Middle Name</label>
-                  </div>
-                  <div class="inputs">
-                    <input id="suffix_name" type="text" placeholder="Jr.">
-                    <label for="suffix_name">Suffix</label>
-                  </div>
-                </div>
-                <div class="bottom-personal-infos">
-                  <div class="inputs-cont">
-                    <div class="inputs">
-                      <input id="email_name" type="email" placeholder="example@example.com">
-                      <label for="email_name">Email</label>
-                    </div>
-                    <div class="inputs">
-                      <input id="birthday-input-user" type="date">
-                      <label for="birthday-input-user">Birthday</label>
-                    </div>
-                    <div class="inputs">
-                      <input id="phone_no" type="text" placeholder="09123456789">
-                      <label for="phone_no">Phone number</label>
-                    </div>
-                    <div class="inputs">
-                      <input id="profile_pic" type="file" accept="image/*">
-                      <label for="profile_pic">Valid picture</label>
-                    </div>
-                  </div>
-                  <label class="note-user">
-                    Note: Username and password of this user will be sent to the email provided.
-                  </label>
-                </div>
-              </div>
-
-              <div class="personal-info-cont">
-                <h2>Role & Department</h2>
-                <div class="top-personal-infos">
-                  <div class="inputs">
-                    <select name="" id="create-department-user">
-                      <option value="" disabled selected>--Please Select--</option>
-                      <option value="">IT</option>
-                      <option value="">Finance</option>
-                      <option value="">Marketing</option>
-                      <option value="">HR</option>
-                      <option value="">Operations</option>
-                    </select>
-                    <label for="create-department-user">Department</label>
-                  </div>
-                  <div class="inputs">
-                    <select name="" id="create-department-user">
-                      <option value="" disabled selected>--Please Select--</option>
-                      <option value="">IT</option>
-                      <option value="">Finance</option>
-                      <option value="">Marketing</option>
-                      <option value="">HR</option>
-                      <option value="">Operations</option>
-                    </select>
-                    <label for="create-department-user">Job Title</label>
-                  </div>
-                  <div class="inputs">
-                    <select name="" id="employment-type">
-                      <option value="" disabled selected>--Please Select--</option>
-                      <option value="">Regular</option>
-                      <option value="">Casual</option>
-                      <option value="">Project-Based</option>
-                      <option value="">Seasonal</option>
-                      <option value="">Probationary</option>
-                      <option value="">Contractual</option>
-                      <option value="">Part-Time</option>
-                      <option value="">Intern</option>
-                    </select>
-                    <label for="employment-type">Employment Type</label>
-                  </div>
-                </div>
-              </div>
-              <div class="button-container">
-                <button id="save-user-btn">Save user</button>
-                <p class="show-saved ">
-                  <span>
-                    <i class="fa-solid fa-check"></i>
-                  </span>
-                  User succesfully saved!
-                </p>
-                <p class="show-not-saved">
-                  <span>
-                    <i class="fa-solid fa-xmark"></i>
-                  </span>
-                  User unsuccesfully registered</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        
       </div>
 
     </div>
@@ -1922,7 +1413,7 @@
     </div>
   </div>
 
-  <script src="./assets/scripts/admin_interface.js"></script>
+  <script src="./assets/scripts/hr_interface.js"></script>
   <script>
     function downloadReport(filename) {
     const link = document.createElement('a');
