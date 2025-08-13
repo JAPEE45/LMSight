@@ -1,10 +1,20 @@
+@font-face {
+    src: url("./font/Edu_NSW_ACT_Cursive/EduNSWACTCursive-VariableFont_wght.ttf");
+    font-family: "Cursive";
+}
+
+@font-face {
+    src: url("./font/Poppins/Poppins-Light.ttf");
+    font-family: "Dancing Script";
+}
+
 .main.active {
     background: var(--primary-background);
 }
 
 .main h1:not(.form h1) {
     color: white;
-    font-size: 3rem;
+    font-size: 5rem;
 }
 
 .form {
@@ -24,6 +34,7 @@
 
 .form h1 {
     color: var(--primary-background);
+    font-family: "Cursive";
 }
 
 .inputs-container {
@@ -164,9 +175,9 @@ header {
 }
 
 .hero-cont p {
-    font-size: 2rem;
+    font-size: 1.5rem;
     color: white;
-    font-weight: 550;
+    font-family: "Dancing Script";
 }
 
 footer {
