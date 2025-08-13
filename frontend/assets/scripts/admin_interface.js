@@ -78,8 +78,10 @@ function toggleActiveClass(elements, target) {
 }
 
 function setNavigation(activeBtn, activePage, title) {
-  toggleActiveClass([dashboard_btn, analytics_btn, manage_users_btn], activeBtn);
-  toggleActiveClass([dashboard_page, analytics_page, manage_users_page], activePage);
+  // toggleActiveClass([dashboard_btn, analytics_btn, manage_users_btn], activeBtn);
+  toggleActiveClass([dashboard_btn, manage_users_btn], activeBtn);
+  // toggleActiveClass([dashboard_page, analytics_page, manage_users_page], activePage);
+  toggleActiveClass([dashboard_page, manage_users_page], activePage);
   main_title.innerHTML = title;
 }
 
@@ -92,7 +94,7 @@ function toggleTables(activeTable) {
 }
 
 dashboard_nav.addEventListener("click", () => setNavigation(dashboard_btn, dashboard_page, "Welcome, Admin!"));
-analytics_nav.addEventListener("click", () => setNavigation(analytics_btn, analytics_page, "Data Visualization"));
+// analytics_nav.addEventListener("click", () => setNavigation(analytics_btn, analytics_page, "Data Visualization"));
 manage_users_nav.addEventListener("click", () => setNavigation(manage_users_btn, manage_users_page, "User Management"));
 
 close_modal.addEventListener("click", () => toggleModal(edit_modal, false));
@@ -100,7 +102,7 @@ submit_leave.addEventListener("click", () => toggleModal(rejection_reason_modal,
 approve_leave.addEventListener("click", () => toggleModal(edit_modal, false));
 cancel_reject_btn.addEventListener("click", () => toggleModal(rejection_reason_modal, false));
 submit_reject_btn.addEventListener("click", () => toggleModal(rejection_reason_modal, false));
-show_more_btn.addEventListener("click", () => toggleModal(employee_most_leave_modal, true));
+// show_more_btn.addEventListener("click", () => toggleModal(employee_most_leave_modal, true));
 employee_most_leave_close_btn.addEventListener("click", () => toggleModal(employee_most_leave_modal, false));
 view_analytics_dets.forEach(menu => menu.addEventListener("click", () => toggleModal(analytics_modal, true)));
 close_analytic_modal_btn.addEventListener("click", () => toggleModal(analytics_modal, false));
@@ -108,7 +110,6 @@ close_analytic_modal_btn.addEventListener("click", () => toggleModal(analytics_m
 select_all_chbx.addEventListener('change', () => {
   checkboxes.forEach(cb => {
     cb.checked = select_all_chbx.checked;
-    cb.dispatchEvent(new Event('change'));
   });
 });
 
@@ -189,7 +190,7 @@ const config = {
 
 new Chart(ctx1, config);
 
-const ctx = document.getElementById('leavesChart').getContext('2d');
+// const ctx = document.getElementById('leavesChart').getContext('2d');
 
 function getColor(value) {
   const ratio = value / maxLeaves;
@@ -207,34 +208,34 @@ const dynamicColors = leaveData.map(getColor);
 
 
 
-new Chart(ctx, {
-  type: 'bar',
-  data: {
-    labels: ['Vacation', 'Mandatory/Forced', 'Sick', 'Maternity', 'Paternity', "Special Priviledge", "Solo Parent", "Study", "VAWC", "Rehabilitation", "Special Leave", "Special Emergency", "Terminal", "Adoption"],
-    datasets: [{
-      label: 'Leaves Taken',
-      data: leaveData,
-      backgroundColor: dynamicColors,
-      borderRadius: 6
-    }]
-  },
-  options: {
-    responsive: true,
-    plugins: {
-      legend: { display: false },
-      title: {
-        display: true,
-        text: 'Most Leaves Taken (May 2025)',
-        color: "black",
-        font: { size: 18, family: 'Arial', weight: 'bold' }
-      }
-    },
-    scales: {
-      x: { ticks: { color: 'black' } },
-      y: { beginAtZero: true, ticks: { color: 'black' } }
-    }
-  }
-});
+// new Chart(ctx, {
+//   type: 'bar',
+//   data: {
+//     labels: ['Vacation', 'Mandatory/Forced', 'Sick', 'Maternity', 'Paternity', "Special Priviledge", "Solo Parent", "Study", "VAWC", "Rehabilitation", "Special Leave", "Special Emergency", "Terminal", "Adoption"],
+//     datasets: [{
+//       label: 'Leaves Taken',
+//       data: leaveData,
+//       backgroundColor: dynamicColors,
+//       borderRadius: 6
+//     }]
+//   },
+//   options: {
+//     responsive: true,
+//     plugins: {
+//       legend: { display: false },
+//       title: {
+//         display: true,
+//         text: 'Most Leaves Taken (May 2025)',
+//         color: "black",
+//         font: { size: 18, family: 'Arial', weight: 'bold' }
+//       }
+//     },
+//     scales: {
+//       x: { ticks: { color: 'black' } },
+//       y: { beginAtZero: true, ticks: { color: 'black' } }
+//     }
+//   }
+// });
 
 
 const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
