@@ -187,6 +187,30 @@ tr .status p {
   .table-nav-cont {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+  }
+
+  .table-nav-cont .search-cont {
+    position: relative;
+    background: white;
+    padding-left: 2.2rem;
+    padding-right: 0.8rem;
+    border-radius: 30px;
+  }
+
+  .table-nav-cont .search-cont input {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+  }
+
+  .table-nav-cont .search-cont i {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
   }
 
   .table-nav-cont .right {
