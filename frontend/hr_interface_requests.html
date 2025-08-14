@@ -759,15 +759,26 @@
       <div class="inputs-main">
         <div class="inputs-cont">
           <label for="leave_type">Leave Type</label>
-          <input type="text" placeholder="Leave Type" disabled>
+          <input type="text" disabled>
         </div>
         <div class="inputs-cont">
           <label for="leave_type">Start Date</label>
-          <input type="text" placeholder="start date" disabled>
+          <input type="text" disabled>
         </div>
         <div class="inputs-cont">
           <label for="leave_type">End Date</label>
-          <input type="text" placeholder="end date" disabled>
+          <input type="text" disabled>
+        </div>
+      </div>
+
+      <div class="inputs-main middle">
+        <div class="inputs-cont">
+          <label for="leave_type">Commutation</label>
+          <input type="text" disabled>
+        </div>
+        <div class="inputs-cont">
+          <label for="leave_type">Details of Leave</label>
+          <input type="text" disabled>
         </div>
       </div>
 
@@ -966,16 +977,5 @@
   </div>
 
   <script src="./assets/scripts/hr_interface_requests.js"></script>
-  <script>
-    function downloadReport(filename) {
-    const link = document.createElement('a');
-    link.href = `/path/to/reports/${filename}`;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
-  </script>
-
 </body>
 </html>

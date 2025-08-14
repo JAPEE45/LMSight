@@ -371,6 +371,15 @@ tr .status p {
     width: 100%;
   }
 
+  .edit-modal .edit-leave-cont .inputs-main.middle {
+    justify-content: unset;
+    gap: 1.7rem;
+  }
+
+  .edit-modal .edit-leave-cont .inputs-main.middle .inputs-cont:last-child {
+    flex: 1;
+  }
+
   .inputs-cont {
     width: 100%;
   }
