@@ -396,7 +396,6 @@ tr .status p {
 
 .delete-modal {
   opacity: 0;
-  transition: all 0.15s ease-in-out;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -420,7 +419,7 @@ tr .status p {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    height: 160px;
+    height: 130px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -437,23 +436,25 @@ tr .status p {
 
 .delete-modal .delete-modal-cont button {
   border: none;
-  width: 45px;
-  height: 40px;
-  border-radius: 10%;
+  padding: 0.5rem 0.8rem;
+  border-radius: 5px;
   color: white;
   cursor: pointer;
-  margin-left: 5px;
   letter-spacing: 1px;
-  font-weight: 550;
+  background: transparent;
 }
   .delete-modal .delete-modal-cont button:first-child {
-    background: red;
-  box-shadow: 0 0 0.2rem red;
+    color: red;
+  
   }
 
   .delete-modal .delete-modal-cont button:last-child {
-    background: green;
-  box-shadow: 0 0 0.2rem green;
+    color: green;
+  }
+
+  .delete-modal .delete-modal-cont button:hover {
+    opacity: 0.5;
+    background: rgb(235,235,235);
   }
 
 

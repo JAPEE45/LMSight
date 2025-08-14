@@ -67,7 +67,7 @@ function toggleModal(modal, show = true) {
   modal.classList.toggle("active", show);
 }
 
- function downloadReport(filename) {
+function downloadReport(filename) {
   const link = document.createElement('a');
   link.href = `/path/to/reports/${filename}`;
   link.download = filename;
