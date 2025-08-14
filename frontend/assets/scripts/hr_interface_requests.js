@@ -11,6 +11,16 @@ const rejection_reason_modal = document.querySelector(".rejection-reason-modal")
 const notifPopup = document.querySelector(".notification-popup-cont");
 const notif = document.getElementById("notification-btn");
 
+const reject_reason_btn = document.querySelectorAll(".reject-reason-btn");
+const reject_other_reason_txtarea = document.getElementById("reject-other-reason-txtarea");
+
+reject_reason_btn.forEach(btn => {
+  btn.addEventListener("click", () => {
+    reject_reason_btn.forEach(btn => btn.classList.remove("active"));
+    btn.classList.toggle("active");
+  });
+});
+
 edit_btn.forEach(btn => {
   btn.addEventListener("click", () => {
     toggleModal(edit_modal);
@@ -23,6 +33,8 @@ close_modal.addEventListener("click" , () => {
 
 submit_leave.addEventListener("click", () => {
   toggleModal(rejection_reason_modal);
+  reject_reason_btn.forEach(btn => btn.classList.remove("active"));
+  reject_other_reason_txtarea.value = "";
 });
 
 submit_reject_btn.addEventListener("click", () => {
@@ -32,6 +44,8 @@ submit_reject_btn.addEventListener("click", () => {
 
 cancel_reject_btn.addEventListener("click", () => {
   toggleModal(rejection_reason_modal, false);
+  reject_reason_btn.forEach(btn => btn.classList.remove("active"));
+  reject_other_reason_txtarea.value = "";
 })
 
 approve_leave.addEventListener("click", () => {

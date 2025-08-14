@@ -282,8 +282,18 @@ tr .status p {
   .edit-modal .rejection-reason-modal .rejection-reason-cont .submit_cancel button:active {
     background: rgb(30,30,30);
     box-shadow: 0 0 0.2rem black;
-
   }
+
+  .rejection-reason-modal .rejection-reason-cont .buttons-cont button {
+    transition: all 0.15s ease-in-out;
+  }
+
+  .rejection-reason-modal .rejection-reason-cont .buttons-cont button.active {
+    background: rgb(30,30,30);
+    color: white;
+    border-radius: 5px;
+  }
+
 
   .table-nav button {
     padding: 0.2rem;
