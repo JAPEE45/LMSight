@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALIS - User Management</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-background: #2f3e46;
+            --primary-gray: #f5f5f5;
+            --twitter-blue: #008AD8;
+            --green-color: #238b45;
+            --yellow-color: #dca907;
+            
+            --border-radius-card: 10px;
+            --border-radius-form: 20px;
+            --padding-1: 10px;
+            --padding-2: 20px;
+            --margin-bottom-2: 20px;
+            
+            --shadow-1: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        body {
+            background-color: var(--primary-gray);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .sidebar {
+            background-color: var(--primary-background);
+            min-height: 100vh;
+            color: white;
+            padding: var(--padding-2);
+            position: fixed;
+            width: 280px;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .sidebar h4 {
+            font-weight: bold;
+            margin-bottom: 30px;
+            font-size: 1.5rem;
+        }
+
+        .profile-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            background-color: #ccc;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid white;
+        }
+
+        .profile-avatar i {
+            font-size: 3rem;
+            color: #888;
+        }
+
+        .profile-avatar::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 25px;
+            height: 25px;
+            background-color: #333;
+            border-radius: 50%;
+            border: 3px solid white;
+        }
+
+        .profile-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .profile-info {
+            text-align: left;
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
+        .profile-info div {
+            margin-bottom: 5px;
+        }
+
+        .leave-info {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #4a5a62;
+        }
+
+        .logout-btn {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            text-align: left;
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 10px 0;
+        }
+
+        .logout-btn:hover {
+            opacity: 0.8;
+        }
+
+        .main-content {
+            margin-left: 280px;
+            padding: var(--padding-2);
+            min-height: 100vh;
+        }
+
+        .top-bar {
+            background: white;
+            border-radius: var(--border-radius-card);
+            padding: var(--padding-2);
+            margin-bottom: var(--margin-bottom-2);
+            box-shadow: var(--shadow-1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .top-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .top-icons i {
+            font-size: 1.5rem;
+            color: #666;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .notification-icon {
+            position: relative;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #dc3545;
+            color: white;
+            border-radius: 50%;
+            width: 12px;
+            height: 12px;
+            font-size: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .notifications-panel {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 350px;
+            background: white;
+            border-radius: var(--border-radius-card);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            z-index: 1000;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .notifications-panel.show {
+            display: block;
+        }
+
+        .notifications-header {
+            padding: var(--padding-2);
+            border-bottom: 1px solid #eee;
+        }
+
+        .notifications-header h5 {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .notifications-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .notification-item {
+            padding: 15px var(--padding-2);
+            border-bottom: 1px solid #f5f5f5;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .notification-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .notification-avatar i {
+            color: #888;
+            font-size: 1.2rem;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-text {
+            font-size: 0.9rem;
+            color: #333;
+            margin: 0 0 4px 0;
+            line-height: 1.4;
+        }
+
+        .notification-time {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .top-bar {
+            position: relative;
+        }
+
+        .user-management-card {
+            background: white;
+            border-radius: var(--border-radius-card);
+            padding: var(--padding-2);
+            box-shadow: var(--shadow-1);
+        }
+
+        .user-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--margin-bottom-2);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .user-list-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-count {
+            background-color: #e9ecef;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .search-filters {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 8px 40px 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            width: 250px;
+            outline: none;
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            cursor: pointer;
+        }
+
+        .filter-btn, .dropdown-btn {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover, .dropdown-btn:hover {
+            background-color: #f8f9fa;
+        }
+
+        .add-user-btn {
+            background-color: #333;
+            color: white;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .add-user-btn:hover {
+            background-color: #555;
+        }
+
+        .delete-selected {
+            display: none;
+            color: #dc3545;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 8px 15px;
+        }
+
+        .delete-selected.show {
+            display: block;
+        }
+
+        .delete-selected:hover {
+            text-decoration: underline;
+        }
+
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .user-table th {
+            background-color: #f8f9fa;
+            padding: 15px 10px;
+            text-align: left;
+            font-weight: 600;
+            color: #666;
+            border-bottom: 2px solid #dee2e6;
+            font-size: 0.9rem;
+        }
+
+        .user-table td {
+            padding: 15px 10px;
+            border-bottom: 1px solid #dee2e6;
+            vertical-align: middle;
+        }
+
+        .user-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+        }
+
+        .user-avatar i {
+            color: #888;
+            font-size: 1.2rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background-color: #d4edda;
+            color: var(--green-color);
+        }
+
+        .status-inactive {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .actions-btn {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 5px;
+        }
+
+        .actions-btn:hover {
+            color: #333;
+        }
+
+        .actions-dropdown {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 100;
+            min-width: 100px;
+            display: none;
+        }
+
+        .actions-dropdown.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #f5f5f5;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .dropdown-item.edit:hover {
+            background-color: #e3f2fd;
+            color: var(--twitter-blue);
+        }
+
+        .dropdown-item.delete:hover {
+            background-color: #ffebee;
+            color: #dc3545;
+        }
+
+        .action-cell {
+            position: relative;
+        }
+
+        .table-checkbox {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .user-list-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-filters {
+                justify-content: center;
+            }
+
+            .search-box input {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .user-table {
+                font-size: 0.8rem;
+            }
+
+            .user-table th,
+            .user-table td {
+                padding: 10px 5px;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            /* Hide less important columns on mobile */
+            .hide-mobile {
+                display: none;
+            }
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+
+        /* Table responsive scroll */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        @media (max-width: 576px) {
+            .user-table {
+                min-width: 600px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <h4>ALIS</h4>
+        
+        <div class="profile-section">
+            <div class="profile-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="profile-name">Juan Dela Cruz</div>
+            
+            <div class="profile-info">
+                <div><strong>Employee ID:</strong> E0956-T25</div>
+                <div><strong>Department:</strong> HR</div>
+                <div><strong>Job title:</strong> HR Manager</div>
+                <div><strong>Employment Type:</strong> Regular</div>
+            </div>
+            
+            <div class="leave-info">
+                <div><strong>Vacation Leave:</strong> 3 / 5 used</div>
+                <div><strong>Sick Leave:</strong> 3 / 5 used</div>
+                <div><strong>Casual Leave:</strong> 5 / 10 used</div>
+            </div>
+        </div>
+        
+        <button class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Log Out
+        </button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="d-flex align-items-center">
+                <button class="mobile-menu-btn me-3" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="page-title">User Management</h1>
+            </div>
+            <div class="top-icons">
+                <i class="fas fa-th"></i>
+                <i class="fas fa-users"></i>
+                <div class="notification-icon">
+                    <i class="fas fa-bell" id="notificationBell"></i>
+                    <div class="notification-badge"></div>
+                </div>
+                
+                <!-- Notifications Panel -->
+                <div class="notifications-panel" id="notificationsPanel">
+                    <div class="notifications-header">
+                        <h5>Notifications</h5>
+                    </div>
+                    <div class="notifications-list">
+                        <div class="notification-item">
+                            <div class="notification-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="notification-content">
+                                <p class="notification-text">
+                                    <strong>LeBron James</strong> has requested for love request
+                                </p>
+                                <span class="notification-time">1min ago</span>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="notification-content">
+                                <p class="notification-text">
+                                    <strong>LeBron James</strong> has requested for love request
+                                </p>
+                                <span class="notification-time">1min ago</span>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="notification-content">
+                                <p class="notification-text">
+                                    <strong>LeBron James</strong> has requested for love request
+                                </p>
+                                <span class="notification-time">1min ago</span>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="notification-content">
+                                <p class="notification-text">
+                                    <strong>LeBron James</strong> has requested for love request
+                                </p>
+                                <span class="notification-time">1min ago</span>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="notification-content">
+                                <p class="notification-text">
+                                    <strong>LeBron James</strong> has requested for love request
+                                </p>
+                                <span class="notification-time">1min ago</span>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="notification-content">
+                                <p class="notification-text">
+                                    <strong>LeBron James</strong> has requested for love request
+                                </p>
+                                <span class="notification-time">1min ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Management Card -->
+        <div class="user-management-card">
+            <!-- User List Header -->
+            <div class="user-list-header">
+                <div class="user-list-title">
+                    User list
+                    <span class="user-count">180 users</span>
+                </div>
+                
+                <div class="search-filters">
+                    <div class="search-box">
+                        <input type="text" placeholder="Search..." id="searchInput">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    
+                    <button class="filter-btn">
+                        <i class="fas fa-filter"></i>
+                        Filters
+                    </button>
+                    
+                    <button class="dropdown-btn">
+                        Department
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    
+                    <button class="dropdown-btn">
+                        Job Title
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    
+                    <button class="add-user-btn">
+                        <i class="fas fa-plus"></i>
+                        Add user
+                    </button>
+                    
+                    <div class="delete-selected" id="deleteSelected">
+                        Delete selected
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Table -->
+            <div class="table-responsive">
+                <table class="user-table">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" class="table-checkbox" id="selectAll"></th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Department</th>
+                            <th>Title</th>
+                            <th>Status</th>
+                            <th class="hide-mobile">Joined Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="checkbox" class="table-checkbox row-checkbox"></td>
+                            <td>
+                                <div class="user-info">
+                                    <div class="user-avatar">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <span class="user-name">Juan Dela Cruz</span>
+                                </div>
+                            </td>
+                            <td>example@example.com</td>
+                            <td>IT</td>
+                            <td>Technician</td>
+                            <td><span class="status-badge status-active">Active</span></td>
+                            <td class="hide-mobile">10-15-2025</td>
+                            <td class="action-cell">
+                                <button class="actions-btn" onclick="toggleActionDropdown(this)">
+                                    <i class="fas fa-ellipsis-h"></i>
+                                </button>
+                                <div class="actions-dropdown">
+                                    <div class="dropdown-item edit" onclick="editUser(this)">
+                                        <i class="fas fa-edit"></i>
+                                        Edit
+                                    </div>
+                                    <div class="dropdown-item delete" onclick="deleteUser(this)">
+                                        <i class="fas fa-trash"></i>
+                                        Delete
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" class="table-checkbox row-checkbox"></td>
+                            <td>
+                                <div class="user-info">
+                                    <div class="user-avatar">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <span class="user-name">Juan Dela Cruz</span>
+                                </div>
+                            </td>
+                            <td>example@example.com</td>
+                            <td>HR</td>
+                            <td>HR Manager</td>
+                            <td><span class="status-badge status-active">Active</span></td>
+                            <td class="hide-mobile">10-15-2025</td>
+                            <td class="action-cell">
+                                <button class="actions-btn" onclick="toggleActionDropdown(this)">
+                                    <i class="fas fa-ellipsis-h"></i>
+                                </button>
+                                <div class="actions-dropdown">
+                                    <div class="dropdown-item edit" onclick="editUser(this)">
+                                        <i class="fas fa-edit"></i>
+                                        Edit
+                                    </div>
+                                    <div class="dropdown-item delete" onclick="deleteUser(this)">
+                                        <i class="fas fa-trash"></i>
+                                        Delete
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- Additional sample rows -->
+                        <tr>
+                            <td><input type="checkbox" class="table-checkbox row-checkbox"></td>
+                            <td>
+                                <div class="user-info">
+                                    <div class="user-avatar">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <span class="user-name">Maria Santos</span>
+                                </div>
+                            </td>
+                            <td>maria.santos@example.com</td>
+                            <td>Finance</td>
+                            <td>Accountant</td>
+                            <td><span class="status-badge status-active">Active</span></td>
+                            <td class="hide-mobile">09-22-2025</td>
+                            <td class="action-cell">
+                                <button class="actions-btn" onclick="toggleActionDropdown(this)">
+                                    <i class="fas fa-ellipsis-h"></i>
+                                </button>
+                                <div class="actions-dropdown">
+                                    <div class="dropdown-item edit" onclick="editUser(this)">
+                                        <i class="fas fa-edit"></i>
+                                        Edit
+                                    </div>
+                                    <div class="dropdown-item delete" onclick="deleteUser(this)">
+                                        <i class="fas fa-trash"></i>
+                                        Delete
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" class="table-checkbox row-checkbox"></td>
+                            <td>
+                                <div class="user-info">
+                                    <div class="user-avatar">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <span class="user-name">Pedro Garcia</span>
+                                </div>
+                            </td>
+                            <td>pedro.garcia@example.com</td>
+                            <td>IT</td>
+                            <td>Developer</td>
+                            <td><span class="status-badge status-inactive">Inactive</span></td>
+                            <td class="hide-mobile">08-10-2025</td>
+                            <td class="action-cell">
+                                <button class="actions-btn" onclick="toggleActionDropdown(this)">
+                                    <i class="fas fa-ellipsis-h"></i>
+                                </button>
+                                <div class="actions-dropdown">
+                                    <div class="dropdown-item edit" onclick="editUser(this)">
+                                        <i class="fas fa-edit"></i>
+                                        Edit
+                                    </div>
+                                    <div class="dropdown-item delete" onclick="deleteUser(this)">
+                                        <i class="fas fa-trash"></i>
+                                        Delete
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('show');
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.querySelector('.mobile-menu-btn');
+            
+            if (window.innerWidth <= 768) {
+                if (!sidebar.contains(event.target) && !menuBtn.contains(event.target)) {
+                    sidebar.classList.remove('show');
+                }
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            const sidebar = document.getElementById('sidebar');
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('show');
+            }
+        });
+
+        // Select all checkbox functionality
+        document.getElementById('selectAll').addEventListener('change', function() {
+            const checkboxes = document.querySelectorAll('tbody .row-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+            updateDeleteSelectedVisibility();
+        });
+
+        // Individual checkbox functionality
+        document.addEventListener('change', function(e) {
+            if (e.target.classList.contains('row-checkbox')) {
+                updateDeleteSelectedVisibility();
+                updateSelectAllCheckbox();
+            }
+        });
+
+        function updateDeleteSelectedVisibility() {
+            const checkedBoxes = document.querySelectorAll('tbody .row-checkbox:checked');
+            const deleteSelected = document.getElementById('deleteSelected');
+            
+            if (checkedBoxes.length > 0) {
+                deleteSelected.classList.add('show');
+            } else {
+                deleteSelected.classList.remove('show');
+            }
+        }
+
+        function updateSelectAllCheckbox() {
+            const checkboxes = document.querySelectorAll('tbody .row-checkbox');
+            const checkedBoxes = document.querySelectorAll('tbody .row-checkbox:checked');
+            const selectAllCheckbox = document.getElementById('selectAll');
+            
+            if (checkedBoxes.length === checkboxes.length) {
+                selectAllCheckbox.checked = true;
+                selectAllCheckbox.indeterminate = false;
+            } else if (checkedBoxes.length > 0) {
+                selectAllCheckbox.checked = false;
+                selectAllCheckbox.indeterminate = true;
+            } else {
+                selectAllCheckbox.checked = false;
+                selectAllCheckbox.indeterminate = false;
+            }
+        }
+
+        // Delete selected functionality
+        document.getElementById('deleteSelected').addEventListener('click', function() {
+            const checkedBoxes = document.querySelectorAll('tbody .row-checkbox:checked');
+            if (checkedBoxes.length > 0) {
+                if (confirm(`Are you sure you want to delete ${checkedBoxes.length} selected user(s)?`)) {
+                    checkedBoxes.forEach(checkbox => {
+                        checkbox.closest('tr').remove();
+                    });
+                    updateDeleteSelectedVisibility();
+                    updateSelectAllCheckbox();
+                }
+            }
+        });
+
+        // Action dropdown functionality
+        function toggleActionDropdown(button) {
+            // Close all other dropdowns first
+            document.querySelectorAll('.actions-dropdown').forEach(dropdown => {
+                if (dropdown !== button.nextElementSibling) {
+                    dropdown.classList.remove('show');
+                }
+            });
+            
+            // Toggle the clicked dropdown
+            const dropdown = button.nextElementSibling;
+            dropdown.classList.toggle('show');
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.action-cell')) {
+                document.querySelectorAll('.actions-dropdown').forEach(dropdown => {
+                    dropdown.classList.remove('show');
+                });
+            }
+        });
+
+        // Edit user function
+        function editUser(element) {
+            const row = element.closest('tr');
+            const userName = row.querySelector('.user-name').textContent;
+            alert(`Edit user: ${userName}`);
+            // Close dropdown
+            element.closest('.actions-dropdown').classList.remove('show');
+        }
+
+        // Delete user function
+        function deleteUser(element) {
+            const row = element.closest('tr');
+            const userName = row.querySelector('.user-name').textContent;
+            if (confirm(`Are you sure you want to delete user: ${userName}?`)) {
+                row.remove();
+                updateDeleteSelectedVisibility();
+                updateSelectAllCheckbox();
+            }
+            // Close dropdown
+            element.closest('.actions-dropdown').classList.remove('show');
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('tbody tr');
+            
+            rows.forEach(row => {
+                const name = row.querySelector('.user-name').textContent.toLowerCase();
+                const email = row.cells[2].textContent.toLowerCase();
+                const department = row.cells[3].textContent.toLowerCase();
+                
+                if (name.includes(searchTerm) || email.includes(searchTerm) || department.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        // Action buttons functionality (legacy - now handled by specific functions)
+        // Removed the old actions-btn event listener as it's now handled by toggleActionDropdown
+
+        // Filter and dropdown button functionality
+        document.querySelectorAll('.filter-btn, .dropdown-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Add filter/dropdown functionality here
+                console.log('Filter/dropdown clicked:', this.textContent.trim());
+            });
+        });
+
+        // Notification panel functionality
+        document.getElementById('notificationBell').addEventListener('click', function(e) {
+            e.stopPropagation();
+            const panel = document.getElementById('notificationsPanel');
+            panel.classList.toggle('show');
+        });
+
+        // Close notifications panel when clicking outside
+        document.addEventListener('click', function(event) {
+            const panel = document.getElementById('notificationsPanel');
+            const bell = document.getElementById('notificationBell');
+            
+            if (!panel.contains(event.target) && !bell.contains(event.target)) {
+                panel.classList.remove('show');
+            }
+        });
+
+        // Add user button functionality
+        document.querySelector('.add-user-btn').addEventListener('click', function() {
+            // Add user creation modal or redirect functionality here
+            console.log('Add user clicked');
+        });
+    </script>
+</body>
+</html>
