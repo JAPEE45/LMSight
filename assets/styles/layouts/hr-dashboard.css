@@ -12,21 +12,6 @@ body {
     transition: all 0.3s ease;
 }
 
-.notification-badge {
-    position: relative;
-}
-
-.notification-badge::after {
-    content: '';
-    position: absolute;
-    top: -2px;
-    right: -2px;
-    width: 8px;
-    height: 8px;
-    background-color: #dc3545;
-    border-radius: 50%;
-}
-
 /* Dashboard Cards */
 .dashboard-row {
     display: grid;
@@ -449,147 +434,218 @@ tr:nth-child(even) {
     color: white;
 }
 
-.modal-content {
-    border-radius: var(--border-radius-form);
-    border: none;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+/* MODAL */
+.modal-xl {
+    max-width: 800px;
 }
 
 .modal-header {
-    border-bottom: 1px solid #eee;
-    padding: var(--padding-2);
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    padding: 1.25rem 1.5rem;
 }
 
-.modal-header h5 {
-    font-weight: bold;
-    margin: 0;
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
 }
 
-.modal-body {
-    padding: var(--padding-2);
+.btn-close {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    color: #666;
 }
 
-.leave-credits-circle {
+.profile-section {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.profile-img {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    background-color: #28a745;
-    color: white;
+    background-color: #e9ecef;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin: 0 auto;
+    margin-right: 1rem;
 }
 
-.employee-modal-info {
-    text-align: center;
-    margin-bottom: var(--margin-bottom-2);
+.profile-img i {
+    font-size: 2rem;
+    color: #6c757d;
 }
 
-.form-section {
-    margin-bottom: var(--margin-bottom-2);
-}
-
-.form-section h6 {
+.profile-details h5 {
+    margin-bottom: 0.5rem;
     font-weight: 600;
-    margin-bottom: 10px;
-    color: #495057;
+    color: #333;
 }
 
-.form-row {
+.profile-details p {
+    margin-bottom: 0.25rem;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.leave-credits-section {
+    text-align: center;
+}
+
+.leave-credits-section h6 {
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.donut-chart {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: conic-gradient(#28a745 0deg 90deg, #e9ecef 90deg 360deg);
     display: flex;
-    gap: 15px;
-    margin-bottom: 15px;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    position: relative;
 }
 
-.form-row > div {
-    flex: 1;
+.donut-chart::before {
+    content: '';
+    width: 60px;
+    height: 60px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.donut-center-value {
+    position: relative;
+    z-index: 2;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #28a745;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.form-control:disabled {
+    background-color: #f8f9fa;
+    border-color: #e9ecef;
+    color: #666;
 }
 
 .download-btn {
-    background-color: var(--twitter-blue);
+    background-color: #007bff;
     color: white;
     border: none;
-    padding: 8px 16px;
-    border-radius: 5px;
-    text-decoration: none;
-    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
 }
 
 .download-btn:hover {
     background-color: #0056b3;
-    color: white;
 }
 
-.modal-actions {
-    display: flex;
-    gap: 10px;
-    justify-content: flex-end;
-    margin-top: var(--padding-2);
+.action-buttons {
+    border-top: 1px solid #dee2e6;
+    padding-top: 1.5rem;
+    margin-top: 2rem;
 }
 
 .btn-approve {
     background-color: #28a745;
+    border-color: #28a745;
     color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+}
+
+.btn-approve:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
 }
 
 .btn-reject {
     background-color: #dc3545;
+    border-color: #dc3545;
     color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
 }
 
-.rejection-reasons {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 15px;
+.btn-reject:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
 }
 
-.reason-btn {
-    background-color: transparent;
-    border: 1px solid #ddd;
-    padding: 8px 12px;
-    border-radius: 5px;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.reason-btn:hover,
-.reason-btn.active {
-    background-color: #007bff;
-    color: white;
-    border-color: #007bff;
-}
-
-.other-concerns textarea {
-    width: 100%;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 10px;
-    resize: vertical;
+textarea.form-control {
     min-height: 100px;
 }
 
+.reject-reason-btn {
+    padding: 0.75rem 1rem;
+    border: 1px solid #dee2e6;
+    background-color: white;
+    color: #333;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.reject-reason-btn:hover {
+    background-color: #f8f9fa;
+    border-color: #007bff;
+}
+
+.reject-reason-btn.active {
+    background-color: #007bff !important;
+    border-color: #007bff !important;
+    color: white !important;
+}
+
+.modal-lg {
+    max-width: 600px;
+}
+
+#rejectionReasonModal .modal-content {
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+#rejectionReasonModal h3 {
+    color: #333;
+    font-size: 1.5rem;
+}
+
+#rejectionReasonModal h4 {
+    color: #333;
+    font-size: 1.1rem;
+}
+
 @media (max-width: 768px) {
-    .header,
-    .pending-requests-header {
+    .header {
         padding: 15px;
         flex-direction: column;
         gap: 15px;
         text-align: center;
     }
 
-    .header h1,
-    .pending-requests-header h1 {
+    .header h1 {
         font-size: 1.5rem;
     }
 
@@ -620,6 +676,18 @@ tr:nth-child(even) {
 
     .mobile-toggle {
         display: block !important;
+    }
+
+    .modal-xl {
+        max-width: 95%;
+    }
+    
+    .profile-section .row {
+        text-align: center;
+    }
+    
+    .profile-img {
+        margin: 0 auto 1rem;
     }
 }
 

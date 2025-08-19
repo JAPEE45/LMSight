@@ -64,7 +64,7 @@
                 <button class="mobile-toggle me-3" onclick="toggleSidebar()">
                     <i class="fas fa-bars"></i>
                 </button>
-                <h1 class="nav-title">HR Dashboard</h1>
+                <h1 class="nav-title pending-request-h1">Pending Requests</h1>
             </div>
             <div class="button-main-cont">
                 <div class="button-cont">
@@ -163,11 +163,7 @@
             </div>
         </div>
 
-        <div class="col-md-9" style="width: 100%;">
-            <div class="pending-requests-header">
-                <h1>Pending Requests</h1>
-            </div>
-            
+        <div class="col-md-9" style="width: 100%;">            
             <div class="container-fluid">
   <div class="row g-2 align-items-center filters-section">
 
@@ -315,166 +311,173 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-        
-
-    <!-- Request Leave Modal -->
-        
+        </div>        
     </div>
 
-    <div class="modal fade" id="leaveModal" tabindex="-1">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5>Request Leave</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="employee-modal-info mb-3">
-                                    <h6>Juan Dela Cruz</h6>
-                                    <p class="mb-1">Department: Sales and Marketing</p>
-                                    <p class="mb-0">Job title: Sales Manager</p>
-                                </div>
-                                
-                                <div class="form-section">
-                                    <div class="form-row">
-                                        <div>
-                                            <h6>Leave Type</h6>
-                                            <input type="text" class="form-control" readonly>
-                                        </div>
-                                        <div>
-                                            <h6>Start Date</h6>
-                                            <input type="text" class="form-control" readonly>
-                                        </div>
-                                        <div>
-                                            <h6>End Date</h6>
-                                            <input type="text" class="form-control" readonly>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-section">
-                                    <div class="form-row">
-                                        <div>
-                                            <h6>Commutation</h6>
-                                            <input type="text" class="form-control" readonly>
-                                        </div>
-                                        <div>
-                                            <h6>Details of Leave</h6>
-                                            <input type="text" class="form-control" readonly>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-section">
-                                    <h6>Attached Document</h6>
-                                    <a href="#" class="download-btn">
-                                        Click here to download
-                                    </a>
-                                </div>
-                                
-                                <div class="form-section">
-                                    <h6>Comment</h6>
-                                    <textarea class="form-control" rows="3" readonly></textarea>
-                                </div>
-                                
-                                <div class="modal-actions">
-                                    <button type="button" class="btn btn-approve" onclick="hideLeaveModal()">Approve</button>
-                                    <button type="button" class="btn btn-reject" onclick="showRejectionModal()">Reject</button>
-                                </div>
-                            </div>
-                            
-                            <div class="col-md-4 text-center">
-                                <h6>Leave Credits</h6>
-                                <div class="leave-credits-circle">
-                                    1.25
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    <div class="modal fade" id="leaveModal" tabindex="-1" aria-labelledby="requestLeaveModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h1 class="modal-title" id="requestLeaveModalLabel">Request Leave</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
                 </div>
-            </div>
-        </div>
 
-        <!-- Rejection Modal -->
-        <div class="modal fade" id="rejectionModal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5>Reason for rejecting request</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <!-- Profile Section -->
+                    <div class="profile-section">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <div class="d-flex align-items-center">
+                                    <div class="profile-img">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                    <div class="profile-details">
+                                        <h5>Juan Dela Cruz</h5>
+                                        <p>Department: <strong>Sales and Marketing</strong></p>
+                                        <p>Job title: <strong>Sales Manager</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="leave-credits-section">
+                                    <h6>Leave Credits</h6>
+                                    <div class="donut-chart">
+                                        <div class="donut-center-value">1.25</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <div class="rejection-reasons">
-                            <button type="button" class="reason-btn" onclick="selectReason(this)">Insufficient Leave Credits</button>
-                            <button type="button" class="reason-btn" onclick="selectReason(this)">Unreasonable/Vague excuse</button>
-                            <button type="button" class="reason-btn" onclick="selectReason(this)">Lack of supporting documents</button>
-                            <button type="button" class="reason-btn" onclick="selectReason(this)">Operational needs</button>
-                            <button type="button" class="reason-btn" onclick="selectReason(this)">Short notice</button>
-                            <button type="button" class="reason-btn" onclick="selectReason(this)">Doesn't follow Omnibus rules</button>
+
+                    <!-- Form Fields -->
+                    <form>
+                        <!-- Row 1: Leave Type, Start Date, End Date -->
+                        <div class="row mb-3">
+                            <div class="col-md-4 mb-3">
+                                <label for="leaveType" class="form-label">Leave Type</label>
+                                <input type="text" class="form-control" id="leaveType" disabled>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="startDate" class="form-label">Start Date</label>
+                                <input type="text" class="form-control" id="startDate" disabled>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="endDate" class="form-label">End Date</label>
+                                <input type="text" class="form-control" id="endDate" disabled>
+                            </div>
                         </div>
-                        
-                        <div class="other-concerns">
-                            <h6>Other concerns:</h6>
-                            <textarea placeholder="Enter additional comments..."></textarea>
+
+                        <!-- Row 2: Commutation, Details of Leave -->
+                        <div class="row mb-3">
+                            <div class="col-md-6 mb-3">
+                                <label for="commutation" class="form-label">Commutation</label>
+                                <input type="text" class="form-control" id="commutation" disabled>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="leaveDetails" class="form-label">Details of Leave</label>
+                                <input type="text" class="form-control" id="leaveDetails" disabled>
+                            </div>
                         </div>
-                        
-                        <div class="modal-actions">
-                            <button type="button" class="btn btn-approve" onclick="hideRejectionModal()">Submit</button>
-                            <button type="button" class="btn" style="background-color: #6c757d; color: white;" data-bs-dismiss="modal">Cancel</button>
+
+                        <!-- Attached Document -->
+                        <div class="row mb-3">
+                            <div class="col-12 mb-3">
+                                <label for="attachedDoc" class="form-label">Attached Document</label>
+                                <div>
+                                    <button type="button" class="download-btn" onclick="downloadReport('inspection_summary_q1.pdf')">
+                                        Click here to download
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Comment -->
+                        <div class="row mb-3">
+                            <div class="col-12 mb-3">
+                                <label for="comment" class="form-label">Comment</label>
+                                <textarea class="form-control" id="comment" disabled></textarea>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <div class="d-flex justify-content-center gap-3">
+                            <button type="button" class="btn btn-approve" onclick="hideLeaveModal()">Approve</button>
+                            <button type="button" class="btn btn-reject" onclick="showRejectionModal()">Reject</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+
+        <!-- Rejection Reason Modal -->
+    <div class="modal fade" id="rejectionModal" tabindex="-1" aria-labelledby="rejectionReasonModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <!-- Modal Body -->
+                <div class="modal-body p-4">
+                    <h3 class="mb-4 text-center fw-bold">Reason for rejecting request</h3>
+                    
+                    <!-- Rejection Reason Buttons -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-outline-secondary w-100 reject-reason-btn" data-reason="Insufficient Leave Credits">
+                                Insufficient Leave Credits
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-outline-secondary w-100 reject-reason-btn" data-reason="Unreasonable/Vague excuse">
+                                Unreasonable/Vague excuse
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-outline-secondary w-100 reject-reason-btn" data-reason="Lack of supporting documents">
+                                Lack of supporting documents
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-outline-secondary w-100 reject-reason-btn" data-reason="Operational needs">
+                                Operational needs
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-outline-secondary w-100 reject-reason-btn" data-reason="Short notice">
+                                Short notice
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-outline-secondary w-100 reject-reason-btn" data-reason="Doesnt follow Omnibus rules">
+                                Doesnt follow Omnibus rules
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Other Concerns -->
+                    <div class="mb-4">
+                        <h4 class="mb-3 fw-bold">Other concerns:</h4>
+                        <textarea class="form-control" id="rejectOtherReasonTextarea" rows="4" placeholder="Enter additional comments or concerns..."></textarea>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex justify-content-center gap-3">
+                        <button type="button" class="btn btn-success px-4 py-2 fw-bold" id="submitRejectBtn" onclick="hideRejectionModal()">Submit</button>
+                        <button type="button" class="btn btn-success px-4 py-2 fw-bold" data-bs-dismiss="modal" >Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script>
-        function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    sidebar.classList.toggle('show');
-}
-        let selectedReasons = [];
 
-        function showLeaveModal() {
-            const modal = new bootstrap.Modal(document.getElementById('leaveModal'));
-            modal.show();
-        }
-
-        function hideLeaveModal() {
-            const modal = bootstrap.Modal.getInstance(document.getElementById('leaveModal'));
-            modal.hide();
-        }
-
-        function hideRejectionModal() {
-            const modal = bootstrap.Modal.getInstance(document.getElementById('rejectionModal'));
-            modal.hide();
-        }
-
-        function showRejectionModal() {
-            const leaveModal = bootstrap.Modal.getInstance(document.getElementById('leaveModal'));
-            leaveModal.hide();
-            
-            setTimeout(() => {
-                const rejectionModal = new bootstrap.Modal(document.getElementById('rejectionModal'));
-                rejectionModal.show();
-            }, 300);
-        }
-
-        function selectReason(button) {
-            const reason = button.textContent;
-
-            if (button.classList.contains('active')) {
-                button.classList.remove('active');
-                selectedReasons = selectedReasons.filter(r => r !== reason);
-            } else {
-                button.classList.add('active');
-                selectedReasons.push(reason);
-            }
-        }
-    </script>
-    <script src="../../assets/scripts/bootstrap/hr_dashboard.js"></script>
+    <script src="../../assets/scripts/popups/notification.js"></script>
+    <script src="../../assets/scripts/popups/sidebar.js"></script>
+    <script src="../../assets/scripts/bootstrap/hr-requests.js"></script>
 </body>
 </html>

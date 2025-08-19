@@ -1,18 +1,3 @@
-document.getElementById('notification-btn').addEventListener('click', function(e) {
-    e.stopPropagation();
-    const panel = document.getElementById('notificationsPanel');
-    panel.classList.toggle('show');
-});
-
-document.addEventListener('click', function(event) {
-    const panel = document.getElementById('notificationsPanel');
-    const bell = document.getElementById('notification-btn');
-    
-    if (!panel.contains(event.target) && !bell.contains(event.target)) {
-        panel.classList.remove('show');
-    }
-});
-
 // Weekly Chart
 const weeklyCtx = document.getElementById('weeklyChart').getContext('2d');
 const weeklyChart = new Chart(weeklyCtx, {
@@ -194,24 +179,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-});
-
-// Mobile Sidebar Toggle
-function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    sidebar.classList.toggle('show');
-}
-
-// Close sidebar when clicking outside on mobile
-document.addEventListener('click', function(event) {
-    const sidebar = document.getElementById('sidebar');
-    const toggleBtn = document.querySelector('.mobile-toggle');
-    
-    if (window.innerWidth <= 768) {
-        if (!sidebar.contains(event.target) && !toggleBtn.contains(event.target)) {
-            sidebar.classList.remove('show');
-        }
-    }
 });
 
 const pieDonutOptions = {
