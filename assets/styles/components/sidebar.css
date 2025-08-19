@@ -1,0 +1,218 @@
+@import url('../variables.css');
+
+.sidebar {
+    background-color: var(--primary-background);
+    min-height: 100vh;
+    color: white;
+    position: fixed;
+    width: 300px;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.sidebar h2 {
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+.sidebar a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 20px;
+    transition: background 0.3s;
+}
+
+.sidebar a:hover {
+    background-color: #354f52;
+}
+
+.sidebar .main-img-cont {
+    height: 8rem;
+    display: flex;
+    justify-content: center;
+}
+
+.sidebar .main-img-cont .img-cont {
+    height: 100%;
+    border-radius: 50%;
+    border: 5px solid white;
+    box-shadow: 0 0 0.2rem white;
+    position: relative;
+}
+
+.sidebar .button-cont a {
+    color: white;
+    border-radius: unset;
+    padding: 1rem;
+    width: 100%;
+    font-weight: 550;
+    letter-spacing: 1px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    display: flex;
+    font-size: 0.9rem;
+    gap: 1px;
+}
+
+.sidebar .button-cont a:hover {
+    background: rgba(10,10,10, 0.2);
+}
+
+.sidebar .button-cont a i {
+    background: transparent;
+    color: white;
+}
+
+.sidebar .main-img-cont .img-cont i {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 7px;
+    background: white;
+    color: black;
+    border-radius: 50%;
+    box-shadow: 0 0 0.2rem white;
+    cursor: pointer;
+}
+
+.sidebar .main-img-cont .img-cont img {
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+}
+
+.sidebar .main-img-cont .img-cont input[type="file"] {
+    display: none;
+}
+
+.sidebar .bot-sec {
+    padding: 1rem;
+}
+
+.sidebar .name-cont {
+    margin-top: 25px;
+    justify-self: center;
+}
+
+.sidebar p {
+    margin-bottom: 0;
+}
+
+.sidebar .name-cont .name {
+    text-align: center;
+    max-width: 225px;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.sidebar .details-cont {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    line-height: 1.5rem;
+    font-size: 0.8rem;
+    color: rgb(210, 210, 210);
+}
+
+.sidebar .jobs-desc-cont {
+    line-height: 1.5rem;
+    padding: 1rem;
+    border-top: 1px solid rgb(129, 129, 129);
+    border-bottom : 1px solid rgb(129, 129, 129);
+    font-size: 0.8rem;
+    color: rgb(210, 210, 210);
+}
+
+
+
+.sidebar .button-cont button {
+    color: white;
+    border-radius: unset;
+    padding: 1.5rem 1rem;
+    width: 100%;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    text-align: left;
+    justify-content: flex-start;
+    display: block;
+}
+
+
+.sidebar .button-cont button:hover {
+    background: rgba(10,10,10, 0.2);
+}
+
+.sidebar .button-cont button i {
+    background: transparent;
+    color: white;
+}
+
+.sidebar .main-img-cont .img-cont i {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 7px;
+    background: white;
+    color: black;
+    border-radius: 50%;
+    box-shadow: 0 0 0.2rem white;
+    cursor: pointer;
+}
+
+.sidebar .main-img-cont .img-cont img {
+    height: 100%;
+    border-radius: 50%;
+}
+
+.sidebar .main-img-cont .img-cont input[type="file"] {
+    display: none;
+}
+
+.sidebar .bot-sec {
+    padding: 1rem;
+}
+
+.sidebar .name-cont {
+    margin-top: 25px;
+    justify-self: center;
+}
+
+.sidebar .name-cont .name {
+    text-align: center;
+    max-width: 225px;
+}
+
+.sidebar .details-cont {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    line-height: 1.5rem;
+    font-size: 0.8rem;
+    color: rgb(210, 210, 210);
+}
+
+.sidebar .jobs-desc-cont {
+    line-height: 1.5rem;
+    padding: 1rem;
+    border-top: 1px solid rgb(129, 129, 129);
+    border-bottom : 1px solid rgb(129, 129, 129);
+    font-size: 0.8rem;
+    color: rgb(210, 210, 210);
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+        width: 75%;
+    }
+
+    .sidebar.show {
+        transform: translateX(0);
+    }
+}

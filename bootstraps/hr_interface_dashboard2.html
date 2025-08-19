@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALIS - HR Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-background: #2f3e46;
+            --primary-gray: #f5f5f5;
+            --twitter-blue: #008AD8;
+            --border-radius-card: 10px;
+            --border-radius-form: 20px;
+            --padding-1: 10px;
+            --padding-2: 20px;
+            --margin-bottom-2: 20px;
+            --shadow-1: 0 2px 5px rgba(0,0,0,0.1);
+            --green: #238b45;
+            --yellow: #dca907;
+        }
+
+        body {
+            background-color: var(--primary-gray);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .sidebar {
+            background-color: var(--primary-background);
+            min-height: 100vh;
+            color: white;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 300px;
+            padding: var(--padding-2);
+            box-shadow: var(--shadow-1);
+        }
+
+        .sidebar h2 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+        }
+
+        .profile-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: #ccc;
+            margin: 0 auto 1rem;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-img i {
+            font-size: 3rem;
+            color: #999;
+        }
+
+        .profile-img .camera-icon {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background-color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-img .camera-icon i {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .profile-name {
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .employee-info {
+            text-align: left;
+            border-bottom: 1px solid #4a5a62;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .employee-info p {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        .leave-summary {
+            margin-bottom: 2rem;
+        }
+
+        .leave-summary p {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: auto;
+        }
+
+        .main-content {
+            margin-left: 300px;
+            padding: var(--padding-2);
+        }
+
+        .header {
+            background-color: white;
+            padding: var(--padding-2);
+            border-radius: var(--border-radius-card);
+            box-shadow: var(--shadow-1);
+            margin-bottom: var(--margin-bottom-2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2rem;
+            color: var(--primary-background);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--primary-background);
+            color: white;
+            padding: 8px 15px;
+            border-radius: var(--border-radius-form);
+        }
+
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stats-cards {
+            margin-bottom: var(--margin-bottom-2);
+        }
+
+        .stats-card {
+            background-color: white;
+            padding: var(--padding-2);
+            border-radius: var(--border-radius-card);
+            box-shadow: var(--shadow-1);
+            text-align: center;
+            height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .stats-card.earned {
+            background: linear-gradient(135deg, var(--twitter-blue), #0066b3);
+            color: white;
+        }
+
+        .stats-card.used {
+            background: linear-gradient(135deg, var(--green), #1e7a3a);
+            color: white;
+        }
+
+        .stats-card.remaining {
+            background: linear-gradient(135deg, var(--yellow), #b8920a);
+            color: white;
+        }
+
+        .stats-card h3 {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .stats-card .number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+
+        .stats-card .subtitle {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .vacation-section {
+            background-color: white;
+            padding: var(--padding-2);
+            border-radius: var(--border-radius-card);
+            box-shadow: var(--shadow-1);
+        }
+
+        .vacation-section h2 {
+            color: var(--primary-background);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .chart-container {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .chart {
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+
+        .donut-chart {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: conic-gradient(
+                var(--green) 0deg 87deg,
+                #8B5CF6 87deg 360deg
+            );
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .donut-chart::before {
+            content: '';
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: white;
+            position: absolute;
+        }
+
+        .chart-labels {
+            flex: 1;
+        }
+
+        .chart-info {
+            margin-bottom: 1rem;
+        }
+
+        .chart-info h4 {
+            color: var(--primary-background);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .chart-info p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .legend {
+            margin-top: 1rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 0.5rem;
+        }
+
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+        }
+
+        .legend-color.remaining {
+            background-color: #8B5CF6;
+        }
+
+        .legend-color.used {
+            background-color: var(--green);
+        }
+
+        .percentage {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: relative;
+                min-height: auto;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .chart-container {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>ALIS</h2>
+        
+        <div class="profile-section">
+            <div class="profile-img">
+                <i class="fas fa-user"></i>
+                <div class="camera-icon">
+                    <i class="fas fa-camera"></i>
+                </div>
+            </div>
+            <div class="profile-name">Juan Dela Cruz</div>
+        </div>
+
+        <div class="employee-info">
+            <p><strong>Employee ID:</strong> E0956-T25</p>
+            <p><strong>Department:</strong> HR</p>
+            <p><strong>Job title:</strong> HR Manager</p>
+            <p><strong>Employment Type:</strong> Regular</p>
+        </div>
+
+        <div class="leave-summary">
+            <p><strong>Vacation Leave:</strong> 3 / 5 used</p>
+            <p><strong>Sick Leave:</strong> 3 / 5 used</p>
+            <p><strong>Casual Leave:</strong> 5 / 10 used</p>
+        </div>
+
+        <button class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i>
+            Log Out
+        </button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <h1>HR Dashboard</h1>
+            <div class="header-right">
+                <i class="fas fa-bell"></i>
+                <i class="fas fa-cog"></i>
+                <i class="fas fa-envelope"></i>
+            </div>
+        </div>
+
+        <!-- User Header -->
+        <div class="user-info" style="background-color: var(--primary-background); color: white; padding: 15px 20px; border-radius: var(--border-radius-form); margin-bottom: var(--margin-bottom-2); display: flex; align-items: center; gap: 10px;">
+            <div class="user-avatar">
+                <i class="fas fa-user" style="color: #666; font-size: 0.8rem;"></i>
+            </div>
+            <span style="font-weight: 500;">LeBron James</span>
+            <span style="margin-left: auto; font-weight: 500;">MASSO</span>
+        </div>
+
+        <!-- Leave Credits Section -->
+        <h3 style="color: var(--primary-background); margin-bottom: 1rem;">Leave Credits as of June 2025</h3>
+        <div class="row stats-cards">
+            <div class="col-lg-4 col-md-6 mb-3">
+                <div class="stats-card earned">
+                    <h3>Earned Leave</h3>
+                    <div class="number">11.167 days</div>
+                    <div class="subtitle">(as of June)</div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-3">
+                <div class="stats-card used">
+                    <h3>Used Leave</h3>
+                    <div class="number">3 days</div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-3">
+                <div class="stats-card remaining">
+                    <h3>Remaining Balance</h3>
+                    <div class="number">9.417 days</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vacation Leave Utilization -->
+        <div class="vacation-section">
+            <h2>Vacation Leave Utilization</h2>
+            <div class="chart-container">
+                <div class="chart">
+                    <div class="donut-chart">
+                        <div style="position: absolute; color: var(--primary-background); font-weight: bold; z-index: 10;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.2rem;">75.8%</div>
+                                <div style="font-size: 0.8rem;">24.2%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-labels">
+                    <div class="chart-info">
+                        <h4>Date & Action Take on Application for Leave</h4>
+                        <p>6/28, 29, 30/2025</p>
+                    </div>
+                    <div class="chart-info">
+                        <h4>Monthly Accrual Rası</h4>
+                        <p>1.25 days/month</p>
+                    </div>
+                    <div class="chart-info">
+                        <h4>Next Accrual Date</h4>
+                        <p>July 1, 2025</p>
+                    </div>
+                    <div class="legend">
+                        <div class="legend-item">
+                            <div class="legend-color remaining"></div>
+                            <span><strong>Remaining:</strong> 9.417 days</span>
+                            <span class="percentage">75.8%</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color used"></div>
+                            <span><strong>Used:</strong> 3 days</span>
+                            <span class="percentage">24.2%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

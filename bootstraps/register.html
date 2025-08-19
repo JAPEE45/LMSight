@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALIS - Register Account</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-background: #2f3e46;
+            --primary-gray: #f5f5f5;
+            --twitter-blue: #008AD8;
+            --border-radius-card: 10px;
+            --border-radius-form: 20px;
+            --padding-1: 10px;
+            --padding-2: 20px;
+            --margin-bottom-2: 20px;
+            --shadow-1: 0 2px 5px rgba(0,0,0,0.1);
+            --green-color: #238b45;
+            --yellow-color: #dca907;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--primary-background) 0%, #1a2428 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--padding-2);
+        }
+
+        .registration-container {
+            background: white;
+            border-radius: var(--border-radius-form);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+            max-width: 1000px;
+            width: 100%;
+            min-height: 600px;
+        }
+
+        .registration-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 600px;
+        }
+
+        /* Left Side - Branding */
+        .brand-section {
+            background: linear-gradient(135deg, var(--primary-background) 0%, var(--twitter-blue) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-20px, -20px) rotate(1deg); }
+        }
+
+        .brand-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .brand-logo {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .brand-logo i {
+            font-size: 2rem;
+            color: white;
+        }
+
+        .brand-title {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            letter-spacing: 2px;
+        }
+
+        .brand-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .feature-list {
+            list-style: none;
+            text-align: left;
+            max-width: 300px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .feature-item i {
+            color: var(--yellow-color);
+            margin-right: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        /* Right Side - Form */
+        .form-section {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-title {
+            color: var(--primary-background);
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-subtitle {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            color: var(--primary-background);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: var(--border-radius-card);
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .form-control:focus {
+            border-color: var(--twitter-blue);
+            box-shadow: 0 0 0 0.2rem rgba(0, 138, 216, 0.1);
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            cursor: pointer;
+            z-index: 5;
+        }
+
+        .row-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--twitter-blue), var(--green-color));
+            border: none;
+            border-radius: var(--border-radius-card);
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 138, 216, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e9ecef;
+        }
+
+        .divider span {
+            padding: 0 1rem;
+        }
+
+        .social-login {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-btn {
+            flex: 1;
+            border: 2px solid #e9ecef;
+            background: white;
+            color: #666;
+            border-radius: var(--border-radius-card);
+            padding: 0.75rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .social-btn:hover {
+            border-color: #ddd;
+            background: #f8f9fa;
+            color: #333;
+            text-decoration: none;
+            transform: translateY(-1px);
+        }
+
+        .social-btn i {
+            margin-right: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .google { color: #db4437; }
+        .microsoft { color: #0078d4; }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #666;
+        }
+
+        .login-link a {
+            color: var(--twitter-blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .form-check {
+            margin: 1rem 0;
+        }
+
+        .form-check-input {
+            border: 2px solid #e9ecef;
+        }
+
+        .form-check-input:checked {
+            background-color: var(--twitter-blue);
+            border-color: var(--twitter-blue);
+        }
+
+        .form-check-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .form-check-label a {
+            color: var(--twitter-blue);
+            text-decoration: none;
+        }
+
+        .form-check-label a:hover {
+            text-decoration: underline;
+        }
+
+        /* Animations */
+        .registration-container {
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: var(--padding-1);
+            }
+
+            .registration-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .brand-section {
+                padding: 2rem 1.5rem;
+                min-height: auto;
+            }
+
+            .brand-title {
+                font-size: 2rem;
+            }
+
+            .feature-list {
+                display: none;
+            }
+
+            .form-section {
+                padding: 1.5rem;
+            }
+
+            .row-group {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .social-login {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .registration-container {
+                border-radius: var(--border-radius-card);
+                margin: var(--padding-1);
+            }
+
+            .form-section {
+                padding: 1rem;
+            }
+
+            .brand-section {
+                padding: 1.5rem 1rem;
+            }
+        }
+
+        /* Loading Animation */
+        .btn-loading {
+            position: relative;
+            color: transparent !important;
+        }
+
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            margin-left: -10px;
+            margin-top: -10px;
+            border: 2px solid transparent;
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="registration-container">
+        <div class="registration-grid">
+            <!-- Left Side - Branding -->
+            <div class="brand-section">
+                <div class="brand-content">
+                    <div class="brand-logo">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h1 class="brand-title">ALIS</h1>
+                    <p class="brand-subtitle">Automated Leave Information System</p>
+                    
+                    <ul class="feature-list">
+                        <li class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Easy leave application process</span>
+                        </li>
+                        <li class="feature-item">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Real-time leave tracking</span>
+                        </li>
+                        <li class="feature-item">
+                            <i class="fas fa-users"></i>
+                            <span>Team collaboration tools</span>
+                        </li>
+                        <li class="feature-item">
+                            <i class="fas fa-mobile-alt"></i>
+                            <span>Mobile-friendly interface</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Right Side - Registration Form -->
+            <div class="form-section">
+                <div class="form-header">
+                    <h2 class="form-title">Create Account</h2>
+                    <p class="form-subtitle">Join ALIS and streamline your leave management</p>
+                </div>
+
+                <form id="registrationForm">
+                    <div class="row-group">
+                        <div class="form-group">
+                            <label class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="firstName" placeholder="Enter first name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="lastName" placeholder="Enter last name" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                    </div>
+
+                    <div class="row-group">
+                        <div class="form-group">
+                            <label class="form-label">Employee ID</label>
+                            <input type="text" class="form-control" id="employeeId" placeholder="E.g., E0956-T25" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Department</label>
+                            <select class="form-control" id="department" required>
+                                <option value="">Select department</option>
+                                <option value="HR">Human Resources</option>
+                                <option value="IT">Information Technology</option>
+                                <option value="Finance">Finance</option>
+                                <option value="Marketing">Marketing</option>
+                                <option value="Operations">Operations</option>
+                                <option value="Sales">Sales</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Job Title</label>
+                        <input type="text" class="form-control" id="jobTitle" placeholder="Enter your job title" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="password" placeholder="Create a password" required>
+                            <span class="input-icon" onclick="togglePassword('password')">
+                                <i class="far fa-eye" id="passwordIcon"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Confirm Password</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm your password" required>
+                            <span class="input-icon" onclick="togglePassword('confirmPassword')">
+                                <i class="far fa-eye" id="confirmPasswordIcon"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="terms" required>
+                        <label class="form-check-label" for="terms">
+                            I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100" id="registerBtn">
+                        Create Account
+                    </button>
+                </form>
+
+                <div class="divider">
+                    <span>Or register with</span>
+                </div>
+
+                <div class="social-login">
+                    <a href="#" class="social-btn">
+                        <i class="fab fa-google google"></i>
+                        Google
+                    </a>
+                    <a href="#" class="social-btn">
+                        <i class="fab fa-microsoft microsoft"></i>
+                        Microsoft
+                    </a>
+                </div>
+
+                <div class="login-link">
+                    Already have an account? <a href="#">Sign in here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Password toggle functionality
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            const icon = document.getElementById(fieldId + 'Icon');
+            
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                field.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+
+        // Form validation and submission
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const registerBtn = document.getElementById('registerBtn');
+            
+            // Basic validation
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters long!');
+                return;
+            }
+            
+            // Add loading state
+            registerBtn.classList.add('btn-loading');
+            registerBtn.disabled = true;
+            
+            // Simulate API call
+            setTimeout(() => {
+                registerBtn.classList.remove('btn-loading');
+                registerBtn.disabled = false;
+                
+                // Success message (in real implementation, redirect to dashboard or login)
+                alert('Registration successful! Please check your email to verify your account.');
+                
+                // Reset form
+                document.getElementById('registrationForm').reset();
+            }, 2000);
+        });
+
+        // Real-time password matching validation
+        document.getElementById('confirmPassword').addEventListener('input', function() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = this.value;
+            
+            if (confirmPassword && password !== confirmPassword) {
+                this.style.borderColor = '#dc3545';
+            } else {
+                this.style.borderColor = '#e9ecef';
+            }
+        });
+
+        // Employee ID formatting
+        document.getElementById('employeeId').addEventListener('input', function(e) {
+            let value = e.target.value.toUpperCase();
+            // Remove any non-alphanumeric characters except hyphens
+            value = value.replace(/[^A-Z0-9-]/g, '');
+            e.target.value = value;
+        });
+
+        // Form field animations
+        document.querySelectorAll('.form-control').forEach(field => {
+            field.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+            
+            field.addEventListener('blur', function() {
+                this.parentElement.classList.remove('focused');
+            });
+        });
+    </script>
+</body>
+</html>
