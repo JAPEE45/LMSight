@@ -12,540 +12,193 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
       rel="stylesheet"
     />
-    <style>
-      :root {
-        --sidebar-bg: #475569;
-        --sidebar-text: #e2e8f0;
-        --main-bg: #f8fafc;
-        --card-bg: #ffffff;
-        --border-color: #e2e8f0;
-        --primary-color: #0f172a;
-        --secondary-color: #64748b;
-      }
-
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          sans-serif;
-        background-color: var(--main-bg);
-        margin: 0;
-        height: 100vh;
-      }
-
-      .sidebar {
-        background-color: var(--sidebar-bg);
-        color: var(--sidebar-text);
-        min-height: 100vh;
-        padding: 2rem 0;
-        position: fixed;
-        width: 300px;
-        left: 0;
-        top: 0;
-        z-index: 1000;
-      }
-
-      .sidebar .brand {
-        font-size: 2rem;
-        font-weight: bold;
-        padding: 0 2rem;
-        margin-bottom: 3rem;
-        color: white;
-      }
-
-      .user-profile {
-        text-align: center;
-        padding: 0 2rem;
-        margin-bottom: 2rem;
-      }
-
-      .profile-avatar {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        background-color: #94a3b8;
-        margin: 0 auto 1rem;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .profile-avatar i {
-        font-size: 3rem;
-        color: white;
-      }
-
-      .profile-avatar::after {
-        content: "";
-        position: absolute;
-        bottom: 5px;
-        right: 5px;
-        width: 24px;
-        height: 24px;
-        background-color: var(--sidebar-bg);
-        border: 2px solid white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .profile-avatar::before {
-        content: "+";
-        position: absolute;
-        bottom: 5px;
-        right: 5px;
-        width: 24px;
-        height: 24px;
-        background-color: #6b7280;
-        color: white;
-        border: 2px solid white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 14px;
-        z-index: 1;
-      }
-
-      .user-name {
-        font-size: 1.5rem;
-        font-weight: 600;
-        margin-bottom: 2rem;
-      }
-
-      .user-details {
-        text-align: left;
-        font-size: 0.9rem;
-        line-height: 1.8;
-        margin-bottom: 2rem;
-      }
-
-      .user-details div {
-        margin-bottom: 0.5rem;
-      }
-
-      .leave-info {
-        font-size: 0.85rem;
-        line-height: 1.6;
-        margin-bottom: 2rem;
-      }
-
-      .logout-btn {
-        background: none;
-        border: none;
-        color: var(--sidebar-text);
-        font-size: 1rem;
-        padding: 0.5rem 2rem;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .logout-btn:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-      }
-
-      .main-content {
-        margin-left: 300px;
-        min-height: 100vh;
-        padding: 0;
-      }
-
-      .top-bar {
-        background: white;
-        padding: 1rem 2rem;
-        border-bottom: 1px solid var(--border-color);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .page-title {
-        font-size: 2rem;
-        font-weight: 600;
-        color: var(--primary-color);
-        margin: 0;
-      }
-
-      .top-bar-icons {
-        display: flex;
-        gap: 1rem;
-        align-items: center;
-      }
-
-      .top-bar-icons i {
-        font-size: 1.2rem;
-        color: var(--secondary-color);
-        cursor: pointer;
-      }
-
-      .content-area {
-        padding: 2rem;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .user-list-header {
-        padding: 1.5rem;
-        border-radius: 8px;
-        border: 1px solid var(--border-color);
-        margin-bottom: 1rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .user-list-title {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: var(--primary-color);
-        margin: 0;
-      }
-
-      .user-count {
-        background-color: #f1f5f9;
-        color: var(--secondary-color);
-        padding: 0.25rem 0.75rem;
-        border-radius: 16px;
-        font-size: 0.9rem;
-        margin-left: 1rem;
-      }
-
-      .header-controls {
-        display: flex;
-        gap: 1rem;
-        align-items: center;
-      }
-
-      .search-container {
-        position: relative;
-      }
-
-      .search-input {
-        padding: 0.5rem 2.5rem 0.5rem 1rem;
-        border: 1px solid var(--border-color);
-        border-radius: 6px;
-        width: 250px;
-        font-size: 0.9rem;
-      }
-
-      .search-icon {
-        position: absolute;
-        right: 0.75rem;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--secondary-color);
-      }
-
-      .filter-btn {
-        background: white;
-        border: 1px solid var(--border-color);
-        padding: 0.5rem 1rem;
-        border-radius: 6px;
-        color: var(--secondary-color);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        cursor: pointer;
-      }
-
-      .user-table-btn {
-        background: var(--primary-color);
-        color: white;
-        border: none;
-        padding: 0.5rem 1rem;
-        border-radius: 6px;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        cursor: pointer;
-      }
-
-      .form-section {
-        background: white;
-        border-radius: 8px;
-        border: 1px solid var(--border-color);
-      }
-
-      .section-header {
-        padding: 1.5rem;
-        border-bottom: 1px solid var(--border-color);
-      }
-
-      .section-title {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: var(--primary-color);
-        margin: 0;
-      }
-
-      .section-content {
-        padding: 2rem;
-      }
-
-      .form-group {
-        margin-bottom: 1.5rem;
-      }
-
-      .form-label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-weight: 500;
-        color: var(--primary-color);
-        font-size: 0.9rem;
-      }
-
-      .form-control {
-        width: 100%;
-        padding: 0.75rem;
-        border: 1px solid var(--border-color);
-        border-radius: 6px;
-        font-size: 0.9rem;
-        background: white;
-      }
-
-      .form-control:focus {
-        outline: none;
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-      }
-
-      .date-input {
-        position: relative;
-      }
-
-      .file-input-container {
-        border: 2px dashed var(--border-color);
-        padding: 1rem;
-        text-align: center;
-        border-radius: 6px;
-        color: var(--secondary-color);
-        cursor: pointer;
-      }
-
-      .form-note {
-        font-size: 0.8rem;
-        color: var(--secondary-color);
-        margin-top: 0.5rem;
-        font-style: italic;
-      }
-
-      .save-btn {
-        background: var(--primary-color);
-        color: white;
-        border: none;
-        padding: 1rem 3rem;
-        border-radius: 6px;
-        font-size: 1rem;
-        font-weight: 500;
-        cursor: pointer;
-        width: 100%;
-        margin-top: 2rem;
-      }
-
-      .save-btn:hover {
-        background: #1e293b;
-      }
-
-      .save-btn:disabled {
-        background: #94a3b8;
-        cursor: not-allowed;
-      }
-
-      .save-btn.loading {
-        background: #1e293b;
-        position: relative;
-        color: transparent;
-        min-height: 3.5rem; /* Maintain button height */
-      }
-
-      .loading-content {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        white-space: nowrap;
-      }
-
-      .loading-spinner {
-        width: 20px;
-        height: 20px;
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        border-top: 2px solid white;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-      }
-
-      .loading-text {
-        color: white;
-        font-size: 1rem;
-        font-weight: 500;
-      }
-
-      @keyframes spin {
-        0% {
-          transform: translate(-50%, -50%) rotate(0deg);
-        }
-        100% {
-          transform: translate(-50%, -50%) rotate(360deg);
-        }
-      }
-
-      .success-content {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        white-space: nowrap;
-      }
-
-      .success-checkmark {
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        background: #10b981;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .success-checkmark::after {
-        content: "✓";
-        color: white;
-        font-size: 12px;
-        font-weight: bold;
-      }
-
-      .success-text {
-        color: white;
-        font-size: 1rem;
-        font-weight: 500;
-      }
-
-      @media (max-width: 992px) {
-        .sidebar {
-          transform: translateX(-100%);
-          transition: transform 0.3s ease;
-        }
-
-        .main-content {
-          margin-left: 0;
-        }
-
-        .header-controls {
-          flex-wrap: wrap;
-          gap: 0.5rem;
-        }
-
-        .search-input {
-          width: 200px;
-        }
-      }
-
-      @media (max-width: 768px) {
-        .top-bar {
-          padding: 1rem;
-          flex-direction: column;
-          gap: 1rem;
-          align-items: flex-start;
-        }
-
-        .content-area {
-          padding: 1rem;
-        }
-
-        .user-list-header {
-          flex-direction: column;
-          gap: 1rem;
-          align-items: flex-start;
-        }
-
-        .header-controls {
-          width: 100%;
-          justify-content: space-between;
-        }
-
-        .search-input {
-          width: 100%;
-          max-width: 250px;
-        }
-
-        .section-content {
-          padding: 1rem;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="../../assets/styles/components/sidebar.css" />
+    <link rel="stylesheet" href="../../assets/styles/components/navbar.css" />
+    <link
+      rel="stylesheet"
+      href="../../assets/styles/components/notification.css"
+    />
+    <link rel="stylesheet" href="../../assets/styles/layouts/admin.css" />
   </head>
   <body>
     <!-- Sidebar -->
-    <div class="sidebar">
-      <div class="brand">ALIS</div>
-
-      <div class="user-profile">
-        <div class="profile-avatar">
-          <i class="fas fa-user"></i>
+    <div class="sidebar" id="sidebar">
+      <h2>ALIS</h2>
+      <div class="main-img-cont">
+        <div class="img-cont">
+          <img
+            src="../../assets/images/blank-profile-picture-973460.svg"
+            alt=""
+          />
+          <input type="file" accept="image/*" id="image_file" />
+          <label for="image_file">
+            <i class="fa-solid fa-camera"></i>
+          </label>
         </div>
-        <div class="user-name">Juan Dela Cruz</div>
       </div>
-
-      <div class="user-details px-4">
-        <div><strong>Employee ID:</strong> E0956-T25</div>
-        <div><strong>Department:</strong> HR</div>
-        <div><strong>Job title:</strong> HR Manager</div>
-        <div><strong>Employment Type:</strong> Regular</div>
+      <div class="name-cont">
+        <h3 class="name">Juan Dela Cruz</h3>
       </div>
-
-      <div class="leave-info px-4">
-        <div><strong>Vacation Leave:</strong> 3 / 5 used</div>
-        <div><strong>Sick Leave:</strong> 3 / 5 used</div>
-        <div><strong>Casual Leave:</strong> 5 / 10 used</div>
+      <div class="bot-sec">
+        <div class="jobs-desc-cont">
+          <p>Employee ID: E0956-T25</p>
+          <p>Department: HR</p>
+          <p>Job title: HR Manager</p>
+          <p>Employment Type: Regular</p>
+        </div>
+        <div class="details-cont">
+          <p>Vacation Leave: 3 / 5 used</p>
+          <p>Sick Leave: 3 / 5 used</p>
+          <p>Casual Leave: 5 / 10 used</p>
+        </div>
       </div>
-
-      <button class="logout-btn">
-        <i class="fas fa-sign-out-alt"></i>
-        Log Out
-      </button>
+      <div class="button-cont">
+        <a href="login_interface.html">
+          Log Out
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </a>
+      </div>
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
-      <!-- Top Bar -->
-      <div class="top-bar">
-        <h1 class="page-title">User Management</h1>
-        <div class="top-bar-icons">
-          <i class="fas fa-th-large"></i>
-          <i class="fas fa-users"></i>
-          <i class="fas fa-bell"></i>
+      <div class="main-header">
+        <div class="d-flex align-items-center">
+          <button class="mobile-toggle me-3" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+          </button>
+          <h1 class="nav-title pending-request-h1">User Management</h1>
+        </div>
+        <div class="button-main-cont">
+          <div class="button-cont">
+            <a id="dashboard_nav" href="./hr_dashboard.html">
+              <i class="fa-solid fa-table-columns"></i>
+            </a>
+            <p class="popup">Dashboard</p>
+          </div>
+          <div class="button-cont">
+            <a id="requests_nav" href="#">
+              <i class="fa-solid fa-users active"></i>
+            </a>
+            <p class="popup">Users</p>
+          </div>
+          <div class="button-cont">
+            <button class="notif-btn" id="notification-btn">
+              <i class="fa-solid fa-bell"></i>
+            </button>
+            <p class="popup">Notification</p>
+            <div class="notif-marker active"></div>
+            <!-- Notifications Panel -->
+            <div class="notifications-panel" id="notificationsPanel">
+              <div class="notifications-header">
+                <h5>Notifications</h5>
+              </div>
+              <div class="notifications-list">
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- Content Area -->
-      <div class="content-area">
+      <div class="user-management-card">
         <!-- User List Header -->
         <div class="user-list-header">
-          <div class="d-flex align-items-center">
-            <h2 class="user-list-title">User list</h2>
-            <span class="user-count">180 users</span>
-          </div>
-          <div class="header-controls">
-            <button class="user-table-btn">
-              <i class="fas fa-arrow-left"></i>
-              User Table
-            </button>
+          <!-- Left: Title -->
+          <div class="user-list-title">Add User</div>
+
+          <!-- Right: Search & Filters -->
+          <div class="search-filters">
+            <a class="add-user-btn" style="text-decoration: none;" href="./manage_users.html">
+              <i class="fa-solid fa-angle-left"></i> Back
+            </a>
           </div>
         </div>
+
+        <!-- User Table -->
         <div class="form-section mb-4">
           <div class="section-header">
             <h3 class="section-title">Personal Information</h3>
           </div>
           <div class="section-content">
+            <div class="row">
+              <div class="col-md-3 mb-3">
+                <label class="form-label">ID</label>
+                <input type="text" class="form-control" value="" disabled/>
+              </div>
+            </div>
             <div class="row">
               <div class="col-md-3 mb-3">
                 <label class="form-label">Last Name</label>
@@ -565,7 +218,7 @@
               </div>
             </div>
 
-            <div class="row">
+            <div class="row" style="margin-bottom: 30px; position: relative;">
               <div class="col-md-3 mb-3">
                 <label class="form-label">Email</label>
                 <input
@@ -596,7 +249,6 @@
                   <input type="file" id="fileInput" style="display: none" />
                   <label for="fileInput" style="cursor: pointer; margin: 0">
                     Choose File
-                    <span style="color: #6b7280">No file chosen</span>
                   </label>
                 </div>
               </div>
@@ -604,121 +256,58 @@
           </div>
         </div>
 
-        <!-- Role & Department Section -->
-        <div class="form-section">
-          <div class="section-header">
-            <h3 class="section-title">Role & Department</h3>
-          </div>
-          <div class="section-content">
-            <div class="row">
-              <div class="col-md-4 mb-3">
-                <label class="form-label">Department</label>
-                <select class="form-control">
-                  <option>--Please Select--</option>
-                  <option>HR</option>
-                  <option>IT</option>
-                  <option>Finance</option>
-                </select>
-              </div>
-              <div class="col-md-4 mb-3">
-                <label class="form-label">Job Title</label>
-                <select class="form-control">
-                  <option>--Please Select--</option>
-                  <option>Manager</option>
-                  <option>Assistant</option>
-                  <option>Specialist</option>
-                </select>
-              </div>
-              <div class="col-md-4 mb-3">
-                <label class="form-label">Employment Type</label>
-                <select class="form-control">
-                  <option>--Please Select--</option>
-                  <option>Regular</option>
-                  <option>Contract</option>
-                  <option>Part-time</option>
-                </select>
-              </div>
-            </div>
-
-            <button class="save-btn" id="saveBtn">
-              Save user
-              <div class="loading-content" style="display: none">
-                <div class="loading-spinner"></div>
-                <div class="loading-text">Saving...</div>
-              </div>
-              <div class="success-content" style="display: none">
-                <div class="success-checkmark"></div>
-                <div class="success-text">Saved!</div>
-              </div>
-            </button>
-          </div>
+        <div class="section-header">
+          <h3 class="section-title">Role & Department</h3>
         </div>
-        
+        <div class="section-content">
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Department</label>
+              <select class="form-control">
+                <option>--Please Select--</option>
+                <option>HR</option>
+                <option>IT</option>
+                <option>Finance</option>
+              </select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Job Title</label>
+              <select class="form-control">
+                <option>--Please Select--</option>
+                <option>Manager</option>
+                <option>Assistant</option>
+                <option>Specialist</option>
+              </select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Employment Type</label>
+              <select class="form-control">
+                <option>--Please Select--</option>
+                <option>Regular</option>
+                <option>Contract</option>
+                <option>Part-time</option>
+              </select>
+            </div>
+          </div>
+
+          <button class="save-btn" id="saveBtn">
+            Save user
+            <div class="loading-content" style="display: none">
+              <div class="loading-spinner"></div>
+              <div class="loading-text">Saving...</div>
+            </div>
+            <div class="success-content" style="display: none">
+              <div class="success-checkmark"></div>
+              <div class="success-text">Saved!</div>
+            </div>
+          </button>
+        </div>
       </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script>
-      // File input functionality
-      document
-        .getElementById("fileInput")
-        .addEventListener("change", function (e) {
-          const fileName = e.target.files[0]
-            ? e.target.files[0].name
-            : "No file chosen";
-          document.querySelector(
-            'label[for="fileInput"]'
-          ).innerHTML = `Choose File <span style="color: #6b7280;">${fileName}</span>`;
-        });
-
-      // Mobile sidebar toggle (if needed)
-      function toggleSidebar() {
-        const sidebar = document.querySelector(".sidebar");
-        sidebar.style.transform =
-          sidebar.style.transform === "translateX(0px)"
-            ? "translateX(-100%)"
-            : "translateX(0px)";
-      }
-
-      // Save button functionality with loading animation
-      document.getElementById("saveBtn").addEventListener("click", function () {
-        const btn = this;
-        const originalText = btn.childNodes[0].textContent.trim();
-        const loadingContent = btn.querySelector(".loading-content");
-        const successContent = btn.querySelector(".success-content");
-
-        // Start loading state
-        btn.disabled = true;
-        btn.classList.add("loading");
-        btn.childNodes[0].textContent = "";
-        loadingContent.style.display = "flex";
-
-        // Simulate API call delay
-        setTimeout(() => {
-          // Hide loading elements
-          loadingContent.style.display = "none";
-
-          // Show success state
-          successContent.style.display = "flex";
-          btn.style.background = "#10b981";
-
-          // Reset after 2 seconds
-          setTimeout(() => {
-            btn.classList.remove("loading");
-            btn.disabled = false;
-            btn.style.background = "";
-            btn.childNodes[0].textContent = originalText;
-            successContent.style.display = "none";
-          }, 2000);
-        }, 2000); // 2 second loading simulation
-      });
-
-      // Search functionality
-      document
-        .querySelector(".search-input")
-        .addEventListener("input", function (e) {
-          console.log("Searching for:", e.target.value);
-        });
-    </script>
+    <script src="../../assets/scripts/popups/notification.js"></script>
+    <script src="../../assets/scripts/popups/sidebar.js"></script>
+    <script src="../../assets/scripts/bootstrap/admin_add_edit_user.js"></script>
   </body>
 </html>

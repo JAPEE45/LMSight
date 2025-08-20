@@ -72,15 +72,15 @@
         <div class="button-main-cont">
           <div class="button-cont">
             <a id="dashboard_nav" href="./hr_dashboard.html">
-              <i class="fa-solid fa-table-columns"></i>
+              <i class="fa-solid fa-table-columns "></i>
             </a>
             <p class="popup">Dashboard</p>
           </div>
           <div class="button-cont">
             <a id="requests_nav" href="#">
-              <i class="fa-solid fa-file-circle-check active"></i>
+              <i class="fa-solid fa-users active"></i>
             </a>
-            <p class="popup">Requests</p>
+            <p class="popup">Users</p>
           </div>
           <div class="button-cont">
             <button class="notif-btn" id="notification-btn">
@@ -184,7 +184,7 @@
           <!-- Right: Search & Filters -->
           <div class="search-filters">
             <div class="search-box">
-              <input type="text" placeholder="Search..." />
+              <input type="text" placeholder="Search..." id="searchInput"/>
               <i class="fas fa-search"></i>
             </div>
 
@@ -196,9 +196,9 @@
               <option value="" disabled selected>-- Department --</option>
             </select>
 
-            <button class="add-user-btn">
+            <a class="add-user-btn" style="text-decoration: none;" href="./add_edit_user.html">
               <i class="fas fa-plus"></i> Add user
-            </button>
+            </a>
           </div>
         </div>
         <div class="delete-selected" id="deleteSelected">Delete selected</div>
@@ -224,124 +224,6 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>
-                  <input type="checkbox" class="table-checkbox row-checkbox" />
-                </td>
-                <td>
-                  <div class="user-info">
-                    <div class="user-avatar">
-                      <i class="fas fa-user"></i>
-                    </div>
-                    <span class="user-name">Juan Dela Cruz</span>
-                  </div>
-                </td>
-
-                <td>IT</td>
-                <td>Technician</td>
-                <td><span class="status-badge status-active">Active</span></td>
-                <td class="hide-mobile">10-15-2025</td>
-                <td class="action-cell">
-                  <button
-                    class="actions-btn"
-                    onclick="toggleActionDropdown(this)"
-                  >
-                    <i class="fas fa-ellipsis-h"></i>
-                  </button>
-                  <div class="actions-dropdown">
-                    <div class="dropdown-item edit" onclick="editUser(this)">
-                      <i class="fas fa-edit"></i>
-                      Edit
-                    </div>
-                    <div
-                      class="dropdown-item delete"
-                      onclick="deleteUser(this)"
-                    >
-                      <i class="fas fa-trash"></i>
-                      Delete
-                    </div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <input type="checkbox" class="table-checkbox row-checkbox" />
-                </td>
-                <td>
-                  <div class="user-info">
-                    <div class="user-avatar">
-                      <i class="fas fa-user"></i>
-                    </div>
-                    <span class="user-name">Juan Dela Cruz</span>
-                  </div>
-                </td>
-
-                <td>HR</td>
-                <td>HR Manager</td>
-                <td><span class="status-badge status-active">Active</span></td>
-                <td class="hide-mobile">10-15-2025</td>
-                <td class="action-cell">
-                  <button
-                    class="actions-btn"
-                    onclick="toggleActionDropdown(this)"
-                  >
-                    <i class="fas fa-ellipsis-h"></i>
-                  </button>
-                  <div class="actions-dropdown">
-                    <div class="dropdown-item edit" onclick="editUser(this)">
-                      <i class="fas fa-edit"></i>
-                      Edit
-                    </div>
-                    <div
-                      class="dropdown-item delete"
-                      onclick="deleteUser(this)"
-                    >
-                      <i class="fas fa-trash"></i>
-                      Delete
-                    </div>
-                  </div>
-                </td>
-              </tr>
-              <!-- Additional sample rows -->
-              <tr>
-                <td>
-                  <input type="checkbox" class="table-checkbox row-checkbox" />
-                </td>
-                <td>
-                  <div class="user-info">
-                    <div class="user-avatar">
-                      <i class="fas fa-user"></i>
-                    </div>
-                    <span class="user-name">Maria Santos</span>
-                  </div>
-                </td>
-
-                <td>Finance</td>
-                <td>Accountant</td>
-                <td><span class="status-badge status-active">Active</span></td>
-                <td class="hide-mobile">09-22-2025</td>
-                <td class="action-cell">
-                  <button
-                    class="actions-btn"
-                    onclick="toggleActionDropdown(this)"
-                  >
-                    <i class="fas fa-ellipsis-h"></i>
-                  </button>
-                  <div class="actions-dropdown">
-                    <div class="dropdown-item edit" onclick="editUser(this)">
-                      <i class="fas fa-edit"></i>
-                      Edit
-                    </div>
-                    <div
-                      class="dropdown-item delete"
-                      onclick="deleteUser(this)"
-                    >
-                      <i class="fas fa-trash"></i>
-                      Delete
-                    </div>
-                  </div>
-                </td>
-              </tr>
               <tr>
                 <td>
                   <input type="checkbox" class="table-checkbox row-checkbox" />
@@ -392,161 +274,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="../../assets/scripts/popups/notification.js"></script>
     <script src="../../assets/scripts/popups/sidebar.js"></script>
-    <script>
-      // Select all checkbox functionality
-      document
-        .getElementById("selectAll")
-        .addEventListener("change", function () {
-          const checkboxes = document.querySelectorAll("tbody .row-checkbox");
-          checkboxes.forEach((checkbox) => {
-            checkbox.checked = this.checked;
-          });
-          updateDeleteSelectedVisibility();
-        });
-
-      // Individual checkbox functionality
-      document.addEventListener("change", function (e) {
-        if (e.target.classList.contains("row-checkbox")) {
-          updateDeleteSelectedVisibility();
-          updateSelectAllCheckbox();
-        }
-      });
-
-      function updateDeleteSelectedVisibility() {
-        const checkedBoxes = document.querySelectorAll(
-          "tbody .row-checkbox:checked"
-        );
-        const deleteSelected = document.getElementById("deleteSelected");
-
-        if (checkedBoxes.length > 0) {
-          deleteSelected.classList.add("show");
-        } else {
-          deleteSelected.classList.remove("show");
-        }
-      }
-
-      function updateSelectAllCheckbox() {
-        const checkboxes = document.querySelectorAll("tbody .row-checkbox");
-        const checkedBoxes = document.querySelectorAll(
-          "tbody .row-checkbox:checked"
-        );
-        const selectAllCheckbox = document.getElementById("selectAll");
-
-        if (checkedBoxes.length === checkboxes.length) {
-          selectAllCheckbox.checked = true;
-          selectAllCheckbox.indeterminate = false;
-        } else if (checkedBoxes.length > 0) {
-          selectAllCheckbox.checked = false;
-          selectAllCheckbox.indeterminate = true;
-        } else {
-          selectAllCheckbox.checked = false;
-          selectAllCheckbox.indeterminate = false;
-        }
-      }
-
-      // Delete selected functionality
-      document
-        .getElementById("deleteSelected")
-        .addEventListener("click", function () {
-          const checkedBoxes = document.querySelectorAll(
-            "tbody .row-checkbox:checked"
-          );
-          if (checkedBoxes.length > 0) {
-            if (
-              confirm(
-                `Are you sure you want to delete ${checkedBoxes.length} selected user(s)?`
-              )
-            ) {
-              checkedBoxes.forEach((checkbox) => {
-                checkbox.closest("tr").remove();
-              });
-              updateDeleteSelectedVisibility();
-              updateSelectAllCheckbox();
-            }
-          }
-        });
-
-      // Action dropdown functionality
-      function toggleActionDropdown(button) {
-        // Close all other dropdowns first
-        document.querySelectorAll(".actions-dropdown").forEach((dropdown) => {
-          if (dropdown !== button.nextElementSibling) {
-            dropdown.classList.remove("show");
-          }
-        });
-
-        // Toggle the clicked dropdown
-        const dropdown = button.nextElementSibling;
-        dropdown.classList.toggle("show");
-      }
-
-      // Close dropdowns when clicking outside
-      document.addEventListener("click", function (event) {
-        if (!event.target.closest(".action-cell")) {
-          document.querySelectorAll(".actions-dropdown").forEach((dropdown) => {
-            dropdown.classList.remove("show");
-          });
-        }
-      });
-
-      // Edit user function
-      function editUser(element) {
-        const row = element.closest("tr");
-        const userName = row.querySelector(".user-name").textContent;
-        alert(`Edit user: ${userName}`);
-        // Close dropdown
-        element.closest(".actions-dropdown").classList.remove("show");
-      }
-
-      // Delete user function
-      function deleteUser(element) {
-        const row = element.closest("tr");
-        const userName = row.querySelector(".user-name").textContent;
-        if (confirm(`Are you sure you want to delete user: ${userName}?`)) {
-          row.remove();
-          updateDeleteSelectedVisibility();
-          updateSelectAllCheckbox();
-        }
-        // Close dropdown
-        element.closest(".actions-dropdown").classList.remove("show");
-      }
-
-      // Search functionality
-      document
-        .getElementById("searchInput")
-        .addEventListener("input", function () {
-          const searchTerm = this.value.toLowerCase();
-          const rows = document.querySelectorAll("tbody tr");
-
-          rows.forEach((row) => {
-            const name = row
-              .querySelector(".user-name")
-              .textContent.toLowerCase();
-            const email = row.cells[2].textContent.toLowerCase();
-            const department = row.cells[3].textContent.toLowerCase();
-
-            if (
-              name.includes(searchTerm) ||
-              email.includes(searchTerm) ||
-              department.includes(searchTerm)
-            ) {
-              row.style.display = "";
-            } else {
-              row.style.display = "none";
-            }
-          });
-        });
-
-      // Action buttons functionality (legacy - now handled by specific functions)
-      // Removed the old actions-btn event listener as it's now handled by toggleActionDropdown
-
-      // Filter and dropdown button functionality
-      document.querySelectorAll(".filter-btn, .dropdown-btn").forEach((btn) => {
-        btn.addEventListener("click", function () {
-          // Add filter/dropdown functionality here
-          console.log("Filter/dropdown clicked:", this.textContent.trim());
-        });
-      });
-    </script>
+    <script src="../../assets/scripts/bootstrap/admin_dashboard.js"></script>
   </body>
 </html>
