@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ALIS - User Management</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../assets/styles/components/sidebar.css" />
+    <link rel="stylesheet" href="../../assets/styles/components/navbar.css" />
+    <link
+      rel="stylesheet"
+      href="../../assets/styles/components/notification.css"
+    />
+    <link rel="stylesheet" href="../../assets/styles/layouts/admin.css" />
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <h2>ALIS</h2>
+      <div class="main-img-cont">
+        <div class="img-cont">
+          <img
+            src="../../assets/images/blank-profile-picture-973460.svg"
+            alt=""
+          />
+          <input type="file" accept="image/*" id="image_file" />
+          <label for="image_file">
+            <i class="fa-solid fa-camera"></i>
+          </label>
+        </div>
+      </div>
+      <div class="name-cont">
+        <h3 class="name">Juan Dela Cruz</h3>
+      </div>
+      <div class="bot-sec">
+        <div class="jobs-desc-cont">
+          <p>Employee ID: E0956-T25</p>
+          <p>Department: HR</p>
+          <p>Job title: HR Manager</p>
+          <p>Employment Type: Regular</p>
+        </div>
+        <div class="details-cont">
+          <p>Vacation Leave: 3 / 5 used</p>
+          <p>Sick Leave: 3 / 5 used</p>
+          <p>Casual Leave: 5 / 10 used</p>
+        </div>
+      </div>
+      <div class="button-cont">
+        <a href="login_interface.html">
+          Log Out
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="main-header">
+        <div class="d-flex align-items-center">
+          <button class="mobile-toggle me-3" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+          </button>
+          <h1 class="nav-title pending-request-h1">User Management</h1>
+        </div>
+        <div class="button-main-cont">
+          <div class="button-cont">
+            <a id="dashboard_nav" href="./hr_dashboard.html">
+              <i class="fa-solid fa-table-columns"></i>
+            </a>
+            <p class="popup">Dashboard</p>
+          </div>
+          <div class="button-cont">
+            <a id="requests_nav" href="#">
+              <i class="fa-solid fa-file-circle-check active"></i>
+            </a>
+            <p class="popup">Requests</p>
+          </div>
+          <div class="button-cont">
+            <button class="notif-btn" id="notification-btn">
+              <i class="fa-solid fa-bell"></i>
+            </button>
+            <p class="popup">Notification</p>
+            <div class="notif-marker active"></div>
+            <!-- Notifications Panel -->
+            <div class="notifications-panel" id="notificationsPanel">
+              <div class="notifications-header">
+                <h5>Notifications</h5>
+              </div>
+              <div class="notifications-list">
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Management Card -->
+      <div class="user-management-card">
+        <!-- User List Header -->
+        <div class="user-list-header">
+          <!-- Left: Title -->
+          <div class="user-list-title">
+            User list <span class="user-count">180 users</span>
+          </div>
+
+          <!-- Right: Search & Filters -->
+          <div class="search-filters">
+            <div class="search-box">
+              <input type="text" placeholder="Search..." />
+              <i class="fas fa-search"></i>
+            </div>
+
+            <a class="filter-btn" onclick="window.location.reload()">
+              <i class="fas fa-filter"></i> Filters
+            </a>
+
+            <select name="" id="" class="filter-dropdown">
+              <option value="" disabled selected>-- Department --</option>
+            </select>
+
+            <button class="add-user-btn">
+              <i class="fas fa-plus"></i> Add user
+            </button>
+          </div>
+        </div>
+        <div class="delete-selected" id="deleteSelected">Delete selected</div>
+
+        <!-- User Table -->
+        <div class="table-responsive">
+          <table class="user-table">
+            <thead>
+              <tr>
+                <th>
+                  <input
+                    type="checkbox"
+                    class="table-checkbox"
+                    id="selectAll"
+                  />
+                </th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th class="hide-mobile">Joined Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <input type="checkbox" class="table-checkbox row-checkbox" />
+                </td>
+                <td>
+                  <div class="user-info">
+                    <div class="user-avatar">
+                      <i class="fas fa-user"></i>
+                    </div>
+                    <span class="user-name">Juan Dela Cruz</span>
+                  </div>
+                </td>
+
+                <td>IT</td>
+                <td>Technician</td>
+                <td><span class="status-badge status-active">Active</span></td>
+                <td class="hide-mobile">10-15-2025</td>
+                <td class="action-cell">
+                  <button
+                    class="actions-btn"
+                    onclick="toggleActionDropdown(this)"
+                  >
+                    <i class="fas fa-ellipsis-h"></i>
+                  </button>
+                  <div class="actions-dropdown">
+                    <div class="dropdown-item edit" onclick="editUser(this)">
+                      <i class="fas fa-edit"></i>
+                      Edit
+                    </div>
+                    <div
+                      class="dropdown-item delete"
+                      onclick="deleteUser(this)"
+                    >
+                      <i class="fas fa-trash"></i>
+                      Delete
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="checkbox" class="table-checkbox row-checkbox" />
+                </td>
+                <td>
+                  <div class="user-info">
+                    <div class="user-avatar">
+                      <i class="fas fa-user"></i>
+                    </div>
+                    <span class="user-name">Juan Dela Cruz</span>
+                  </div>
+                </td>
+
+                <td>HR</td>
+                <td>HR Manager</td>
+                <td><span class="status-badge status-active">Active</span></td>
+                <td class="hide-mobile">10-15-2025</td>
+                <td class="action-cell">
+                  <button
+                    class="actions-btn"
+                    onclick="toggleActionDropdown(this)"
+                  >
+                    <i class="fas fa-ellipsis-h"></i>
+                  </button>
+                  <div class="actions-dropdown">
+                    <div class="dropdown-item edit" onclick="editUser(this)">
+                      <i class="fas fa-edit"></i>
+                      Edit
+                    </div>
+                    <div
+                      class="dropdown-item delete"
+                      onclick="deleteUser(this)"
+                    >
+                      <i class="fas fa-trash"></i>
+                      Delete
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <!-- Additional sample rows -->
+              <tr>
+                <td>
+                  <input type="checkbox" class="table-checkbox row-checkbox" />
+                </td>
+                <td>
+                  <div class="user-info">
+                    <div class="user-avatar">
+                      <i class="fas fa-user"></i>
+                    </div>
+                    <span class="user-name">Maria Santos</span>
+                  </div>
+                </td>
+
+                <td>Finance</td>
+                <td>Accountant</td>
+                <td><span class="status-badge status-active">Active</span></td>
+                <td class="hide-mobile">09-22-2025</td>
+                <td class="action-cell">
+                  <button
+                    class="actions-btn"
+                    onclick="toggleActionDropdown(this)"
+                  >
+                    <i class="fas fa-ellipsis-h"></i>
+                  </button>
+                  <div class="actions-dropdown">
+                    <div class="dropdown-item edit" onclick="editUser(this)">
+                      <i class="fas fa-edit"></i>
+                      Edit
+                    </div>
+                    <div
+                      class="dropdown-item delete"
+                      onclick="deleteUser(this)"
+                    >
+                      <i class="fas fa-trash"></i>
+                      Delete
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="checkbox" class="table-checkbox row-checkbox" />
+                </td>
+                <td>
+                  <div class="user-info">
+                    <div class="user-avatar">
+                      <i class="fas fa-user"></i>
+                    </div>
+                    <span class="user-name">Pedro Garcia</span>
+                  </div>
+                </td>
+
+                <td>IT</td>
+                <td>Developer</td>
+                <td>
+                  <span class="status-badge status-inactive">Inactive</span>
+                </td>
+                <td class="hide-mobile">08-10-2025</td>
+                <td class="action-cell">
+                  <button
+                    class="actions-btn"
+                    onclick="toggleActionDropdown(this)"
+                  >
+                    <i class="fas fa-ellipsis-h"></i>
+                  </button>
+                  <div class="actions-dropdown">
+                    <div class="dropdown-item edit" onclick="editUser(this)">
+                      <i class="fas fa-edit"></i>
+                      Edit
+                    </div>
+                    <div
+                      class="dropdown-item delete"
+                      onclick="deleteUser(this)"
+                    >
+                      <i class="fas fa-trash"></i>
+                      Delete
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/scripts/popups/notification.js"></script>
+    <script src="../../assets/scripts/popups/sidebar.js"></script>
+    <script>
+      // Select all checkbox functionality
+      document
+        .getElementById("selectAll")
+        .addEventListener("change", function () {
+          const checkboxes = document.querySelectorAll("tbody .row-checkbox");
+          checkboxes.forEach((checkbox) => {
+            checkbox.checked = this.checked;
+          });
+          updateDeleteSelectedVisibility();
+        });
+
+      // Individual checkbox functionality
+      document.addEventListener("change", function (e) {
+        if (e.target.classList.contains("row-checkbox")) {
+          updateDeleteSelectedVisibility();
+          updateSelectAllCheckbox();
+        }
+      });
+
+      function updateDeleteSelectedVisibility() {
+        const checkedBoxes = document.querySelectorAll(
+          "tbody .row-checkbox:checked"
+        );
+        const deleteSelected = document.getElementById("deleteSelected");
+
+        if (checkedBoxes.length > 0) {
+          deleteSelected.classList.add("show");
+        } else {
+          deleteSelected.classList.remove("show");
+        }
+      }
+
+      function updateSelectAllCheckbox() {
+        const checkboxes = document.querySelectorAll("tbody .row-checkbox");
+        const checkedBoxes = document.querySelectorAll(
+          "tbody .row-checkbox:checked"
+        );
+        const selectAllCheckbox = document.getElementById("selectAll");
+
+        if (checkedBoxes.length === checkboxes.length) {
+          selectAllCheckbox.checked = true;
+          selectAllCheckbox.indeterminate = false;
+        } else if (checkedBoxes.length > 0) {
+          selectAllCheckbox.checked = false;
+          selectAllCheckbox.indeterminate = true;
+        } else {
+          selectAllCheckbox.checked = false;
+          selectAllCheckbox.indeterminate = false;
+        }
+      }
+
+      // Delete selected functionality
+      document
+        .getElementById("deleteSelected")
+        .addEventListener("click", function () {
+          const checkedBoxes = document.querySelectorAll(
+            "tbody .row-checkbox:checked"
+          );
+          if (checkedBoxes.length > 0) {
+            if (
+              confirm(
+                `Are you sure you want to delete ${checkedBoxes.length} selected user(s)?`
+              )
+            ) {
+              checkedBoxes.forEach((checkbox) => {
+                checkbox.closest("tr").remove();
+              });
+              updateDeleteSelectedVisibility();
+              updateSelectAllCheckbox();
+            }
+          }
+        });
+
+      // Action dropdown functionality
+      function toggleActionDropdown(button) {
+        // Close all other dropdowns first
+        document.querySelectorAll(".actions-dropdown").forEach((dropdown) => {
+          if (dropdown !== button.nextElementSibling) {
+            dropdown.classList.remove("show");
+          }
+        });
+
+        // Toggle the clicked dropdown
+        const dropdown = button.nextElementSibling;
+        dropdown.classList.toggle("show");
+      }
+
+      // Close dropdowns when clicking outside
+      document.addEventListener("click", function (event) {
+        if (!event.target.closest(".action-cell")) {
+          document.querySelectorAll(".actions-dropdown").forEach((dropdown) => {
+            dropdown.classList.remove("show");
+          });
+        }
+      });
+
+      // Edit user function
+      function editUser(element) {
+        const row = element.closest("tr");
+        const userName = row.querySelector(".user-name").textContent;
+        alert(`Edit user: ${userName}`);
+        // Close dropdown
+        element.closest(".actions-dropdown").classList.remove("show");
+      }
+
+      // Delete user function
+      function deleteUser(element) {
+        const row = element.closest("tr");
+        const userName = row.querySelector(".user-name").textContent;
+        if (confirm(`Are you sure you want to delete user: ${userName}?`)) {
+          row.remove();
+          updateDeleteSelectedVisibility();
+          updateSelectAllCheckbox();
+        }
+        // Close dropdown
+        element.closest(".actions-dropdown").classList.remove("show");
+      }
+
+      // Search functionality
+      document
+        .getElementById("searchInput")
+        .addEventListener("input", function () {
+          const searchTerm = this.value.toLowerCase();
+          const rows = document.querySelectorAll("tbody tr");
+
+          rows.forEach((row) => {
+            const name = row
+              .querySelector(".user-name")
+              .textContent.toLowerCase();
+            const email = row.cells[2].textContent.toLowerCase();
+            const department = row.cells[3].textContent.toLowerCase();
+
+            if (
+              name.includes(searchTerm) ||
+              email.includes(searchTerm) ||
+              department.includes(searchTerm)
+            ) {
+              row.style.display = "";
+            } else {
+              row.style.display = "none";
+            }
+          });
+        });
+
+      // Action buttons functionality (legacy - now handled by specific functions)
+      // Removed the old actions-btn event listener as it's now handled by toggleActionDropdown
+
+      // Filter and dropdown button functionality
+      document.querySelectorAll(".filter-btn, .dropdown-btn").forEach((btn) => {
+        btn.addEventListener("click", function () {
+          // Add filter/dropdown functionality here
+          console.log("Filter/dropdown clicked:", this.textContent.trim());
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ALIS - Leave Management System</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../../assets/styles/components/sidebar.css" />
+    <link rel="stylesheet" href="../../assets/styles/components/navbar.css" />
+    <link
+      rel="stylesheet"
+      href="../../assets/styles/components/notification.css"
+    />
+    <link rel="stylesheet" href="../../assets/styles/layouts/hr.css" />
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <h2>ALIS</h2>
+      <div class="main-img-cont">
+        <div class="img-cont">
+          <img
+            src="../../assets/images/blank-profile-picture-973460.svg"
+            alt=""
+          />
+          <input type="file" accept="image/*" id="image_file" />
+          <label for="image_file">
+            <i class="fa-solid fa-camera"></i>
+          </label>
+        </div>
+      </div>
+      <div class="name-cont">
+        <h3 class="name">Juan Dela Cruz</h3>
+      </div>
+      <div class="bot-sec">
+        <div class="jobs-desc-cont">
+          <p>Employee ID: E0956-T25</p>
+          <p>Department: HR</p>
+          <p>Job title: HR Manager</p>
+          <p>Employment Type: Regular</p>
+        </div>
+        <div class="details-cont">
+          <p>Vacation Leave: 3 / 5 used</p>
+          <p>Sick Leave: 3 / 5 used</p>
+          <p>Casual Leave: 5 / 10 used</p>
+        </div>
+      </div>
+      <div class="button-cont">
+        <a href="login_interface.html">
+          Log Out
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="main-header">
+        <div class="d-flex align-items-center">
+          <button class="mobile-toggle me-3" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+          </button>
+          <h1 class="nav-title pending-request-h1">Pending Requests</h1>
+        </div>
+        <div class="button-main-cont">
+          <div class="button-cont">
+            <a id="dashboard_nav" href="./dashboard.html">
+              <i class="fa-solid fa-table-columns"></i>
+            </a>
+            <p class="popup">Dashboard</p>
+          </div>
+          <div class="button-cont">
+            <a id="requests_nav" href="#">
+              <i class="fa-solid fa-file-circle-check active"></i>
+            </a>
+            <p class="popup">Requests</p>
+          </div>
+          <div class="button-cont">
+            <button class="notif-btn" id="notification-btn">
+              <i class="fa-solid fa-bell"></i>
+            </button>
+            <p class="popup">Notification</p>
+            <div class="notif-marker active"></div>
+            <!-- Notifications Panel -->
+            <div class="notifications-panel" id="notificationsPanel">
+              <div class="notifications-header">
+                <h5>Notifications</h5>
+              </div>
+              <div class="notifications-list">
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-9" style="width: 100%">
+        <div class="container-fluid">
+          <div class="row g-2 align-items-center filters-section">
+            <!-- Search -->
+            <div class="col-12 col-md-4">
+              <div class="input-group">
+                <span class="input-group-text"
+                  ><i class="fas fa-search"></i
+                ></span>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Search..."
+                />
+              </div>
+            </div>
+
+            <!-- Filter Button -->
+            <div class="col-6 col-md-auto">
+              <button
+                onclick="window.location.reload()"
+                class="btn btn-outline-primary w-100 w-md-auto"
+              >
+                <i class="fas fa-filter"></i> Filters
+              </button>
+            </div>
+
+            <!-- Department Dropdown -->
+            <div class="col-6 col-md-auto">
+              <select class="form-select">
+                <option disabled selected>-- Department --</option>
+                <option>HR</option>
+                <option>Sales</option>
+                <option>IT</option>
+              </select>
+            </div>
+
+            <!-- Leave Type Dropdown -->
+            <div class="col-6 col-md-auto">
+              <select class="form-select">
+                <option value="" disabled selected>-- Leave Type --</option>
+                <option value="Vacation Leave">Vacation Leave</option>
+                <option value="Mandatory Leave">Mandatory Leave</option>
+                <option value="Sick Leave">Sick Leave</option>
+                <option value="Maternity Leave">Maternity Leave</option>
+                <option value="Paternity Leave">Paternity Leave</option>
+                <option value="Special Priviledge Leave">
+                  Special Priviledge Leave
+                </option>
+                <option value="Solo Parent Leave">Solo Parent Leave</option>
+                <option value="Study Leave">Study Leave</option>
+                <option value="VAWC Leave">VAWC Leave</option>
+                <option value="Rehabilitation Leave">
+                  Rehabilitation Leave
+                </option>
+                <option value="Special Leave">Special Leave</option>
+                <option value="Special Emergency Leave">
+                  Special Emergency Leave
+                </option>
+                <option value="Terminal Leave">Terminal Leave</option>
+                <option value="Adoption Leave">Adoption Leave</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="requests-table">
+          <table class="mb-0">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Date</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Type</th>
+                <th>Credits</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="employee-info">
+                    <div class="employee-avatar">
+                      <i class="fas fa-user"></i>
+                    </div>
+                    LeBron James
+                  </div>
+                </td>
+                <td>2025-05-01</td>
+                <td>June 10</td>
+                <td>June 20</td>
+                <td>Vacation Leave</td>
+                <td>1.50</td>
+                <td>
+                  <button
+                    class="btn btn-view-details"
+                    onclick="showLeaveModal()"
+                  >
+                    <i class="fas fa-eye me-1"></i>View Details
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="employee-info">
+                    <div class="employee-avatar">
+                      <i class="fas fa-user"></i>
+                    </div>
+                    LeBron James
+                  </div>
+                </td>
+                <td>2025-05-01</td>
+                <td>June 10</td>
+                <td>June 20</td>
+                <td>Vacation Leave</td>
+                <td>1.50</td>
+                <td>
+                  <button
+                    class="btn btn-view-details"
+                    onclick="showLeaveModal()"
+                  >
+                    <i class="fas fa-eye me-1"></i>View Details
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="employee-info">
+                    <div class="employee-avatar">
+                      <i class="fas fa-user"></i>
+                    </div>
+                    LeBron James
+                  </div>
+                </td>
+                <td>2025-05-01</td>
+                <td>June 10</td>
+                <td>June 20</td>
+                <td>Vacation Leave</td>
+                <td>1.50</td>
+                <td>
+                  <button
+                    class="btn btn-view-details"
+                    onclick="showLeaveModal()"
+                  >
+                    <i class="fas fa-eye me-1"></i>View Details
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="employee-info">
+                    <div class="employee-avatar">
+                      <i class="fas fa-user"></i>
+                    </div>
+                    LeBron James
+                  </div>
+                </td>
+                <td>2025-05-01</td>
+                <td>June 10</td>
+                <td>June 20</td>
+                <td>Vacation Leave</td>
+                <td>1.50</td>
+                <td>
+                  <button
+                    class="btn btn-view-details"
+                    onclick="showLeaveModal()"
+                  >
+                    <i class="fas fa-eye me-1"></i>View Details
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="leaveModal"
+      tabindex="-1"
+      aria-labelledby="requestLeaveModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h1 class="modal-title" id="requestLeaveModalLabel">
+              Request Leave
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <!-- Modal Body -->
+          <div class="modal-body">
+            <!-- Profile Section -->
+            <div class="profile-section">
+              <div class="row align-items-center">
+                <div class="col-md-8">
+                  <div class="d-flex align-items-center">
+                    <div class="profile-img">
+                      <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div class="profile-details">
+                      <h5>Juan Dela Cruz</h5>
+                      <p>Department: <strong>Sales and Marketing</strong></p>
+                      <p>Job title: <strong>Sales Manager</strong></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="leave-credits-section">
+                    <h6>Leave Credits</h6>
+                    <div class="donut-chart">
+                      <div class="donut-center-value">1.25</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Form Fields -->
+            <form>
+              <!-- Row 1: Leave Type, Start Date, End Date -->
+              <div class="row mb-3">
+                <div class="col-md-4 mb-3">
+                  <label for="leaveType" class="form-label">Leave Type</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="leaveType"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="startDate" class="form-label">Start Date</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="startDate"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="endDate" class="form-label">End Date</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="endDate"
+                    disabled
+                  />
+                </div>
+              </div>
+
+              <!-- Row 2: Commutation, Details of Leave -->
+              <div class="row mb-3">
+                <div class="col-md-6 mb-3">
+                  <label for="commutation" class="form-label"
+                    >Commutation</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="commutation"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="leaveDetails" class="form-label"
+                    >Details of Leave</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="leaveDetails"
+                    disabled
+                  />
+                </div>
+              </div>
+
+              <!-- Attached Document -->
+              <div class="row mb-3">
+                <div class="col-12 mb-3">
+                  <label for="attachedDoc" class="form-label"
+                    >Attached Document</label
+                  >
+                  <div>
+                    <button
+                      type="button"
+                      class="download-btn"
+                      onclick="downloadReport('inspection_summary_q1.pdf')"
+                    >
+                      Click here to download
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Comment -->
+              <div class="row mb-3">
+                <div class="col-12 mb-3">
+                  <label for="comment" class="form-label">Comment</label>
+                  <textarea
+                    class="form-control"
+                    id="comment"
+                    disabled
+                  ></textarea>
+                </div>
+              </div>
+            </form>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+              <div class="d-flex justify-content-center gap-3">
+                <button
+                  type="button"
+                  class="btn btn-approve"
+                  onclick="hideLeaveModal()"
+                >
+                  Approve
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-reject"
+                  onclick="showRejectionModal()"
+                >
+                  Reject
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rejection Reason Modal -->
+    <div
+      class="modal fade"
+      id="rejectionModal"
+      tabindex="-1"
+      aria-labelledby="rejectionReasonModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <!-- Modal Body -->
+          <div class="modal-body p-4">
+            <h3 class="mb-4 text-center fw-bold">
+              Reason for rejecting request
+            </h3>
+
+            <!-- Rejection Reason Buttons -->
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary w-100 reject-reason-btn"
+                  data-reason="Insufficient Leave Credits"
+                >
+                  Insufficient Leave Credits
+                </button>
+              </div>
+              <div class="col-md-6">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary w-100 reject-reason-btn"
+                  data-reason="Unreasonable/Vague excuse"
+                >
+                  Unreasonable/Vague excuse
+                </button>
+              </div>
+              <div class="col-md-6">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary w-100 reject-reason-btn"
+                  data-reason="Lack of supporting documents"
+                >
+                  Lack of supporting documents
+                </button>
+              </div>
+              <div class="col-md-6">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary w-100 reject-reason-btn"
+                  data-reason="Operational needs"
+                >
+                  Operational needs
+                </button>
+              </div>
+              <div class="col-md-6">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary w-100 reject-reason-btn"
+                  data-reason="Short notice"
+                >
+                  Short notice
+                </button>
+              </div>
+              <div class="col-md-6">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary w-100 reject-reason-btn"
+                  data-reason="Doesnt follow Omnibus rules"
+                >
+                  Doesnt follow Omnibus rules
+                </button>
+              </div>
+            </div>
+
+            <!-- Other Concerns -->
+            <div class="mb-4">
+              <h4 class="mb-3 fw-bold">Other concerns:</h4>
+              <textarea
+                class="form-control"
+                id="rejectOtherReasonTextarea"
+                rows="4"
+                placeholder="Enter additional comments or concerns..."
+              ></textarea>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-flex justify-content-center gap-3">
+              <button
+                type="button"
+                class="btn btn-success px-4 py-2 fw-bold"
+                id="submitRejectBtn"
+                onclick="hideRejectionModal()"
+              >
+                Submit
+              </button>
+              <button
+                type="button"
+                class="btn btn-success px-4 py-2 fw-bold"
+                data-bs-dismiss="modal"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <script src="../../assets/scripts/popups/notification.js"></script>
+    <script src="../../assets/scripts/popups/sidebar.js"></script>
+    <script src="../../assets/scripts/bootstrap/hr-requests.js"></script>
+  </body>
+</html>
