@@ -1,4 +1,4 @@
-@import url("../variables.css");
+@import url("../components/variables.css");
 body {
   background-color: var(--primary-gray);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;

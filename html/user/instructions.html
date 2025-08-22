@@ -1,11 +1,478 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ALIS - Instructions and Requirements</title>
-</head>
-<body>
-  
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leave Instructions and Requirements</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="../../assets/styles/layouts/instructions.css"
+    />
+  </head>
+  <body>
+    <div class="header-section">
+      <div class="container">
+        <div class="text-center">
+          <h1 class="main-title">
+            <i class="fas fa-file-alt me-3"></i>
+            Instructions and Requirements
+          </h1>
+          <p class="subtitle">Application Guidelines for All Types of Leave</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="container content-container">
+      <div class="row">
+        <div class="col-12">
+          <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>
+            <strong>General Instruction:</strong> Application for any type of
+            leaves shall be made on the prescribed Form and accomplished at
+            least in duplicate with the required documentary requirements.
+          </div>
+
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="text-center">
+                <div class="download-section p-4">
+                  <h4 class="mb-3">
+                    <i class="fas fa-file-download me-2"></i>
+                    Download Complete Instructions
+                  </h4>
+                  <p class="text-muted mb-4">
+                    Get the official PDF document with all leave instructions
+                    and requirements
+                  </p>
+                  <a href="#" class="download-btn" onclick="downloadFile()">
+                    <i class="fas fa-download me-2"></i>
+                    Download PDF File
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-6 col-md-12">
+          <div class="leave-card">
+            <div class="leave-header" onclick="toggleLeaveDetails(this)">
+              <div class="leave-title">
+                <div class="leave-title-left">
+                  <i class="fas fa-umbrella-beach icon-vacation"></i>
+                  Vacation Leave
+                  <span class="leave-duration">As needed</span>
+                </div>
+                <i class="fas fa-chevron-down dropdown-icon"></i>
+              </div>
+            </div>
+            <div class="leave-content">
+              <div class="advance-filing">
+                <i class="fas fa-clock"></i>
+                <strong>Filing Period:</strong> 5 days in advance whenever
+                possible
+              </div>
+              <ul class="requirement-list">
+                <li>
+                  Must indicate if leave is within the Philippines or abroad
+                </li>
+                <li>Required for securing travel authority</li>
+                <li>
+                  Must complete clearance from money and work accountabilities
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-md-12">
+          <div class="leave-card">
+            <div class="leave-header" onclick="toggleLeaveDetails(this)">
+              <div class="leave-title">
+                <div class="leave-title-left">
+                  <i class="fas fa-calendar-check icon-special"></i>
+                  Mandatory/Forced Leave
+                  <span class="leave-duration">5 days annually</span>
+                </div>
+                <i class="fas fa-chevron-down dropdown-icon"></i>
+              </div>
+            </div>
+            <div class="leave-content">
+              <ul class="requirement-list">
+                <li>
+                  Annual five-day vacation leave shall be forfeited if not taken
+                </li>
+                <li>
+                  Cancelled leave due to service exigency won't be deducted
+                </li>
+                <li>
+                  One day or more VL counts for mandatory leave compliance
+                </li>
+              </ul>
+              <div class="special-note">
+                <i class="fas fa-info-circle"></i>
+                Subject to Section 25, Rule XVI of Omnibus Rules Implementing
+                E.O No. 292
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-md-12">
+          <div class="leave-card">
+            <div class="leave-header" onclick="toggleLeaveDetails(this)">
+              <div class="leave-title">
+                <div class="leave-title-left">
+                  <i class="fas fa-heartbeat icon-sick"></i>
+                  Sick Leave
+                  <span class="leave-duration">As needed</span>
+                </div>
+                <i class="fas fa-chevron-down dropdown-icon"></i>
+              </div>
+            </div>
+            <div class="leave-content">
+              <ul class="requirement-list">
+                <li>Filed immediately upon employee's return</li>
+                <li>
+                  If filed in advance or exceeding 5 days, medical certificate
+                  required
+                </li>
+                <li>If no medical consultation, affidavit must be executed</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-md-12">
+          <div class="leave-card">
+            <div class="leave-header" onclick="toggleLeaveDetails(this)">
+              <div class="leave-title">
+                <div class="leave-title-left">
+                  <i class="fas fa-baby icon-maternity"></i>
+                  Maternity Leave
+                  <span class="leave-duration">105 days</span>
+                </div>
+                <i class="fas fa-chevron-down dropdown-icon"></i>
+              </div>
+            </div>
+            <div class="leave-content">
+              <ul class="requirement-list">
+                <li>Proof of pregnancy (ultrasound, doctor's certificate)</li>
+                <li>
+                  Notice of allocation of Maternity Leave Credits (CS Form No.
+                  6a)
+                </li>
+                <li>
+                  Seconded female employees enjoy full pay in recipient agency
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-md-12">
+          <div class="leave-card">
+            <div class="leave-header" onclick="toggleLeaveDetails(this)">
+              <div class="leave-title">
+                <div class="leave-title-left">
+                  <i class="fas fa-male icon-paternity"></i>
+                  Paternity Leave
+                  <span class="leave-duration">7 days</span>
+                </div>
+                <i class="fas fa-chevron-down dropdown-icon"></i>
+              </div>
+            </div>
+            <div class="leave-content">
+              <ul class="requirement-list">
+                <li>Birth certificate</li>
+                <li>Medical certificate</li>
+                <li>Marriage contract</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-md-12">
+          <div class="leave-card">
+            <div class="leave-header" onclick="toggleLeaveDetails(this)">
+              <div class="leave-title">
+                <div class="leave-title-left">
+                  <i class="fas fa-star icon-special"></i>
+                  Special Privilege Leave
+                  <span class="leave-duration">3 days</span>
+                </div>
+                <i class="fas fa-chevron-down dropdown-icon"></i>
+              </div>
+            </div>
+            <div class="leave-content">
+              <div class="advance-filing">
+                <i class="fas fa-clock"></i>
+                <strong>Filing Period:</strong> At least 1 week prior (except
+                emergencies)
+              </div>
+              <ul class="requirement-list">
+                <li>Must indicate if within Philippines or abroad</li>
+                <li>Required for travel authority</li>
+                <li>Must complete money and work accountabilities clearance</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-md-12">
+          <div class="leave-card">
+            <div class="leave-header" onclick="toggleLeaveDetails(this)">
+              <div class="leave-title">
+                <div class="leave-title-left">
+                  <i class="fas fa-user-friends icon-special"></i>
+                  Solo Parent Leave
+                  <span class="leave-duration">7 days</span>
+                </div>
+                <i class="fas fa-chevron-down dropdown-icon"></i>
+              </div>
+            </div>
+            <div class="leave-content">
+              <div class="advance-filing">
+                <i class="fas fa-clock"></i>
+                <strong>Filing Period:</strong> 5 days in advance whenever
+                possible
+              </div>
+              <ul class="requirement-list">
+                <li>Updated Solo Parent Identification Card</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-md-12">
+          <div class="leave-card">
+            <div class="leave-header" onclick="toggleLeaveDetails(this)">
+              <div class="leave-title">
+                <div class="leave-title-left">
+                  <i class="fas fa-graduation-cap icon-study"></i>
+                  Study Leave
+                  <span class="leave-duration">Up to 6 months</span>
+                </div>
+                <i class="fas fa-chevron-down dropdown-icon"></i>
+              </div>
+            </div>
+            <div class="leave-content">
+              <ul class="requirement-list">
+                <li>Must meet agency's internal requirements</li>
+                <li>Contract between agency head and employee</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-md-12">
+          <div class="leave-card">
+            <div class="leave-header" onclick="toggleLeaveDetails(this)">
+              <div class="leave-title">
+                <div class="leave-title-left">
+                  <i class="fas fa-shield-alt icon-emergency"></i>
+                  VAWC Leave
+                  <span class="leave-duration">10 days</span>
+                </div>
+                <i class="fas fa-chevron-down dropdown-icon"></i>
+              </div>
+            </div>
+            <div class="leave-content">
+              <ul class="requirement-list">
+                <li>Barangay Protection Order (BPO)</li>
+                <li>Temporary/Permanent Protection Order (TPO/PPO)</li>
+                <li>
+                  Certification from Punong Barangay/Kagawad or Prosecutor
+                </li>
+                <li>Police report and medical certificate (discretionary)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-md-12">
+          <div class="leave-card">
+            <div class="leave-header" onclick="toggleLeaveDetails(this)">
+              <div class="leave-title">
+                <div class="leave-title-left">
+                  <i class="fas fa-medkit icon-sick"></i>
+                  Rehabilitation Leave
+                  <span class="leave-duration">Up to 6 months</span>
+                </div>
+                <i class="fas fa-chevron-down dropdown-icon"></i>
+              </div>
+            </div>
+            <div class="leave-content">
+              <div class="advance-filing">
+                <i class="fas fa-clock"></i>
+                <strong>Filing Period:</strong> Within 1 week from accident
+              </div>
+              <ul class="requirement-list">
+                <li>Letter request with relevant reports</li>
+                <li>Police report (if applicable)</li>
+                <li>Medical certificate on nature of injuries</li>
+                <li>Written concurrence of government physician</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-md-12">
+          <div class="leave-card">
+            <div class="leave-header" onclick="toggleLeaveDetails(this)">
+              <div class="leave-title">
+                <div class="leave-title-left">
+                  <i class="fas fa-female icon-maternity"></i>
+                  Special Leave Benefits for Women
+                  <span class="leave-duration">Up to 2 months</span>
+                </div>
+                <i class="fas fa-chevron-down dropdown-icon"></i>
+              </div>
+            </div>
+            <div class="leave-content">
+              <div class="advance-filing">
+                <i class="fas fa-clock"></i>
+                <strong>Filing Period:</strong> 5 days prior to surgery
+              </div>
+              <ul class="requirement-list">
+                <li>Medical certificate from proper authorities</li>
+                <li>Clinical summary of gynecological disorder</li>
+                <li>Duration of surgery and perioperative period</li>
+                <li>Estimated recuperation period</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-md-12">
+          <div class="leave-card">
+            <div class="leave-header" onclick="toggleLeaveDetails(this)">
+              <div class="leave-title">
+                <div class="leave-title-left">
+                  <i class="fas fa-exclamation-triangle icon-emergency"></i>
+                  Special Emergency (Calamity) Leave
+                  <span class="leave-duration">Up to 5 days</span>
+                </div>
+                <i class="fas fa-chevron-down dropdown-icon"></i>
+              </div>
+            </div>
+            <div class="leave-content">
+              <ul class="requirement-list">
+                <li>Maximum 5 days straight or staggered within 30 days</li>
+                <li>Once a year privilege only</li>
+                <li>Head of office verification required</li>
+                <li>Validation of residence in calamity area</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-md-12">
+          <div class="leave-card">
+            <div class="leave-header" onclick="toggleLeaveDetails(this)">
+              <div class="leave-title">
+                <div class="leave-title-left">
+                  <i class="fas fa-coins icon-special"></i>
+                  Monetization of Leave Credits
+                </div>
+                <i class="fas fa-chevron-down dropdown-icon"></i>
+              </div>
+            </div>
+            <div class="leave-content">
+              <ul class="requirement-list">
+                <li>Letter request stating valid and justifiable reasons</li>
+                <li>Applies to 50% or more of accumulated leave credits</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-md-12">
+          <div class="leave-card">
+            <div class="leave-header" onclick="toggleLeaveDetails(this)">
+              <div class="leave-title">
+                <div class="leave-title-left">
+                  <i class="fas fa-door-open icon-special"></i>
+                  Terminal Leave
+                </div>
+                <i class="fas fa-chevron-down dropdown-icon"></i>
+              </div>
+            </div>
+            <div class="leave-content">
+              <ul class="requirement-list">
+                <li>Proof of resignation, retirement, or separation</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-md-12">
+          <div class="leave-card">
+            <div class="leave-header" onclick="toggleLeaveDetails(this)">
+              <div class="leave-title">
+                <div class="leave-title-left">
+                  <i class="fas fa-heart icon-maternity"></i>
+                  Adoption Leave
+                </div>
+                <i class="fas fa-chevron-down dropdown-icon"></i>
+              </div>
+            </div>
+            <div class="leave-content">
+              <ul class="requirement-list">
+                <li>Authenticated copy of Pre-Adoptive Placement Authority</li>
+                <li>
+                  Issued by Department of Social Welfare and Development (DSWD)
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="leave-content">
+          <ul class="requirement-list">
+            <li>Authenticated copy of Pre-Adoptive Placement Authority</li>
+            <li>
+              Issued by Department of Social Welfare and Development (DSWD)
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="general-note">
+          <h4>
+            <i class="fas fa-exclamation-triangle me-2"></i>Important Notice
+          </h4>
+          <p class="mb-0">
+            <strong
+              >For leave of absence for thirty (30) calendar days or more and
+              terminal leave:</strong
+            >
+            Application shall be accompanied by a clearance from money, property
+            and work-related accountabilities (pursuant to CSC Memorandum
+            Circular No. 2, s. 1985).
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <button class="floating-action" onclick="scrollToTop()">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/scripts/instructions.js"></script>
+  </body>
 </html>
