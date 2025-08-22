@@ -38,5 +38,5 @@ document.getElementById("saveBtn").addEventListener("click", function () {
       btn.childNodes[0].textContent = originalText;
       successContent.style.display = "none";
     }, 2000);
-  }, 2000); // 2 second loading simulation
+  }, 2000);
 });
