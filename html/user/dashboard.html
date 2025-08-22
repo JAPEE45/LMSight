@@ -173,22 +173,22 @@
       <div id="dashboardSection" class="dashboard-section">
         <!-- Statistics Cards -->
         <div class="row mb-4">
-          <div class="col-lg-4 col-md-6 mb-3">
-            <div class="stats-card profile blue">
+          <div class="col-lg-4 col-md-6 mb-3" >
+            <div class="stats-card profile blue" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Total number of leave days taken this month">
               <div class="stats-number">5</div>
               <div class="stats-title">Total Leaves Taken</div>
               <div class="stats-subtitle">This month</div>
             </div>
           </div>
           <div class="col-lg-4 col-md-6 mb-3">
-            <div class="stats-card profile green">
+            <div class="stats-card profile green" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Remaining leave days available this month">
               <div class="stats-number">10</div>
               <div class="stats-title">Leave Balance</div>
               <div class="stats-subtitle">This month</div>
             </div>
           </div>
           <div class="col-lg-4 col-md-6 mb-3">
-            <div class="stats-card yellow">
+            <div class="stats-card yellow" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Leave requests awaiting approval">
               <div class="stats-number">2</div>
               <div class="stats-title filters" data-filter="pending" id="pendingRequests">Pending Requests</div>
               <div class="stats-subtitle">This month</div>
@@ -200,7 +200,7 @@
         <div class="content-card">
           <div class="card-header">
             <h2 class="card-title">Leave History</h2>
-            <button class="apply-leave-btn" id="applyLeaveBtn">
+            <button class="apply-leave-btn" id="applyLeaveBtn" data-bs-toggle="tooltip" data-bs-placement="left" title="Submit a new leave application">
               <i class="fas fa-plus"></i>
               Apply Leave
             </button>
@@ -450,6 +450,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="../../assets/scripts/popups/sidebar.js"></script>
     <script src="../../assets/scripts/popups/notification.js"></script>
-    <script src="../../assets/scripts/bootstrap/user.js"></script>
+    <script src="../../assets/scripts/popups/tooltip.js"></script>
+    <script src="../../assets/scripts/user.js"></script>
   </body>
 </html>

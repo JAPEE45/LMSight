@@ -178,18 +178,15 @@
         </div>
       </div>
 
-      <!-- Dashboard Charts Row -->
       <div class="dashboard-row">
-        <!-- Weekly Leave Pattern -->
-        <div class="chart-card">
+        <div class="chart-card" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Shows leave requests by day of the week">
           <h5>Weekly Leave Pattern</h5>
           <div class="chart-container">
             <canvas id="weeklyChart"></canvas>
           </div>
         </div>
 
-        <!-- Monthly Leave Pattern -->
-        <div class="chart-card">
+        <div class="chart-card" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Monthly trend of leave requests over time">
           <h5>Monthly Leave Pattern</h5>
           <div class="chart-container">
             <canvas id="monthlyChart"></canvas>
@@ -431,65 +428,27 @@
       </div>
 
       <div class="row chart-cont">
-        <!-- Leave Types Chart -->
         <div class="col-lg-6 col-md-12">
-          <div class="chart-card">
+          <div class="chart-card" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Distribution of leave types across all employees">
             <h3 class="chart-title">Leave Types</h3>
             <div class="chart-container">
               <canvas class="bot-chart" id="leaveTypesChart"></canvas>
             </div>
-            <div class="custom-legend">
-              <div class="legend-item">
-                <!-- <div class="legend-color" style="background-color: #008AD8;"></div> -->
-                <!-- <span>Vacation</span> -->
-              </div>
-              <div class="legend-item">
-                <!-- <div class="legend-color" style="background-color: #238b45;"></div> -->
-                <!-- <span>Sick Leave</span> -->
-              </div>
-              <div class="legend-item">
-                <!-- <div class="legend-color" style="background-color: #ff6b35;"></div> -->
-                <!-- <span>Emergency</span> -->
-              </div>
-              <div class="legend-item">
-                <!-- <div class="legend-color" style="background-color: #dca907;"></div> -->
-                <!-- <span>Other</span> -->
-              </div>
-            </div>
           </div>
         </div>
 
-        <!-- Leave Status Chart -->
-        <div class="col-lg-6 col-md-12">
-          <div class="chart-card">
+        <div class="col-lg-6 col-md-12" >
+          <div class="chart-card" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Current status of all leave requests">
             <h3 class="chart-title">Leave Status</h3>
             <div class="chart-container">
               <canvas class="bot-chart" id="leaveStatusChart"></canvas>
-            </div>
-            <div class="custom-legend">
-              <div class="legend-item">
-                <!-- <div class="legend-color" style="background-color: #008AD8;"></div> -->
-                <!-- <span>Pending</span> -->
-              </div>
-              <div class="legend-item">
-                <!-- <div class="legend-color" style="background-color: #238b45;"></div> -->
-                <!-- <span>Approved</span> -->
-              </div>
-              <div class="legend-item">
-                <!-- <div class="legend-color" style="background-color: #dc3545;"></div> -->
-                <!-- <span>Cancelled</span> -->
-              </div>
-              <div class="legend-item">
-                <!-- <div class="legend-color" style="background-color: #dca907;"></div> -->
-                <!-- <span>Other</span> -->
-              </div>
             </div>
           </div>
         </div>
 
         <!-- Monthly Leave Requests Chart -->
         <div class="col-lg-6 col-md-12">
-          <div class="chart-card">
+          <div class="chart-card" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Total leave requests submitted per month">
             <h3 class="chart-title">Monthly Leave Requests</h3>
             <div class="chart-container">
               <canvas id="monthlyRequestsChart"></canvas>
@@ -499,7 +458,7 @@
 
         <!-- Department-wise Leave Chart -->
         <div class="col-lg-6 col-md-12">
-          <div class="chart-card">
+          <div class="chart-card" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Leave breakdown by department and type">
             <h3 class="chart-title">Department-wise Leave</h3>
             <div class="chart-container">
               <canvas id="departmentChart"></canvas>
@@ -509,7 +468,7 @@
 
         <!-- Average Leave Duration Chart -->
         <div class="col-12">
-          <div class="chart-card">
+          <div class="chart-card" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Average number of days per leave request over time">
             <h3 class="chart-title">Average Leave Duration Over Time</h3>
             <div class="chart-container">
               <canvas class="bot-chart" id="averageDurationChart"></canvas>
@@ -520,8 +479,9 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="../../assets/scripts/bootstrap/hr_dashboard.js"></script>
+    <script src="../../assets/scripts/hr_dashboard.js"></script>
     <script src="../../assets/scripts/popups/sidebar.js"></script>
     <script src="../../assets/scripts/popups/notification.js"></script>
+    <script src="../../assets/scripts/popups/tooltip.js"></script>
   </body>
 </html>
