@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -13,13 +14,13 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="../../assets/styles/components/sidebar.css" />
-    <link rel="stylesheet" href="../../assets/styles/components/navbar.css" />
+    <link rel="stylesheet" href="../static/assets/styles/components/sidebar.css" />
+    <link rel="stylesheet" href="../static/assets/styles/components/navbar.css" />
     <link
       rel="stylesheet"
-      href="../../assets/styles/components/notification.css"
+      href="../static/assets/styles/components/notification.css"
     />
-    <link rel="stylesheet" href="../../assets/styles/layouts/user.css" />
+    <link rel="stylesheet" href="../static/assets/styles/layouts/user.css" />
   </head>
   <body>
     <div class="sidebar" id="sidebar">
@@ -27,7 +28,7 @@
       <div class="main-img-cont">
         <div class="img-cont">
           <img
-            src="../../assets/images/blank-profile-picture-973460.svg"
+            src = "../media/{{user.picture}}"
             alt=""
             id="profilePreview"
           />
@@ -38,24 +39,24 @@
         </div>
       </div>
       <div class="name-cont">
-        <h3 class="name">Juan Dela Cruz</h3>
+        <h3 class="name">{{user.firstname}} {{user.middlename}} {{user.lastname}}</h3>
       </div>
 
       <div class="bot-sec">
         <div class="jobs-desc-cont">
           <p>Employee ID: E0956-T25</p>
-          <p>Department: HR</p>
-          <p>Job title: HR Manager</p>
-          <p>Employment Type: Regular</p>
+          <p>Department: {{user.department}}</p>
+          <p>Job title: {{user.job_title}}</p>
+          <p>Employment Type: {{user.employee_type}}</p>
         </div>
         <div class="details-cont">
-          <p>Vacation Leave: 3 / 5 used</p>
-          <p>Sick Leave: 3 / 5 used</p>
-          <p>Casual Leave: 5 / 10 used</p>
+          <p>Vacation Leave: {{leave.vacation_leave}} / 5 used</p>
+          <p>Sick Leave: {{leave.sick_leave}} / 5 used</p>
+          <p>Casual Leave: {{leave.casual_leave}} / 10 used</p>
         </div>
       </div>
       <div class="button-cont">
-        <a href="../login_interface.html">
+        <a href="{% url 'logout' %}">
           Log Out
           <i class="fa-solid fa-right-from-bracket"></i>
         </a>
@@ -170,21 +171,21 @@
         <div class="row mb-4">
           <div class="col-lg-4 col-md-6 mb-3" >
             <div class="stats-card profile blue" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Total number of leave days taken this month">
-              <div class="stats-number">5</div>
+              <div class="stats-number">{{leave.total_leave_this_month}}</div>
               <div class="stats-title">Total Leaves Taken</div>
               <div class="stats-subtitle">This month</div>
             </div>
           </div>
           <div class="col-lg-4 col-md-6 mb-3">
             <div class="stats-card profile green" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Remaining leave days available this month">
-              <div class="stats-number">10</div>
+              <div class="stats-number">{{leave.leave_balance}}</div>
               <div class="stats-title">Leave Balance</div>
               <div class="stats-subtitle">This month</div>
             </div>
           </div>
           <div class="col-lg-4 col-md-6 mb-3">
             <div class="stats-card yellow" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Leave requests awaiting approval">
-              <div class="stats-number">2</div>
+              <div class="stats-number">{{leave.pending_leave}}</div>
               <div class="stats-title filters" data-filter="pending" id="pendingRequests">Pending Requests</div>
               <div class="stats-subtitle">This month</div>
             </div>
@@ -222,12 +223,14 @@
                 </tr>
               </thead>
               <tbody id="leaveTableBody">
-                <tr data-status="approved">
-                  <td>2025-05-01</td>
-                  <td>June 10</td>
-                  <td>June 20</td>
-                  <td>Vacation Leave</td>
-                  <td>Going to asdfasd sdaf</td>
+               
+               {% for a in leave_status.approved %}
+                  <tr data-status="approved" style="display: none">
+                  <td>{{a.createdAt}}</td>
+                  <td>{{a.start_date}}</td>
+                  <td>{{a.end_date}}</td>
+                  <td>{{a.leave_type}}</td>
+                  <td>{{a.comment}}</td>
                   <td><span class="status-approved">Approved</span></td>
                   <td>
                   <button
@@ -237,57 +240,15 @@
                   </button>
                 </td>
                 </tr>
-                <tr data-status="approved">
-                  <td>2025-05-01</td>
-                  <td>June 10</td>
-                  <td>June 20</td>
-                  <td>Vacation Leave</td>
-                  <td>Going to asdfasd sdaf</td>
-                  <td><span class="status-approved">Approved</span></td>
-                  <td>
-                  <button
-                    class="btn btn-delete"
-                  >
-                    <i class="fa-solid fa-trash"></i>
-                  </button>
-                </td>
-                </tr>
-                <tr data-status="approved">
-                  <td>2025-05-01</td>
-                  <td>June 10</td>
-                  <td>June 20</td>
-                  <td>Vacation Leave</td>
-                  <td>Going to asdfasd sdaf</td>
-                  <td><span class="status-approved">Approved</span></td>
-                  <td>
-                  <button
-                    class="btn btn-delete"
-                  >
-                    <i class="fa-solid fa-trash"></i>
-                  </button>
-                </td>
-                </tr>
-                <tr data-status="approved">
-                  <td>2025-05-01</td>
-                  <td>June 10</td>
-                  <td>June 20</td>
-                  <td>Vacation Leave</td>
-                  <td>Going to asdfasd sdaf</td>
-                  <td><span class="status-approved">Approved</span></td>
-                  <td>
-                  <button
-                    class="btn btn-delete"
-                  >
-                    <i class="fa-solid fa-trash"></i>
-                  </button>
-                </td>
-                </tr>
-                <tr data-status="pending" style="display: none">
-                  <td>2025-06-15</td>
-                  <td>July 01</td>
-                  <td>July 05</td>
-                  <td>Sick Leave</td>
-                  <td>Medical appointment</td>
+               {% endfor %}
+          
+                {% for p in leave_status.pending %}
+                  <tr data-status="pending" style="display: none">
+                  <td>{{p.createdAt}}</td>
+                  <td>{{p.start_date}}</td>
+                  <td>{{p.end_date}}</td>
+                  <td>{{p.leave_type}}</td>
+                  <td>{{p.comment}}</td>
                   <td><span class="status-pending">Pending</span></td>
                   <td>
                   <button
@@ -297,38 +258,27 @@
                   </button>
                 </td>
                 </tr>
-                <tr data-status="pending" style="display: none">
-                  <td>2025-06-20</td>
-                  <td>July 10</td>
-                  <td>July 12</td>
-                  <td>Emergency Leave</td>
-                  <td>Family emergency</td>
-                  <td><span class="status-pending">Pending</span></td>
-                  <td>
-                  <button
-                    class="btn btn-delete"
-                    onclick="showLeaveModal()"
-                  >
-                    <i class="fa-solid fa-trash"></i>
-                  </button>
-                </td>
-                </tr>
+                {% endfor %}
+                  
+              
+              {% for r in leave_status.rejected %}
                 <tr data-status="rejected" style="display: none">
-                  <td>2025-04-20</td>
-                  <td>May 01</td>
-                  <td>May 05</td>
-                  <td>Vacation Leave</td>
-                  <td>Holiday trip</td>
+                  <td>{{r.createdAt}}</td>
+                  <td>{{r.start_date}}</td>
+                  <td>{{r.end_date}}</td>
+                  <td>{{r.leave_type}}</td>
+                  <td>{{r.comment}}</td>
                   <td><span class="status-rejected">Rejected</span></td>
                   <td>
                   <button
                     class="btn btn-delete"
-                    onclick="showLeaveModal()"
                   >
                     <i class="fa-solid fa-trash"></i>
                   </button>
                 </td>
                 </tr>
+              {% endfor %}
+                
               </tbody>
             </table>
           </div>
@@ -349,7 +299,8 @@
           </div>
 
           <div style="padding: var(--padding-2)">
-            <form id="applyLeaveForm">
+            <form id="applyLeaveForm" method="post" action="{% url 'user_dasboard' %}">
+              {% csrf_token %}
               <div class="form-group">
                 <label class="form-label">ID</label>
                 <input
@@ -363,19 +314,19 @@
               <div class="form-grid">
                 <div class="form-group">
                   <label class="form-label">Leave Type</label>
-                  <select class="form-select" required>
+                  <select class="form-select" name="leave_type" required>
                     <option value="">-- Please Select --</option>
-                    <option value="vacation">Vacation Leave</option>
-                    <option value="sick">Sick Leave</option>
-                    <option value="emergency">Emergency Leave</option>
-                    <option value="maternity">Maternity Leave</option>
+                    <option value="vacation leave">Vacation Leave</option>
+                    <option value="sick leave">Sick Leave</option>
+                    <option value="casual leave">Emergency Leave</option>
+                    <option value="maternity leave">Maternity Leave</option>
                     <option value="paternity">Paternity Leave</option>
                   </select>
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Commutation</label>
-                  <select class="form-select">
+                  <select class="form-select" name="commutation">
                     <option value="">--Please Select--</option>
                     <option value="with">With Commutation</option>
                     <option value="without">Without Commutation</option>
@@ -384,12 +335,12 @@
 
                 <div class="form-group">
                   <label class="form-label">Start Date</label>
-                  <input type="date" class="form-control" required />
+                  <input type="date" class="form-control" name="start_date" required />
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">End Date</label>
-                  <input type="date" class="form-control" required />
+                  <input type="date" class="form-control" name="end_date" required />
                 </div>
               </div>
 
@@ -399,13 +350,14 @@
                   <textarea
                     class="form-control form-textarea"
                     placeholder="Enter your reason for leave..."
+                    name="comment"
                   ></textarea>
                 </div>
 
                 <div>
                   <div class="form-group">
                     <label class="form-label">Details of Leave</label>
-                    <select class="form-select">
+                    <select class="form-select" name="details">
                       <option value="">--Please Select--</option>
                       <option value="full-day">Full Day</option>
                       <option value="half-day-morning">
@@ -424,11 +376,11 @@
                 <input type="checkbox" id="agreeTerms" required />
                 <label for="agreeTerms" class="checkbox-label">
                   I have read and agree to the
-                  <a href="./omnibus_interface.html" target="_blank">
+                  <a href="{% url 'omnibus'%}" target="_blank">
                     Omnibus rules
                   </a>
                   and
-                  <a href="./instructions.html" target="_blank">
+                  <a href="{% url 'instructions'%}" target="_blank">
                     Instructions and Requirements
                   </a>
                   of leave.
@@ -445,9 +397,9 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="../../assets/scripts/popups/sidebar.js"></script>
-    <script src="../../assets/scripts/popups/notification.js"></script>
-    <script src="../../assets/scripts/popups/tooltip.js"></script>
-    <script src="../../assets/scripts/user.js"></script>
+    <script src="../static/assets/scripts/popups/sidebar.js"></script>
+    <script src="../static/assets/scripts/popups/notification.js"></script>
+    <script src="../static/assets/scripts/popups/tooltip.js"></script>
+    <script src="../static/assets/scripts/user.js"></script>
   </body>
 </html>

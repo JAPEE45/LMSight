@@ -13,22 +13,23 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="../../assets/styles/components/sidebar.css" />
-    <link rel="stylesheet" href="../../assets/styles/components/navbar.css" />
+    <link rel="stylesheet" href="../../static/assets/styles/components/sidebar.css" />
+    <link rel="stylesheet" href="../../static/assets/styles/components/navbar.css" />
     <link
       rel="stylesheet"
-      href="../../assets/styles/components/notification.css"
+      href="../../static/assets/styles/components/notification.css"
     />
-    <link rel="stylesheet" href="../../assets/styles/layouts/hr.css" />
+    <link rel="stylesheet" href="../../static/assets/styles/layouts/hr.css" />
   </head>
   <body>
-    <div class="sidebar" id="sidebar">
+      <div class="sidebar" id="sidebar">
       <h2>ALIS</h2>
       <div class="main-img-cont">
         <div class="img-cont">
           <img
-            src="../../assets/images/blank-profile-picture-973460.svg"
+            src="../static/assets/images/blank-profile-picture-973460.svg"
             alt=""
+            id="profilePreview"
           />
           <input type="file" accept="image/*" id="image_file" />
           <label for="image_file">
@@ -39,12 +40,13 @@
       <div class="name-cont">
         <h3 class="name">Juan Dela Cruz</h3>
       </div>
+
       <div class="bot-sec">
         <div class="jobs-desc-cont">
           <p>Employee ID: E0956-T25</p>
-          <p>Department: HR</p>
-          <p>Job title: HR Manager</p>
-          <p>Employment Type: Regular</p>
+          <p>Department: {{user.department}}</p>
+          <p>Job title: {{user.job_title}}</p>
+          <p>Employment Type: {{user.employee_type}}</p>
         </div>
         <div class="details-cont">
           <p>Vacation Leave: 3 / 5 used</p>
@@ -59,7 +61,6 @@
         </a>
       </div>
     </div>
-
     <div class="main-content">
       <div class="main-header">
         <div class="d-flex align-items-center">
@@ -70,7 +71,7 @@
         </div>
         <div class="button-main-cont">
           <div class="button-cont">
-            <a id="dashboard_nav" href="./dashboard.html">
+            <a id="dashboard_nav" href="">
               <i class="fa-solid fa-table-columns active"></i>
             </a>
             <p class="popup">Dashboard</p>
@@ -250,7 +251,7 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="../../assets/scripts/popups/sidebar.js"></script>
-    <script src="../../assets/scripts/notification.js"></script>
+    <script src="../../static/assets/scripts/popups/sidebar.js"></script>
+    <script src="../../static/assets/scripts/notification.js"></script>
   </body>
 </html>

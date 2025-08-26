@@ -62,32 +62,32 @@ agreeTermsCheckbox.addEventListener("change", function () {
   submitBtn.disabled = !this.checked;
 });
 
-// Form submission
-applyLeaveForm.addEventListener("submit", function (e) {
-  e.preventDefault();
+// // Form submission
+// applyLeaveForm.addEventListener("submit", function (e) {
+//   e.preventDefault();
 
-  // Get form data
-  const formData = new FormData(this);
-  const leaveData = {};
+//   // Get form data
+//   const formData = new FormData(this);
+//   const leaveData = {};
 
-  // Convert FormData to object
-  for (let [key, value] of formData.entries()) {
-    leaveData[key] = value;
-  }
+//   // Convert FormData to object
+//   for (let [key, value] of formData.entries()) {
+//     leaveData[key] = value;
+//   }
 
   // Show success message
-  alert("Leave application submitted successfully!");
+//   alert("Leave application submitted successfully!");
 
-  // Reset form
-  this.reset();
-  agreeTermsCheckbox.checked = false;
-  submitBtn.disabled = true;
+//   // Reset form
+//   this.reset();
+//   agreeTermsCheckbox.checked = false;
+//   submitBtn.disabled = true;
 
-  // Go back to dashboard
-  applyLeaveSection.classList.add("hidden");
-  applyLeaveSection.classList.remove("show");
-  dashboardSection.classList.remove("hidden");
-});
+//   // Go back to dashboard
+//   applyLeaveSection.classList.add("hidden");
+//   applyLeaveSection.classList.remove("show");
+//   dashboardSection.classList.remove("hidden");
+// });
 
 // Date validation - end date should be after start date
 const startDateInput = document.querySelector(

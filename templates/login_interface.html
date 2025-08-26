@@ -10,15 +10,15 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
 
-    <link rel="stylesheet" href="../assets/styles/general.css" />
-    <link rel="stylesheet" href="../assets/styles/layouts/login_interface.css" />
+    <link rel="stylesheet" href="static/assets/styles/general.css" />
+    <link rel="stylesheet" href="static/assets/styles/layouts/login_interface.css" />
   </head>
   <body>
     <main class="main active">
       <div class="front">
         <div class="image-wrapper">
           <img
-            src="../assets/images/millennial-asia-businessmen-businesswomen-meeting-brainstorming-ideas-about-new-paperwork-project-colleagues-working-together-planning-success-strategy-enjoy-teamwork-small-modern-night-office.jpg"
+            src="static/assets/images/millennial-asia-businessmen-businesswomen-meeting-brainstorming-ideas-about-new-paperwork-project-colleagues-working-together-planning-success-strategy-enjoy-teamwork-small-modern-night-office.jpg"
             alt="front"
           />
         </div>
@@ -29,15 +29,16 @@
           <p>Leave with ease</p>
         </div>
       </div>
-      <form class="form">
+      <form class="form" action="{% url 'login' %}" method="post">
+        {% csrf_token %}
         <h1>Welcome back!</h1>
         <div class="inputs-container">
           <div class="inputs">
-            <input id="username" placeholder=" " type="text" />
+            <input id="username" placeholder=" " type="text" name="username"/>
             <label>Username</label>
           </div>
           <div class="inputs">
-            <input id="password" placeholder=" " type="password" />
+            <input id="password" placeholder=" " type="password" name="password"/>
             <label>Password</label>
           </div>
           <div class="showpasscont">
@@ -59,6 +60,6 @@
         </footer>
       </form>
     </main>
-    <script src="../assets/scripts/login.js"></script>
+    <script src="static/assets/scripts/login.js"></script>
   </body>
 </html>

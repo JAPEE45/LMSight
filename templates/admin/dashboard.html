@@ -17,13 +17,13 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="../../assets/styles/components/sidebar.css" />
-    <link rel="stylesheet" href="../../assets/styles/components/navbar.css" />
+    <link rel="stylesheet" href="../static/assets/styles/components/sidebar.css" />
+    <link rel="stylesheet" href="../static/assets/styles/components/navbar.css" />
     <link
       rel="stylesheet"
-      href="../../assets/styles/components/notification.css"
+      href="../static/assets/styles/components/notification.css"
     />
-    <link rel="stylesheet" href="../../assets/styles/layouts/admin.css" />
+    <link rel="stylesheet" href="../static/assets/styles/layouts/admin.css" />
   </head>
   <body>
     <div class="sidebar" id="sidebar">
@@ -31,7 +31,7 @@
       <div class="main-img-cont">
         <div class="img-cont">
           <img
-            src="../../assets/images/blank-profile-picture-973460.svg"
+            src="../static/assets/images/blank-profile-picture-973460.svg"
             alt=""
           />
           <input type="file" accept="image/*" id="image_file" />
@@ -80,7 +80,7 @@
             <p class="popup">Dashboard</p>
           </div>
           <div class="button-cont">
-            <a id="requests_nav" href="./manage_users.html">
+            <a id="requests_nav" href="{% url 'admin_manage_users' %}">
               <i class="fa-solid fa-users "></i>
             </a>
             <p class="popup">Users</p>
@@ -178,15 +178,15 @@
       <div class="stats-cards">
         <div class="stat-card blue">
           <h3>Total Users</h3>
-          <div class="number">180</div>
+          <div class="number">{{dash.total_user}}</div>
         </div>
         <div class="stat-card green">
           <h3>Leave Types</h3>
-          <div class="number">13</div>
+          <div class="number">{{dash.leave_types}}</div>
         </div>
         <div class="stat-card orange">
           <h3>Total Leave Requests</h3>
-          <div class="number">2</div>
+          <div class="number">{{dash.total_leave_request}}</div>
           <div class="subtitle">This month</div>
         </div>
       </div>
@@ -194,6 +194,7 @@
       <div class="dashboard-row">
         <div class="chart-card">
           <h4>User Role Distribution</h4>
+          <p style="display: none;color:black" id="user_arr">{{user_arr}}</p>
           <div class="chart-container">
             <canvas id="roleChart" width="200" height="200"></canvas>
           </div>
@@ -247,12 +248,12 @@
         </div>
       </div>
     </div>
-
+  
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 
-    <script src="../../assets/scripts/popups/notification.js"></script>
-    <script src="../../assets/scripts/popups/sidebar.js"></script>
-    <script src="../../assets/scripts/admin_dashboard.js"></script>
+    <script src="../static/assets/scripts/popups/notification.js"></script>
+    <script src="../static/assets/scripts/popups/sidebar.js"></script>
+    <script src="../static/assets/scripts/admin_dashboard.js"></script>
   </body>
 </html>
