@@ -1,7 +1,6 @@
 // Initialize the doughnut chart
 const ctx = document.getElementById("roleChart").getContext("2d");
 const user_arr = document.getElementById("user_arr")
-alert(user_arr.innerHTML)
 const roleChart = new Chart(ctx, {
   type: "doughnut",
   data: {

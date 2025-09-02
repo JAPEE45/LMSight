@@ -26,13 +26,14 @@
     <link rel="stylesheet" href="../static/assets/styles/layouts/admin.css" />
   </head>
   <body>
-    <div class="sidebar" id="sidebar">
+ <div class="sidebar" id="sidebar">
       <h2>ALIS</h2>
       <div class="main-img-cont">
         <div class="img-cont">
           <img
-            src="../static/assets/images/blank-profile-picture-973460.svg"
+            src = "../media/{{user.picture}}"
             alt=""
+            id="profilePreview"
           />
           <input type="file" accept="image/*" id="image_file" />
           <label for="image_file">
@@ -41,29 +42,29 @@
         </div>
       </div>
       <div class="name-cont">
-        <h3 class="name">Juan Dela Cruz</h3>
+        <h3 class="name">{{user.firstname}} {{user.middlename}} {{user.lastname}}</h3>
       </div>
+
       <div class="bot-sec">
         <div class="jobs-desc-cont">
           <p>Employee ID: E0956-T25</p>
-          <p>Department: HR</p>
-          <p>Job title: HR Manager</p>
-          <p>Employment Type: Regular</p>
+          <p>Department: {{user.department}}</p>
+          <p>Job title: {{user.job_title}}</p>
+          <p>Employment Type: {{user.employee_type}}</p>
         </div>
         <div class="details-cont">
-          <p>Vacation Leave: 3 / 5 used</p>
-          <p>Sick Leave: 3 / 5 used</p>
-          <p>Casual Leave: 5 / 10 used</p>
+          <p>Vacation Leave: {{leave.vacation_leave}} / 5 used</p>
+          <p>Sick Leave: {{leave.sick_leave}} / 5 used</p>
+          <p>Casual Leave: {{leave.casual_leave}} / 10 used</p>
         </div>
       </div>
       <div class="button-cont">
-        <a href="../login_interface.html">
+        <a href="{% url 'logout' %}">
           Log Out
           <i class="fa-solid fa-right-from-bracket"></i>
         </a>
       </div>
     </div>
-
     <div class="main-content">
       <div class="main-header">
         <div class="d-flex align-items-center">

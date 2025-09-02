@@ -5,6 +5,24 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
+
+  function createCode(number) {
+    const numberStr = number.toString();
+    const n = numberStr.length;
+
+    if (n > 9) {
+        throw new Error("Number must be at most 9 digits");
+    }
+
+    const pad = 10 - n;
+    let filler = "";
+    for (let i = 0; i < pad; i++) {
+        filler += Math.floor(Math.random() * 10); // random digit
+    }
+
+    const code = n.toString() + numberStr + filler;
+    return code;
+}
   const updateSelectAllCheckbox = () => {
     const checkboxes = document.querySelectorAll("tbody .row-checkbox");
     const checkedBoxes = document.querySelectorAll(
@@ -58,14 +76,17 @@ document.addEventListener("DOMContentLoaded", () => {
   window.editUser = (element) => {
     const row = element.closest("tr");
     const userName = row.querySelector(".user-name").textContent;
-    window.location.href = './add_edit_user.html';
+    const id = row.querySelector("#id").textContent;
+    const hash = createCode(id);
+
+    window.location.href = '/admin/edit_user?type=edit&hash=' + hash;
     closeAllDropdowns();
   };
 
   window.deleteUser = (element) => {
     const row = element.closest("tr");
     const userName = row.querySelector(".user-name").textContent;
-
+    const id = row.querySelector("#id").textContent;
     if (confirm(`Are you sure you want to delete user: ${userName}?`)) {
       row.remove();
       updateSelectAllCheckbox();

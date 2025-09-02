@@ -26,8 +26,9 @@
       <div class="main-img-cont">
         <div class="img-cont">
           <img
-            src="../../static/assets/images/blank-profile-picture-973460.svg"
+            src = "../media/{{user.picture}}"
             alt=""
+            id="profilePreview"
           />
           <input type="file" accept="image/*" id="image_file" />
           <label for="image_file">
@@ -36,23 +37,24 @@
         </div>
       </div>
       <div class="name-cont">
-        <h3 class="name">Juan Dela Cruz</h3>
+        <h3 class="name">{{user.firstname}} {{user.middlename}} {{user.lastname}}</h3>
       </div>
+
       <div class="bot-sec">
         <div class="jobs-desc-cont">
           <p>Employee ID: E0956-T25</p>
-          <p>Department: HR</p>
-          <p>Job title: HR Manager</p>
-          <p>Employment Type: Regular</p>
+          <p>Department: {{user.department}}</p>
+          <p>Job title: {{user.job_title}}</p>
+          <p>Employment Type: {{user.employee_type}}</p>
         </div>
         <div class="details-cont">
-          <p>Vacation Leave: 3 / 5 used</p>
-          <p>Sick Leave: 3 / 5 used</p>
-          <p>Casual Leave: 5 / 10 used</p>
+          <p>Vacation Leave: {{leave.vacation_leave}} / 5 used</p>
+          <p>Sick Leave: {{leave.sick_leave}} / 5 used</p>
+          <p>Casual Leave: {{leave.casual_leave}} / 10 used</p>
         </div>
       </div>
       <div class="button-cont">
-        <a href="../login_interface.html">
+        <a href="{% url 'logout' %}">
           Log Out
           <i class="fa-solid fa-right-from-bracket"></i>
         </a>
@@ -69,7 +71,7 @@
         </div>
         <div class="button-main-cont">
           <div class="button-cont">
-            <a id="dashboard_nav" href="./dashboard.html">
+            <a id="dashboard_nav" href="{% url 'admins' %}">
               <i class="fa-solid fa-table-columns"></i>
             </a>
             <p class="popup">Dashboard</p>
@@ -172,7 +174,13 @@
       <div class="user-management-card">
         <div class="user-list-header">
           <div class="user-list-title">
-            User list <span class="user-count">180 users</span>
+            User list <span class="user-count">{{user_count}} 
+            {% if user_count > 1 %}
+              users
+              {% else %}
+              user
+            {% endif %}
+              </span>
           </div>
 
           <div class="search-filters">
@@ -192,7 +200,7 @@
             <a
               class="add-user-btn"
               style="text-decoration: none"
-              href="./add_edit_user.html"
+              href="{% url 'admin_edit_user' %}?type=add"
             >
               <i class="fas fa-plus"></i> Add user
             </a>
@@ -220,25 +228,27 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
+          
+          {% for u in users %}
+            <tr>
                 <td>
                   <input type="checkbox" class="table-checkbox row-checkbox" />
                 </td>
                 <td>
                   <div class="user-info">
-                    <div class="user-avatar">
-                      <i class="fas fa-user"></i>
+                    <div class="user-avatar" style="width: 50px; height:50px; border-radius:100px!important;">
+                      <img src="/media/{{ u.picture }}" style="width: 100%; height:100%;" />
                     </div>
-                    <span class="user-name">Pedro Garcia</span>
+                    <span class="user-name">{{u.firstname}} {{u.middlename}} {{u.lastname}}</span>
                   </div>
                 </td>
-
-                <td>IT</td>
-                <td>Developer</td>
+                <td style="display:none" id="id">{{u.id}}</td>
+                <td id="department">{{u.department}}</td>
+                <td id="job_title">{{u.job_title}}</td>
                 <td>
-                  <span class="status-badge status-inactive">Inactive</span>
+                  <span class="status-badge status-inactive">{{u.employee_type}}</span>
                 </td>
-                <td class="hide-mobile">08-10-2025</td>
+                <td class="hide-mobile">{{u.createdAt}}</td>
                 <td class="action-cell">
                   <button
                     class="actions-btn"
@@ -260,7 +270,10 @@
                     </div>
                   </div>
                 </td>
-              </tr>
+              </tr> 
+            
+          {% endfor %}
+            
             </tbody>
           </table>
         </div>

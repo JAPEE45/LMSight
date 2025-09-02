@@ -21,13 +21,14 @@
     <link rel="stylesheet" href="../static/assets/styles/layouts/admin.css" />
   </head>
   <body>
-    <div class="sidebar" id="sidebar">
+     <div class="sidebar" id="sidebar">
       <h2>ALIS</h2>
       <div class="main-img-cont">
         <div class="img-cont">
           <img
-            src="../../assets/images/blank-profile-picture-973460.svg"
+            src = "../media/{{user.picture}}"
             alt=""
+            id="profilePreview"
           />
           <input type="file" accept="image/*" id="image_file" />
           <label for="image_file">
@@ -36,23 +37,24 @@
         </div>
       </div>
       <div class="name-cont">
-        <h3 class="name">Juan Dela Cruz</h3>
+        <h3 class="name">{{user.firstname}} {{user.middlename}} {{user.lastname}}</h3>
       </div>
+
       <div class="bot-sec">
         <div class="jobs-desc-cont">
           <p>Employee ID: E0956-T25</p>
-          <p>Department: HR</p>
-          <p>Job title: HR Manager</p>
-          <p>Employment Type: Regular</p>
+          <p>Department: {{user.department}}</p>
+          <p>Job title: {{user.job_title}}</p>
+          <p>Employment Type: {{user.employee_type}}</p>
         </div>
         <div class="details-cont">
-          <p>Vacation Leave: 3 / 5 used</p>
-          <p>Sick Leave: 3 / 5 used</p>
-          <p>Casual Leave: 5 / 10 used</p>
+          <p>Vacation Leave: {{leave.vacation_leave}} / 5 used</p>
+          <p>Sick Leave: {{leave.sick_leave}} / 5 used</p>
+          <p>Casual Leave: {{leave.casual_leave}} / 10 used</p>
         </div>
       </div>
       <div class="button-cont">
-        <a href="../login_interface.html">
+        <a href="{% url 'logout' %}">
           Log Out
           <i class="fa-solid fa-right-from-bracket"></i>
         </a>
@@ -174,13 +176,16 @@
           <div class="user-list-title">Add User</div>
 
           <div class="search-filters">
-            <a class="add-user-btn" style="text-decoration: none;" href="./manage_users.html">
+            <a class="add-user-btn" style="text-decoration: none;" href="{% url 'admin_manage_users' %}">
               <i class="fa-solid fa-angle-left"></i> Back
             </a>
           </div>
         </div>
-
+        <form action="" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
         <div class="form-section mb-4">
+          <input type="text" id="post_type" name="post_type" value="" style="display: none;">
+          <input type="text" id="user_id" name="post_type" value="" style="display: none;">
           <div class="section-header">
             <h3 class="section-title">Personal Information</h3>
           </div>
@@ -188,53 +193,113 @@
             <div class="row">
               <div class="col-md-3 mb-3">
                 <label class="form-label">ID</label>
-                <input type="text" class="form-control" value="" disabled/>
+                <input type="text" class="form-control" name="employee_id" value="" disabled/>
               </div>
               <div class="col-md-3 mb-3">
                 <label class="form-label">Username</label>
-                <input
+                
+               {% if user %}
+                 <input
+
+                 name="username"
                   type="text"
                   class="form-control"
-                  disabled
+                  value="{{user.username}}"
                 />
+                {% else %}
+                <input
+                name="username"
+                  type="text"
+                  class="form-control"
+                  value=""
+                />
+               {% endif %}
+                
               </div>
               <div class="col-md-3 mb-3">
                 <label class="form-label">Password</label>
-                <input
+               
+               {% if user %}
+                 <input
+                 name="password"
                   type="password"
                   class="form-control"
-                  disabled
+                  value="{{user.password}}"
                 />
+               {% else %}
+                 <input
+                  type="password"
+                  class="form-control"
+                  
+                />
+               {% endif %}
+                
               </div>
             </div>
             
             <div class="row">
               <div class="col-md-3 mb-3">
                 <label class="form-label">Last Name</label>
-                <input type="text" class="form-control" value="Dela Cruz" />
+                
+                {% if user %}
+                  <input type="text" class="form-control" name="lastname" value="{{user.lastname}}" />
+                {% else %}
+                  <input type="text" name="lastname" class="form-control" value="" />
+                {% endif %}
+                  
               </div>
               <div class="col-md-3 mb-3">
                 <label class="form-label">First Name</label>
-                <input type="text" class="form-control" value="Juan" />
+                
+                {% if user %}
+                  <input type="text" class="form-control" name="firstname" value="{{user.firstname}}" />
+                {% else %}
+                  <input type="text" class="form-control" value="" name="firstname" />
+                {% endif %}
+                  
               </div>
               <div class="col-md-3 mb-3">
                 <label class="form-label">Middle Name</label>
-                <input type="text" class="form-control" value="Pimentel" />
+                
+                {% if user %}
+                  <input type="text" class="form-control" name="middlename" value="{{user.middlename}}" />
+                {% else %}
+                  <input type="text" class="form-control" name="middlename" value="Pimentel" />
+                {% endif %}
+                  
               </div>
               <div class="col-md-3 mb-3">
                 <label class="form-label">Suffix</label>
-                <input type="text" class="form-control" value="Jr." />
+                
+                {% if user %}
+                  <input type="text" class="form-control" name="suffix" value="{{user.suffix}}" />
+                {% else %}
+                  <input type="text" class="form-control" name="suffix" value="" />
+                {% endif %}
+                  
               </div>
             </div>
 
             <div class="row" style="margin-bottom: 30px; position: relative;">
               <div class="col-md-3 mb-3">
                 <label class="form-label">Email</label>
-                <input
+               
+               {% if user %}
+                 <input
+                 name="email"
                   type="email"
                   class="form-control"
-                  value="example@example.com"
+                  value="{{user.email}}"
                 />
+               {% else %}
+                 <input
+                 name="email"
+                  type="email"
+                  class="form-control"
+                  value=""
+                />
+               {% endif %}
+                
                 <div class="form-note">
                   Note: Username and password of this user will be sent to the
                   email provided
@@ -242,20 +307,40 @@
               </div>
               <div class="col-md-3 mb-3">
                 <label class="form-label">Birthday</label>
-                <input
+               
+               {% if user %}
+                 <input
+                 name="birthday"
+                  type="date"
+                  class="form-control"
+                  value="{{user.birthday}}"
+                />
+               {% else %}
+                 <input
+                 name="birthday"
                   type="date"
                   class="form-control"
                   placeholder="dd/mm/yyyy"
                 />
+               {% endif %}
+                
               </div>
               <div class="col-md-3 mb-3">
                 <label class="form-label">Phone number</label>
-                <input type="tel" class="form-control" value="09123456789" />
+                
+                {% if user %}
+                  <input type="tel" class="form-control" name="phone_number" value="{{user.phone_number}}" />
+                {% else %}
+                  <input type="tel" class="form-control" value="09123456789" name="phone_number" />
+                {% endif %}
+                  
               </div>
-              <div class="col-md-3 mb-3">
+              
+             
+                <div class="col-md-3 mb-3" style="display: {% if user %}'none;' {% else %} flex {% endif %}!important;">
                 <label class="form-label">Valid picture</label>
                 <div class="file-input-container">
-                  <input type="file" id="fileInput" style="display: none" />
+                  <input type="file" id="fileInput" name="picture" style="display: none" />
                   <label for="fileInput" style="cursor: pointer; margin: 0">
                     Choose File
                   </label>
@@ -272,34 +357,34 @@
           <div class="row">
             <div class="col-md-4 mb-3">
               <label class="form-label">Department</label>
-              <select class="form-control">
+              <select  class="form-control" name="department">
                 <option>--Please Select--</option>
-                <option>HR</option>
-                <option>IT</option>
-                <option>Finance</option>
+                <option {% if user.department == "HR" %} selected {% endif %}>HR</option>
+                <option {% if user.department == "IT" %} selected {% endif %}>IT</option>
+                <option {% if user.department == "FINANCE" %} selected {% endif %}>Finance</option>
               </select>
             </div>
             <div class="col-md-4 mb-3">
               <label class="form-label">Job Title</label>
-              <select class="form-control">
+              <select class="form-control" name="job_title">
                 <option>--Please Select--</option>
-                <option>Manager</option>
-                <option>Assistant</option>
-                <option>Specialist</option>
+                <option value="manager" {% if user.job_title == "manager" %} selected {% endif %}>Manager</option>
+                <option value="assistant" {% if user.job_title == "assistant" %} selected {% endif %}>Assistant</option>
+                <option value="specialist" {% if user.job_title == "specialist" %} selected {% endif %}>Specialist</option>
               </select>
             </div>
             <div class="col-md-4 mb-3">
               <label class="form-label">Employment Type</label>
-              <select class="form-control">
-                <option>--Please Select--</option>
-                <option>Regular</option>
-                <option>Contract</option>
-                <option>Part-time</option>
+              <select class="form-control" name="employee_type">
+                <option disabled>--Please Select--</option>
+                <option value="regular" {% if user.employee_type == "regular" %} selected {% endif %}>Regular</option>
+                <option value="contract" {% if user.employee_type == "contract" %} selected {% endif %}>Contract</option>
+                <option value="part-time" {% if user.employee_type == "part-time" %} selected {% endif %}>Part-time</option>
               </select>
             </div>
           </div>
 
-          <button class="save-btn" id="saveBtn">
+          <button type="submit" class="save-btn">
             Save user
             <div class="loading-content" style="display: none">
               <div class="loading-spinner"></div>
@@ -311,9 +396,23 @@
             </div>
           </button>
         </div>
+        </form> 
       </div>
     </div>
-
+    <script>
+      function getNumber(code) {
+    const n = parseInt(code[0]);
+    const numberStr = code.slice(1, 1 + n);
+    return parseInt(numberStr, 10);
+  }
+      const params = new URLSearchParams(window.location.search);
+      const type = params.get("type");
+      const hash = params.get("hash");
+      document.getElementById("post_type").value = type;
+      if(type == "edit"){
+        document.getElementById("user_id").value = getNumber(hash);
+      }
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="../static/assets/scripts/popups/notification.js"></script>
     <script src="../static/assets/scripts/popups/sidebar.js"></script>

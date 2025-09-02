@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from .models import USERS, LEAVE
 from django.utils import timezone
 from django.db.models import Q
+import json
 # Create your views here.
 
 TOTAL_LEAVE = 10
@@ -122,21 +123,101 @@ def admin(request):
         
         user_arr = count_user_type(users)
         dashboard = {"total_user":users.count(), "leave_types": 10, "total_leave_request":leave.count()}
-        return render(request, "admin/dashboard.html",{"dash":dashboard, "user_arr":user_arr})
+        return render(request, "admin/dashboard.html",{"dash":dashboard, "user_arr":user_arr,  'user':user})
 def admin_manage_users(request):
     if request.method == "GET":
         user_id = request.session.get("user_id")
         user = USERS.objects.filter(id=user_id).first()
         if not user or user.user_type != "admin":
             return redirect("login")
-        return render(request, "admin/manage_users.html")
+        users = USERS.objects.all()
+        return render(request, "admin/manage_users.html", {"users":users, "user_count":users.count(), 'user':user})
+
+def get_number(code: str) -> int:
+    n = int(code[0])    
+    number_str = code[1:1+n]
+    return int(number_str)
 def admin_edit_user(request):
     if request.method == "GET":
         user_id = request.session.get("user_id")
         user = USERS.objects.filter(id=user_id).first()
         if not user or user.user_type != "admin":
             return redirect("login")
-        return render(request, "admin/add_edit_user.html")
+        type_ = request.GET.get("type")
+        if type_ == "edit":
+            hash_ = request.GET.get("hash")
+            id_ = get_number(hash_)
+            edit_user = USERS.objects.filter(id=id_).first()
+            if not edit_user:
+                return redirect("admin_manage_users")
+            return render(request, "admin/add_edit_user.html", {"user":edit_user})
+    if request.method == "POST":
+        user_id = request.session.get("user_id")
+        user = USERS.objects.filter(id=user_id).first()
+        if not user or user.user_type != "admin":
+            return redirect("login")
+        post_type = request.GET.get("type")
+        if post_type == "add":
+            print("Add")
+            firstname = request.POST.get("firstname")
+            lastname = request.POST.get("lastname")
+            middlename = request.POST.get("middlename")
+            suffix = request.POST.get("suffix")
+            email = request.POST.get("email")
+            birthday = request.POST.get("birthday")
+            phone_number = request.POST.get("phone_number")
+            department = request.POST.get("department")
+            job_title = request.POST.get("job_title")
+            username = request.POST.get("username")
+            password = request.POST.get("password")
+            picture = request.FILES['picture']
+            employee_type = request.POST.get("employee_type")
+            user = USERS(
+                firstname = firstname, lastname = lastname, middlename = middlename,
+                suffix = suffix, email = email, birthday = birthday,
+                phone_number = phone_number, department = department,
+                job_title = job_title, username = username, password = password,
+                picture = picture, employee_type = employee_type                                                       
+                
+            )
+            user.save()
+            return redirect("admin_manage_users")
+        if post_type == "edit":
+            hash_ = request.GET.get("hash")
+            id_ = get_number(hash_)
+            user = USERS.objects.filter(id = id_).first()
+            if not user: return redirect("admin_manage_users")
+            firstname = request.POST.get("firstname")
+            lastname = request.POST.get("lastname")
+            middlename = request.POST.get("middlename")
+            suffix = request.POST.get("suffix")
+            email = request.POST.get("email")
+            birthday = request.POST.get("birthday")
+            phone_number = request.POST.get("phone_number")
+            department = request.POST.get("department")
+            job_title = request.POST.get("job_title")
+            username = request.POST.get("username")
+            password = request.POST.get("password")
+            employee_type = request.POST.get("employee_type")
+            user.firstname = firstname
+            user.lastname = lastname
+            user.middlename = middlename
+            user.suffix = suffix
+            user.email = email
+            user.birthday = birthday
+            user.phone_number = phone_number
+            user.department = department
+            user.job_title = job_title
+            user.username = username
+            user.password = password
+            user.employee_type = employee_type
+            if 'picture' in request.FILES:
+                user.picture = request.FILES['picture']
+            user.save()
+            return redirect("admin_manage_users")
+            
+            
+    return render(request, "admin/add_edit_user.html")
 
 def logout(request):
     if request.method == "GET":
