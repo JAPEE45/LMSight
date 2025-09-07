@@ -13,48 +13,50 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="../../assets/styles/components/sidebar.css" />
-    <link rel="stylesheet" href="../../assets/styles/components/navbar.css" />
+    <link rel="stylesheet" href="../../static/assets/styles/components/sidebar.css" />
+    <link rel="stylesheet" href="../../static/assets/styles/components/navbar.css" />
     <link
       rel="stylesheet"
-      href="../../assets/styles/components/notification.css"
+      href="../../static/assets/styles/components/notification.css"
     />
-    <link rel="stylesheet" href="../../assets/styles/layouts/hr.css" />
+    <link rel="stylesheet" href="../../static/assets/styles/layouts/hr.css" />
   </head>
   <body>
     <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
+       <div class="sidebar" id="sidebar">
       <h2>ALIS</h2>
       <div class="main-img-cont">
         <div class="img-cont">
           <img
-            src="../../assets/images/blank-profile-picture-973460.svg"
+            src = "../media/{{user.picture}}"
             alt=""
+            id="profilePreview"
           />
-          <input type="file" accept="image/*" id="image_file" />
+          <!-- <input type="file" accept="image/*" id="image_file" />
           <label for="image_file">
             <i class="fa-solid fa-camera"></i>
-          </label>
+          </label> -->
         </div>
       </div>
       <div class="name-cont">
-        <h3 class="name">Juan Dela Cruz</h3>
+        <h3 class="name">{{user.firstname}} {{user.middlename}} {{user.lastname}}</h3>
       </div>
+
       <div class="bot-sec">
         <div class="jobs-desc-cont">
-          <p>Employee ID: E0956-T25</p>
-          <p>Department: HR</p>
-          <p>Job title: HR Manager</p>
-          <p>Employment Type: Regular</p>
+          <!-- <p>Employee ID: E0956-T25</p> -->
+          <p>Department: {{user.department}}</p>
+          <p>Job title: {{user.job_title}}</p>
+          <p>Employment Type: {{user.employee_type}}</p>
         </div>
         <div class="details-cont">
-          <p>Vacation Leave: 3 / 5 used</p>
-          <p>Sick Leave: 3 / 5 used</p>
-          <p>Casual Leave: 5 / 10 used</p>
+          <!-- <p>Vacation Leave: {{leave.vacation_leave}} / 5 used</p>
+          <p>Sick Leave: {{leave.sick_leave}} / 5 used</p>
+          <p>Casual Leave: {{leave.casual_leave}} / 10 used</p> -->
         </div>
       </div>
       <div class="button-cont">
-        <a href="../login_interface.html">
+        <a href="{% url 'logout' %}">
           Log Out
           <i class="fa-solid fa-right-from-bracket"></i>
         </a>
@@ -72,7 +74,7 @@
         </div>
         <div class="button-main-cont">
           <div class="button-cont">
-            <a id="dashboard_nav" href="./dashboard.html">
+            <a id="dashboard_nav" href="{% url 'hr' %}">
               <i class="fa-solid fa-table-columns"></i>
             </a>
             <p class="popup">Dashboard</p>
@@ -94,79 +96,21 @@
               <div class="notifications-header">
                 <h5>Notifications</h5>
               </div>
-              <div class="notifications-list">
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
+               <div class="notifications-list">
+              
+              {% for i in notif %}
+                 <div class="notification-item">
+                  <div class="notification-avatar" style="width: 50px;height:50px">
+                    <img src="/media/{{i.user.picture}}" width="50" height="50" style="border-radius: 100px;"/>
                   </div>
                   <div class="notification-content">
                     <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
+                      <strong>{{i.user.firstname}} {{i.user.lastname}}</strong> has requested for {{i.leave.leave_type}}.
                     </p>
-                    <span class="notification-time">1min ago</span>
+                    <span class="notification-time">{{i.createdAt}}</span>
                   </div>
                 </div>
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
-                  </div>
-                  <div class="notification-content">
-                    <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
-                    </p>
-                    <span class="notification-time">1min ago</span>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
-                  </div>
-                  <div class="notification-content">
-                    <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
-                    </p>
-                    <span class="notification-time">1min ago</span>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
-                  </div>
-                  <div class="notification-content">
-                    <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
-                    </p>
-                    <span class="notification-time">1min ago</span>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
-                  </div>
-                  <div class="notification-content">
-                    <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
-                    </p>
-                    <span class="notification-time">1min ago</span>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
-                  </div>
-                  <div class="notification-content">
-                    <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
-                    </p>
-                    <span class="notification-time">1min ago</span>
-                  </div>
-                </div>
+              {% endfor %}
               </div>
             </div>
           </div>
@@ -202,38 +146,22 @@
 
             <!-- Department Dropdown -->
             <div class="col-6 col-md-auto">
-              <select class="form-select">
-                <option disabled selected>-- Department --</option>
-                <option>HR</option>
-                <option>Sales</option>
-                <option>IT</option>
+              <select class="form-select" id="departmentFilter">
+                <option disabled selected value="">-- Department --</option>
+                <option value="HR">HR</option>
+                <option  value="finance">Sales</option>
+                <option value="IT">IT</option>
               </select>
             </div>
 
             <!-- Leave Type Dropdown -->
             <div class="col-6 col-md-auto">
-              <select class="form-select">
+              <select class="form-select" id="leaveFilter">
                 <option value="" disabled selected>-- Leave Type --</option>
-                <option value="Vacation Leave">Vacation Leave</option>
-                <option value="Mandatory Leave">Mandatory Leave</option>
-                <option value="Sick Leave">Sick Leave</option>
-                <option value="Maternity Leave">Maternity Leave</option>
-                <option value="Paternity Leave">Paternity Leave</option>
-                <option value="Special Priviledge Leave">
-                  Special Priviledge Leave
-                </option>
-                <option value="Solo Parent Leave">Solo Parent Leave</option>
-                <option value="Study Leave">Study Leave</option>
-                <option value="VAWC Leave">VAWC Leave</option>
-                <option value="Rehabilitation Leave">
-                  Rehabilitation Leave
-                </option>
-                <option value="Special Leave">Special Leave</option>
-                <option value="Special Emergency Leave">
-                  Special Emergency Leave
-                </option>
-                <option value="Terminal Leave">Terminal Leave</option>
-                <option value="Adoption Leave">Adoption Leave</option>
+                <option value="casual leave">Casual Leave</option>
+                <option value="sick leave">Sick Leave</option>
+                <option value="maternity leave">Maternity Leave</option>
+            
               </select>
             </div>
           </div>
@@ -248,36 +176,40 @@
                 <th>From</th>
                 <th>To</th>
                 <th>Type</th>
-                <th>Credits</th>
+               
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
+            <tbody id="resultContainer">
+             
+             {% for r in request %}
+               <tr>
                 <td>
                   <div class="employee-info">
                     <div class="employee-avatar">
                       <i class="fas fa-user"></i>
                     </div>
                     <a href="./emp_profile.html">
-                      LeBron James
+                      {{r.users.firstname}} {{r.users.middlename}} {{r.users.lastname}}
                     </a>
                   </div>
                 </td>
-                <td>2025-05-01</td>
-                <td>June 10</td>
-                <td>June 20</td>
-                <td>Vacation Leave</td>
-                <td>1.50</td>
+                <td>{{r.createdAt}}</td>
+                <td>{{r.start_date}}</td>
+                <td>{{r.end_date}}</td>
+                <td>{{r.leave_type}}</td>
+             
                 <td>
                   <button
                     class="btn btn-view-details"
-                    onclick="showLeaveModal()"
+                    onclick="showLeaveModal({{r.id}})"
                   >
                     <i class="fas fa-eye me-1"></i>View Details
                   </button>
                 </td>
               </tr>
+             {% endfor %}
+              
             </tbody>
           </table>
         </div>
@@ -316,12 +248,12 @@
                 <div class="col-md-8">
                   <div class="d-flex align-items-center">
                     <div class="profile-img">
-                      <i class="fa-solid fa-user"></i>
+                      <img src="" id="user_image" width="80" height="80" style="border-radius: 100px;border:2px solid rgb(82, 81, 81);"/>
                     </div>
                     <div class="profile-details">
-                      <h5>Juan Dela Cruz</h5>
-                      <p>Department: <strong>Sales and Marketing</strong></p>
-                      <p>Job title: <strong>Sales Manager</strong></p>
+                      <h5 id="user_fullname">Juan Dela Cruz</h5>
+                      <p>Department: <strong id="departmentModal">Sales and Marketing</strong></p>
+                      <p>Job title: <strong id="jobTitleModal">Sales Manager</strong></p>
                     </div>
                   </div>
                 </div>
@@ -329,7 +261,7 @@
                   <div class="leave-credits-section">
                     <h6>Leave Credits</h6>
                     <div class="donut-chart">
-                      <div class="donut-center-value">1.25</div>
+                      <div class="donut-center-value" id="creditModal">1.25</div>
                     </div>
                   </div>
                 </div>
@@ -341,12 +273,13 @@
               <!-- Row 1: Leave Type, Start Date, End Date -->
               <div class="row mb-3">
                 <div class="col-md-4 mb-3">
-                  <label for="leaveType" class="form-label">Leave Type</label>
+                  <label for="leaveType" class="form-label" >Leave Type</label>
                   <input
                     type="text"
                     class="form-control"
-                    id="leaveType"
+                    id="leaveTypeModal"
                     disabled
+                   
                   />
                 </div>
                 <div class="col-md-4 mb-3">
@@ -354,7 +287,7 @@
                   <input
                     type="text"
                     class="form-control"
-                    id="startDate"
+                    id="startDateModal"
                     disabled
                   />
                 </div>
@@ -363,7 +296,7 @@
                   <input
                     type="text"
                     class="form-control"
-                    id="endDate"
+                     id="endDateModal"
                     disabled
                   />
                 </div>
@@ -378,25 +311,25 @@
                   <input
                     type="text"
                     class="form-control"
-                    id="commutation"
+                     id="commutationModal"
                     disabled
                   />
                 </div>
-                <div class="col-md-6 mb-3">
-                  <label for="leaveDetails" class="form-label"
+                <!-- <div class="col-md-6 mb-3">
+                  <label for="leaveDetails" class="form-label" 
                     >Details of Leave</label
                   >
                   <input
                     type="text"
                     class="form-control"
-                    id="leaveDetails"
+                    id="detailsModal"
                     disabled
                   />
-                </div>
+                </div> -->
               </div>
 
               <!-- Attached Document -->
-              <div class="row mb-3">
+              <!-- <div class="row mb-3">
                 <div class="col-12 mb-3">
                   <label for="attachedDoc" class="form-label"
                     >Attached Document</label
@@ -411,16 +344,16 @@
                     </button>
                   </div>
                 </div>
-              </div>
+              </div> -->
 
               <!-- Comment -->
               <div class="row mb-3">
                 <div class="col-12 mb-3">
-                  <label for="comment" class="form-label">Comment</label>
+                  <label for="comment" class="form-label" >Comment</label>
                   <textarea
                     class="form-control"
-                    id="comment"
                     disabled
+                    id="commentModal"
                   ></textarea>
                 </div>
               </div>
@@ -560,8 +493,8 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
-    <script src="../../assets/scripts/popups/notification.js"></script>
-    <script src="../../assets/scripts/popups/sidebar.js"></script>
-    <script src="../../assets/scripts/hr-requests.js"></script>
+    <script src="../../static/assets/scripts/popups/notification.js"></script>
+    <script src="../../static/assets/scripts/popups/sidebar.js"></script>
+    <script src="../../static/assets/scripts/hr-requests.js"></script>
   </body>
 </html>

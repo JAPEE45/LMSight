@@ -16,49 +16,50 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
-    <link rel="stylesheet" href="../../assets/styles/components/sidebar.css" />
-    <link rel="stylesheet" href="../../assets/styles/components/navbar.css" />
+    <link rel="stylesheet" href="../../static/assets/styles/components/sidebar.css" />
+    <link rel="stylesheet" href="../../static/assets/styles/components/navbar.css" />
     <link
       rel="stylesheet"
-      href="../../assets/styles/components/notification.css"
+      href="../../static/assets/styles/components/notification.css"
     />
-    <link rel="stylesheet" href="../../assets/styles/layouts/hr.css" />
+    <link rel="stylesheet" href="../../static/assets/styles/layouts/hr.css" />
   </head>
   <body>
     <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
+      <div class="sidebar" id="sidebar">
       <h2>ALIS</h2>
       <div class="main-img-cont">
         <div class="img-cont">
           <img
-            src="../../assets/images/blank-profile-picture-973460.svg"
+            src = "../media/{{user.picture}}"
             alt=""
+            id="profilePreview"
           />
-          <input type="file" accept="image/*" id="image_file" />
-          <label for="image_file">
+          <!-- <input type="file" accept="image/*" id="image_file" /> -->
+          <!-- <label for="image_file">
             <i class="fa-solid fa-camera"></i>
-          </label>
+          </label> -->
         </div>
       </div>
       <div class="name-cont">
-        <h3 class="name">Juan Dela Cruz</h3>
+        <h3 class="name">{{user.firstname}} {{user.middlename}} {{user.lastname}}</h3>
       </div>
 
       <div class="bot-sec">
         <div class="jobs-desc-cont">
-          <p>Employee ID: E0956-T25</p>
-          <p>Department: HR</p>
-          <p>Job title: HR Manager</p>
-          <p>Employment Type: Regular</p>
+          <!-- <p>Employee ID: E0956-T25</p> -->
+          <p>Department: {{user.department}}</p>
+          <p>Job title: {{user.job_title}}</p>
+          <p>Employment Type: {{user.employee_type}}</p>
         </div>
         <div class="details-cont">
-          <p>Vacation Leave: 3 / 5 used</p>
-          <p>Sick Leave: 3 / 5 used</p>
-          <p>Casual Leave: 5 / 10 used</p>
+          <!-- <p>Vacation Leave: {{leave.vacation_leave}} / 5 used</p>
+          <p>Sick Leave: {{leave.sick_leave}} / 5 used</p>
+          <p>Casual Leave: {{leave.casual_leave}} / 10 used</p> -->
         </div>
       </div>
       <div class="button-cont">
-        <a href="../login_interface.html">
+        <a href="{% url 'logout' %}">
           Log Out
           <i class="fa-solid fa-right-from-bracket"></i>
         </a>
@@ -69,6 +70,7 @@
     <div class="main-content">
       <!-- Top Navigation -->
       <div class="main-header">
+
         <div class="d-flex align-items-center">
           <button class="mobile-toggle me-3" onclick="toggleSidebar()">
             <i class="fas fa-bars"></i>
@@ -83,7 +85,7 @@
             <p class="popup">Dashboard</p>
           </div>
           <div class="button-cont">
-            <a id="requests_nav" href="./requests.html">
+            <a id="requests_nav" href="{% url 'hr_request' %}">
               <i class="fa-solid fa-file-circle-check"></i>
             </a>
             <p class="popup">Requests</p>
@@ -99,79 +101,21 @@
               <div class="notifications-header">
                 <h5>Notifications</h5>
               </div>
-              <div class="notifications-list">
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
+               <div class="notifications-list">
+              
+              {% for i in notif %}
+                 <div class="notification-item">
+                  <div class="notification-avatar" style="width: 50px;height:50px">
+                    <img src="/media/{{i.user.picture}}" width="50" height="50" style="border-radius: 100px;"/>
                   </div>
                   <div class="notification-content">
                     <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
+                      <strong>{{i.user.firstname}} {{i.user.lastname}}</strong> has requested for {{i.leave.leave_type}}.
                     </p>
-                    <span class="notification-time">1min ago</span>
+                    <span class="notification-time">{{i.createdAt}}</span>
                   </div>
                 </div>
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
-                  </div>
-                  <div class="notification-content">
-                    <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
-                    </p>
-                    <span class="notification-time">1min ago</span>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
-                  </div>
-                  <div class="notification-content">
-                    <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
-                    </p>
-                    <span class="notification-time">1min ago</span>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
-                  </div>
-                  <div class="notification-content">
-                    <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
-                    </p>
-                    <span class="notification-time">1min ago</span>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
-                  </div>
-                  <div class="notification-content">
-                    <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
-                    </p>
-                    <span class="notification-time">1min ago</span>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
-                  </div>
-                  <div class="notification-content">
-                    <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
-                    </p>
-                    <span class="notification-time">1min ago</span>
-                  </div>
-                </div>
+              {% endfor %}
               </div>
             </div>
           </div>
@@ -193,7 +137,13 @@
           </div>
         </div>
       </div>
-
+      <!-- datas -->
+       <p id="weeklyData" style="display: none;">{{weekly}}</p>
+       <p id="monthlyData" style="display: none;">{{monthly}}</p>
+       <p id="leave_type_data" style="display: none;">{{leave_type}}</p>
+       <p id="leave_status" style="display: none;">{{status}}</p>
+       <p id="departmentData" style="display: none;">{{dep}}</p>
+       <p id="all_leave" style="display: none;">{{all_leave}}</p>
       <div class="row" style="row-gap: 20px">
         <div class="col-lg-8">
           <div class="table-card">
@@ -209,19 +159,23 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                 
+                 {% for u in upcoming %}
+                   <tr>
                     <td>
                       <div class="d-flex align-items-center">
                         <div class="employee-avatar">
                           <i class="fas fa-user"></i>
                         </div>
-                        Hannah Danielle Teodoro
+                       {{u.users.firstname}} {{u.users.middlename}} {{u.users.lastname}}
                       </div>
                     </td>
-                    <td>Sick Leave</td>
-                    <td>10-20-2025</td>
-                    <td>10-30-2025</td>
+                    <td>{{u.leave_type}}</td>
+                    <td>{{u.start_date}}</td>
+                    <td>{{u.end_date}}</td>
                   </tr>
+                 {% endfor %}
+                  
                   <tr>
                     <td>
                       <div class="d-flex align-items-center">
@@ -350,78 +304,16 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>2025-06-03</td>
-                <td>Sick Leave</td>
-                <td>2</td>
+             
+             {% for h in history %}
+               <tr>
+                <td>{{h.start_date}}</td>
+                <td>{{h.leave_type}}</td>
+                <td>{{h.getDay}}</td>
                 <td class="status-approved">Approved</td>
               </tr>
-              <tr>
-                <td>2025-06-03</td>
-                <td>Vacation Leave</td>
-                <td>3</td>
-                <td class="status-approved">Approved</td>
-              </tr>
-              <tr>
-                <td>2025-06-03</td>
-                <td>Vacation Leave</td>
-                <td>3</td>
-                <td class="status-approved">Approved</td>
-              </tr>
-              <tr>
-                <td>2025-06-03</td>
-                <td>Vacation Leave</td>
-                <td>3</td>
-                <td class="status-approved">Approved</td>
-              </tr>
-              <tr>
-                <td>2025-06-03</td>
-                <td>Vacation Leave</td>
-                <td>3</td>
-                <td class="status-approved">Approved</td>
-              </tr>
-              <tr>
-                <td>2025-06-03</td>
-                <td>Vacation Leave</td>
-                <td>3</td>
-                <td class="status-approved">Approved</td>
-              </tr>
-              <tr>
-                <td>2025-06-03</td>
-                <td>Vacation Leave</td>
-                <td>3</td>
-                <td class="status-approved">Approved</td>
-              </tr>
-              <tr>
-                <td>2025-06-03</td>
-                <td>Vacation Leave</td>
-                <td>3</td>
-                <td class="status-approved">Approved</td>
-              </tr>
-              <tr>
-                <td>2025-06-03</td>
-                <td>Vacation Leave</td>
-                <td>3</td>
-                <td class="status-approved">Approved</td>
-              </tr>
-              <tr>
-                <td>2025-06-03</td>
-                <td>Vacation Leave</td>
-                <td>3</td>
-                <td class="status-approved">Approved</td>
-              </tr>
-              <tr>
-                <td>2025-06-03</td>
-                <td>Vacation Leave</td>
-                <td>3</td>
-                <td class="status-approved">Approved</td>
-              </tr>
-              <tr>
-                <td>2025-06-03</td>
-                <td>Vacation Leave</td>
-                <td>3</td>
-                <td class="status-approved">Approved</td>
-              </tr>
+             {% endfor %}
+            
             </tbody>
           </table>
         </div>
@@ -479,9 +371,9 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="../../assets/scripts/hr_dashboard.js"></script>
-    <script src="../../assets/scripts/popups/sidebar.js"></script>
-    <script src="../../assets/scripts/popups/notification.js"></script>
-    <script src="../../assets/scripts/popups/tooltip.js"></script>
+    <script src="../../static/assets/scripts/hr_dashboard.js"></script>
+    <script src="../../static/assets/scripts/popups/sidebar.js"></script>
+    <script src="../../static/assets/scripts/popups/notification.js"></script>
+    <script src="../../static/assets/scripts/popups/tooltip.js"></script>
   </body>
 </html>

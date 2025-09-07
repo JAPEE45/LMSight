@@ -1,10 +1,47 @@
 from django.shortcuts import render,redirect
-from .models import USERS, LEAVE
+from django.http import JsonResponse
+from .models import USERS, LEAVE,StatusNotif
 from django.utils import timezone
+from django.utils.timezone import now
+import datetime
 from django.db.models import Q
 import json
-# Create your views here.
+from django.forms.models import model_to_dict
+from django.db.models.functions import ExtractMonth
+from django.db.models import Count
+import calendar
 
+
+
+def get_monthly_leave_credits(user_id):
+    try:
+        user = USERS.objects.get(id=user_id)
+        today = datetime.date.today()
+        start_of_month = today.replace(day=1)
+        if today.month == 12:
+            end_of_month = today.replace(year=today.year+1, month=1, day=1) - datetime.timedelta(days=1)
+        else:
+            end_of_month = today.replace(month=today.month+1, day=1) - datetime.timedelta(days=1)
+        leaves = LEAVE.objects.filter(
+            users=user,
+            status="approved",
+            start_date__gte=start_of_month,
+            end_date__lte=end_of_month
+        )
+        used_days = sum([leave.days_count() for leave in leaves])
+        monthly_credit = 10
+        remaining = monthly_credit - used_days
+
+        return {
+            "user": f"{user.firstname} {user.lastname}",
+            "month": today.strftime("%B %Y"),
+            "total_credits": monthly_credit,
+            "used": used_days,
+            "remaining": max(remaining, 0)
+        }
+
+    except USERS.DoesNotExist:
+        return None
 TOTAL_LEAVE = 10
 def login(request):
     if request.method == "GET":
@@ -14,22 +51,29 @@ def login(request):
         password = request.POST.get("password")
         print(f"p: {password} || e: {username}")
         usr = USERS.objects.filter(username = username, password = password).first()
+       
         if not usr:
             print("wrong passsword")
             return render(request, "login_interface.html", {"error":True})
+        usr.update_login_time()
+        print(usr.firstname)
         if usr.user_type == "employee":
             request.session["user_id"] = usr.id
             return redirect("user_dasboard")
-        if usr.user_type == "admin":
+        elif usr.user_type == "admin":
             print("nasa admin")
             request.session["user_id"] = usr.id
             return redirect("admins")
-        if not usr:
-            print("wrong passsword")
-            return render(request, "login_interface.html", {"error":True})
+        elif usr.user_type == "hr":
+            print("nasa hr")
+            request.session["user_id"] = usr.id
+            return redirect("hr")
+       
         
         
-
+def get_status_notification():
+    notif = StatusNotif.objects.filter(current_status = "pending" ).order_by("-id")
+    return notif
 def user_dashboard(request):
     if request.method == "POST":
         user_id = request.session["user_id"]
@@ -43,6 +87,10 @@ def user_dashboard(request):
         commutation = request.POST.get("commutation")
         lv = LEAVE(users=user, leave_type = leave_type, comment = comment, start_date = start_date, end_date = end_date, commutation = commutation, status="pending")
         lv.save()
+        notif = StatusNotif(
+           leave = lv, current_status = 'pending', user = user
+        )
+        notif.save()
         return redirect("user_dasboard")
     if request.method == "GET":
         usr = request.session.get("user_id")
@@ -82,7 +130,7 @@ def user_employee_profile(request):
         user = USERS.objects.filter(id=user_id).first()
         if not user:
             return redirect("login")
-        return render(request, "emp_profile.html")
+        return render(request, "emp_profile.html", {'user': user})
 def user_omnibus(request):
     if request.method == "GET":
         user_id = request.session.get("user_id")
@@ -123,7 +171,8 @@ def admin(request):
         
         user_arr = count_user_type(users)
         dashboard = {"total_user":users.count(), "leave_types": 10, "total_leave_request":leave.count()}
-        return render(request, "admin/dashboard.html",{"dash":dashboard, "user_arr":user_arr,  'user':user})
+        notif = get_status_notification()
+        return render(request, "admin/dashboard.html",{"dash":dashboard, "user_arr":user_arr, "users":users.order_by("-last_login"),  'user':user, "notif":notif})
 def admin_manage_users(request):
     if request.method == "GET":
         user_id = request.session.get("user_id")
@@ -131,7 +180,8 @@ def admin_manage_users(request):
         if not user or user.user_type != "admin":
             return redirect("login")
         users = USERS.objects.all()
-        return render(request, "admin/manage_users.html", {"users":users, "user_count":users.count(), 'user':user})
+        notif = get_status_notification()
+        return render(request, "admin/manage_users.html", {"users":users, "user_count":users.count(), 'user':user, "notif": notif})
 
 def get_number(code: str) -> int:
     n = int(code[0])    
@@ -150,7 +200,9 @@ def admin_edit_user(request):
             edit_user = USERS.objects.filter(id=id_).first()
             if not edit_user:
                 return redirect("admin_manage_users")
-            return render(request, "admin/add_edit_user.html", {"user":edit_user})
+            
+            return render(request, "admin/add_edit_user.html", {"usr":user,"user":edit_user})
+        return render(request, "admin/add_edit_user.html", {"usr":user})
     if request.method == "POST":
         user_id = request.session.get("user_id")
         user = USERS.objects.filter(id=user_id).first()
@@ -170,6 +222,7 @@ def admin_edit_user(request):
             job_title = request.POST.get("job_title")
             username = request.POST.get("username")
             password = request.POST.get("password")
+            user_type = request.POST.get("user_type")
             picture = request.FILES['picture']
             employee_type = request.POST.get("employee_type")
             user = USERS(
@@ -177,7 +230,7 @@ def admin_edit_user(request):
                 suffix = suffix, email = email, birthday = birthday,
                 phone_number = phone_number, department = department,
                 job_title = job_title, username = username, password = password,
-                picture = picture, employee_type = employee_type                                                       
+                picture = picture, employee_type = employee_type, user_type = user_type                                                    
                 
             )
             user.save()
@@ -198,6 +251,7 @@ def admin_edit_user(request):
             job_title = request.POST.get("job_title")
             username = request.POST.get("username")
             password = request.POST.get("password")
+            user_type = request.POST.get("user_type")
             employee_type = request.POST.get("employee_type")
             user.firstname = firstname
             user.lastname = lastname
@@ -210,6 +264,7 @@ def admin_edit_user(request):
             user.job_title = job_title
             user.username = username
             user.password = password
+            user.user_type = user_type
             user.employee_type = employee_type
             if 'picture' in request.FILES:
                 user.picture = request.FILES['picture']
@@ -219,6 +274,27 @@ def admin_edit_user(request):
             
     return render(request, "admin/add_edit_user.html")
 
+def delete_user(request):
+    if request.method == "POST":
+        print("hi")
+        user_id = request.session.get("user_id")
+        user = USERS.objects.filter(id = user_id).first()
+        if user:
+            usr = USERS.objects.filter(id = request.POST.get("user_id")).first()
+            usr.delete()
+            return redirect("admin_manage_users")
+        return redirect("login")
+
+def delete_selected_user(request):
+    if request.method == "POST":
+        cuser = request.session.get("user_id")
+        if not cuser: return JsonResponse({'status':False})
+        data = json.loads(request.body)
+        ids = data.get("ids")
+        for i in ids:
+            us = USERS.objects.filter(id=i).first()
+            if us: us.delete()
+        return JsonResponse({'status':True})
 def logout(request):
     if request.method == "GET":
         user_id = request.session.get("user_id")
@@ -226,3 +302,249 @@ def logout(request):
             del request.session["user_id"]
             return redirect("login")
         return redirect("login")
+
+def checkIfHr(request):
+    usr_id =request.session.get("user_id")
+    user = USERS.objects.filter(id = usr_id).first()
+    if not user: 
+        print("waran user")
+        return False
+    
+    if user.user_type != 'hr':
+        print("dili hr")
+        return True
+    print("hr ini")
+    return False
+    
+def getWeeklyLeave():
+    today = now().date()
+    start_of_week = today - datetime.timedelta(days=today.weekday())  # Monday
+    end_of_week = start_of_week + datetime.timedelta(days=6)  # Sunday
+
+    weekly_leaves = LEAVE.objects.filter(
+    start_date__gte=start_of_week,
+    start_date__lte=end_of_week
+    )
+    days = [0,0,0,0,0,0,0]
+    for i in weekly_leaves:
+        if(i.start_date.strftime("%a") == "Mon"): days[0] += 1
+        if(i.start_date.strftime("%a") == "Tue"): days[1] += 1
+        if(i.start_date.strftime("%a") == "Wed"): days[2] += 1
+        if(i.start_date.strftime("%a") == "Thu"): days[3] += 1
+        if(i.start_date.strftime("%a") == "Fri"): days[4] += 1
+        if(i.start_date.strftime("%a") == "Sat"): days[5] += 1
+        if(i.start_date.strftime("%a") == "Sun"): days[6] += 1
+    return days
+
+def getLeaveByMonth(year=None):
+    if year is None:
+        year = now().year  # default: current year
+
+    # group leaves by month number
+    monthly_leaves = (
+        LEAVE.objects.filter(start_date__year=year, status = "approved")
+        .annotate(month=ExtractMonth('start_date'))
+        .values('month')
+        .annotate(total=Count('id'))
+        .order_by('month')
+    )
+
+    # prepare array [Jan, Feb, ..., Dec]
+    months = [0] * 12
+    for m in monthly_leaves:
+        months[m['month'] - 1] = m['total']
+
+    return months
+def getUpcomingLeaves():
+    today = now().date()
+    return LEAVE.objects.filter(start_date__gte=today).order_by('start_date')
+
+def getOngoingLeaves():
+    today = now().date()
+    return LEAVE.objects.filter(
+        status__iexact="approved",        # only approved
+        start_date__lte=today,            # already started
+        end_date__gte=today               # not yet ended
+    ).order_by('end_date').values("users__firstname", "users__middlename", "users__lastname", "users__department","leave_type","start_date","end_date")
+def apiOngoing(request):
+    if request.method == "GET":
+        o = list(getOngoingLeaves())
+        return JsonResponse({"o": o})
+def getLeaveHistory():
+    today = now().date()
+    return LEAVE.objects.filter(
+        status__iexact="approved",   # only approved
+        end_date__lt=today           # already ended
+    ).order_by('-end_date')       
+    
+def getLeaveCountByType():
+        leave = LEAVE.objects.values('leave_type').annotate(total=Count('id')).order_by('-total')   # most requested first
+        arr = [0,0,0,0]
+        for l in leave:
+            if l['leave_type'] == 'sick leave': arr[0] +=1
+            if l['leave_type'] == 'casual leave': arr[1] +=1
+            if l['leave_type'] == 'maternity leave': arr[2] +=1
+            if l['leave_type'] == 'annual leave': arr[3] +=1
+        return arr
+    
+def getLeaveCountByStatus():
+    leave = LEAVE.objects.values('status').annotate(total=Count('id')).order_by('-total')
+    arr = [0, 0, 0]
+
+    for l in leave:
+        if l['status'].lower() == 'pending': 
+            arr[1] += l['total']
+        if l['status'].lower() == 'approved': 
+            arr[0] += l['total']
+        if l['status'].lower() == 'rejected': 
+            arr[2] += l['total']
+    return arr
+
+def getLeaveMatrix():
+    leave_types = ["sick leave", "casual leave", "maternity leave", "annual leave"]
+    departments = ["HR", "IT", "Finance", "Operation"]
+    matrix = []
+    for leave_type in leave_types:
+        row = [0] * len(departments)
+        leave_counts = (
+            LEAVE.objects.filter(leave_type=leave_type)
+            .values("users__department")
+            .annotate(total=Count("id"))
+        )
+
+        for l in leave_counts:
+            dept = l["users__department"]
+            if dept in departments:
+                idx = departments.index(dept)
+                row[idx] = l["total"]
+
+        matrix.append(row)
+
+    return matrix
+
+def getLeaveDaysPerMonth(year=None):
+    if year is None:
+        year = now().year
+    months = [0] * 12  
+
+    leaves = LEAVE.objects.filter(
+        start_date__year=year,
+        end_date__year=year,
+        status = "approved"
+    )
+    for leave in leaves:
+        current = leave.start_date
+        while current <= leave.end_date:
+            if current.year == year:
+                months[current.month - 1] += 1
+            current += datetime.timedelta(days=1)
+
+    return months
+def getLeaveRequestsPerMonth(year=None):
+    if year is None:
+        year = now().year
+    months = [0] * 12  
+    monthly_counts = (
+        LEAVE.objects.filter(start_date__year=year)
+        .annotate(month=ExtractMonth('start_date'))
+        .values('month')
+        .annotate(total=Count('id'))
+    )
+    for m in monthly_counts:
+        months[m['month'] - 1] = m['total']
+
+    return months
+def hr_dasboard(request):
+    if request.method == "GET":
+        if checkIfHr(request): return redirect("login")
+        user = USERS.objects.filter(id = request.session.get("user_id")).first()
+        print(user.firstname)
+        leaves = getWeeklyLeave()
+        monthly = getLeaveByMonth()
+        upcoming = getUpcomingLeaves()
+        ongoing = getOngoingLeaves()
+        history = getLeaveHistory()
+        leave_type = getLeaveCountByType()
+        status = getLeaveCountByStatus()
+        dep = getLeaveMatrix()
+        allLeave = getLeaveDaysPerMonth()
+        perMonth = getLeaveRequestsPerMonth()
+        notif = get_status_notification()
+        print(allLeave)
+        return render(request, 'hr/dashboard.html', {'user':user, "weekly":leaves, "monthly": monthly, 'upcoming':upcoming,  'history': history, 'leave_type':leave_type, 'status':status, 'dep': dep, "all_leave":allLeave, 'perMonth':perMonth, "notif": notif})
+def hr_request(request):
+    if request.method == "GET":
+        if checkIfHr(request): return redirect("login")
+        user = USERS.objects.filter(id = request.session.get("user_id")).first()
+        req = LEAVE.objects.filter(status = "pending")
+        dt = list(req)
+        print(dt)
+        notif = get_status_notification()
+        return render(request, 'hr/requests.html', {'user':user, 'request':dt, "notif" : notif})
+
+def getRequestFilter(request):
+    if request.method == "POST":
+        body = json.loads(request.body) 
+        department = body.get("department") 
+        leave_type = body.get("leave_type") 
+        val = ""
+        print(department)
+        if department and leave_type:
+            print("dep and leave type")
+            val = LEAVE.objects.filter(users__department = department, status = "pending", leave_type = leave_type)
+        elif department:
+            print("dep only")
+            print(department)
+            val = LEAVE.objects.filter(users__department = department, status = "pending")
+        elif leave_type:
+            print(" leave type only")
+            val = LEAVE.objects.filter(leave_type = leave_type, status = "pending")
+        else:
+            val = LEAVE.objects.all()
+        val = val.values("id","users__firstname", "users__middlename", "users__lastname", "leave_type", "start_date", "end_date", "createdAt", "users__department")
+        return JsonResponse({"request": list(val)})
+
+
+def getLeaveReq(request):
+    if request.method == "GET":
+        id = request.GET.get("id")
+        leave = LEAVE.objects.filter(id = id).first()
+        credit = get_monthly_leave_credits(leave.users.id)
+        lv = model_to_dict(leave)
+        lv["fullname"] = f'{leave.users.firstname} {leave.users.middlename} {leave.users.lastname}'
+        lv["job_title"] = leave.users.job_title
+        lv["department"] = leave.users.department
+        lv["picture"] = leave.users.picture.url
+        lv["credit"] = credit
+        if leave: return JsonResponse({"leave":lv })
+        return JsonResponse({"message": "no leave"})
+
+def approved_leave_request(request):
+    if request.method == "GET":
+         if checkIfHr(request): return redirect("login")
+         id = request.GET.get("id")
+         print(id)
+         c = LEAVE.objects.filter(id = id).first()
+         if not c:  return JsonResponse({"message":"data does not exist"})
+         c.status = "approved"
+         c.save()
+         return JsonResponse({"status":True})
+     
+         
+def rejected_leave_request(request):
+    if request.method == "GET":
+            if checkIfHr(request): return redirect("login")
+            id = request.GET.get("id")
+            c = LEAVE.objects.filter(id = id).first()
+            if not c:  return JsonResponse({"message":"data does not exist"})
+            c.status = "rejected"
+            c.save()
+            return JsonResponse({"status":True})
+        
+     
+def user_delete_leave(request):
+    if request.method == "GET":
+        id = request.GET.get("id")
+        lv = LEAVE.objects.filter(id = id).first()
+        lv.delete()
+        return JsonResponse({"status":True})

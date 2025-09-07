@@ -1,11 +1,13 @@
 // Weekly Chart
+
+const weeklyData = document.getElementById("weeklyData")
 const weeklyCtx = document.getElementById('weeklyChart').getContext('2d');
 const weeklyChart = new Chart(weeklyCtx, {
     type: 'bar',
     data: {
         labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
         datasets: [{
-            data: [12, 7, 5, 8, 14, 6, 3],
+            data: JSON.parse(weeklyData.textContent),
             backgroundColor: '#dca907',
             borderRadius: 4,
             borderSkipped: false,
@@ -36,14 +38,17 @@ const weeklyChart = new Chart(weeklyCtx, {
 });
 
 // Monthly Chart
+const monthlyData = document.getElementById("monthlyData")
+const nmonth = JSON.parse(monthlyData.textContent)
+const nnmonth = nmonth.filter((i,e)=> e > 2  && e<8 )
 const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
 const monthlyChart = new Chart(monthlyCtx, {
     type: 'line',
     data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun','July', 'Aug', 'Sept', 'Oct', 'Nov' ,'Dec'],
         datasets: [{
             label: 'Leaves Taken',
-            data: [5, 8.5, 6, 3, 7, 4],
+            data: nmonth,
             borderColor: '#238b45',
             backgroundColor: 'rgba(35, 139, 69, 0.1)',
             fill: true,
@@ -107,15 +112,18 @@ const ongoingLeaveData = [
 
 let currentLeaveIndex = 0;
 
-function updateLeaveCard(index) {
-    const data = ongoingLeaveData[index];
+async function updateLeaveCard(index) {
+    const d = await fetch("/api/hr/ongoing")
+    const c = await d.json()
+    console.log(c)
+    const data = c.o[index];
     const content = document.getElementById('ongoingContent');
     
-    document.getElementById('employeeName').textContent = data.name;
+    document.getElementById('employeeName').textContent = `${data.users__firstname} ${data.users__middlename} ${data.users__lastname}`;
     document.getElementById('employeeDept').textContent = data.department;
-    document.getElementById('leaveTypeBadge').textContent = data.leaveType;
-    document.getElementById('startDate').textContent = data.startDate;
-    document.getElementById('endDate').textContent = data.endDate;
+    document.getElementById('leaveTypeBadge').textContent = data.leave_type;
+    document.getElementById('startDate').textContent = data.start_date;
+    document.getElementById('endDate').textContent = data.end_date;
     
     // Update indicators
     document.querySelectorAll('.indicator').forEach((indicator, i) => {
@@ -204,13 +212,14 @@ const pieDonutOptions = {
 };
 
 // Leave Types (Pie Chart)
+const leave_type = document.getElementById("leave_type_data")
 new Chart(document.getElementById('leaveTypesChart'), {
   type: 'pie',
   data: {
     labels: ['Sick Leave', 'Casual Leave', 'Maternity Leave', 'Annual Leave'],
     datasets: [{
-      data: [10, 15, 5, 20],
-      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50']
+      data: JSON.parse(leave_type.textContent),
+      backgroundColor: ['#FF6384', '#040404ff', '#FFCE56', '#4CAF50']
     }]
   },
   options: pieDonutOptions,
@@ -218,12 +227,13 @@ new Chart(document.getElementById('leaveTypesChart'), {
 });
 
   // Leave Status (Donut Chart)
+const leave_status = document.getElementById("leave_status")
 new Chart(document.getElementById('leaveStatusChart'), {
   type: 'doughnut',
   data: {
     labels: ['Approved', 'Pending', 'Rejected'],
     datasets: [{
-      data: [25, 8, 3],
+      data: JSON.parse(leave_status.textContent),
       backgroundColor: ['#4CAF50', '#FF9800', '#F44336']
     }]
   },
@@ -232,13 +242,14 @@ new Chart(document.getElementById('leaveStatusChart'), {
 });
 
 // Monthly Leaves Requests (Bar Chart)
+
 new Chart(document.getElementById('monthlyRequestsChart'), {
   type: 'bar',
   data: {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
     datasets: [{
       label: 'Leave Requests',
-      data: [5, 8, 6, 10, 7, 9],
+      data: [1,2,2,3,4,5],
       backgroundColor: '#36A2EB'
     }]
   },
@@ -256,6 +267,9 @@ new Chart(document.getElementById('monthlyRequestsChart'), {
 });
 
 // Department-Wise Leave (Stacked Bar Chart)
+const dep = document.getElementById("departmentData")
+const depArr = JSON.parse(dep.textContent)
+
 new Chart(document.getElementById('departmentChart'), {
   type: 'bar',
   data: {
@@ -263,22 +277,22 @@ new Chart(document.getElementById('departmentChart'), {
     datasets: [
       {
         label: 'Sick Leave',
-        data: [2, 4, 1, 3],
+        data: depArr[0],
         backgroundColor: '#FF6384'
       },
       {
         label: 'Casual Leave',
-        data: [3, 2, 2, 4],
+        data: depArr[1],
         backgroundColor: '#36A2EB'
       },
       {
         label: 'Annual Leave',
-        data: [1, 3, 4, 2],
+        data: depArr[2],
         backgroundColor: '#FFCE56'
       },
       {
         label: 'Others',
-        data: [1, 1, 2, 1],
+        data: depArr[3],
         backgroundColor: '#4CAF50'
       }
     ]
@@ -292,13 +306,14 @@ new Chart(document.getElementById('departmentChart'), {
   }
 });
 
+const all_leave = document.getElementById("all_leave")
 new Chart(document.getElementById('averageDurationChart'), {
   type: 'line',
   data: {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
     datasets: [{
       label: 'Average Leave Duration (Days)',
-      data: [2.5, 3, 1.8, 2.2, 2.9, 3.5, 2.7, 3.1],
+      data: JSON.parse(all_leave.textContent),
       borderColor: '#36A2EB',
       backgroundColor: 'rgba(54, 162, 235, 0.2)',
       fill: true,

@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-
+  let dl = []
   function createCode(number) {
     const numberStr = number.toString();
     const n = numberStr.length;
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
       "tbody .row-checkbox:checked"
     );
     const selectAll = document.getElementById("selectAll");
-
+   
     selectAll.checked =
       checkboxes.length > 0 && checkedBoxes.length === checkboxes.length;
     selectAll.indeterminate =
@@ -44,6 +44,16 @@ document.addEventListener("DOMContentLoaded", () => {
     deleteSelected.classList.toggle("show", checkedBoxes.length > 0);
   };
 
+  deleteSelected.addEventListener("click",e=>{
+
+     document.querySelectorAll("tbody tr").forEach((row) => {
+        if(row.children[0].children[0].checked){
+          const id = row.children[1].children[0].children[0].textContent
+          dl = [...dl, id]
+        }
+      });
+     
+  })
   window.toggleActionDropdown = (button) => {
     const dropdown = button.nextElementSibling;
 
@@ -114,12 +124,31 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+
+  async function deleteInBackend(){
+    try {
+      const d = await fetch(`/user/delete_selected`,{
+        method:'post',
+        headers:{
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          'ids':dl
+        })
+      })
+      const json = await d.json()
+      console.log(json)
+    } catch (error) {
+      console.log(`Error in backend: ${error}`)
+    }
+  }
   const deleteSelectedBtn = document.getElementById("deleteSelected");
   if (deleteSelectedBtn) {
     deleteSelectedBtn.addEventListener("click", () => {
       const checkedBoxes = document.querySelectorAll(
         "tbody .row-checkbox:checked"
       );
+     
       if (checkedBoxes.length === 0) return;
 
       if (
@@ -130,6 +159,8 @@ document.addEventListener("DOMContentLoaded", () => {
         checkedBoxes.forEach((cb) => cb.closest("tr").remove());
         updateDeleteSelectedVisibility();
         updateSelectAllCheckbox();
+        deleteInBackend()
+        console.log(dl)
       }
     });
   }

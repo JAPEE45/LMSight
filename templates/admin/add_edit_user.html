@@ -26,31 +26,31 @@
       <div class="main-img-cont">
         <div class="img-cont">
           <img
-            src = "../media/{{user.picture}}"
+            src = "../media/{{usr.picture}}"
             alt=""
             id="profilePreview"
           />
-          <input type="file" accept="image/*" id="image_file" />
+          <!-- <input type="file" accept="image/*" id="image_file" />
           <label for="image_file">
             <i class="fa-solid fa-camera"></i>
-          </label>
+          </label> -->
         </div>
       </div>
       <div class="name-cont">
-        <h3 class="name">{{user.firstname}} {{user.middlename}} {{user.lastname}}</h3>
+        <h3 class="name">{{usr.firstname}} {{usr.middlename}} {{usr.lastname}}</h3>
       </div>
 
       <div class="bot-sec">
         <div class="jobs-desc-cont">
-          <p>Employee ID: E0956-T25</p>
-          <p>Department: {{user.department}}</p>
-          <p>Job title: {{user.job_title}}</p>
-          <p>Employment Type: {{user.employee_type}}</p>
+          <!-- <p>Employee ID: E0956-T25</p> -->
+          <p>Department: {{usr.department}}</p>
+          <p>Job title: {{usr.job_title}}</p>
+          <p>Employment Type: {{usr.employee_type}}</p>
         </div>
         <div class="details-cont">
-          <p>Vacation Leave: {{leave.vacation_leave}} / 5 used</p>
+          <!-- <p>Vacation Leave: {{leave.vacation_leave}} / 5 used</p>
           <p>Sick Leave: {{leave.sick_leave}} / 5 used</p>
-          <p>Casual Leave: {{leave.casual_leave}} / 10 used</p>
+          <p>Casual Leave: {{leave.casual_leave}} / 10 used</p> -->
         </div>
       </div>
       <div class="button-cont">
@@ -71,7 +71,7 @@
         </div>
         <div class="button-main-cont">
           <div class="button-cont">
-            <a id="dashboard_nav" href="./dashboard.html">
+            <a id="dashboard_nav" href="{% url 'admins' %}">
               <i class="fa-solid fa-table-columns"></i>
             </a>
             <p class="popup">Dashboard</p>
@@ -82,7 +82,7 @@
             </a>
             <p class="popup">Users</p>
           </div>
-          <div class="button-cont">
+          <!-- <div class="button-cont">
             <button class="notif-btn" id="notification-btn">
               <i class="fa-solid fa-bell"></i>
             </button>
@@ -92,82 +92,24 @@
               <div class="notifications-header">
                 <h5>Notifications</h5>
               </div>
-              <div class="notifications-list">
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
+                <div class="notifications-list">
+              
+              {% for i in notif %}
+                 <div class="notification-item">
+                  <div class="notification-avatar" style="width: 50px;height:50px">
+                    <img src="/media/{{i.user.picture}}" width="50" height="50" style="border-radius: 100px;"/>
                   </div>
                   <div class="notification-content">
                     <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
+                      <strong>{{i.user.firstname}} {{i.user.lastname}}</strong> has requested for {{i.leave.leave_type}}.
                     </p>
-                    <span class="notification-time">1min ago</span>
+                    <span class="notification-time">{{i.createdAt}}</span>
                   </div>
                 </div>
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
-                  </div>
-                  <div class="notification-content">
-                    <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
-                    </p>
-                    <span class="notification-time">1min ago</span>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
-                  </div>
-                  <div class="notification-content">
-                    <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
-                    </p>
-                    <span class="notification-time">1min ago</span>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
-                  </div>
-                  <div class="notification-content">
-                    <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
-                    </p>
-                    <span class="notification-time">1min ago</span>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
-                  </div>
-                  <div class="notification-content">
-                    <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
-                    </p>
-                    <span class="notification-time">1min ago</span>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
-                  </div>
-                  <div class="notification-content">
-                    <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
-                    </p>
-                    <span class="notification-time">1min ago</span>
-                  </div>
-                </div>
+              {% endfor %}
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
 
@@ -191,10 +133,10 @@
           </div>
           <div class="section-content">
             <div class="row">
-              <div class="col-md-3 mb-3">
+              <!-- <div class="col-md-3 mb-3">
                 <label class="form-label">ID</label>
                 <input type="text" class="form-control" name="employee_id" value="" disabled/>
-              </div>
+              </div> -->
               <div class="col-md-3 mb-3">
                 <label class="form-label">Username</label>
                 
@@ -380,6 +322,15 @@
                 <option value="regular" {% if user.employee_type == "regular" %} selected {% endif %}>Regular</option>
                 <option value="contract" {% if user.employee_type == "contract" %} selected {% endif %}>Contract</option>
                 <option value="part-time" {% if user.employee_type == "part-time" %} selected {% endif %}>Part-time</option>
+              </select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">User Role</label>
+              <select class="form-control" name="user_type">
+                <option disabled selected>--Please Select--</option>
+                <option value="hr" {% if user.user_type == "hr" %} selected {% endif %}>HR</option>
+                <option value="admin" {% if user.user_type == "admin" %} selected {% endif %}>Admin</option>
+                <option value="employee" {% if user.user_type == "employee" %} selected {% endif %}>Employee</option>
               </select>
             </div>
           </div>

@@ -5,6 +5,16 @@ const dashboardSection = document.getElementById("dashboardSection");
 const applyLeaveSection = document.getElementById("applyLeaveSection");
 const headerTitle = document.getElementById("headerTitle");
 
+async function clicked(id){
+  alert(id)
+  const d = await fetch(`/api/user/delete?id=${id}`)
+  const c = await d.json()
+  if(c.status){
+    alert("Deleted!")
+    window.location.reload()
+    return 
+  }
+}
 applyLeaveBtn.addEventListener("click", function () {
   dashboardSection.classList.add("hidden");
   applyLeaveSection.classList.remove("hidden");
@@ -144,6 +154,7 @@ fileInput.addEventListener("change", function () {
 
 document.querySelectorAll(".profile").forEach((profile) => {
   profile.addEventListener("click", () => {
-    window.location.href = "./emp_profile.html";
+    window.location.href = "/user/profile";
   });
 });
+

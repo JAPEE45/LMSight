@@ -27,7 +27,7 @@
       <div class="main-img-cont">
         <div class="img-cont">
           <img
-            src="../static/assets/images/blank-profile-picture-973460.svg"
+            src="/media/{{user.picture}}"
             alt=""
             id="profilePreview"
           />
@@ -38,7 +38,7 @@
         </div>
       </div>
       <div class="name-cont">
-        <h3 class="name">Juan Dela Cruz</h3>
+        <h3 class="name">{{user.firstname}} {{user.middlename}} {{user.lastname}}</h3>
       </div>
 
       <div class="bot-sec">
@@ -55,7 +55,7 @@
         </div>
       </div>
       <div class="button-cont">
-        <a href="../login_interface.html">
+        <a href="{% url 'logout' %}">
           Log Out
           <i class="fa-solid fa-right-from-bracket"></i>
         </a>

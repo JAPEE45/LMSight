@@ -35,10 +35,10 @@
             alt=""
             id="profilePreview"
           />
-          <input type="file" accept="image/*" id="image_file" />
+          <!-- <input type="file" accept="image/*" id="image_file" />
           <label for="image_file">
             <i class="fa-solid fa-camera"></i>
-          </label>
+          </label> -->
         </div>
       </div>
       <div class="name-cont">
@@ -47,15 +47,13 @@
 
       <div class="bot-sec">
         <div class="jobs-desc-cont">
-          <p>Employee ID: E0956-T25</p>
+          <!-- <p>Employee ID: E0956-T25</p> -->
           <p>Department: {{user.department}}</p>
           <p>Job title: {{user.job_title}}</p>
           <p>Employment Type: {{user.employee_type}}</p>
         </div>
         <div class="details-cont">
-          <p>Vacation Leave: {{leave.vacation_leave}} / 5 used</p>
-          <p>Sick Leave: {{leave.sick_leave}} / 5 used</p>
-          <p>Casual Leave: {{leave.casual_leave}} / 10 used</p>
+         
         </div>
       </div>
       <div class="button-cont">
@@ -98,78 +96,20 @@
                 <h5>Notifications</h5>
               </div>
               <div class="notifications-list">
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
+              
+              {% for i in notif %}
+                 <div class="notification-item">
+                  <div class="notification-avatar" style="width: 50px;height:50px">
+                    <img src="/media/{{i.user.picture}}" width="50" height="50" style="border-radius: 100px;"/>
                   </div>
                   <div class="notification-content">
                     <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
+                      <strong>{{i.user.firstname}} {{i.user.lastname}}</strong> has requested for {{i.leave.leave_type}}.
                     </p>
-                    <span class="notification-time">1min ago</span>
+                    <span class="notification-time">{{i.createdAt}}</span>
                   </div>
                 </div>
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
-                  </div>
-                  <div class="notification-content">
-                    <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
-                    </p>
-                    <span class="notification-time">1min ago</span>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
-                  </div>
-                  <div class="notification-content">
-                    <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
-                    </p>
-                    <span class="notification-time">1min ago</span>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
-                  </div>
-                  <div class="notification-content">
-                    <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
-                    </p>
-                    <span class="notification-time">1min ago</span>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
-                  </div>
-                  <div class="notification-content">
-                    <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
-                    </p>
-                    <span class="notification-time">1min ago</span>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
-                  </div>
-                  <div class="notification-content">
-                    <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
-                    </p>
-                    <span class="notification-time">1min ago</span>
-                  </div>
-                </div>
+              {% endfor %}
               </div>
             </div>
           </div>
@@ -232,18 +172,13 @@
           <div class="activity-section">
             <h4>Last Login Activities</h4>
             <div class="activities-cont">
-              <div class="activity-item">
-                <div class="activity-user">LeBron James</div>
-                <div class="activity-time">Yesterday</div>
+             
+             {% for i in users %}
+               <div class="activity-item">
+                <div class="activity-user">{{i.firstname}} {{i.lastname}}</div>
+                <div class="activity-time">{{i.last_login}}</div>
               </div>
-              <div class="activity-item">
-                <div class="activity-user">LeBron James</div>
-                <div class="activity-time">Yesterday</div>
-              </div>
-              <div class="activity-item">
-                <div class="activity-user">LeBron James</div>
-                <div class="activity-time">Yesterday</div>
-              </div>
+             {% endfor %}
             </div>
           </div>
         </div>

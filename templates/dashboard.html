@@ -32,10 +32,10 @@
             alt=""
             id="profilePreview"
           />
-          <input type="file" accept="image/*" id="image_file" />
+          <!-- <input type="file" accept="image/*" id="image_file" />
           <label for="image_file">
             <i class="fa-solid fa-camera"></i>
-          </label>
+          </label> -->
         </div>
       </div>
       <div class="name-cont">
@@ -44,7 +44,7 @@
 
       <div class="bot-sec">
         <div class="jobs-desc-cont">
-          <p>Employee ID: E0956-T25</p>
+          <!-- <p>Employee ID: E0956-T25</p> -->
           <p>Department: {{user.department}}</p>
           <p>Job title: {{user.job_title}}</p>
           <p>Employment Type: {{user.employee_type}}</p>
@@ -79,16 +79,16 @@
             <p class="popup">Dashboard</p>
           </div>
           <div class="button-cont">
-            <button class="notif-btn" id="notification-btn">
+            <!-- <button class="notif-btn" id="notification-btn">
               <i class="fa-solid fa-bell"></i>
-            </button>
+            </button> -->
             <p class="popup">Notification</p>
             <div class="notif-marker active"></div>
             <div class="notifications-panel" id="notificationsPanel">
               <div class="notifications-header">
                 <h5>Notifications</h5>
               </div>
-              <div class="notifications-list">
+              <!-- <div class="notifications-list">
                 <div class="notification-item">
                   <div class="notification-avatar">
                     <i class="fas fa-user"></i>
@@ -161,7 +161,7 @@
                     <span class="notification-time">1min ago</span>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -235,6 +235,7 @@
                   <td>
                   <button
                     class="btn btn-delete"
+                    onclick="clicked({{a.id}})"
                   >
                     <i class="fa-solid fa-trash"></i>
                   </button>
@@ -253,7 +254,9 @@
                   <td>
                   <button
                     class="btn btn-delete"
+                     onclick="clicked({{p.id}})"
                   >
+
                     <i class="fa-solid fa-trash"></i>
                   </button>
                 </td>
@@ -272,6 +275,7 @@
                   <td>
                   <button
                     class="btn btn-delete"
+                    onclick="clicked({{r.id}})"
                   >
                     <i class="fa-solid fa-trash"></i>
                   </button>
@@ -302,25 +306,23 @@
             <form id="applyLeaveForm" method="post" action="{% url 'user_dasboard' %}">
               {% csrf_token %}
               <div class="form-group">
-                <label class="form-label">ID</label>
+                <!-- <label class="form-label">ID</label>
                 <input
                   type="text"
                   class="form-control"
                   value="0902-EMS0-5425"
                   readonly
                 />
-              </div>
+              </div> -->
 
               <div class="form-grid">
                 <div class="form-group">
                   <label class="form-label">Leave Type</label>
                   <select class="form-select" name="leave_type" required>
                     <option value="">-- Please Select --</option>
-                    <option value="vacation leave">Vacation Leave</option>
                     <option value="sick leave">Sick Leave</option>
-                    <option value="casual leave">Emergency Leave</option>
+                    <option value="vacation leave">vacation Leave</option>
                     <option value="maternity leave">Maternity Leave</option>
-                    <option value="paternity">Paternity Leave</option>
                   </select>
                 </div>
 
@@ -396,10 +398,10 @@
       </div>
     </div>
 
+    <script src="../static/assets/scripts/user.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="../static/assets/scripts/popups/sidebar.js"></script>
     <script src="../static/assets/scripts/popups/notification.js"></script>
     <script src="../static/assets/scripts/popups/tooltip.js"></script>
-    <script src="../static/assets/scripts/user.js"></script>
   </body>
 </html>
