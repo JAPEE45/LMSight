@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome User - Dashboard</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../../assets/styles/components/sidebar.css" />
+    <link rel="stylesheet" href="../../assets/styles/components/navbar.css" />
+    <link
+      rel="stylesheet"
+      href="../../assets/styles/components/notification.css"
+    />
+    <link rel="stylesheet" href="../../assets/styles/layouts/user.css" />
+  </head>
+  <body>
+    <div class="sidebar" id="sidebar">
+      <h2>ALIS</h2>
+      <div class="main-img-cont">
+        <div class="img-cont">
+          <img
+            src="../../assets/images/blank-profile-picture-973460.svg"
+            alt=""
+            id="profilePreview"
+          />
+          <input type="file" accept="image/*" id="image_file" />
+          <label for="image_file">
+            <i class="fa-solid fa-camera"></i>
+          </label>
+        </div>
+      </div>
+      <div class="name-cont">
+        <h3 class="name">Juan Dela Cruz</h3>
+      </div>
+
+      <div class="bot-sec">
+        <div class="jobs-desc-cont">
+          <p>Employee ID: E0956-T25</p>
+          <p>Department: HR</p>
+          <p>Job title: HR Manager</p>
+          <p>Employment Type: Regular</p>
+        </div>
+        <div class="details-cont">
+          <p>Vacation Leave: 3 / 5 used</p>
+          <p>Sick Leave: 3 / 5 used</p>
+          <p>Casual Leave: 5 / 10 used</p>
+        </div>
+      </div>
+      <div class="button-cont">
+        <a href="../login_interface.html">
+          Log Out
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="main-header">
+        <div class="d-flex align-items-center">
+          <button class="mobile-toggle me-3" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+          </button>
+          <h1 class="nav-title">Welcome, User!</h1>
+        </div>
+        <div class="button-main-cont">
+          <div class="button-cont">
+            <a id="dashboard_nav">
+              <i class="fa-solid fa-table-columns active"></i>
+            </a>
+            <p class="popup">Dashboard</p>
+          </div>
+          <div class="button-cont">
+            <button class="notif-btn" id="notification-btn">
+              <i class="fa-solid fa-bell"></i>
+            </button>
+            <p class="popup">Notification</p>
+            <div class="notif-marker active"></div>
+            <div class="notifications-panel" id="notificationsPanel">
+              <div class="notifications-header">
+                <h5>Notifications</h5>
+              </div>
+              <div class="notifications-list">
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="dashboardSection" class="dashboard-section">
+        <div class="row mb-4">
+          <div class="col-lg-4 col-md-6 mb-3" >
+            <div class="stats-card profile blue" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Total number of leave days taken this month">
+              <div class="stats-number">5</div>
+              <div class="stats-title">Total Leaves Taken</div>
+              <div class="stats-subtitle">This month</div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-3">
+            <div class="stats-card profile green" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Remaining leave days available this month">
+              <div class="stats-number">10</div>
+              <div class="stats-title">Leave Balance</div>
+              <div class="stats-subtitle">This month</div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-3">
+            <div class="stats-card yellow" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Leave requests awaiting approval">
+              <div class="stats-number">2</div>
+              <div class="stats-title filters" data-filter="pending" id="pendingRequests">Pending Requests</div>
+              <div class="stats-subtitle">This month</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-card">
+          <div class="card-header">
+            <h2 class="card-title">Leave History</h2>
+            <button class="apply-leave-btn" id="applyLeaveBtn" data-bs-toggle="tooltip" data-bs-placement="left" title="Submit a new leave application">
+              <i class="fas fa-plus"></i>
+              Apply Leave
+            </button>
+          </div>
+
+          <div class="filter-tabs">
+            <button class="filter-tab filters active" data-filter="approved">
+              Approved
+            </button>
+            <button class="filter-tab filters" id="pending" data-filter="pending">Pending</button>
+            <button class="filter-tab filters" data-filter="rejected">Rejected</button>
+          </div>
+
+          <div class="table-container">
+            <table class="leave-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>From</th>
+                  <th>To</th>
+                  <th>Type</th>
+                  <th>Comment</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="leaveTableBody">
+                <tr data-status="approved">
+                  <td>2025-05-01</td>
+                  <td>June 10</td>
+                  <td>June 20</td>
+                  <td>Vacation Leave</td>
+                  <td>Going to asdfasd sdaf</td>
+                  <td><span class="status-approved">Approved</span></td>
+                  <td>
+                  <button
+                    class="btn btn-delete"
+                  >
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </td>
+                </tr>
+                <tr data-status="approved">
+                  <td>2025-05-01</td>
+                  <td>June 10</td>
+                  <td>June 20</td>
+                  <td>Vacation Leave</td>
+                  <td>Going to asdfasd sdaf</td>
+                  <td><span class="status-approved">Approved</span></td>
+                  <td>
+                  <button
+                    class="btn btn-delete"
+                  >
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </td>
+                </tr>
+                <tr data-status="approved">
+                  <td>2025-05-01</td>
+                  <td>June 10</td>
+                  <td>June 20</td>
+                  <td>Vacation Leave</td>
+                  <td>Going to asdfasd sdaf</td>
+                  <td><span class="status-approved">Approved</span></td>
+                  <td>
+                  <button
+                    class="btn btn-delete"
+                  >
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </td>
+                </tr>
+                <tr data-status="approved">
+                  <td>2025-05-01</td>
+                  <td>June 10</td>
+                  <td>June 20</td>
+                  <td>Vacation Leave</td>
+                  <td>Going to asdfasd sdaf</td>
+                  <td><span class="status-approved">Approved</span></td>
+                  <td>
+                  <button
+                    class="btn btn-delete"
+                  >
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </td>
+                </tr>
+                <tr data-status="pending" style="display: none">
+                  <td>2025-06-15</td>
+                  <td>July 01</td>
+                  <td>July 05</td>
+                  <td>Sick Leave</td>
+                  <td>Medical appointment</td>
+                  <td><span class="status-pending">Pending</span></td>
+                  <td>
+                  <button
+                    class="btn btn-delete"
+                  >
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </td>
+                </tr>
+                <tr data-status="pending" style="display: none">
+                  <td>2025-06-20</td>
+                  <td>July 10</td>
+                  <td>July 12</td>
+                  <td>Emergency Leave</td>
+                  <td>Family emergency</td>
+                  <td><span class="status-pending">Pending</span></td>
+                  <td>
+                  <button
+                    class="btn btn-delete"
+                    onclick="showLeaveModal()"
+                  >
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </td>
+                </tr>
+                <tr data-status="rejected" style="display: none">
+                  <td>2025-04-20</td>
+                  <td>May 01</td>
+                  <td>May 05</td>
+                  <td>Vacation Leave</td>
+                  <td>Holiday trip</td>
+                  <td><span class="status-rejected">Rejected</span></td>
+                  <td>
+                  <button
+                    class="btn btn-delete"
+                    onclick="showLeaveModal()"
+                  >
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="applyLeaveSection"
+        class="dashboard-section hidden apply-leave-form"
+      >
+        <div class="content-card">
+          <div class="card-header">
+            <h2 class="card-title">Apply Leave</h2>
+            <button class="back-to-table-btn" id="backToTableBtn">
+              <i class="fas fa-arrow-left"></i>
+              Back to Table
+            </button>
+          </div>
+
+          <div style="padding: var(--padding-2)">
+            <form id="applyLeaveForm">
+              <div class="form-group">
+                <label class="form-label">ID</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  value="0902-EMS0-5425"
+                  readonly
+                />
+              </div>
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label">Leave Type</label>
+                  <select class="form-select" required>
+                    <option value="">-- Please Select --</option>
+                    <option value="vacation">Vacation Leave</option>
+                    <option value="sick">Sick Leave</option>
+                    <option value="emergency">Emergency Leave</option>
+                    <option value="maternity">Maternity Leave</option>
+                    <option value="paternity">Paternity Leave</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Commutation</label>
+                  <select class="form-select">
+                    <option value="">--Please Select--</option>
+                    <option value="with">With Commutation</option>
+                    <option value="without">Without Commutation</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Start Date</label>
+                  <input type="date" class="form-control" required />
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">End Date</label>
+                  <input type="date" class="form-control" required />
+                </div>
+              </div>
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label">Comment</label>
+                  <textarea
+                    class="form-control form-textarea"
+                    placeholder="Enter your reason for leave..."
+                  ></textarea>
+                </div>
+
+                <div>
+                  <div class="form-group">
+                    <label class="form-label">Details of Leave</label>
+                    <select class="form-select">
+                      <option value="">--Please Select--</option>
+                      <option value="full-day">Full Day</option>
+                      <option value="half-day-morning">
+                        Half Day - Morning
+                      </option>
+                      <option value="half-day-afternoon">
+                        Half Day - Afternoon
+                      </option>
+                      <option value="hourly">Hourly</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="checkbox-container">
+                <input type="checkbox" id="agreeTerms" required />
+                <label for="agreeTerms" class="checkbox-label">
+                  I have read and agree to the
+                  <a href="./omnibus_interface.html" target="_blank">
+                    Omnibus rules
+                  </a>
+                  and
+                  <a href="./instructions.html" target="_blank">
+                    Instructions and Requirements
+                  </a>
+                  of leave.
+                </label>
+              </div>
+
+              <button type="submit" class="submit-btn" disabled id="submitBtn">
+                Submit
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/scripts/popups/sidebar.js"></script>
+    <script src="../../assets/scripts/popups/notification.js"></script>
+    <script src="../../assets/scripts/popups/tooltip.js"></script>
+    <script src="../../assets/scripts/user.js"></script>
+  </body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ALIS Admin Dashboard</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../../assets/styles/components/sidebar.css" />
+    <link rel="stylesheet" href="../../assets/styles/components/navbar.css" />
+    <link
+      rel="stylesheet"
+      href="../../assets/styles/components/notification.css"
+    />
+    <link rel="stylesheet" href="../../assets/styles/layouts/admin.css" />
+  </head>
+  <body>
+    <div class="sidebar" id="sidebar">
+      <h2>ALIS</h2>
+      <div class="main-img-cont">
+        <div class="img-cont">
+          <img
+            src="../../assets/images/blank-profile-picture-973460.svg"
+            alt=""
+          />
+          <input type="file" accept="image/*" id="image_file" />
+          <label for="image_file">
+            <i class="fa-solid fa-camera"></i>
+          </label>
+        </div>
+      </div>
+      <div class="name-cont">
+        <h3 class="name">Juan Dela Cruz</h3>
+      </div>
+      <div class="bot-sec">
+        <div class="jobs-desc-cont">
+          <p>Employee ID: E0956-T25</p>
+          <p>Department: HR</p>
+          <p>Job title: HR Manager</p>
+          <p>Employment Type: Regular</p>
+        </div>
+        <div class="details-cont">
+          <p>Vacation Leave: 3 / 5 used</p>
+          <p>Sick Leave: 3 / 5 used</p>
+          <p>Casual Leave: 5 / 10 used</p>
+        </div>
+      </div>
+      <div class="button-cont">
+        <a href="../login_interface.html">
+          Log Out
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="main-header">
+        <div class="d-flex align-items-center">
+          <button class="mobile-toggle me-3" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+          </button>
+          <h1 class="nav-title pending-request-h1">Admin Dashboard</h1>
+        </div>
+        <div class="button-main-cont">
+          <div class="button-cont">
+            <a id="dashboard_nav" href="#">
+              <i class="fa-solid fa-table-columns active"></i>
+            </a>
+            <p class="popup">Dashboard</p>
+          </div>
+          <div class="button-cont">
+            <a id="requests_nav" href="./manage_users.html">
+              <i class="fa-solid fa-users "></i>
+            </a>
+            <p class="popup">Users</p>
+          </div>
+          <div class="button-cont">
+            <button class="notif-btn" id="notification-btn">
+              <i class="fa-solid fa-bell"></i>
+            </button>
+            <p class="popup">Notification</p>
+            <div class="notif-marker active"></div>
+            
+            <div class="notifications-panel" id="notificationsPanel">
+              <div class="notifications-header">
+                <h5>Notifications</h5>
+              </div>
+              <div class="notifications-list">
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-cards">
+        <div class="stat-card blue">
+          <h3>Total Users</h3>
+          <div class="number">180</div>
+        </div>
+        <div class="stat-card green">
+          <h3>Leave Types</h3>
+          <div class="number">13</div>
+        </div>
+        <div class="stat-card orange">
+          <h3>Total Leave Requests</h3>
+          <div class="number">2</div>
+          <div class="subtitle">This month</div>
+        </div>
+      </div>
+
+      <div class="dashboard-row">
+        <div class="chart-card">
+          <h4>User Role Distribution</h4>
+          <div class="chart-container">
+            <canvas id="roleChart" width="200" height="200"></canvas>
+          </div>
+          <div class="chart-legend">
+            <div class="legend-item">
+              <div class="legend-color" style="background-color: #ff6b9d"></div>
+              <span>Employee</span>
+            </div>
+            <div class="legend-item">
+              <div
+                class="legend-color"
+                style="background-color: var(--twitter-blue)"
+              ></div>
+              <span>HR</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color" style="background-color: #ffc107"></div>
+              <span>Admin</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="right-column">
+          <div class="status-card">
+            <h4>System Update & Health Status</h4>
+            <div class="status-item">
+              <div class="status-indicator">
+                <i class="fas fa-check"></i>
+              </div>
+              <div class="status-text">100% Uptime</div>
+            </div>
+          </div>
+
+          <div class="activity-section">
+            <h4>Last Login Activities</h4>
+            <div class="activities-cont">
+              <div class="activity-item">
+                <div class="activity-user">LeBron James</div>
+                <div class="activity-time">Yesterday</div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-user">LeBron James</div>
+                <div class="activity-time">Yesterday</div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-user">LeBron James</div>
+                <div class="activity-time">Yesterday</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+
+    <script src="../../assets/scripts/popups/notification.js"></script>
+    <script src="../../assets/scripts/popups/sidebar.js"></script>
+    <script src="../../assets/scripts/admin_dashboard.js"></script>
+  </body>
+</html>

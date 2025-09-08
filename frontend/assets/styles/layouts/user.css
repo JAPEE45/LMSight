@@ -1,0 +1,434 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--primary-gray);
+}
+
+.main-content {
+  margin-left: 300px;
+  padding: var(--padding-2);
+  transition: all 0.3s ease;
+}
+
+.btn-delete {
+  background-color: transparent;
+  color: #28a745;
+  border: 1px solid #28a745;
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-size: 0.85rem;
+}
+
+.btn-delete:hover {
+  background-color: #28a745;
+  color: white;
+}
+.stats-card {
+  background: white;
+  border-radius: var(--border-radius-card);
+  padding: var(--padding-2);
+  box-shadow: var(--shadow-1);
+  text-align: center;
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.stats-card.blue {
+  background: linear-gradient(135deg, var(--twitter-blue), #0056a3);
+  color: white;
+}
+
+.stats-card.green {
+  background: linear-gradient(135deg, var(--green-color), #1a5f2e);
+  color: white;
+}
+
+.stats-card.yellow {
+  background: linear-gradient(135deg, var(--yellow-color), #b8930b);
+  color: white;
+}
+
+.stats-number {
+  font-size: 48px;
+  font-weight: bold;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.stats-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.stats-subtitle {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.content-card {
+  background-color: white;
+  border-radius: var(--border-radius-card);
+  box-shadow: var(--shadow-1);
+  overflow: hidden;
+  margin-top: var(--margin-bottom-2);
+}
+
+.card-header {
+  padding: var(--padding-2);
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.apply-leave-btn {
+  background-color: #000;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: var(--border-radius-card);
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.apply-leave-btn:hover {
+  background-color: #333;
+}
+
+.back-to-table-btn {
+  background-color: #000;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: var(--border-radius-card);
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.back-to-table-btn:hover {
+  background-color: #333;
+}
+
+.filter-tabs {
+  padding: 0 var(--padding-2);
+  border-bottom: 1px solid #eee;
+}
+
+.filters {
+  cursor: pointer;
+}
+
+.filter-tab {
+  display: inline-block;
+  padding: 12px 20px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-right: 20px;
+}
+
+.filter-tab.active {
+  color: #333;
+  border-bottom-color: var(--twitter-blue);
+}
+
+.filter-tab:hover {
+  color: #333;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.leave-table {
+  width: 100%;
+  margin: 0;
+}
+
+.leave-table th {
+  background: #b8336a;
+  color: white;
+  font-weight: 600;
+  padding: 15px;
+  text-align: left;
+  border: none;
+  font-size: 16px;
+}
+
+.leave-table td {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  vertical-align: middle;
+}
+
+.leave-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.leave-table tbody tr:nth-child(even) {
+  background-color: #ffeef8;
+}
+
+.status-approved {
+  background-color: var(--green-color);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-pending {
+  background-color: var(--yellow-color);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-rejected {
+  background-color: #dc3545;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Apply Leave Form Styles */
+.apply-leave-form {
+  display: none;
+}
+
+.apply-leave-form.show {
+  display: block;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius-card);
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--twitter-blue);
+  box-shadow: 0 0 0 3px rgba(0, 138, 216, 0.1);
+}
+
+.form-select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius-card);
+  font-size: 14px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: var(--twitter-blue);
+  box-shadow: 0 0 0 3px rgba(0, 138, 216, 0.1);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.file-input {
+  padding: 10px 12px;
+  background-color: #f8f9fa;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.checkbox-container input[type="checkbox"] {
+  margin-top: 4px;
+}
+
+.checkbox-label {
+  font-size: 14px;
+  line-height: 1.4;
+  color: #333;
+}
+
+.checkbox-label a {
+  color: var(--twitter-blue);
+  text-decoration: none;
+}
+
+.checkbox-label a:hover {
+  text-decoration: underline;
+}
+
+.submit-btn {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: var(--border-radius-card);
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.submit-btn:hover {
+  background-color: #5a6268;
+}
+
+.submit-btn:disabled {
+  background-color: #adb5bd;
+  cursor: not-allowed;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-grid-full {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar.show {
+    transform: translateX(0);
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 15px;
+  }
+
+  .header {
+    padding: 15px;
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .header h1 {
+    font-size: 24px;
+  }
+
+  .stats-card {
+    margin-bottom: 15px;
+  }
+
+  .card-header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .filter-tabs {
+    text-align: center;
+  }
+
+  .filter-tab {
+    margin-right: 10px;
+    padding: 10px 15px;
+  }
+
+  .leave-table {
+    font-size: 14px;
+  }
+
+  .leave-table th,
+  .leave-table td {
+    padding: 12px 8px;
+  }
+
+  .notifications-dropdown {
+    width: 300px;
+    right: -50px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+}
+
+@media (max-width: 576px) {
+  .leave-table th,
+  .leave-table td {
+    padding: 10px 6px;
+    font-size: 12px;
+  }
+
+  .stats-number {
+    font-size: 36px;
+  }
+
+  .stats-title {
+    font-size: 16px;
+  }
+
+  .notifications-dropdown {
+    width: 280px;
+    right: -100px;
+  }
+}
+
+/* Hide/Show sections */
+.dashboard-section {
+  display: block;
+}
+
+.dashboard-section.hidden {
+  display: none;
+}

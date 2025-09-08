@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ALIS - HR Dashboard</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../../assets/styles/components/sidebar.css" />
+    <link rel="stylesheet" href="../../assets/styles/components/navbar.css" />
+    <link
+      rel="stylesheet"
+      href="../../assets/styles/components/notification.css"
+    />
+    <link rel="stylesheet" href="../../assets/styles/layouts/hr.css" />
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <h2>ALIS</h2>
+      <div class="main-img-cont">
+        <div class="img-cont">
+          <img
+            src="../../assets/images/blank-profile-picture-973460.svg"
+            alt=""
+          />
+          <input type="file" accept="image/*" id="image_file" />
+          <label for="image_file">
+            <i class="fa-solid fa-camera"></i>
+          </label>
+        </div>
+      </div>
+      <div class="name-cont">
+        <h3 class="name">Juan Dela Cruz</h3>
+      </div>
+      <div class="bot-sec">
+        <div class="jobs-desc-cont">
+          <p>Employee ID: E0956-T25</p>
+          <p>Department: HR</p>
+          <p>Job title: HR Manager</p>
+          <p>Employment Type: Regular</p>
+        </div>
+        <div class="details-cont">
+          <p>Vacation Leave: 3 / 5 used</p>
+          <p>Sick Leave: 3 / 5 used</p>
+          <p>Casual Leave: 5 / 10 used</p>
+        </div>
+      </div>
+      <div class="button-cont">
+        <a href="../login_interface.html">
+          Log Out
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="main-header">
+        <div class="d-flex align-items-center">
+          <button class="mobile-toggle me-3" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+          </button>
+          <h1 class="nav-title pending-request-h1">Employee Profile</h1>
+        </div>
+        <div class="button-main-cont">
+          <div class="button-cont">
+            <a id="dashboard_nav" href="./dashboard.html">
+              <i class="fa-solid fa-table-columns"></i>
+            </a>
+            <p class="popup">Dashboard</p>
+          </div>
+          <div class="button-cont">
+            <a id="requests_nav" href="./requests.html">
+              <i class="fa-solid fa-file-circle-check active"></i>
+            </a>
+            <p class="popup">Requests</p>
+          </div>
+          <div class="button-cont">
+            <button class="notif-btn" id="notification-btn">
+              <i class="fa-solid fa-bell"></i>
+            </button>
+            <p class="popup">Notification</p>
+            <div class="notif-marker active"></div>
+            <!-- Notifications Panel -->
+            <div class="notifications-panel" id="notificationsPanel">
+              <div class="notifications-header">
+                <h5>Notifications</h5>
+              </div>
+              <div class="notifications-list">
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>LeBron James</strong> has requested for love
+                      request
+                    </p>
+                    <span class="notification-time">1min ago</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Header -->
+      <div
+        class="user-info"
+      >
+        <div class="user-avatar">
+          <i class="fas fa-user" style="color: #666; font-size: 0.8rem"></i>
+        </div>
+        <span style="font-weight: 500">LeBron James</span>
+        <span style="margin-left: auto; font-weight: 500">MASSO</span>
+      </div>
+
+      <!-- Leave Credits Section -->
+      <h3 style="color: var(--primary-background); margin-bottom: 1rem">
+        Leave Credits as of June 2025
+      </h3>
+      <div class="row stats-cards">
+        <div class="col-lg-4 col-md-6 mb-3">
+          <div class="stats-card earned">
+            <h3>Earned Leave</h3>
+            <div class="number">11.167 days</div>
+            <div class="subtitle">(as of June)</div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-3">
+          <div class="stats-card used">
+            <h3>Used Leave</h3>
+            <div class="number">3 days</div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-3">
+          <div class="stats-card remaining">
+            <h3>Remaining Balance</h3>
+            <div class="number">9.417 days</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vacation Leave Utilization -->
+      <div class="vacation-section">
+        <h2>Vacation Leave Utilization</h2>
+        <div class="chart-container">
+          <div class="chart">
+            <div class="donut-chart">
+              <div
+                style="
+                  position: absolute;
+                  color: var(--primary-background);
+                  font-weight: bold;
+                  z-index: 10;
+                "
+              >
+                <div style="text-align: center">
+                  <div style="font-size: 1.2rem">75.8%</div>
+                  <div style="font-size: 0.8rem">24.2%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="chart-labels">
+            <div class="chart-info">
+              <h4>Date & Action Take on Application for Leave</h4>
+              <p>6/28, 29, 30/2025</p>
+            </div>
+            <div class="chart-info">
+              <h4>Monthly Accrual Rası</h4>
+              <p>1.25 days/month</p>
+            </div>
+            <div class="chart-info">
+              <h4>Next Accrual Date</h4>
+              <p>July 1, 2025</p>
+            </div>
+            <div class="legend">
+              <div class="legend-item">
+                <div class="legend-color remaining"></div>
+                <span><strong>Remaining:</strong> 9.417 days</span>
+                <span class="percentage">75.8%</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-color used"></div>
+                <span><strong>Used:</strong> 3 days</span>
+                <span class="percentage">24.2%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/scripts/popups/sidebar.js"></script>
+    <script src="../../assets/scripts/popups/notification.js"></script>
+  </body>
+</html>
