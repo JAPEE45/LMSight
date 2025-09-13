@@ -67,7 +67,7 @@
           <button class="mobile-toggle me-3" onclick="toggleSidebar()">
             <i class="fas fa-bars"></i>
           </button>
-          <h1 class="nav-title pending-request-h1">User Management</h1>
+          <h1 class="nav-title pending-request-h1">Employee Management</h1>
         </div>
         <div class="button-main-cont">
           <div class="button-cont">
@@ -116,7 +116,7 @@
       <div class="user-management-card">
         <div class="user-list-header">
           <div class="user-list-title">
-            User list <span class="user-count">{{user_count}} 
+            Employee list <span class="user-count">{{user_count}} 
             {% if user_count > 1 %}
               users
               {% else %}
@@ -144,7 +144,7 @@
               style="text-decoration: none"
               href="{% url 'admin_edit_user' %}?type=add"
             >
-              <i class="fas fa-plus"></i> Add user
+              <i class="fas fa-plus"></i> Add
             </a>
           </div>
         </div>

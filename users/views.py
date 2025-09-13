@@ -74,6 +74,7 @@ def login(request):
 def get_status_notification():
     notif = StatusNotif.objects.filter(current_status = "pending" ).order_by("-id")
     return notif
+
 def user_dashboard(request):
     if request.method == "POST":
         user_id = request.session["user_id"]

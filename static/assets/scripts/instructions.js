@@ -23,7 +23,7 @@ function downloadFile() {
   const element = document.createElement("a");
   element.setAttribute(
     "href",
-    "../../assets/files/INSTRUCTIONS AND REQUIREMENTS.pdf"
+    "../../static/assets/files/INSTRUCTIONS AND REQUIREMENTS.pdf"
   );
   element.setAttribute("download", "Leave_Instructions_and_Requirements.pdf");
   element.style.display = "none";

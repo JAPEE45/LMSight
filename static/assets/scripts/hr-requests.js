@@ -136,7 +136,7 @@ function showResult(data){
                 <td>${e.start_date}</td>
                 <td>${e.end_date}</td>
                 <td>${e.leave_type}</td>
-                <td>1.50</td>
+      
                 <td>
                   <button
                     class="btn btn-view-details"
