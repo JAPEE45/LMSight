@@ -25,43 +25,24 @@
     <link rel="stylesheet" href="../../static/assets/styles/layouts/hr.css" />
   </head>
   <body>
-    <!-- Sidebar -->
-      <div class="sidebar" id="sidebar">
+    <div class="sidebar" id="sidebar">
       <h2>ALIS</h2>
-      <div class="main-img-cont">
-        <div class="img-cont">
-          <img
-            src = "../media/{{user.picture}}"
-            alt=""
-            id="profilePreview"
-          />
-          <!-- <input type="file" accept="image/*" id="image_file" /> -->
-          <!-- <label for="image_file">
-            <i class="fa-solid fa-camera"></i>
-          </label> -->
-        </div>
-      </div>
-      <div class="name-cont">
-        <h3 class="name">{{user.firstname}} {{user.middlename}} {{user.lastname}}</h3>
-      </div>
 
-      <div class="bot-sec">
-        <div class="jobs-desc-cont">
-          <!-- <p>Employee ID: E0956-T25</p> -->
-          <p>Department: {{user.department}}</p>
-          <p>Job title: {{user.job_title}}</p>
-          <p>Employment Type: {{user.employee_type}}</p>
-        </div>
-        <div class="details-cont">
-          <!-- <p>Vacation Leave: {{leave.vacation_leave}} / 5 used</p>
-          <p>Sick Leave: {{leave.sick_leave}} / 5 used</p>
-          <p>Casual Leave: {{leave.casual_leave}} / 10 used</p> -->
-        </div>
+      <div class="button-cont">
+        <a id="dashboard_nav" href="#" class="active">
+          <i class="fa-solid fa-table-columns me-1"></i> Dashboard
+        </a>
       </div>
       <div class="button-cont">
-        <a href="{% url 'logout' %}">
+        <a id="requests_nav" href="{% url 'hr_request' %}">
+          <i class="fa-solid fa-file-circle-check"></i> Pending Requests
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a href="{% url 'logout' %}" class="">
+          <i class="fa-solid fa-right-from-bracket me-1"></i>
           Log Out
-          <i class="fa-solid fa-right-from-bracket"></i>
         </a>
       </div>
     </div>
@@ -78,18 +59,6 @@
           <h1 class="nav-title">HR Dashboard</h1>
         </div>
         <div class="button-main-cont">
-          <div class="button-cont">
-            <a id="dashboard_nav">
-              <i class="fa-solid fa-table-columns active"></i>
-            </a>
-            <p class="popup">Dashboard</p>
-          </div>
-          <div class="button-cont">
-            <a id="requests_nav" href="{% url 'hr_request' %}">
-              <i class="fa-solid fa-file-circle-check"></i>
-            </a>
-            <p class="popup">Requests</p>
-          </div>
           <div class="button-cont">
             <button class="notif-btn" id="notification-btn">
               <i class="fa-solid fa-bell"></i>
@@ -117,6 +86,23 @@
                 </div>
               {% endfor %}
               </div>
+            </div>
+          </div>
+          <div class="button-main-cont">
+            <div class="main-img-cont">
+              <div class="img-cont">
+                <img
+                  src="../media/{{user.picture}}"
+                  alt=""
+                  id="profilePreview"
+                />
+              </div>
+            </div>
+            <div class="name-cont">
+              <p class="name">
+                {{user.firstname}} {{user.middlename}} {{user.lastname}}
+              </p>
+              <p class="title text-muted">HR</p>
             </div>
           </div>
         </div>

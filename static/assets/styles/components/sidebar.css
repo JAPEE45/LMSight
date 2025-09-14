@@ -29,21 +29,6 @@
   background-color: #354f52;
 }
 
-.sidebar .main-img-cont {
-  height: 8rem;
-  display: flex;
-  justify-content: center;
-}
-
-.sidebar .main-img-cont .img-cont {
-  height: 130px;
-  width: 130px;
-  border-radius: 50%;
-  border: 5px solid white;
-  box-shadow: 0 0 0.2rem white;
-  position: relative;
-}
-
 .sidebar .button-cont a {
   color: white;
   border-radius: unset;
@@ -52,13 +37,13 @@
   font-weight: 550;
   letter-spacing: 1px;
   flex-direction: row;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
   display: flex;
   font-size: 0.9rem;
   gap: 1px;
+  align-items: center;
 }
+
 
 .sidebar .button-cont a:hover {
   background: rgba(10, 10, 10, 0.2);
@@ -69,47 +54,16 @@
   color: white;
 }
 
-.sidebar .main-img-cont .img-cont i {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  padding: 7px;
-  background: white;
-  color: black;
-  border-radius: 50%;
-  box-shadow: 0 0 0.2rem white;
-  cursor: pointer;
-}
-
-.sidebar .main-img-cont .img-cont img {
-  height: 100%;
-  width: 100%;
-  border-radius: 50%;
-}
-
-.sidebar .main-img-cont .img-cont input[type="file"] {
-  display: none;
-}
 
 .sidebar .bot-sec {
   padding: 1rem;
-}
-
-.sidebar .name-cont {
-  margin-top: 25px;
-  justify-self: center;
 }
 
 .sidebar p {
   margin-bottom: 0;
 }
 
-.sidebar .name-cont .name {
-  text-align: center;
-  max-width: 225px;
-  font-size: 1.3rem;
-  font-weight: 700;
-}
+
 
 .sidebar .details-cont {
   display: flex;
@@ -142,7 +96,8 @@
   display: block;
 }
 
-.sidebar .button-cont button:hover {
+.sidebar .button-cont button:hover,
+.sidebar .button-cont a.active {
   background: rgba(10, 10, 10, 0.2);
 }
 
@@ -151,39 +106,8 @@
   color: white;
 }
 
-.sidebar .main-img-cont .img-cont i {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  padding: 7px;
-  background: white;
-  color: black;
-  border-radius: 50%;
-  box-shadow: 0 0 0.2rem white;
-  cursor: pointer;
-}
-
-.sidebar .main-img-cont .img-cont img {
-  height: 100%;
-  border-radius: 50%;
-}
-
-.sidebar .main-img-cont .img-cont input[type="file"] {
-  display: none;
-}
-
 .sidebar .bot-sec {
   padding: 1rem;
-}
-
-.sidebar .name-cont {
-  margin-top: 25px;
-  justify-self: center;
-}
-
-.sidebar .name-cont .name {
-  text-align: center;
-  max-width: 225px;
 }
 
 .sidebar .details-cont {

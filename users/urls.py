@@ -23,5 +23,4 @@ urlpatterns = [
     path("api/user/delete", views.user_delete_leave),
     
     
-    
 ]

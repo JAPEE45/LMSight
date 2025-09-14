@@ -21,42 +21,25 @@
     <link rel="stylesheet" href="../static/assets/styles/layouts/admin.css" />
   </head>
   <body>
-     <div class="sidebar" id="sidebar">
+     
+    <div class="sidebar" id="sidebar">
       <h2>ALIS</h2>
-      <div class="main-img-cont">
-        <div class="img-cont">
-          <img
-            src = "../media/{{usr.picture}}"
-            alt=""
-            id="profilePreview"
-          />
-          <!-- <input type="file" accept="image/*" id="image_file" />
-          <label for="image_file">
-            <i class="fa-solid fa-camera"></i>
-          </label> -->
-        </div>
-      </div>
-      <div class="name-cont">
-        <h3 class="name">{{usr.firstname}} {{usr.middlename}} {{usr.lastname}}</h3>
-      </div>
 
-      <div class="bot-sec">
-        <div class="jobs-desc-cont">
-          <!-- <p>Employee ID: E0956-T25</p> -->
-          <p>Department: {{usr.department}}</p>
-          <p>Job title: {{usr.job_title}}</p>
-          <p>Employment Type: {{usr.employee_type}}</p>
-        </div>
-        <div class="details-cont">
-          <!-- <p>Vacation Leave: {{leave.vacation_leave}} / 5 used</p>
-          <p>Sick Leave: {{leave.sick_leave}} / 5 used</p>
-          <p>Casual Leave: {{leave.casual_leave}} / 10 used</p> -->
-        </div>
+      <div class="button-cont">
+        <a id="dashboard_nav" href="{% url 'admins' %}" class="">
+          <i class="fa-solid fa-table-columns me-1"></i> Dashboard
+        </a>
       </div>
       <div class="button-cont">
-        <a href="{% url 'logout' %}">
+        <a id="requests_nav" href="{% url 'admin_manage_users' %}" class="active">
+          <i class="fa-solid fa-users me-1"></i> User Management
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a href="{% url 'logout' %}" class="">
+          <i class="fa-solid fa-right-from-bracket me-1"></i>
           Log Out
-          <i class="fa-solid fa-right-from-bracket"></i>
         </a>
       </div>
     </div>
@@ -67,49 +50,27 @@
           <button class="mobile-toggle me-3" onclick="toggleSidebar()">
             <i class="fas fa-bars"></i>
           </button>
-          <h1 class="nav-title pending-request-h1">User Management</h1>
+          <h1 class="nav-title pending-request-h1">Employee Management</h1>
         </div>
         <div class="button-main-cont">
-          <div class="button-cont">
-            <a id="dashboard_nav" href="{% url 'admins' %}">
-              <i class="fa-solid fa-table-columns"></i>
-            </a>
-            <p class="popup">Dashboard</p>
-          </div>
-          <div class="button-cont">
-            <a id="requests_nav" href="#">
-              <i class="fa-solid fa-users active"></i>
-            </a>
-            <p class="popup">Users</p>
-          </div>
-          <!-- <div class="button-cont">
-            <button class="notif-btn" id="notification-btn">
-              <i class="fa-solid fa-bell"></i>
-            </button>
-            <p class="popup">Notification</p>
-            <div class="notif-marker active"></div>
-            <div class="notifications-panel" id="notificationsPanel">
-              <div class="notifications-header">
-                <h5>Notifications</h5>
-              </div>
-                <div class="notifications-list">
-              
-              {% for i in notif %}
-                 <div class="notification-item">
-                  <div class="notification-avatar" style="width: 50px;height:50px">
-                    <img src="/media/{{i.user.picture}}" width="50" height="50" style="border-radius: 100px;"/>
-                  </div>
-                  <div class="notification-content">
-                    <p class="notification-text">
-                      <strong>{{i.user.firstname}} {{i.user.lastname}}</strong> has requested for {{i.leave.leave_type}}.
-                    </p>
-                    <span class="notification-time">{{i.createdAt}}</span>
-                  </div>
-                </div>
-              {% endfor %}
+          
+          <div class="button-main-cont">
+            <div class="main-img-cont">
+              <div class="img-cont">
+                <img
+                  src="../media/{{user.picture}}"
+                  alt=""
+                  id="profilePreview"
+                />
               </div>
             </div>
-          </div> -->
+            <div class="name-cont">
+              <p class="name">
+                {{user.firstname}} {{user.middlename}} {{user.lastname}}
+              </p>
+              <p class="title text-muted">ADMIN</p>
+            </div>
+          </div>
         </div>
       </div>
 
