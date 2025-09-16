@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ALIS - Leave Types Management</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../../static/assets/styles/components/sidebar.css">
+    <link rel="stylesheet" href="../../static/assets/styles/components/navbar.css">
+    <link rel="stylesheet" href="../../static/assets/styles/components/notification.css">
+    <link rel="stylesheet" href="../../static/assets/styles/layouts/leave-types.css">
+  </head>
+  <body>
+    <div class="sidebar" id="sidebar">
+      <h2>ALIS</h2>
+
+      <div class="button-cont">
+        <a id="dashboard_nav" href="#">
+          <i class="fa-solid fa-table-columns me-1"></i> Dashboard
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a id="requests_nav" href="{% url 'admin_manage_users' %}">
+          <i class="fa-solid fa-users me-1"></i> User Management
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a href="{% url 'admin_manage_users' %}" class="active">
+          <i class="fa-solid fa-person-walking-arrow-right"></i> Leave Types
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a href="{% url 'logout' %}" class="">
+          <i class="fa-solid fa-right-from-bracket me-1"></i>
+          Log Out
+        </a>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="main-header">
+        <div class="d-flex align-items-center">
+          <button class="mobile-toggle me-3" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+          </button>
+          <h1 class="nav-title pending-request-h1">Admin Dashboard</h1>
+        </div>
+        <div class="button-main-cont">
+          <div class="button-cont">
+            <button class="notif-btn" id="notification-btn">
+              <i class="fa-solid fa-bell"></i>
+            </button>
+            <p class="popup">Notification</p>
+            <div class="notif-marker active"></div>
+
+            <div class="notifications-panel" id="notificationsPanel">
+              <div class="notifications-header">
+                <h5>Notifications</h5>
+              </div>
+              <div class="notifications-list">
+                {% for i in notif %}
+                <div class="notification-item">
+                  <div
+                    class="notification-avatar"
+                    style="width: 50px; height: 50px"
+                  >
+                    <img
+                      src="/media/{{i.user.picture}}"
+                      width="50"
+                      height="50"
+                      style="border-radius: 100px"
+                    />
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>{{i.user.firstname}} {{i.user.lastname}}</strong>
+                      has requested for {{i.leave.leave_type}}.
+                    </p>
+                    <span class="notification-time">{{i.createdAt}}</span>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div class="button-main-cont">
+            <div class="main-img-cont">
+              <div class="img-cont">
+                <img
+                  src="../media/{{user.picture}}"
+                  alt=""
+                  id="profilePreview"
+                />
+              </div>
+            </div>
+            <div class="name-cont">
+              <p class="name">
+                {{user.firstname}} {{user.middlename}} {{user.lastname}}
+              </p>
+              <p class="title text-muted">ADMIN</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Alert Messages -->
+      <div id="alertContainer"></div>
+
+      <!-- Add Leave Type Form -->
+      <div class="form-container">
+        <h4 class="mb-3" style="color: var(--primary-background)">
+          Add New Leave Type
+        </h4>
+        <form id="addLeaveTypeForm">
+          <div class="row">
+            <div class="col-md-8 mb-3">
+              <label for="leaveTypeName" class="form-label"
+                >Leave Type Name</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="leaveTypeName"
+                placeholder="Enter leave type name"
+                required
+              />
+              <div class="invalid-feedback">
+                Please enter a valid leave type name.
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">&nbsp;</label>
+              <button type="submit" class="btn btn-primary w-100">
+                <i class="fas fa-plus me-2"></i>Add Leave Type
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Leave Types List -->
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0" style="color: var(--primary-background)">
+            <i class="fas fa-list me-2"></i>Existing Leave Types
+          </h5>
+        </div>
+        <div class="card-body">
+          <div id="leaveTypesList">
+            <!-- Leave types will be populated here by JavaScript -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="../../static/assets/scripts/popups/notification.js"></script>
+    <script src="../../static/assets/scripts/popups/sidebar.js"></script>
+    <script src="../../static/assets/scripts/admin_leave_types.js"></script>
+  </body>
+</html>
