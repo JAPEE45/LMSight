@@ -30,10 +30,15 @@ class USERS(BaseModel):
         self.last_login = timezone.now()
         self.save(update_fields=["last_login"])
     
+class LEAVE_TYPES(BaseModel):
+    leave_type = models.TextField(null=False)
+    description = models.TextField(null=False)
+    def __str__(self):
+        return f'{self.leave_type}'
 
 class LEAVE(BaseModel):
     users = models.ForeignKey(USERS, on_delete = models.CASCADE)
-    leave_type = models.TextField(blank=True)
+    leave_type = models.ForeignKey(LEAVE_TYPES, on_delete = models.CASCADE)
     commutation = models.TextField(blank=True)
     start_date = models.DateField(blank=True)
     end_date = models.DateField(blank=True)
