@@ -1,9 +1,7 @@
 // Apply Leave and Back to Table functionality
-const applyLeaveBtn = document.getElementById("applyLeaveBtn");
-const backToTableBtn = document.getElementById("backToTableBtn");
+const applyLeaveBtn = document.querySelectorAll(".applyLeaveBtn");
 const dashboardSection = document.getElementById("dashboardSection");
 const applyLeaveSection = document.getElementById("applyLeaveSection");
-const headerTitle = document.getElementById("headerTitle");
 
 async function clicked(id){
   alert(id)
@@ -15,17 +13,14 @@ async function clicked(id){
     return 
   }
 }
-applyLeaveBtn.addEventListener("click", function () {
+
+applyLeaveBtn.forEach((btn) => btn.addEventListener("click", function () {
   dashboardSection.classList.add("hidden");
   applyLeaveSection.classList.remove("hidden");
   applyLeaveSection.classList.add("show");
-});
-
-backToTableBtn.addEventListener("click", function () {
-  applyLeaveSection.classList.add("hidden");
-  applyLeaveSection.classList.remove("show");
-  dashboardSection.classList.remove("hidden");
-});
+  applyLeaveBtn.forEach((btn) => btn.classList.add("active"));
+  document.getElementById("dashboard_nav").classList.remove("active");
+}));
 
 // Filter tabs functionality
 document.querySelectorAll(".filters").forEach((tab) => {
@@ -72,33 +67,6 @@ agreeTermsCheckbox.addEventListener("change", function () {
   submitBtn.disabled = !this.checked;
 });
 
-// // Form submission
-// applyLeaveForm.addEventListener("submit", function (e) {
-//   e.preventDefault();
-
-//   // Get form data
-//   const formData = new FormData(this);
-//   const leaveData = {};
-
-//   // Convert FormData to object
-//   for (let [key, value] of formData.entries()) {
-//     leaveData[key] = value;
-//   }
-
-  // Show success message
-//   alert("Leave application submitted successfully!");
-
-//   // Reset form
-//   this.reset();
-//   agreeTermsCheckbox.checked = false;
-//   submitBtn.disabled = true;
-
-//   // Go back to dashboard
-//   applyLeaveSection.classList.add("hidden");
-//   applyLeaveSection.classList.remove("show");
-//   dashboardSection.classList.remove("hidden");
-// });
-
 // Date validation - end date should be after start date
 const startDateInput = document.querySelector(
   'input[type="date"]:first-of-type'
@@ -123,38 +91,3 @@ endDateInput.addEventListener("change", function () {
 const today = new Date().toISOString().split("T")[0];
 startDateInput.min = today;
 endDateInput.min = today;
-
-// File upload validation
-const fileInput = document.querySelector('input[type="file"]');
-fileInput.addEventListener("change", function () {
-  const file = this.files[0];
-  if (file) {
-    const maxSize = 5 * 1024 * 1024; // 5MB
-    if (file.size > maxSize) {
-      alert("File size should not exceed 5MB");
-      this.value = "";
-      return;
-    }
-
-    const allowedTypes = [
-      "application/pdf",
-      "application/msword",
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      "image/jpeg",
-      "image/jpg",
-      "image/png",
-    ];
-    if (!allowedTypes.includes(file.type)) {
-      alert("Please upload only PDF, DOC, DOCX, JPG, JPEG, or PNG files");
-      this.value = "";
-      return;
-    }
-  }
-});
-
-document.querySelectorAll(".profile").forEach((profile) => {
-  profile.addEventListener("click", () => {
-    window.location.href = "/user/profile";
-  });
-});
-

@@ -9,9 +9,11 @@ urlpatterns = [
     path("admin/", views.admin, name="admins"),
     path("admin/manage_users", views.admin_manage_users, name="admin_manage_users"),
     path("admin/edit_user", views.admin_edit_user, name="admin_edit_user"),
+    path("admin/leave_types", views.leave_types, name="leave_types"),
     path("logout/", views.logout, name="logout"),
     path("user/delete", views.delete_user, name="delete_user"),
     path("user/delete_selected", views.delete_selected_user, name="delete_selected"),
+    
     # hr
     path("hr/", views.hr_dasboard, name="hr"),
     path("hr/request", views.hr_request, name="hr_request"),
@@ -21,7 +23,9 @@ urlpatterns = [
     path("api/hr/reject", views.rejected_leave_request),
     path("api/hr/ongoing", views.apiOngoing),
     path("api/user/delete", views.user_delete_leave),
-    
+    path("api/admin/getLeaveType", views.getLeaveTypes),
+    path("api/admin/addLeaveType", views.addLeaveType),
+    path("api/admin/deleteLeaveType", views.deleteLeaveType),
     
     
 ]

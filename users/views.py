@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import JsonResponse
-from .models import USERS, LEAVE,StatusNotif
+from .models import USERS, LEAVE,StatusNotif, LEAVE_TYPES
 from django.utils import timezone
 from django.utils.timezone import now
 import datetime
@@ -72,8 +72,13 @@ def login(request):
         
         
 def get_status_notification():
-    notif = StatusNotif.objects.filter(current_status = "pending" ).order_by("-id")
-    return notif
+    try:
+        notif = StatusNotif.objects.filter(current_status="pending").order_by("-id")
+        return notif
+    except Exception as e:
+        print(f"Error fetching notifications: {str(e)}")
+        return StatusNotif.objects.none()
+
 def user_dashboard(request):
     if request.method == "POST":
         user_id = request.session["user_id"]
@@ -172,7 +177,31 @@ def admin(request):
         user_arr = count_user_type(users)
         dashboard = {"total_user":users.count(), "leave_types": 10, "total_leave_request":leave.count()}
         notif = get_status_notification()
-        return render(request, "admin/dashboard.html",{"dash":dashboard, "user_arr":user_arr, "users":users.order_by("-last_login"),  'user':user, "notif":notif})
+        all = {"dash":dashboard, "user_arr":user_arr, "users":users.order_by("-last_login"),  'user':user, "notif":notif}
+        return render(request, "admin/dashboard.html",all)
+def getLeaveTypes(request):
+    if request.method == "GET":
+        lt = LEAVE_TYPES.objects.all().values("leave_type","id")
+        print(lt)
+        return JsonResponse({"lt":list(lt)})
+def deleteLeaveType(request):
+    if request.method == "GET":
+        lt = LEAVE_TYPES.objects.filter(id = request.GET.get("leave_id")).first()
+        if(lt):
+            lt.delete()
+            return JsonResponse({"success":True})
+        return JsonResponse({"success":False})
+def addLeaveType(request):
+    if request.method == "GET":
+        lv = request.GET.get("leave_type")
+        print(lv)
+        lt = LEAVE_TYPES(leave_type = lv)
+        lt.save()
+        return JsonResponse({"success":True})
+def leave_types(request):
+    if request.method == "GET":
+        lt = LEAVE_TYPES.objects.all()
+        return render(request, 'admin/leave-types.html', {'lt':lt})
 def admin_manage_users(request):
     if request.method == "GET":
         user_id = request.session.get("user_id")

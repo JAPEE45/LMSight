@@ -17,8 +17,14 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="../static/assets/styles/components/sidebar.css" />
-    <link rel="stylesheet" href="../static/assets/styles/components/navbar.css" />
+    <link
+      rel="stylesheet"
+      href="../static/assets/styles/components/sidebar.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../static/assets/styles/components/navbar.css"
+    />
     <link
       rel="stylesheet"
       href="../static/assets/styles/components/notification.css"
@@ -26,43 +32,41 @@
     <link rel="stylesheet" href="../static/assets/styles/layouts/admin.css" />
   </head>
   <body>
- <div class="sidebar" id="sidebar">
+    <div class="sidebar" id="sidebar">
       <h2>ALIS</h2>
-      <div class="main-img-cont">
-        <div class="img-cont">
-          <img
-            src = "../media/{{user.picture}}"
-            alt=""
-            id="profilePreview"
-          />
-          <!-- <input type="file" accept="image/*" id="image_file" />
-          <label for="image_file">
-            <i class="fa-solid fa-camera"></i>
-          </label> -->
-        </div>
-      </div>
-      <div class="name-cont">
-        <h3 class="name">{{user.firstname}} {{user.middlename}} {{user.lastname}}</h3>
+
+      <div class="button-cont">
+        <a id="dashboard_nav" href="#" class="active">
+          <i class="fa-solid fa-table-columns me-1"></i> Dashboard
+        </a>
       </div>
 
-      <div class="bot-sec">
-        <div class="jobs-desc-cont">
-          <!-- <p>Employee ID: E0956-T25</p> -->
-          <p>Department: {{user.department}}</p>
-          <p>Job title: {{user.job_title}}</p>
-          <p>Employment Type: {{user.employee_type}}</p>
-        </div>
-        <div class="details-cont">
-         
-        </div>
-      </div>
       <div class="button-cont">
-        <a href="{% url 'logout' %}">
+        <a id="requests_nav" href="{% url 'admin_manage_users' %}">
+          <i class="fa-solid fa-users me-1"></i> User Management
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a href="{% url 'admin_manage_users' %}">
+          <i class="fa-solid fa-person-walking-arrow-right"></i> Leave Types
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a id="requests_nav" href="{% url 'admin_manage_users' %}">
+          <i class="fa-solid fa-person-walking-arrow-right"></i> Leave Types
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a href="{% url 'logout' %}" class="">
+          <i class="fa-solid fa-right-from-bracket me-1"></i>
           Log Out
-          <i class="fa-solid fa-right-from-bracket"></i>
         </a>
       </div>
     </div>
+    
     <div class="main-content">
       <div class="main-header">
         <div class="d-flex align-items-center">
@@ -73,44 +77,62 @@
         </div>
         <div class="button-main-cont">
           <div class="button-cont">
-            <a id="dashboard_nav" href="#">
-              <i class="fa-solid fa-table-columns active"></i>
-            </a>
-            <p class="popup">Dashboard</p>
-          </div>
-          <div class="button-cont">
-            <a id="requests_nav" href="{% url 'admin_manage_users' %}">
-              <i class="fa-solid fa-users "></i>
-            </a>
-            <p class="popup">Users</p>
-          </div>
-          <div class="button-cont">
             <button class="notif-btn" id="notification-btn">
               <i class="fa-solid fa-bell"></i>
             </button>
             <p class="popup">Notification</p>
             <div class="notif-marker active"></div>
-            
+
             <div class="notifications-panel" id="notificationsPanel">
               <div class="notifications-header">
                 <h5>Notifications</h5>
               </div>
               <div class="notifications-list">
-              
-              {% for i in notif %}
-                 <div class="notification-item">
-                  <div class="notification-avatar" style="width: 50px;height:50px">
-                    <img src="/media/{{i.user.picture}}" width="50" height="50" style="border-radius: 100px;"/>
+
+                {% if notif %}
+                  {% for i in notif %}
+                  <div class="notification-item">
+                    <div class="notification-avatar" style="width: 50px; height: 50px">
+                      <img src="/media/{{i.user.picture}}" width="50" height="50" style="border-radius: 100px" alt="{{i.user.firstname}}" />
+                    </div>
+                    <div class="notification-content">
+                      <p class="notification-text">
+                        <strong>{{i.user.firstname}} {{i.user.lastname}}</strong>
+                        has requested for {{i.leave.leave_type.leave_type}}.
+                      </p>
+                      <div class="notification-details">
+                        <span class="badge bg-warning text-dark">Pending</span>
+                        <span class="notification-time">{{i.createdAt|timesince}} ago</span>
+                      </div>
+                      <div class="notification-dates mt-1">
+                        <small>From: {{i.leave.start_date|date:"M d, Y"}} - To: {{i.leave.end_date|date:"M d, Y"}}</small>
+                      </div>
+                    </div>
                   </div>
-                  <div class="notification-content">
-                    <p class="notification-text">
-                      <strong>{{i.user.firstname}} {{i.user.lastname}}</strong> has requested for {{i.leave.leave_type}}.
-                    </p>
-                    <span class="notification-time">{{i.createdAt}}</span>
+                  {% endfor %}
+                {% else %}
+                  <div class="text-center p-3">
+                    <p class="text-muted">No pending notifications</p>
                   </div>
-                </div>
-              {% endfor %}
+                {% endif %}
               </div>
+            </div>
+          </div>
+          <div class="button-main-cont">
+            <div class="main-img-cont">
+              <div class="img-cont">
+                <img
+                  src="../media/{{user.picture}}"
+                  alt=""
+                  id="profilePreview"
+                />
+              </div>
+            </div>
+            <div class="name-cont">
+              <p class="name">
+                {{user.firstname}} {{user.middlename}} {{user.lastname}}
+              </p>
+              <p class="title text-muted">ADMIN</p>
             </div>
           </div>
         </div>
@@ -120,22 +142,25 @@
         <div class="stat-card blue">
           <h3>Total Users</h3>
           <div class="number">{{dash.total_user}}</div>
+          <div class="icon"><i class="fas fa-users"></i></div>
         </div>
         <div class="stat-card green">
           <h3>Leave Types</h3>
           <div class="number">{{dash.leave_types}}</div>
+          <div class="icon"><i class="fas fa-calendar-alt"></i></div>
         </div>
         <div class="stat-card orange">
           <h3>Total Leave Requests</h3>
           <div class="number">{{dash.total_leave_request}}</div>
           <div class="subtitle">This month</div>
+          <div class="icon"><i class="fas fa-clipboard-list"></i></div>
         </div>
       </div>
 
       <div class="dashboard-row">
         <div class="chart-card">
           <h4>User Role Distribution</h4>
-          <p style="display: none;color:black" id="user_arr">{{user_arr}}</p>
+          <p style="display: none; color: black" id="user_arr">{{user_arr}}</p>
           <div class="chart-container">
             <canvas id="roleChart" width="200" height="200"></canvas>
           </div>
@@ -172,19 +197,18 @@
           <div class="activity-section">
             <h4>Last Login Activities</h4>
             <div class="activities-cont">
-             
-             {% for i in users %}
-               <div class="activity-item">
+              {% for i in users %}
+              <div class="activity-item">
                 <div class="activity-user">{{i.firstname}} {{i.lastname}}</div>
                 <div class="activity-time">{{i.last_login}}</div>
               </div>
-             {% endfor %}
+              {% endfor %}
             </div>
           </div>
         </div>
       </div>
     </div>
-  
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 

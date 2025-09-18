@@ -100,3 +100,9 @@
 .notif-marker.active {
     opacity: 1;
 }
+
+@media (max-width: 767px) {
+    .notifications-panel {
+        right: -150px;
+    }
+}

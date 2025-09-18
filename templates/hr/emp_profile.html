@@ -22,41 +22,24 @@
     <link rel="stylesheet" href="../../assets/styles/layouts/hr.css" />
   </head>
   <body>
-    <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
       <h2>ALIS</h2>
-      <div class="main-img-cont">
-        <div class="img-cont">
-          <img
-            src="../../assets/images/blank-profile-picture-973460.svg"
-            alt=""
-          />
-          <input type="file" accept="image/*" id="image_file" />
-          <label for="image_file">
-            <i class="fa-solid fa-camera"></i>
-          </label>
-        </div>
-      </div>
-      <div class="name-cont">
-        <h3 class="name">Juan Dela Cruz</h3>
-      </div>
-      <div class="bot-sec">
-        <div class="jobs-desc-cont">
-          <p>Employee ID: E0956-T25</p>
-          <p>Department: HR</p>
-          <p>Job title: HR Manager</p>
-          <p>Employment Type: Regular</p>
-        </div>
-        <div class="details-cont">
-          <p>Vacation Leave: 3 / 5 used</p>
-          <p>Sick Leave: 3 / 5 used</p>
-          <p>Casual Leave: 5 / 10 used</p>
-        </div>
+
+      <div class="button-cont">
+        <a id="dashboard_nav" href="{% url 'hr' %}">
+          <i class="fa-solid fa-table-columns me-1"></i> Dashboard
+        </a>
       </div>
       <div class="button-cont">
-        <a href="../login_interface.html">
+        <a id="requests_nav" href="{% url 'hr_request' %}" class="active">
+          <i class="fa-solid fa-file-circle-check"></i> Pending Requests
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a href="{% url 'logout' %}" class="">
+          <i class="fa-solid fa-right-from-bracket me-1"></i>
           Log Out
-          <i class="fa-solid fa-right-from-bracket"></i>
         </a>
       </div>
     </div>
@@ -168,6 +151,23 @@
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+          <div class="button-main-cont">
+            <div class="main-img-cont">
+              <div class="img-cont">
+                <img
+                  src="../media/{{user.picture}}"
+                  alt=""
+                  id="profilePreview"
+                />
+              </div>
+            </div>
+            <div class="name-cont">
+              <p class="name">
+                {{user.firstname}} {{user.middlename}} {{user.lastname}}
+              </p>
+              <p class="title text-muted">HR</p>
             </div>
           </div>
         </div>

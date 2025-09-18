@@ -25,40 +25,23 @@
   <body>
     <div class="sidebar" id="sidebar">
       <h2>ALIS</h2>
-      <div class="main-img-cont">
-        <div class="img-cont">
-          <img
-            src = "../media/{{user.picture}}"
-            alt=""
-            id="profilePreview"
-          />
-          <!-- <input type="file" accept="image/*" id="image_file" />
-          <label for="image_file">
-            <i class="fa-solid fa-camera"></i>
-          </label> -->
-        </div>
+
+      <div class="button-cont">
+        <a id="dashboard_nav" href="#" class="active">
+          <i class="fa-solid fa-table-columns me-1"></i> Dashboard
+        </a>
       </div>
-      <div class="name-cont">
-        <h3 class="name">{{user.firstname}} {{user.middlename}} {{user.lastname}}</h3>
+      
+      <div class="button-cont">
+        <a id="requests_nav" class="applyLeaveBtn ">
+          <i class="fa-solid fa-plus"></i> Apply Leave
+        </a>
       </div>
 
-      <div class="bot-sec">
-        <div class="jobs-desc-cont">
-          <!-- <p>Employee ID: E0956-T25</p> -->
-          <p>Department: {{user.department}}</p>
-          <p>Job title: {{user.job_title}}</p>
-          <p>Employment Type: {{user.employee_type}}</p>
-        </div>
-        <div class="details-cont">
-          <p>Vacation Leave: {{leave.vacation_leave}} / 5 used</p>
-          <p>Sick Leave: {{leave.sick_leave}} / 5 used</p>
-          <p>Casual Leave: {{leave.casual_leave}} / 10 used</p>
-        </div>
-      </div>
       <div class="button-cont">
-        <a href="{% url 'logout' %}">
+        <a href="{% url 'logout' %}" class="">
+          <i class="fa-solid fa-right-from-bracket me-1"></i>
           Log Out
-          <i class="fa-solid fa-right-from-bracket"></i>
         </a>
       </div>
     </div>
@@ -72,96 +55,21 @@
           <h1 class="nav-title">Welcome, User!</h1>
         </div>
         <div class="button-main-cont">
-          <div class="button-cont">
-            <a id="dashboard_nav">
-              <i class="fa-solid fa-table-columns active"></i>
-            </a>
-            <p class="popup">Dashboard</p>
-          </div>
-          <div class="button-cont">
-            <!-- <button class="notif-btn" id="notification-btn">
-              <i class="fa-solid fa-bell"></i>
-            </button> -->
-            <p class="popup">Notification</p>
-            <div class="notif-marker active"></div>
-            <div class="notifications-panel" id="notificationsPanel">
-              <div class="notifications-header">
-                <h5>Notifications</h5>
+          <div class="button-main-cont">
+            <div class="main-img-cont">
+              <div class="img-cont">
+                <img
+                  src="../media/{{user.picture}}"
+                  alt=""
+                  id="profilePreview"
+                />
               </div>
-              <!-- <div class="notifications-list">
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
-                  </div>
-                  <div class="notification-content">
-                    <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
-                    </p>
-                    <span class="notification-time">1min ago</span>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
-                  </div>
-                  <div class="notification-content">
-                    <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
-                    </p>
-                    <span class="notification-time">1min ago</span>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
-                  </div>
-                  <div class="notification-content">
-                    <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
-                    </p>
-                    <span class="notification-time">1min ago</span>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
-                  </div>
-                  <div class="notification-content">
-                    <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
-                    </p>
-                    <span class="notification-time">1min ago</span>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
-                  </div>
-                  <div class="notification-content">
-                    <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
-                    </p>
-                    <span class="notification-time">1min ago</span>
-                  </div>
-                </div>
-                <div class="notification-item">
-                  <div class="notification-avatar">
-                    <i class="fas fa-user"></i>
-                  </div>
-                  <div class="notification-content">
-                    <p class="notification-text">
-                      <strong>LeBron James</strong> has requested for love
-                      request
-                    </p>
-                    <span class="notification-time">1min ago</span>
-                  </div>
-                </div>
-              </div> -->
+            </div>
+            <div class="name-cont">
+              <p class="name">
+                {{user.firstname}} {{user.middlename}} {{user.lastname}}
+              </p>
+              <p class="title text-muted">EMPLOYEE</p>
             </div>
           </div>
         </div>
@@ -195,7 +103,7 @@
         <div class="content-card">
           <div class="card-header">
             <h2 class="card-title">Leave History</h2>
-            <button class="apply-leave-btn" id="applyLeaveBtn" data-bs-toggle="tooltip" data-bs-placement="left" title="Submit a new leave application">
+            <button class="apply-leave-btn applyLeaveBtn" id="applyLeaveBtn" data-bs-toggle="tooltip" data-bs-placement="left" title="Submit a new leave application">
               <i class="fas fa-plus"></i>
               Apply Leave
             </button>
@@ -296,10 +204,10 @@
         <div class="content-card">
           <div class="card-header">
             <h2 class="card-title">Apply Leave</h2>
-            <button class="back-to-table-btn" id="backToTableBtn">
+            <a class="back-to-table-btn" style="text-decoration: none;" href="{% url 'user_dasboard' %}">
               <i class="fas fa-arrow-left"></i>
               Back to Table
-            </button>
+            </a>
           </div>
 
           <div style="padding: var(--padding-2)">
@@ -401,7 +309,6 @@
     <script src="../static/assets/scripts/user.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="../static/assets/scripts/popups/sidebar.js"></script>
-    <script src="../static/assets/scripts/popups/notification.js"></script>
     <script src="../static/assets/scripts/popups/tooltip.js"></script>
   </body>
 </html>

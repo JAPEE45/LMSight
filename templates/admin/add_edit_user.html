@@ -21,42 +21,31 @@
     <link rel="stylesheet" href="../static/assets/styles/layouts/admin.css" />
   </head>
   <body>
-     <div class="sidebar" id="sidebar">
+     
+    <div class="sidebar" id="sidebar">
       <h2>ALIS</h2>
-      <div class="main-img-cont">
-        <div class="img-cont">
-          <img
-            src = "../media/{{usr.picture}}"
-            alt=""
-            id="profilePreview"
-          />
-          <!-- <input type="file" accept="image/*" id="image_file" />
-          <label for="image_file">
-            <i class="fa-solid fa-camera"></i>
-          </label> -->
-        </div>
-      </div>
-      <div class="name-cont">
-        <h3 class="name">{{usr.firstname}} {{usr.middlename}} {{usr.lastname}}</h3>
-      </div>
 
-      <div class="bot-sec">
-        <div class="jobs-desc-cont">
-          <!-- <p>Employee ID: E0956-T25</p> -->
-          <p>Department: {{usr.department}}</p>
-          <p>Job title: {{usr.job_title}}</p>
-          <p>Employment Type: {{usr.employee_type}}</p>
-        </div>
-        <div class="details-cont">
-          <!-- <p>Vacation Leave: {{leave.vacation_leave}} / 5 used</p>
-          <p>Sick Leave: {{leave.sick_leave}} / 5 used</p>
-          <p>Casual Leave: {{leave.casual_leave}} / 10 used</p> -->
-        </div>
+      <div class="button-cont">
+        <a id="dashboard_nav" href="{% url 'admins' %}" class="">
+          <i class="fa-solid fa-table-columns me-1"></i> Dashboard
+        </a>
       </div>
       <div class="button-cont">
-        <a href="{% url 'logout' %}">
+        <a id="requests_nav" href="{% url 'admin_manage_users' %}" class="active">
+          <i class="fa-solid fa-users me-1"></i> User Management
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a href="{% url 'admin_manage_users' %}">
+          <i class="fa-solid fa-person-walking-arrow-right"></i> Leave Types
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a href="{% url 'logout' %}" class="">
+          <i class="fa-solid fa-right-from-bracket me-1"></i>
           Log Out
-          <i class="fa-solid fa-right-from-bracket"></i>
         </a>
       </div>
     </div>
@@ -67,49 +56,27 @@
           <button class="mobile-toggle me-3" onclick="toggleSidebar()">
             <i class="fas fa-bars"></i>
           </button>
-          <h1 class="nav-title pending-request-h1">User Management</h1>
+          <h1 class="nav-title pending-request-h1">Employee Management</h1>
         </div>
         <div class="button-main-cont">
-          <div class="button-cont">
-            <a id="dashboard_nav" href="{% url 'admins' %}">
-              <i class="fa-solid fa-table-columns"></i>
-            </a>
-            <p class="popup">Dashboard</p>
-          </div>
-          <div class="button-cont">
-            <a id="requests_nav" href="#">
-              <i class="fa-solid fa-users active"></i>
-            </a>
-            <p class="popup">Users</p>
-          </div>
-          <!-- <div class="button-cont">
-            <button class="notif-btn" id="notification-btn">
-              <i class="fa-solid fa-bell"></i>
-            </button>
-            <p class="popup">Notification</p>
-            <div class="notif-marker active"></div>
-            <div class="notifications-panel" id="notificationsPanel">
-              <div class="notifications-header">
-                <h5>Notifications</h5>
-              </div>
-                <div class="notifications-list">
-              
-              {% for i in notif %}
-                 <div class="notification-item">
-                  <div class="notification-avatar" style="width: 50px;height:50px">
-                    <img src="/media/{{i.user.picture}}" width="50" height="50" style="border-radius: 100px;"/>
-                  </div>
-                  <div class="notification-content">
-                    <p class="notification-text">
-                      <strong>{{i.user.firstname}} {{i.user.lastname}}</strong> has requested for {{i.leave.leave_type}}.
-                    </p>
-                    <span class="notification-time">{{i.createdAt}}</span>
-                  </div>
-                </div>
-              {% endfor %}
+          
+          <div class="button-main-cont">
+            <div class="main-img-cont">
+              <div class="img-cont">
+                <img
+                  src="../media/{{user.picture}}"
+                  alt=""
+                  id="profilePreview"
+                />
               </div>
             </div>
-          </div> -->
+            <div class="name-cont">
+              <p class="name">
+                {{user.firstname}} {{user.middlename}} {{user.lastname}}
+              </p>
+              <p class="title text-muted">ADMIN</p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -298,16 +265,27 @@
         <div class="section-content">
           <div class="row">
             <div class="col-md-4 mb-3">
-              <label class="form-label">Department</label>
+              <label class="form-label">Office</label>
               <select  class="form-control" name="department">
                 <option>--Please Select--</option>
-                <option {% if user.department == "HR" %} selected {% endif %}>HR</option>
-                <option {% if user.department == "IT" %} selected {% endif %}>IT</option>
-                <option {% if user.department == "FINANCE" %} selected {% endif %}>Finance</option>
+                <option {% if user.department == "MBO" %} selected {% endif %}>MBO</option>
+                <option {% if user.department == "MACCO" %} selected {% endif %}>MACCO</option>
+                <option {% if user.department == "MPDO" %} selected {% endif %}>MPDO</option>
+                <option {% if user.department == "MEO" %} selected {% endif %}>MEO</option>
+                <option {% if user.department == "SB SEC" %} selected {% endif %}>SB SEC</option>
+                <option {% if user.department == "OM" %} selected {% endif %}>OM</option>
+                <option {% if user.department == "MADO" %} selected {% endif %}>MADO</option>
+                <option {% if user.department == "SB" %} selected {% endif %}>SB</option>
+                <option {% if user.department == "MO" %} selected {% endif %}>MO</option>
+                <option {% if user.department == "MASSO" %} selected {% endif %}>MASSO</option>
+                <option {% if user.department == "MCR" %} selected {% endif %}>MCR</option>
+                <option {% if user.department == "MTO" %} selected {% endif %}>MTO</option>
+                <option {% if user.department == "MAO" %} selected {% endif %}>MAO</option>
+                <option {% if user.department == "MSWDO" %} selected {% endif %}>MSWDO</option>
               </select>
             </div>
             <div class="col-md-4 mb-3">
-              <label class="form-label">Job Title</label>
+              <label class="form-label">Position</label>
               <select class="form-control" name="job_title">
                 <option>--Please Select--</option>
                 <option value="manager" {% if user.job_title == "manager" %} selected {% endif %}>Manager</option>
@@ -316,12 +294,12 @@
               </select>
             </div>
             <div class="col-md-4 mb-3">
-              <label class="form-label">Employment Type</label>
+              <label class="form-label">Employment</label>
               <select class="form-control" name="employee_type">
                 <option disabled>--Please Select--</option>
-                <option value="regular" {% if user.employee_type == "regular" %} selected {% endif %}>Regular</option>
-                <option value="contract" {% if user.employee_type == "contract" %} selected {% endif %}>Contract</option>
-                <option value="part-time" {% if user.employee_type == "part-time" %} selected {% endif %}>Part-time</option>
+                <option value="regular" {% if user.employee_type == "permanent" %} selected {% endif %}>permanent</option>
+                <option value="contract" {% if user.employee_type == "elective official" %} selected {% endif %}>elective official</option>
+                <option value="part-time" {% if user.employee_type == "co-terminous" %} selected {% endif %}>co-terminous</option>
               </select>
             </div>
             <div class="col-md-4 mb-3">
@@ -336,7 +314,7 @@
           </div>
 
           <button type="submit" class="save-btn">
-            Save user
+            Save
             <div class="loading-content" style="display: none">
               <div class="loading-spinner"></div>
               <div class="loading-text">Saving...</div>
