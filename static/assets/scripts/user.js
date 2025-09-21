@@ -3,10 +3,6 @@ const applyLeaveBtn = document.querySelectorAll(".applyLeaveBtn");
 const dashboardSection = document.getElementById("dashboardSection");
 const applyLeaveSection = document.getElementById("applyLeaveSection");
 
-document.getElementById("details").addEventListener("change", function () {
-  document.getElementById("specify-input").value = "";
-  document.querySelector(".specify-cont").classList.add("show");
-});
 
 async function clicked(id){
   alert(id)
@@ -92,7 +88,31 @@ endDateInput.addEventListener("change", function () {
   }
 });
 
-// Set minimum date to today
+
 const today = new Date().toISOString().split("T")[0];
 startDateInput.min = today;
 endDateInput.min = today;
+
+let currentDetails = []
+async function getLeaveTypeDetails(id){
+    const r = await fetch(`/api/user/getDetails?id=${id}`)
+    const j =  await r.json()
+    currentDetails = j
+    currentDetails.dt.forEach(e=>{
+    const node = document.createElement("option")
+    node.value = e.id
+    node.textContent = e.details
+    details.appendChild(node)
+  })
+}
+const details = document.getElementById("details")
+document.getElementById("leave_type").addEventListener("change",(e)=>{
+  details.innerHTML = "<option selected disabled>-- Select Details--</option>"
+  getLeaveTypeDetails(e.target.value)
+  console.log(currentDetails)
+ 
+})
+details.addEventListener("change", function () {
+  document.getElementById("specify-input").value = "";
+  document.querySelector(".specify-cont").classList.add("show");
+});

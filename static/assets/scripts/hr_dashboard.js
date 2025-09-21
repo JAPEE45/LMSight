@@ -1,6 +1,7 @@
 // Weekly Chart
 
 const weeklyData = document.getElementById("weeklyData")
+console.log(weeklyData.textContent)
 const weeklyCtx = document.getElementById('weeklyChart').getContext('2d');
 const weeklyChart = new Chart(weeklyCtx, {
     type: 'bar',
@@ -113,15 +114,17 @@ const ongoingLeaveData = [
 let currentLeaveIndex = 0;
 
 async function updateLeaveCard(index) {
+  console.log("this is ongoing")
     const d = await fetch("/api/hr/ongoing")
     const c = await d.json()
     console.log(c)
+
     const data = c.o[index];
     const content = document.getElementById('ongoingContent');
     
     document.getElementById('employeeName').textContent = `${data.users__firstname} ${data.users__middlename} ${data.users__lastname}`;
     document.getElementById('employeeDept').textContent = data.department;
-    document.getElementById('leaveTypeBadge').textContent = data.leave_type;
+    document.getElementById('leaveTypeBadge').textContent = data.leave_type__leave_type;
     document.getElementById('startDate').textContent = data.start_date;
     document.getElementById('endDate').textContent = data.end_date;
     
@@ -212,13 +215,18 @@ const pieDonutOptions = {
 };
 
 // Leave Types (Pie Chart)
-const leave_type = document.getElementById("leave_type_data")
+const d = document.getElementById("leave_type_data")
+const cc = JSON.parse(d.textContent)
+console.log(cc)
+let lv_lab = [...cc[0]]
+let lv_val = [...cc[1]]
+console.log(lv_lab)
 new Chart(document.getElementById('leaveTypesChart'), {
   type: 'pie',
   data: {
-    labels: ['Sick Leave', 'Casual Leave', 'Maternity Leave', 'Annual Leave'],
+    labels: lv_lab,
     datasets: [{
-      data: JSON.parse(leave_type.textContent),
+      data: lv_val,
       backgroundColor: ['#FF6384', '#040404ff', '#FFCE56', '#4CAF50']
     }]
   },
