@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ALIS - Leave Types</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-background: #2f3e46;
+        --primary-gray: #f5f5f5;
+        --twitter-blue: #008ad8;
+        --green-color: #238b45;
+        --yellow-color: #dca907;
+        --border-radius-card: 10px;
+        --border-radius-form: 20px;
+        --padding-1: 10px;
+        --padding-2: 20px;
+        --margin-bottom-2: 20px;
+        --shadow-1: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      body {
+        background-color: var(--primary-gray);
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Sidebar Styles */
+      .sidebar {
+        background-color: var(--primary-background);
+        min-height: 100vh;
+        width: 280px;
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 1000;
+        transition: all 0.3s ease;
+      }
+
+      .sidebar-brand {
+        color: white;
+        font-size: 2rem;
+        font-weight: bold;
+        padding: var(--padding-2);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .sidebar-nav {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .sidebar-nav li {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .sidebar-nav li a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        display: block;
+        padding: 15px var(--padding-2);
+        transition: all 0.3s ease;
+      }
+
+      .sidebar-nav li a:hover,
+      .sidebar-nav li.active a {
+        background-color: var(--twitter-blue);
+        color: white;
+      }
+
+      .sidebar-nav li a i {
+        margin-right: 10px;
+        width: 20px;
+      }
+
+      /* Main Content */
+      .main-content {
+        margin-left: 280px;
+        min-height: 100vh;
+        background-color: var(--primary-gray);
+      }
+
+      /* Header */
+      .header {
+        background-color: white;
+        padding: var(--padding-1) var(--padding-2);
+        box-shadow: var(--shadow-1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--margin-bottom-2);
+      }
+
+      .header h1 {
+        margin: 0;
+        color: var(--primary-background);
+        font-size: 1.8rem;
+      }
+
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .user-avatar {
+        width: 40px;
+        height: 40px;
+        background-color: var(--twitter-blue);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+      }
+
+      .notification-icon {
+        position: relative;
+        color: var(--primary-background);
+        font-size: 1.2rem;
+      }
+
+      .notification-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: #dc3545;
+        color: white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        font-size: 0.7rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Content Cards */
+      .content-card {
+        background: white;
+        border-radius: var(--border-radius-card);
+        padding: var(--padding-2);
+        margin-bottom: var(--margin-bottom-2);
+        box-shadow: var(--shadow-1);
+      }
+
+      .card-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: var(--margin-bottom-2);
+        padding-bottom: 15px;
+        border-bottom: 2px dashed var(--twitter-blue);
+      }
+
+      .card-header i {
+        color: var(--twitter-blue);
+        margin-right: 10px;
+        font-size: 1.2rem;
+      }
+
+      .card-header h3 {
+        margin: 0;
+        color: var(--primary-background);
+      }
+
+      /* Form Styles */
+      .form-group {
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .form-control {
+        border-radius: var(--border-radius-form);
+        border: 2px solid #e0e0e0;
+        padding: 12px 16px;
+        transition: all 0.3s ease;
+        width: 75%;
+      }
+
+      .details-input {
+        width: 100%;
+        padding: 0.2rem 1rem;
+        border: none;
+        border-bottom: 1px solid #e0e0e0;
+        outline: none;
+      }
+
+      .form-control:focus {
+        border-color: var(--twitter-blue);
+        box-shadow: 0 0 0 0.2rem rgba(0, 138, 216, 0.25);
+      }
+
+      .btn-primary {
+        background-color: var(--twitter-blue);
+        border-color: var(--twitter-blue);
+        border-radius: var(--border-radius-form);
+        padding: 12px 24px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+        transform: translateY(-2px);
+      }
+
+      .btn-success {
+        background-color: var(--green-color);
+        border-color: var(--green-color);
+        border-radius: var(--border-radius-form);
+        padding: 8px 16px;
+        font-size: 0.9rem;
+      }
+
+      .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Leave Types List */
+      .leave-types-list {
+        margin-top: 30px;
+      }
+
+      .leave-type-item {
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: var(--border-radius-card);
+        padding: 15px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: all 0.3s ease;
+        box-shadow: var(--shadow-1);
+      }
+
+      .leave-type-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .leave-type-content {
+        flex-grow: 1;
+      }
+
+      .leave-type-name {
+        font-weight: 600;
+        color: var(--primary-background);
+        margin-bottom: 5px;
+      }
+
+      .leave-type-details {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 3px;
+      }
+
+      /* Empty State */
+      .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #666;
+      }
+
+      .empty-state i {
+        font-size: 4rem;
+        color: #ddd;
+        margin-bottom: 20px;
+      }
+
+      .empty-state h4 {
+        color: var(--primary-background);
+        margin-bottom: 10px;
+      }
+
+      .empty-state p {
+        color: #888;
+      }
+
+      /* Dynamic Input Rows */
+      .input-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+        animation: slideIn 0.3s ease;
+      }
+
+      .input-row .form-control {
+        flex-grow: 1;
+      }
+
+      .remove-input {
+        background-color: #dc3545;
+        border: none;
+        color: white;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .remove-input:hover {
+        background-color: #c82333;
+        transform: scale(1.1);
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .sidebar {
+          transform: translateX(-100%);
+          width: 250px;
+        }
+
+        .sidebar.show {
+          transform: translateX(0);
+        }
+
+        .main-content {
+          margin-left: 0;
+          padding: 0 15px;
+        }
+
+        .header {
+          padding: 10px 15px;
+        }
+
+        .input-row {
+          flex-direction: column;
+          gap: 5px;
+        }
+
+        .remove-input {
+          align-self: flex-end;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-brand">ALIS</div>
+      <ul class="sidebar-nav">
+        <li>
+          <a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        </li>
+        <li>
+          <a href="#"><i class="fas fa-users"></i> User Management</a>
+        </li>
+        <li class="active">
+          <a href="#"><i class="fas fa-calendar-alt"></i> Leave Types</a>
+        </li>
+        <li>
+          <a href="#"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Header -->
+      <div class="header">
+        <h1>Leave Types</h1>
+        <div class="user-info">
+          <div class="notification-icon">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge">1</span>
+          </div>
+          <div class="user-avatar">JF</div>
+          <div>
+            <div style="font-weight: bold; color: var(--primary-background)">
+              Jasper Angeles Fernandez
+            </div>
+            <div style="font-size: 0.8rem; color: #666">ADMIN</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container-fluid">
+        <!-- Add New Leave Type Card -->
+        <div class="content-card">
+          <div class="card-header">
+            <i class="fas fa-plus-circle"></i>
+            <h3>Add New Leave Type</h3>
+          </div>
+
+          <form id="leaveTypeForm">
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control"
+                id="leaveTypeName"
+                placeholder="Enter leave type name (e.g., Annual Leave, Sick Leave, Personal Leave)"
+                required
+              />
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add Leave Type
+              </button>
+            </div>
+
+            <div id="additionalInputs"></div>
+
+            <div class="d-flex justify-content-between align-items-center">
+              <button
+                type="button"
+                class="btn btn-success"
+                onclick="addInputRow()"
+              >
+                <i class="fas fa-plus"></i> Add Details of Leave
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Leave Types List -->
+        <div class="content-card">
+          <div class="card-header">
+            <i class="fas fa-list"></i>
+            <h3>Leave Types</h3>
+          </div>
+
+          <div id="leaveTypesList">
+            <!-- Empty state will be shown initially -->
+            <div class="empty-state" id="emptyState">
+              <i class="fas fa-calendar-times"></i>
+              <h4>No Leave Types Found</h4>
+              <p>Start by adding your first leave type above.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Store leave types in memory
+      let leaveTypes = [];
+
+      // Add new input row for leave details
+      function addInputRow() {
+        const additionalInputs = document.getElementById("additionalInputs");
+        const newRow = document.createElement("div");
+        newRow.className = "input-row";
+        newRow.innerHTML = `
+                <input type="text" class="details-input" placeholder="Enter details of leave..." name="leaveDetails">
+                <button type="button" class="remove-input" onclick="removeInputRow(this)">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+        additionalInputs.appendChild(newRow);
+      }
+
+      // Remove input row
+      function removeInputRow(button) {
+        const row = button.parentElement;
+        row.style.animation = "slideOut 0.3s ease";
+        setTimeout(() => {
+          row.remove();
+        }, 300);
+      }
+
+      // Add slideOut animation
+      const style = document.createElement("style");
+      style.textContent = `
+            @keyframes slideOut {
+                from {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                to {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+            }
+        `;
+      document.head.appendChild(style);
+
+      // Handle form submission
+      document
+        .getElementById("leaveTypeForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const leaveTypeName = document
+            .getElementById("leaveTypeName")
+            .value.trim();
+          const detailInputs = document.querySelectorAll(
+            'input[name="leaveDetails"]'
+          );
+          const details = [];
+
+          detailInputs.forEach((input) => {
+            if (input.value.trim()) {
+              details.push(input.value.trim());
+            }
+          });
+
+          if (leaveTypeName) {
+            // Create new leave type object
+            const newLeaveType = {
+              id: Date.now(),
+              name: leaveTypeName,
+              details: details,
+              createdAt: new Date().toLocaleDateString(),
+            };
+
+            // Add to array
+            leaveTypes.push(newLeaveType);
+
+            // Update display
+            updateLeaveTypesList();
+
+            // Reset form
+            this.reset();
+
+            document.getElementById("additionalInputs").innerHTML = "";
+
+            // Show success message
+            showSuccessMessage("Leave type added successfully!");
+          }
+        });
+
+      // Update leave types list display
+      function updateLeaveTypesList() {
+        const listContainer = document.getElementById("leaveTypesList");
+        const emptyState = document.getElementById("emptyState");
+
+        if (leaveTypes.length === 0) {
+          listContainer.innerHTML = `
+                    <div class="empty-state" id="emptyState">
+                        <i class="fas fa-calendar-times"></i>
+                        <h4>No Leave Types Found</h4>
+                        <p>Start by adding your first leave type above.</p>
+                    </div>
+                `;
+        } else {
+          let listHTML = "";
+          leaveTypes.forEach((leaveType) => {
+            const detailsHTML =
+              leaveType.details.length > 0
+                ? leaveType.details
+                    .map(
+                      (detail) =>
+                        `<div class="leave-type-details">• ${detail}</div>`
+                    )
+                    .join("")
+                : '<div class="leave-type-details">• No additional details provided</div>';
+
+            listHTML += `
+                        <div class="leave-type-item">
+                            <div class="leave-type-content">
+                                <div class="leave-type-name">${leaveType.name}</div>
+                                ${detailsHTML}
+                                <div class="leave-type-details" style="color: #999; font-size: 0.8rem; margin-top: 8px;">
+                                    Added on ${leaveType.createdAt}
+                                </div>
+                            </div>
+                            <button class="btn btn-danger btn-sm" onclick="removeLeaveType(${leaveType.id})" title="Remove leave type">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+          });
+          listContainer.innerHTML = listHTML;
+        }
+      }
+
+      // Remove leave type
+      function removeLeaveType(id) {
+        if (confirm("Are you sure you want to remove this leave type?")) {
+          leaveTypes = leaveTypes.filter((lt) => lt.id !== id);
+          updateLeaveTypesList();
+          showSuccessMessage("Leave type removed successfully!");
+        }
+      }
+
+      
+
+      // Show success message
+      function showSuccessMessage(message) {
+        // Create toast notification
+        const toast = document.createElement("div");
+        toast.className = "alert alert-success";
+        toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 9999;
+                min-width: 300px;
+                animation: slideInRight 0.3s ease;
+            `;
+        toast.innerHTML = `
+                <i class="fas fa-check-circle"></i> ${message}
+                <button type="button" class="btn-close" onclick="this.parentElement.remove()"></button>
+            `;
+
+        document.body.appendChild(toast);
+
+        // Auto remove after 3 seconds
+        setTimeout(() => {
+          if (toast.parentElement) {
+            toast.remove();
+          }
+        }, 3000);
+      }
+
+      // Add slideInRight animation
+      const toastStyle = document.createElement("style");
+      toastStyle.textContent = `
+            @keyframes slideInRight {
+                from {
+                    opacity: 0;
+                    transform: translateX(100%);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+        `;
+      document.head.appendChild(toastStyle);
+
+      // Initialize the page
+      document.addEventListener("DOMContentLoaded", function () {
+        updateLeaveTypesList();
+      });
+
+      // Mobile sidebar toggle (for responsive design)
+      function toggleSidebar() {
+        const sidebar = document.querySelector(".sidebar");
+        sidebar.classList.toggle("show");
+      }
+
+      // Add mobile menu button on smaller screens
+      if (window.innerWidth <= 768) {
+        const header = document.querySelector(".header");
+        const menuButton = document.createElement("button");
+        menuButton.innerHTML = '<i class="fas fa-bars"></i>';
+        menuButton.className = "btn btn-outline-primary";
+        menuButton.onclick = toggleSidebar;
+        header.insertBefore(menuButton, header.firstChild);
+      }
+    </script>
+  </body>
+</html>

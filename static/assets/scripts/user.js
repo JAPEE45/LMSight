@@ -3,6 +3,11 @@ const applyLeaveBtn = document.querySelectorAll(".applyLeaveBtn");
 const dashboardSection = document.getElementById("dashboardSection");
 const applyLeaveSection = document.getElementById("applyLeaveSection");
 
+document.getElementById("details").addEventListener("change", function () {
+  document.getElementById("specify-input").value = "";
+  document.querySelector(".specify-cont").classList.add("show");
+});
+
 async function clicked(id){
   alert(id)
   const d = await fetch(`/api/user/delete?id=${id}`)

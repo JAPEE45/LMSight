@@ -286,20 +286,30 @@
             </div>
             <div class="col-md-4 mb-3">
               <label class="form-label">Position</label>
-              <select class="form-control" name="job_title">
-                <option>--Please Select--</option>
-                <option value="manager" {% if user.job_title == "manager" %} selected {% endif %}>Manager</option>
-                <option value="assistant" {% if user.job_title == "assistant" %} selected {% endif %}>Assistant</option>
-                <option value="specialist" {% if user.job_title == "specialist" %} selected {% endif %}>Specialist</option>
-              </select>
+              <input type="text" class="form-control" name="job_title" value="">
             </div>
             <div class="col-md-4 mb-3">
               <label class="form-label">Employment</label>
               <select class="form-control" name="employee_type">
                 <option disabled>--Please Select--</option>
-                <option value="regular" {% if user.employee_type == "permanent" %} selected {% endif %}>permanent</option>
-                <option value="contract" {% if user.employee_type == "elective official" %} selected {% endif %}>elective official</option>
-                <option value="part-time" {% if user.employee_type == "co-terminous" %} selected {% endif %}>co-terminous</option>
+                <option value="Permanent" {% if user.employee_type == "Permanent" %} selected {% endif %}>Permanent</option>
+                <option value="Elective Official" {% if user.employee_type == "Elective Official" %} selected {% endif %}>Elective Official</option>
+                <option value="Co-terminous" {% if user.employee_type == "Co-terminous" %} selected {% endif %}>Co-terminous</option>
+              </select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Section</label>
+              <select class="form-control" name="user_type">
+                <option disabled selected>--Please Select--</option>
+                <option value="NUTRITION">NUTRITION</option>
+                <option value="TOURISM">TOURISM</option>
+                <option value="PDAO">PDAO</option>
+                <option value="LYDC">LYDC</option>
+                <option value="LICENSING">LICENSING</option>
+                <option value="ABE">ABE</option>
+                <option value="MENRO">MENRO</option>
+                <option value="GSO">GSO</option>
+                <option value="HRMO">HRMO</option>
               </select>
             </div>
             <div class="col-md-4 mb-3">

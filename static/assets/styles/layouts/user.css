@@ -250,6 +250,28 @@ body {
   transition: border-color 0.2s;
 }
 
+.specify-cont {
+  display: none;
+}
+
+.specify-cont.show {
+  display: block;
+}
+
+.specify-input {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  outline: none;
+}
+
+.specify-cont p {
+  font-size: 0.7rem;
+  font-style: italic;
+  margin-top: 5px;
+  color: red;
+}
+
 .form-control:focus {
   outline: none;
   border-color: var(--twitter-blue);

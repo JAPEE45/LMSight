@@ -194,7 +194,7 @@ def deleteLeaveType(request):
 def addLeaveType(request):
     if request.method == "GET":
         lv = request.GET.get("leave_type")
-        print(lv)
+        print("leave: ", lv)
         lt = LEAVE_TYPES(leave_type = lv)
         lt.save()
         return JsonResponse({"success":True})
@@ -202,6 +202,7 @@ def leave_types(request):
     if request.method == "GET":
         lt = LEAVE_TYPES.objects.all()
         return render(request, 'admin/leave-types.html', {'lt':lt})
+    
 def admin_manage_users(request):
     if request.method == "GET":
         user_id = request.session.get("user_id")

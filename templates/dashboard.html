@@ -267,17 +267,16 @@
                 <div>
                   <div class="form-group">
                     <label class="form-label">Details of Leave</label>
-                    <select class="form-select" name="details">
-                      <option value="">--Please Select--</option>
-                      <option value="full-day">Full Day</option>
-                      <option value="half-day-morning">
-                        Half Day - Morning
-                      </option>
-                      <option value="half-day-afternoon">
-                        Half Day - Afternoon
-                      </option>
-                      <option value="hourly">Hourly</option>
+                    <select class="form-select" id="details" name="details">
+                      <option value="" disabled selected>--Please Select--</option>
+                      <option value="full">Full Day</option>
+                      <option value="full">half Day</option>
                     </select>
+                    <div class="specify-cont mt-3">
+                      <label class="form-label">Please Specify</label>
+                      <input type="text" id="specify-input" class="specify-input" name="specify" required/>
+                      <p>*This field is required</p>
+                    </div>
                   </div>
                 </div>
               </div>

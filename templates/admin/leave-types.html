@@ -13,10 +13,22 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="../../static/assets/styles/components/sidebar.css">
-    <link rel="stylesheet" href="../../static/assets/styles/components/navbar.css">
-    <link rel="stylesheet" href="../../static/assets/styles/components/notification.css">
-    <link rel="stylesheet" href="../../static/assets/styles/layouts/leave-types.css">
+    <link
+      rel="stylesheet"
+      href="../../static/assets/styles/components/sidebar.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../../static/assets/styles/components/navbar.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../../static/assets/styles/components/notification.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../../static/assets/styles/layouts/leave-types.css"
+    />
   </head>
   <body>
     <div class="sidebar" id="sidebar">
@@ -55,7 +67,7 @@
           <button class="mobile-toggle me-3" onclick="toggleSidebar()">
             <i class="fas fa-bars"></i>
           </button>
-          <h1 class="nav-title pending-request-h1">Admin Dashboard</h1>
+          <h1 class="nav-title pending-request-h1">Leave Types</h1>
         </div>
         <div class="button-main-cont">
           <div class="button-cont">
@@ -117,48 +129,56 @@
       <!-- Alert Messages -->
       <div id="alertContainer"></div>
 
-      <!-- Add Leave Type Form -->
-      <div class="form-container">
-        <h4 class="mb-3" style="color: var(--primary-background)">
-          Add New Leave Type
-        </h4>
-        <form id="addLeaveTypeForm" >
-          <div class="row">
-            <div class="col-md-8 mb-3">
-              <label for="leaveTypeName" class="form-label"
-                >Leave Type Name</label
-              >
+      <div class="container-fluid">
+        <!-- Add New Leave Type Card -->
+        <div class="content-card">
+          <div class="card-header">
+            <i class="fas fa-plus-circle"></i>
+            <h3>Add New Leave Type</h3>
+          </div>
+
+          <form id="leaveTypeForm">
+            <div class="form-group">
               <input
                 type="text"
                 class="form-control"
                 id="leaveTypeName"
-                placeholder="Enter leave type name"
+                placeholder="Enter leave type name (e.g., Annual Leave, Sick Leave, Personal Leave)"
                 required
               />
-              <div class="invalid-feedback">
-                Please enter a valid leave type name.
-              </div>
-            </div>
-            <div class="col-md-4 mb-3">
-              <label class="form-label">&nbsp;</label>
-              <button type="submit" class="btn btn-primary w-100">
-                <i class="fas fa-plus me-2"></i>Add Leave Type
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add Leave Type
               </button>
             </div>
-          </div>
-        </form>
-      </div>
 
-      <!-- Leave Types List -->
-      <div class="card">
-        <div class="card-header">
-          <h5 class="mb-0" style="color: var(--primary-background)">
-            <i class="fas fa-list me-2"></i>Existing Leave Types
-          </h5>
+            <div id="additionalInputs"></div>
+
+            <div class="d-flex justify-content-between align-items-center">
+              <button
+                type="button"
+                class="btn btn-success"
+                onclick="addInputRow()"
+              >
+                <i class="fas fa-plus"></i> Add Details of Leave
+              </button>
+            </div>
+          </form>
         </div>
-        <div class="card-body">
+
+        <!-- Leave Types List -->
+        <div class="content-card">
+          <div class="card-header">
+            <i class="fas fa-list"></i>
+            <h3>Leave Types</h3>
+          </div>
+
           <div id="leaveTypesList">
-            <!-- Leave types will be populated here by JavaScript -->
+            <!-- Empty state will be shown initially -->
+            <div class="empty-state" id="emptyState">
+              <i class="fas fa-calendar-times"></i>
+              <h4>No Leave Types Found</h4>
+              <p>Start by adding your first leave type above.</p>
+            </div>
           </div>
         </div>
       </div>
