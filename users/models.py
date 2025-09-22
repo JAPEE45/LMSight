@@ -63,6 +63,8 @@ class LEAVE(BaseModel):
     end_date = models.DateField(blank=True, null=True)
     comment = models.TextField(blank=True)
     details_of_leave = models.TextField(blank=True)
+    number_of_days_applied = models.TextField(blank=True)
+    inclusive_dates = models.TextField(blank=True)
     status = models.TextField(blank=True)
     specify = models.TextField(blank=True)
     

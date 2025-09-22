@@ -227,7 +227,7 @@
                 <div class="form-group">
                   <label class="form-label">Leave Type</label>
                   <select class="form-select" name="leave_type" id = "leave_type" required>
-                    <option value="">-- Please Select --</option>
+                    <option value="" hidden selected>-- Please Select --</option>
                     
                     {% for i in lt %}
                       <option value="{{i.id}}">{{i.leave_type}}</option>
@@ -239,9 +239,9 @@
                 <div class="form-group">
                   <label class="form-label">Commutation</label>
                   <select class="form-select" name="commutation">
-                    <option value="">--Please Select--</option>
-                    <option value="with">With Commutation</option>
-                    <option value="without">Without Commutation</option>
+                    <option value="" hidden selected>--Please Select--</option>
+                    <option value="Requested">Requested</option>
+                    <option value="Not Requested">Not Requested</option>
                   </select>
                 </div>
 
@@ -254,9 +254,7 @@
                   <label class="form-label">End Date</label>
                   <input type="date" class="form-control" name="end_date" required />
                 </div>
-              </div>
 
-              <div class="form-grid">
                 <div class="form-group">
                   <label class="form-label">Comment</label>
                   <textarea
@@ -270,9 +268,7 @@
                   <div class="form-group">
                     <label class="form-label">Details of Leave</label>
                     <select class="form-select" id="details" name="details" >
-                      <option value="" disabled selected>--Please Select--</option>
-                      <option value="full">Full Day</option>
-                      <option value="full">half Day</option>
+                      <option value="" hidden selected>--Please Select--</option>
                     </select>
                     <div class="specify-cont mt-3">
                       <label class="form-label">Please Specify</label>
@@ -280,6 +276,16 @@
                       <p>*This field is required</p>
                     </div>
                   </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">NUMBER OF WORKING DAYS APPLIED FOR</label>
+                  <input class="form-control" type="text" name="number_of_working_days" id="">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">INCLUSIVE DATES</label>
+                  <input class="form-control" type="text" name="inclusive-dates" id="">
                 </div>
               </div>
 

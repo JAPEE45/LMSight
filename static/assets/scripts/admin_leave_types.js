@@ -5,7 +5,6 @@ async function getLeaveTypes(){
   const res = await fetch("/api/admin/getLeaveType")
   const json = await res.json()
   console.log(json)
-  leaveTypes = json.lt
   updateLeaveTypesList(json.lt)
 }
 
@@ -85,7 +84,7 @@ document
       });
 
       // Update display
-      updateLeaveTypesList();
+      getLeaveTypes();
 
       // Reset form
       this.reset();
@@ -121,9 +120,6 @@ async function removeLeaveType(id) {
 function updateLeaveTypesList(listOfLeaves) {
   const listContainer = document.getElementById("leaveTypesList");
   const emptyState = document.getElementById("emptyState");
-  
-
-  listOfLeaves
 
   if (!Array.isArray(listOfLeaves) || listOfLeaves.length === 0) {
     listContainer.innerHTML = `
@@ -209,10 +205,5 @@ document.head.appendChild(toastStyle);
 
 // Initialize the page
 document.addEventListener("DOMContentLoaded", async function () {
-  const res = await fetch("/api/admin/getLeaveType")
-  const json = await res.json()
-  console.log(json)
-  leaveTypes = json.lt
-  updateLeaveTypesList(leaveTypes);
   getLeaveTypes();
 });

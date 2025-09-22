@@ -32,7 +32,7 @@
       </div>
       <div class="button-cont">
         <a id="requests_nav" href="{% url 'admin_manage_users' %}" class="active">
-          <i class="fa-solid fa-users me-1"></i> User Management
+          <i class="fa-solid fa-users me-1"></i> Employee Management
         </a>
       </div>
 
@@ -260,7 +260,7 @@
         </div>
 
         <div class="section-header">
-          <h3 class="section-title">Role & Department</h3>
+          <h3 class="section-title">Office & Employment Details</h3>
         </div>
         <div class="section-content">
           <div class="row">
@@ -311,6 +311,10 @@
                 <option value="GSO">GSO</option>
                 <option value="HRMO">HRMO</option>
               </select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Designation</label>
+              <input type="text" class="form-control" name="designation" value="">
             </div>
             <div class="col-md-4 mb-3">
               <label class="form-label">User Role</label>
