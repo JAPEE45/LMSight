@@ -26,6 +26,7 @@ urlpatterns = [
     path("api/admin/getLeaveType", views.getLeaveTypes),
     path("api/admin/addLeaveType", views.addLeaveType),
     path("api/admin/deleteLeaveType", views.deleteLeaveType),
+    path("api/user/getDetails", views.getDetails),
     
     
 ]

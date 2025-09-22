@@ -78,7 +78,11 @@ document
       // Add to array
       leaves.push(newLeaveType);
       console.log(leaves)
-      // await fetch(`/api/admin/addLeaveType?leave_type=${newLeaveType}`);
+      await fetch(`/api/admin/addLeaveType`,{
+        method:"POST",
+        headers:{"Content-Type": "application/json"},
+        body: JSON.stringify(newLeaveType)
+      });
 
       // Update display
       updateLeaveTypesList();
@@ -92,6 +96,26 @@ document
       showSuccessMessage("Leave type added successfully!");
     }
   });
+
+
+async function removeLeaveType(id) {
+  if (confirm("Are you sure you want to remove this leave type?")) {
+    leaveTypes = leaveTypes.filter((lt) => lt.id !== id);
+    const leaveType = leaveTypes.find((lt) => lt.id == id);
+   
+      if ( confirm(`Are you sure you want to delete "${id}"?`)) {
+        leaveTypes = leaveTypes.filter((lt) => lt.id !== id);
+        // showAlert(
+        //   `Leave type "${leaveType.name}" has been deleted!`,
+        //   "success"
+        // );
+        console.log("done")
+        await fetch(`/api/admin/deleteLeaveType?leave_id=${id}`);
+        getLeaveTypes();
+      }
+    }
+    showSuccessMessage("Leave type removed successfully!");
+}
 
 // Update leave types list display
 function updateLeaveTypesList(listOfLeaves) {
@@ -138,22 +162,6 @@ function updateLeaveTypesList(listOfLeaves) {
 }
 
 // Remove leave type
-async function removeLeaveType(id) {
-  if (confirm("Are you sure you want to remove this leave type?")) {
-    leaveTypes = leaveTypes.filter((lt) => lt.id !== id);
-      const leaveType = leaveTypes.find((lt) => lt.id == id);
-      if (leaveType && confirm(`Are you sure you want to delete "${id}"?`)) {
-        leaveTypes = leaveTypes.filter((lt) => lt.id !== id);
-        showAlert(
-          `Leave type "${leaveType.name}" has been deleted!`,
-          "success"
-        );
-        await fetch(`/api/admin/deleteLeaveType?leave_id=${id}`);
-        getLeaveTypes();
-      }
-    }
-    showSuccessMessage("Leave type removed successfully!");
-}
 
 // Show success message
 function showSuccessMessage(message) {

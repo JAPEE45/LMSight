@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import JsonResponse
-from .models import USERS, LEAVE,StatusNotif, LEAVE_TYPES
+from .models import USERS, LEAVE,StatusNotif, LEAVE_TYPES,LeaveTypeDetails
 from django.utils import timezone
 from django.utils.timezone import now
 import datetime
@@ -10,9 +10,23 @@ from django.forms.models import model_to_dict
 from django.db.models.functions import ExtractMonth
 from django.db.models import Count
 import calendar
+from django.urls import reverse
+from django.db.models import Count, F
 
 
-
+def credit(creditType, user, mult):
+    print(mult)
+    if mult == 0: mult = 1
+    if user.credit  == '0.0':
+        return False
+    if creditType == "add":
+        user.credit = str(float(user.credit) + (1.25)* float(mult))
+        user.save()
+    if creditType == "minus":
+        user.credit = str(float(user.credit) - (1.25)* float(mult))
+        user.save()
+    return True
+    
 def get_monthly_leave_credits(user_id):
     try:
         user = USERS.objects.get(id=user_id)
@@ -90,11 +104,20 @@ def user_dashboard(request):
         start_date = request.POST.get("start_date")
         end_date = request.POST.get("end_date")
         commutation = request.POST.get("commutation")
-        lv = LEAVE(users=user, leave_type = leave_type, comment = comment, start_date = start_date, end_date = end_date, commutation = commutation, status="pending")
+        specify = request.POST.get("specify")
+        lt = LEAVE_TYPES.objects.filter(id = leave_type).first()
+        
+        lv = LEAVE(users=user, leave_type =  lt, comment = comment, start_date = start_date, end_date = end_date, commutation = commutation, status="pending", specify = specify)
+        print(lv.days_count())
+        if not credit("minus", user, lv.days_count()):
+            url = reverse("user_dasboard")
+            return redirect(f"{url}?error=true")
         lv.save()
         notif = StatusNotif(
            leave = lv, current_status = 'pending', user = user
         )
+       
+        
         notif.save()
         return redirect("user_dasboard")
     if request.method == "GET":
@@ -109,10 +132,6 @@ def user_dashboard(request):
             rejected = []
             pending = []
             for i in lv:
-
-                if i.leave_type == "vacation leave" and i.status != "rejected": user_leave["vacation_leave"] += i.days_count()
-                if i.leave_type == "casual leave" and i.status != "rejected": user_leave["casual_leave"] += i.days_count()
-                if i.leave_type == "sick leave" and i.status != "rejected": user_leave["sick_leave"] += i.days_count()
                 if i.status == "pending": user_leave["pending_leave"] +=1
                 if i.status == "approved": approved.append(i)
                 if i.status == "pending": pending.append(i)
@@ -120,13 +139,15 @@ def user_dashboard(request):
                 
             leave_balance = TOTAL_LEAVE - (user_leave["vacation_leave"] + user_leave["casual_leave"] + user_leave["sick_leave"]) 
             user_leave["total_leave_this_month"] = lv.count()
-            user_leave["leave_balance"] = leave_balance
+            user_leave["leave_balance"] = user.credit
             leave_status = {
                 "approved": approved,
                 "pending": pending,
                 "rejected": rejected,
             }
-            return render(request, "dashboard.html", {"user":user, "leave":user_leave,"leave_status": leave_status })
+            lt = LEAVE_TYPES.objects.all().values("id", "leave_type")
+            print(lt)
+            return render(request, "dashboard.html", {"user":user, "leave":user_leave,"leave_status": leave_status, "lt":lt })
         return render(request, "login_interface.html", {"error":True})
 
 def user_employee_profile(request):
@@ -182,7 +203,7 @@ def admin(request):
 def getLeaveTypes(request):
     if request.method == "GET":
         lt = LEAVE_TYPES.objects.all().values("leave_type","id")
-        print(lt)
+        
         return JsonResponse({"lt":list(lt)})
 def deleteLeaveType(request):
     if request.method == "GET":
@@ -192,16 +213,25 @@ def deleteLeaveType(request):
             return JsonResponse({"success":True})
         return JsonResponse({"success":False})
 def addLeaveType(request):
-    if request.method == "GET":
-        lv = request.GET.get("leave_type")
-        print("leave: ", lv)
-        lt = LEAVE_TYPES(leave_type = lv)
+    if request.method == "POST":
+        data = json.loads(request.body)
+        leave_type = data.get("name")
+        details = data.get("details")
+        print(type(details))
+        lt = LEAVE_TYPES(leave_type = leave_type)
         lt.save()
+        for i in details:
+            d = LeaveTypeDetails(leave_types = lt, details = i)
+            d.save()
         return JsonResponse({"success":True})
 def leave_types(request):
     if request.method == "GET":
         lt = LEAVE_TYPES.objects.all()
-        return render(request, 'admin/leave-types.html', {'lt':lt})
+        user_id = request.session.get("user_id")
+        user = USERS.objects.filter(id=user_id).first()
+        if not user or user.user_type != "admin":
+            return redirect("login")
+        return render(request, 'admin/leave-types.html', {'lt':lt, "user":user})
     
 def admin_manage_users(request):
     if request.method == "GET":
@@ -395,7 +425,7 @@ def getOngoingLeaves():
         status__iexact="approved",        # only approved
         start_date__lte=today,            # already started
         end_date__gte=today               # not yet ended
-    ).order_by('end_date').values("users__firstname", "users__middlename", "users__lastname", "users__department","leave_type","start_date","end_date")
+    ).order_by('end_date').values("users__firstname", "users__middlename", "users__lastname", "users__department","leave_type__leave_type","start_date","end_date")
 def apiOngoing(request):
     if request.method == "GET":
         o = list(getOngoingLeaves())
@@ -408,14 +438,12 @@ def getLeaveHistory():
     ).order_by('-end_date')       
     
 def getLeaveCountByType():
-        leave = LEAVE.objects.values('leave_type').annotate(total=Count('id')).order_by('-total')   # most requested first
-        arr = [0,0,0,0]
-        for l in leave:
-            if l['leave_type'] == 'sick leave': arr[0] +=1
-            if l['leave_type'] == 'casual leave': arr[1] +=1
-            if l['leave_type'] == 'maternity leave': arr[2] +=1
-            if l['leave_type'] == 'annual leave': arr[3] +=1
-        return arr
+    return (
+        LEAVE.objects
+        .values(type=F("leave_type__leave_type"))  
+        .annotate(total=Count("id"))
+        .order_by("-total")
+    )   
     
 def getLeaveCountByStatus():
     leave = LEAVE.objects.values('status').annotate(total=Count('id')).order_by('-total')
@@ -430,14 +458,15 @@ def getLeaveCountByStatus():
             arr[2] += l['total']
     return arr
 
-def getLeaveMatrix():
-    leave_types = ["sick leave", "casual leave", "maternity leave", "annual leave"]
+def getLeaveMatrix(lt):
+    
     departments = ["HR", "IT", "Finance", "Operation"]
     matrix = []
-    for leave_type in leave_types:
+    for leave_type in lt:
         row = [0] * len(departments)
+        lv = LEAVE_TYPES.objects.filter(leave_type = leave_type).first()
         leave_counts = (
-            LEAVE.objects.filter(leave_type=leave_type)
+            LEAVE.objects.filter(leave_type=lv)
             .values("users__department")
             .annotate(total=Count("id"))
         )
@@ -489,19 +518,31 @@ def hr_dasboard(request):
         if checkIfHr(request): return redirect("login")
         user = USERS.objects.filter(id = request.session.get("user_id")).first()
         print(user.firstname)
-        leaves = getWeeklyLeave()
-        monthly = getLeaveByMonth()
-        upcoming = getUpcomingLeaves()
-        ongoing = getOngoingLeaves()
-        history = getLeaveHistory()
-        leave_type = getLeaveCountByType()
-        status = getLeaveCountByStatus()
-        dep = getLeaveMatrix()
-        allLeave = getLeaveDaysPerMonth()
-        perMonth = getLeaveRequestsPerMonth()
+        s = {}
+        s["weekly"] = getWeeklyLeave()
+        s['monthly'] = getLeaveByMonth()
+        s['upcoming'] = getUpcomingLeaves()
+        s['user'] = user
+       
+        s['history'] = getLeaveHistory()
+        b = getLeaveCountByType()
+        lb = []
+        val = []
+        for i in b:
+            lb.append(i['type'])
+            val.append(i['total'])
+        s['leave_type'] = json.dumps([lb, val])
+     
+        s['status'] = getLeaveCountByStatus()
+        
+        dep = getLeaveMatrix(lb)
+        s['dep'] = dep
+        s['perMonth'] = getLeaveRequestsPerMonth()
+        s['all_leave'] = getLeaveDaysPerMonth()
         notif = get_status_notification()
-        print(allLeave)
-        return render(request, 'hr/dashboard.html', {'user':user, "weekly":leaves, "monthly": monthly, 'upcoming':upcoming,  'history': history, 'leave_type':leave_type, 'status':status, 'dep': dep, "all_leave":allLeave, 'perMonth':perMonth, "notif": notif})
+        s['notif'] = notif
+        # print(allLeave)
+        return render(request, 'hr/dashboard.html',s )
 def hr_request(request):
     if request.method == "GET":
         if checkIfHr(request): return redirect("login")
@@ -578,3 +619,9 @@ def user_delete_leave(request):
         lv = LEAVE.objects.filter(id = id).first()
         lv.delete()
         return JsonResponse({"status":True})
+
+def getDetails(request):
+    if request.method == "GET":
+        id = request.GET.get("id")
+        d = LeaveTypeDetails.objects.filter(leave_types=id).values("id", "details")
+        return JsonResponse({"dt":list(d)})
