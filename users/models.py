@@ -54,19 +54,24 @@ class LEAVE_TYPES(BaseModel):
     description = models.TextField(null=True)
     def __str__(self):
         return f'{self.leave_type}'
+    
+class LeaveTypeDetails(BaseModel):
+    leave_types = models.ForeignKey(LEAVE_TYPES, on_delete = models.CASCADE)
+    details = models.TextField(null = True)
 
 class LEAVE(BaseModel):
     users = models.ForeignKey(USERS, on_delete = models.CASCADE)
     leave_type = models.ForeignKey(LEAVE_TYPES, on_delete = models.CASCADE)
+    leave_details = models.ForeignKey(LeaveTypeDetails, on_delete = models.CASCADE)
     commutation = models.TextField(blank=True)
+    attached_file = models.FileField(upload_to="attached_files/", blank=True)
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
-    comment = models.TextField(blank=True)
-    details_of_leave = models.TextField(blank=True)
     number_of_days_applied = models.TextField(blank=True)
     inclusive_dates = models.TextField(blank=True)
     status = models.TextField(blank=True)
     specify = models.TextField(blank=True)
+    date_of_request = models.DateField(default=timezone.now)
     
     def days_count(self):
         if self.start_date and self.end_date:
@@ -92,6 +97,3 @@ class StatusNotif(BaseModel):
     current_status = models.TextField(null=True)
     notif_type = models.TextField(null=True)
 
-class LeaveTypeDetails(BaseModel):
-    leave_types = models.ForeignKey(LEAVE_TYPES, on_delete = models.CASCADE)
-    details = models.TextField(null = True)

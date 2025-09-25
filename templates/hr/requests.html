@@ -13,8 +13,14 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="../../static/assets/styles/components/sidebar.css" />
-    <link rel="stylesheet" href="../../static/assets/styles/components/navbar.css" />
+    <link
+      rel="stylesheet"
+      href="../../static/assets/styles/components/sidebar.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../../static/assets/styles/components/navbar.css"
+    />
     <link
       rel="stylesheet"
       href="../../static/assets/styles/components/notification.css"
@@ -65,21 +71,29 @@
               <div class="notifications-header">
                 <h5>Notifications</h5>
               </div>
-               <div class="notifications-list">
-              
-              {% for i in notif %}
-                 <div class="notification-item">
-                  <div class="notification-avatar" style="width: 50px;height:50px">
-                    <img src="/media/{{i.user.picture}}" width="50" height="50" style="border-radius: 100px;"/>
+              <div class="notifications-list">
+                {% for i in notif %}
+                <div class="notification-item">
+                  <div
+                    class="notification-avatar"
+                    style="width: 50px; height: 50px"
+                  >
+                    <img
+                      src="/media/{{i.user.picture}}"
+                      width="50"
+                      height="50"
+                      style="border-radius: 100px"
+                    />
                   </div>
                   <div class="notification-content">
                     <p class="notification-text">
-                      <strong>{{i.user.firstname}} {{i.user.lastname}}</strong> has requested for {{i.leave.leave_type}}.
+                      <strong>{{i.user.firstname}} {{i.user.lastname}}</strong>
+                      has requested for {{i.leave.leave_type}}.
                     </p>
                     <span class="notification-time">{{i.createdAt}}</span>
                   </div>
                 </div>
-              {% endfor %}
+                {% endfor %}
               </div>
             </div>
           </div>
@@ -135,7 +149,7 @@
               <select class="form-select" id="departmentFilter">
                 <option disabled selected value="">-- Department --</option>
                 <option value="HR">HR</option>
-                <option  value="finance">Sales</option>
+                <option value="finance">Sales</option>
                 <option value="IT">IT</option>
               </select>
             </div>
@@ -147,7 +161,6 @@
                 <option value="casual leave">Casual Leave</option>
                 <option value="sick leave">Sick Leave</option>
                 <option value="maternity leave">Maternity Leave</option>
-            
               </select>
             </div>
           </div>
@@ -158,33 +171,29 @@
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Date</th>
-                <th>From</th>
-                <th>To</th>
                 <th>Type</th>
-               
+                <th>Dates</th>
+                <th>Details of leave</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody id="resultContainer">
-             
-             {% for r in request %}
-               <tr>
+              {% for r in request %}
+              <tr>
                 <td>
                   <div class="employee-info">
                     <div class="employee-avatar">
                       <i class="fas fa-user"></i>
                     </div>
                     <a href="./emp_profile.html">
-                      {{r.users.firstname}} {{r.users.middlename}} {{r.users.lastname}}
+                      {{r.users.firstname}} {{r.users.middlename}}
+                      {{r.users.lastname}}
                     </a>
                   </div>
                 </td>
-                <td>{{r.createdAt}}</td>
-                <td>{{r.start_date}}</td>
-                <td>{{r.end_date}}</td>
                 <td>{{r.leave_type}}</td>
-             
+                <td>{{r.start_date}} - {{r.end_date}}</td>
+                <td>{{r.leave_details.details}}</td>
                 <td>
                   <button
                     class="btn btn-view-details"
@@ -194,8 +203,7 @@
                   </button>
                 </td>
               </tr>
-             {% endfor %}
-              
+              {% endfor %}
             </tbody>
           </table>
         </div>
@@ -234,21 +242,43 @@
                 <div class="col-md-8">
                   <div class="d-flex align-items-center">
                     <div class="profile-img">
-                      <img src="" id="user_image" width="80" height="80" style="border-radius: 100px;border:2px solid rgb(82, 81, 81);"/>
+                      <img
+                        src=""
+                        id="user_image"
+                        width="80"
+                        height="80"
+                        style="
+                          border-radius: 100px;
+                          border: 2px solid rgb(82, 81, 81);
+                        "
+                      />
                     </div>
                     <div class="profile-details">
                       <h5 id="user_fullname">Juan Dela Cruz</h5>
-                      <p>Department: <strong id="departmentModal">Sales and Marketing</strong></p>
-                      <p>Job title: <strong id="jobTitleModal">Sales Manager</strong></p>
+                      <p>
+                        Office/Department:
+                        <strong id="departmentModal"
+                          >Sales and Marketing</strong
+                        >
+                      </p>
+                      <p>
+                        Job title:
+                        <strong id="jobTitleModal">Sales Manager</strong>
+                      </p>
+                      <p>
+                        Salary: <strong id="salaryModal">&#8369; 29,737</strong>
+                      </p>
+                      <p class="date-filing">
+                        Date of Filing: <strong id="dateOfReqModal"></strong>
+                      </p>
                     </div>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="leave-credits-section">
                     <h6>Leave Credits</h6>
-                    <div class="donut-chart">
-                      <div class="donut-center-value" id="creditModal">1.25</div>
-                    </div>
+
+                    <div class="donut-center-value" id="creditModal">1.25</div>
                   </div>
                 </div>
               </div>
@@ -258,31 +288,23 @@
             <form>
               <!-- Row 1: Leave Type, Start Date, End Date -->
               <div class="row mb-3">
-                <div class="col-md-4 mb-3">
-                  <label for="leaveType" class="form-label" >Leave Type</label>
+                <div class="col-md-6 mb-3">
+                  <label for="leaveType" class="form-label">Leave Type</label>
                   <input
                     type="text"
                     class="form-control"
                     id="leaveTypeModal"
                     disabled
-                   
                   />
                 </div>
-                <div class="col-md-4 mb-3">
-                  <label for="startDate" class="form-label">Start Date</label>
+                <div class="col-md-6 mb-3">
+                  <label for="detailsLeave" class="form-label"
+                    >Details of Leave</label
+                  >
                   <input
                     type="text"
                     class="form-control"
-                    id="startDateModal"
-                    disabled
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="endDate" class="form-label">End Date</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                     id="endDateModal"
+                    id="detailsLeaveModal"
                     disabled
                   />
                 </div>
@@ -297,51 +319,48 @@
                   <input
                     type="text"
                     class="form-control"
-                     id="commutationModal"
+                    id="commutationModal"
                     disabled
                   />
                 </div>
-                <!-- <div class="col-md-6 mb-3">
-                  <label for="leaveDetails" class="form-label" 
-                    >Details of Leave</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="detailsModal"
-                    disabled
-                  />
-                </div> -->
-              </div>
-
-              <!-- Attached Document -->
-              <!-- <div class="row mb-3">
-                <div class="col-12 mb-3">
+                <div class="col-md-6 mb-3" id="attachedDocCont">
                   <label for="attachedDoc" class="form-label"
                     >Attached Document</label
                   >
                   <div>
-                    <button
-                      type="button"
-                      class="download-btn"
-                      onclick="downloadReport('inspection_summary_q1.pdf')"
-                    >
+                    <button type="button" class="download-btn" id="downloadBtn">
                       Click here to download
                     </button>
                   </div>
                 </div>
-              </div> -->
+              </div>
 
-              <!-- Comment -->
+              <!-- Inclusive Dates -->
               <div class="row mb-3">
-                <div class="col-12 mb-3">
-                  <label for="comment" class="form-label" >Comment</label>
-                  <textarea
+                <div class="col-md-4 mb-3">
+                  <label class="form-label">Number of Days Applied</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="numberOfDaysModal"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-8 mb-3">
+                  <label for="comment" class="form-label"
+                    >Inclusive Dates</label
+                  >
+                  <input
                     class="form-control"
                     disabled
-                    id="commentModal"
-                  ></textarea>
+                    id="inclusiveDatesModal"
+                  />
                 </div>
+              </div>
+
+              <div class="bottom">
+                <div class="line"></div>
+                <p>Signature of Applicant</p>
               </div>
             </form>
 
@@ -351,17 +370,17 @@
                 <button
                   type="button"
                   class="btn btn-approve"
-                  onclick="hideLeaveModal()"
+                  onclick="showRejectionModal()"
                 >
-                  Approve
+                  Details of Action
                 </button>
-                <button
+                <!-- <button
                   type="button"
                   class="btn btn-reject"
                   onclick="showRejectionModal()"
                 >
                   Reject
-                </button>
+                </button> -->
               </div>
             </div>
           </div>
@@ -382,76 +401,119 @@
           <!-- Modal Body -->
           <div class="modal-body p-4">
             <h3 class="mb-4 text-center fw-bold">
-              Reason for rejecting request
+              DETAILS OF ACTION ON APPLICATION
             </h3>
 
             <!-- Rejection Reason Buttons -->
             <div class="row g-3 mb-4">
-              <div class="col-md-6">
-                <button
-                  type="button"
-                  class="btn btn-outline-secondary w-100 reject-reason-btn"
-                  data-reason="Insufficient Leave Credits"
-                >
-                  Insufficient Leave Credits
-                </button>
-              </div>
-              <div class="col-md-6">
-                <button
-                  type="button"
-                  class="btn btn-outline-secondary w-100 reject-reason-btn"
-                  data-reason="Unreasonable/Vague excuse"
-                >
-                  Unreasonable/Vague excuse
-                </button>
-              </div>
-              <div class="col-md-6">
-                <button
-                  type="button"
-                  class="btn btn-outline-secondary w-100 reject-reason-btn"
-                  data-reason="Lack of supporting documents"
-                >
-                  Lack of supporting documents
-                </button>
-              </div>
-              <div class="col-md-6">
-                <button
-                  type="button"
-                  class="btn btn-outline-secondary w-100 reject-reason-btn"
-                  data-reason="Operational needs"
-                >
-                  Operational needs
-                </button>
-              </div>
-              <div class="col-md-6">
-                <button
-                  type="button"
-                  class="btn btn-outline-secondary w-100 reject-reason-btn"
-                  data-reason="Short notice"
-                >
-                  Short notice
-                </button>
-              </div>
-              <div class="col-md-6">
-                <button
-                  type="button"
-                  class="btn btn-outline-secondary w-100 reject-reason-btn"
-                  data-reason="Doesnt follow Omnibus rules"
-                >
-                  Doesnt follow Omnibus rules
-                </button>
+              <em class="">7.A Certification of Leave Credits</em>
+              <div class="col-md-12">
+                <p>As of: <span id="asOfDate"></span></p>
+                <table>
+                  <tr>
+                    <th></th>
+                    <th>Vacation Leave</th>
+                    <th>Sick Leave</th>
+                  </tr>
+                  <tr>
+                    <td>Total Earned</td>
+                    <td id="total_earned_vl"></td>
+                    <td id="total_earned_sl"></td>
+                  </tr>
+                  <tr>
+                    <td>Less this application</td>
+                    <td id="less_this_application_vl"></td>
+                    <td id="less_this_application_sl"></td>
+                  </tr>
+                  <tr>
+                    <td>Balance</td>
+                    <td id="balance_vl"></td>
+                    <td id="balance_sl"></td>
+                  </tr>
+                </table>
+                <div class="bottom">
+                  <div class="line"></div>
+                  <p>Authorized Officer</p>
+                </div>
               </div>
             </div>
 
+            <div class="row g-3 mb-4">
+              <em class="">7.B Recommendation</em>
+              <div class="col-md-12">
+                <input
+                  id="approved"
+                  type="radio"
+                  name="actionOnLeave"
+                  value="approval"
+                />
+                <label for="approved">For approval</label>
+              </div>
+              <div class="col-md-12">
+                <input
+                  id="disapproved"
+                  type="radio"
+                  name="actionOnLeave"
+                  value="disapproval"
+                />
+                <label for="disapproved">For disapproval due to:</label>
+              </div>
+              <div class="col-md-12">
+                <textarea
+                  class="reasons-disapproval"
+                  name="disapprovalReason1"
+                  id="disapprovalReason1"
+                  style="width: 100%"
+                  disabled
+                  rows="3"
+                  cols="25"
+                  maxlength="80"
+                ></textarea>
+              </div>
+
+              <!-- <div class="bottom">
+                  <div class="line"></div>
+                  <p>Authorized Officer</p>
+                </div> -->
+            </div>
+
             <!-- Other Concerns -->
-            <div class="mb-4">
-              <h4 class="mb-3 fw-bold">Other concerns:</h4>
-              <textarea
-                class="form-control"
-                id="rejectOtherReasonTextarea"
-                rows="4"
-                placeholder="Enter additional comments or concerns..."
-              ></textarea>
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <em>7.C APPROVED FOR</em>
+                <input
+                  type="text"
+                  id="approvedForDaysWithPay"
+                  placeholder="days with pay"
+                  class="form-control w-26 mt-3"
+                />
+                <input
+                  type="text"
+                  id="approvedForDaysWithoutPay"
+                  placeholder="days without pay"
+                  class="form-control w-26 mb-3 mt-3"
+                />
+                <input
+                  type="text"
+                  id="approvedForOthers"
+                  placeholder="others (specify)"
+                  class="form-control w-26"
+                />
+              </div>
+              <div class="col-md-6">
+                <em class="mb-3">7.D DISAPPROVED DUE TO:</em>
+                <textarea
+                  class="form-control mt-3 reasons-disapproval"
+                  id="disapprovalReason2"
+                  rows="3"
+                  cols="25"
+                  maxlength="100"
+                ></textarea>
+              </div>
+              <!-- <div class="bottom">
+                <div class="line"></div>
+                <p>Authorized Officer</p>
+              </div> -->
             </div>
 
             <!-- Action Buttons -->
@@ -460,16 +522,9 @@
                 type="button"
                 class="btn btn-success px-4 py-2 fw-bold"
                 id="submitRejectBtn"
-                onclick="hideRejectionModal()"
+                onclick="submitAction()"
               >
                 Submit
-              </button>
-              <button
-                type="button"
-                class="btn btn-success px-4 py-2 fw-bold"
-                data-bs-dismiss="modal"
-              >
-                Cancel
               </button>
             </div>
           </div>
@@ -478,6 +533,7 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <script src="../../static/assets/scripts/popups/notification.js"></script>
     <script src="../../static/assets/scripts/popups/sidebar.js"></script>

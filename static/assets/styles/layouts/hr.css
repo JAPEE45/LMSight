@@ -471,6 +471,7 @@ tr:nth-child(even) {
   border-radius: 8px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
+  position: relative;
 }
 
 .profile-img {
@@ -509,27 +510,6 @@ tr:nth-child(even) {
   margin-bottom: 1rem;
   font-weight: 600;
   color: #333;
-}
-
-.donut-chart {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background: conic-gradient(#28a745 0deg 90deg, #e9ecef 90deg 360deg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto;
-  position: relative;
-}
-
-.donut-chart::before {
-  content: "";
-  width: 60px;
-  height: 60px;
-  background: white;
-  border-radius: 50%;
-  position: absolute;
 }
 
 .donut-center-value {
@@ -628,6 +608,8 @@ textarea.form-control {
   max-width: 600px;
 }
 
+
+
 #rejectionReasonModal .modal-content {
   border-radius: 8px;
   border: none;
@@ -642,6 +624,21 @@ textarea.form-control {
 #rejectionReasonModal h4 {
   color: #333;
   font-size: 1.1rem;
+}
+
+.modal-content .bottom {
+  margin-top: 4rem;
+}
+
+.modal-content .bottom .line {
+  height: 1px;
+  width: 200px;
+  background: black;
+}
+
+.modal-content .bottom p {
+  font-size: 0.8rem;
+  font-weight: 550;
 }
 
 /*  */

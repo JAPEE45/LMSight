@@ -2,7 +2,7 @@
 const applyLeaveBtn = document.querySelectorAll(".applyLeaveBtn");
 const dashboardSection = document.getElementById("dashboardSection");
 const applyLeaveSection = document.getElementById("applyLeaveSection");
-
+const attached_file = document.getElementById("attached-file");
 
 async function clicked(id){
   alert(id)
@@ -68,30 +68,30 @@ agreeTermsCheckbox.addEventListener("change", function () {
   submitBtn.disabled = !this.checked;
 });
 
-// Date validation - end date should be after start date
-const startDateInput = document.querySelector(
-  'input[type="date"]:first-of-type'
-);
-const endDateInput = document.querySelector('input[type="date"]:last-of-type');
+// // Date validation - end date should be after start date
+// const startDateInput = document.querySelector(
+//   'input[type="date"]:first-of-type'
+// );
+// const endDateInput = document.querySelector('input[type="date"]:last-of-type');
 
-startDateInput.addEventListener("change", function () {
-  endDateInput.min = this.value;
-  if (endDateInput.value && endDateInput.value < this.value) {
-    endDateInput.value = this.value;
-  }
-});
+// startDateInput.addEventListener("change", function () {
+//   endDateInput.min = this.value;
+//   if (endDateInput.value && endDateInput.value < this.value) {
+//     endDateInput.value = this.value;
+//   }
+// });
 
-endDateInput.addEventListener("change", function () {
-  if (startDateInput.value && this.value < startDateInput.value) {
-    alert("End date cannot be before start date");
-    this.value = startDateInput.value;
-  }
-});
+// endDateInput.addEventListener("change", function () {
+//   if (startDateInput.value && this.value < startDateInput.value) {
+//     alert("End date cannot be before start date");
+//     this.value = startDateInput.value;
+//   }
+// });
 
 
-const today = new Date().toISOString().split("T")[0];
-startDateInput.min = today;
-endDateInput.min = today;
+// const today = new Date().toISOString().split("T")[0];
+// startDateInput.min = today;
+// endDateInput.min = today;
 
 let currentDetails = []
 async function getLeaveTypeDetails(id){
@@ -109,7 +109,13 @@ const details = document.getElementById("details")
 document.getElementById("leave_type").addEventListener("change",(e)=>{
   details.innerHTML = "<option selected disabled>-- Select Details--</option>"
   getLeaveTypeDetails(e.target.value)
-  console.log(currentDetails)
+  console.log(document.getElementById("leave_type").value)
+  if (document.getElementById("leave_type").value === "19") {
+    console.log("low")
+    attached_file.style.display = "block";
+  } else {
+    attached_file.style.display = "none";
+  }
  
 })
 details.addEventListener("change", function () {

@@ -120,8 +120,10 @@ async function updateLeaveCard(index) {
     console.log(c)
 
     const data = c.o[index];
+    console.log(c)
     const content = document.getElementById('ongoingContent');
     
+    console.log(data)
     document.getElementById('employeeName').textContent = `${data.users__firstname} ${data.users__middlename} ${data.users__lastname}`;
     document.getElementById('employeeDept').textContent = data.department;
     document.getElementById('leaveTypeBadge').textContent = data.leave_type__leave_type;

@@ -3,7 +3,8 @@ from django.http import JsonResponse
 from .models import USERS, LEAVE,StatusNotif, LEAVE_TYPES,LeaveTypeDetails
 from django.utils import timezone
 from django.utils.timezone import now
-import datetime
+# import datetime
+from datetime import datetime, timedelta, date
 from django.db.models import Q
 import json
 from django.forms.models import model_to_dict
@@ -15,6 +16,7 @@ from django.db.models import Count, F
 
 
 def credit(creditType, user, mult):
+    
     print(mult)
     if mult == 0: mult = 1
     if user.credit  == '0.0':
@@ -30,12 +32,12 @@ def credit(creditType, user, mult):
 def get_monthly_leave_credits(user_id):
     try:
         user = USERS.objects.get(id=user_id)
-        today = datetime.date.today()
+        today = date.today()
         start_of_month = today.replace(day=1)
         if today.month == 12:
-            end_of_month = today.replace(year=today.year+1, month=1, day=1) - datetime.timedelta(days=1)
+            end_of_month = today.replace(year=today.year+1, month=1, day=1) - timedelta(days=1)
         else:
-            end_of_month = today.replace(month=today.month+1, day=1) - datetime.timedelta(days=1)
+            end_of_month = today.replace(month=today.month+1, day=1) - timedelta(days=1)
         leaves = LEAVE.objects.filter(
             users=user,
             status="approved",
@@ -100,14 +102,31 @@ def user_dashboard(request):
         if not user:
             return redirect("login")
         leave_type = request.POST.get("leave_type")
-        comment = request.POST.get("comment")
-        start_date = request.POST.get("start_date")
-        end_date = request.POST.get("end_date")
+        # comment = request.POST.get("comment")
+        # start_date = request.POST.get("start_date")
+        # end_date = request.POST.get("end_date")
+        attached_file = request.FILES.get("attached-file")
+        number_of_working_days = request.POST.get("number_of_working_days")
+        inclusive_dates = request.POST.get("inclusive-dates")
         commutation = request.POST.get("commutation")
         specify = request.POST.get("specify")
+
+        print(attached_file)
+
+        parts = inclusive_dates.split(", ")
+
+        start_str = ", ".join(parts[:2])
+        end_str   = ", ".join(parts[2:])
+
+        start_date = datetime.strptime(start_str, "%B %d, %Y").date()
+        end_date   = datetime.strptime(end_str, "%B %d, %Y").date()
+
+        print(start_date, end_date)
+
         lt = LEAVE_TYPES.objects.filter(id = leave_type).first()
+        ld = LeaveTypeDetails.objects.filter(leave_types = lt).first()
         
-        lv = LEAVE(users=user, leave_type =  lt, comment = comment, start_date = start_date, end_date = end_date, commutation = commutation, status="pending", specify = specify)
+        lv = LEAVE(users=user, leave_type =  lt, leave_details = ld, commutation = commutation, attached_file = attached_file, number_of_days_applied = number_of_working_days, start_date = start_date, end_date = end_date, status="pending", specify = specify)
         print(lv.days_count())
         if not credit("minus", user, lv.days_count()):
             url = reverse("user_dasboard")
@@ -146,7 +165,7 @@ def user_dashboard(request):
                 "rejected": rejected,
             }
             lt = LEAVE_TYPES.objects.all().values("id", "leave_type")
-            print(lt)
+            
             return render(request, "dashboard.html", {"user":user, "leave":user_leave,"leave_status": leave_status, "lt":lt })
         return render(request, "login_interface.html", {"error":True})
 
@@ -378,8 +397,8 @@ def checkIfHr(request):
     
 def getWeeklyLeave():
     today = now().date()
-    start_of_week = today - datetime.timedelta(days=today.weekday())  # Monday
-    end_of_week = start_of_week + datetime.timedelta(days=6)  # Sunday
+    start_of_week = today - timedelta(days=today.weekday())  # Monday
+    end_of_week = start_of_week + timedelta(days=6)  # Sunday
 
     weekly_leaves = LEAVE.objects.filter(
     start_date__gte=start_of_week,
@@ -496,7 +515,7 @@ def getLeaveDaysPerMonth(year=None):
         while current <= leave.end_date:
             if current.year == year:
                 months[current.month - 1] += 1
-            current += datetime.timedelta(days=1)
+            current += timedelta(days=1)
 
     return months
 def getLeaveRequestsPerMonth(year=None):
@@ -543,13 +562,15 @@ def hr_dasboard(request):
         s['notif'] = notif
         # print(allLeave)
         return render(request, 'hr/dashboard.html',s )
+    
 def hr_request(request):
     if request.method == "GET":
         if checkIfHr(request): return redirect("login")
         user = USERS.objects.filter(id = request.session.get("user_id")).first()
         req = LEAVE.objects.filter(status = "pending")
         dt = list(req)
-        print(dt)
+        for i in dt:
+            print("requests ini: ",i.leave_details.details)
         notif = get_status_notification()
         return render(request, 'hr/requests.html', {'user':user, 'request':dt, "notif" : notif})
 
@@ -578,17 +599,38 @@ def getRequestFilter(request):
 
 def getLeaveReq(request):
     if request.method == "GET":
-        id = request.GET.get("id")
-        leave = LEAVE.objects.filter(id = id).first()
+        # id = request.GET.get("id")
+        # leave = LEAVE.objects.filter(id = id).first()
+        # credit = get_monthly_leave_credits(leave.users.id)
+        # lv = model_to_dict(leave)
+        # lv["fullname"] = f'{leave.users.firstname} {leave.users.middlename} {leave.users.lastname}'
+        # lv["job_title"] = leave.users.job_title
+        # lv["department"] = leave.users.department
+        # lv["picture"] = leave.users.picture.url
+        # lv["credit"] = credit
+        # if leave: return JsonResponse({"leave":lv })
+        # return JsonResponse({"message": "no leave"})
+        leave_id = request.GET.get("id")
+        leave = LEAVE.objects.filter(id=leave_id).select_related("users", "leave_type", "leave_details").first()
+
         credit = get_monthly_leave_credits(leave.users.id)
+
         lv = model_to_dict(leave)
-        lv["fullname"] = f'{leave.users.firstname} {leave.users.middlename} {leave.users.lastname}'
+
+        if "attached_file" in lv:
+            lv["attached_file"] = leave.attached_file.url if leave.attached_file else None
+
+        lv["fullname"] = f"{leave.users.firstname} {leave.users.middlename} {leave.users.lastname}"
         lv["job_title"] = leave.users.job_title
         lv["department"] = leave.users.department
-        lv["picture"] = leave.users.picture.url
+        lv["picture"] = leave.users.picture.url if leave.users.picture else None
         lv["credit"] = credit
-        if leave: return JsonResponse({"leave":lv })
-        return JsonResponse({"message": "no leave"})
+
+        lv["leave_type"] = leave.leave_type.leave_type
+        lv["leave_details"] = leave.leave_details.details
+
+        return JsonResponse({"leave": lv})
+
 
 def approved_leave_request(request):
     if request.method == "GET":
