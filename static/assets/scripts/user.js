@@ -15,6 +15,40 @@ async function clicked(id){
   }
 }
 
+async function showLeaveModal(id) {
+  const data = await fetch(`/api/hr/leave?id=${id}`);
+  const json = await data.json();
+  console.log(json);
+
+  const dateStr = json.leave.date_of_request;
+  const date = new Date(dateStr);
+
+  const date_of_req = date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  // Format inclusive date
+  const recommendationAction = json.leave.recommendation_for;
+
+  const node = document.getElementById("leaveModal");
+  document.getElementById("asOfDate").innerText = json.leave.date_of_action;
+  const radio = document.querySelector(`input[name='actionOnLeave'][value='${recommendationAction}']`)
+  if (radio) radio.checked = true;
+  document.getElementById("disapprovalReason1").value = json.leave.recommendation_for_disapproval_due_to
+  document.getElementById("approvedDays").value = json.leave.approved_for;
+  document.getElementById("disapprovalReason2").value = json.leave.disapproved_due_to;
+
+  localStorage.setItem("selected", id);
+
+  console.log(node);
+  const modal = new bootstrap.Modal(node);
+
+  modal.show();
+}
+
+
 applyLeaveBtn.forEach((btn) => btn.addEventListener("click", function () {
   dashboardSection.classList.add("hidden");
   applyLeaveSection.classList.remove("hidden");

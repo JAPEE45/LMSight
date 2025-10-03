@@ -1,0 +1,219 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome User - Dashboard</title>
+    <!-- <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    /> -->
+
+    <link rel="stylesheet" href="../static/assets/styles/cdn/all.min.css">
+    <link rel="stylesheet" href="../static/assets/styles/cdn/bootstrap.min.css">
+
+    <link rel="stylesheet" href="../static/assets/styles/components/sidebar.css" />
+    <link rel="stylesheet" href="../static/assets/styles/components/navbar.css" />
+    <link
+      rel="stylesheet"
+      href="../static/assets/styles/components/notification.css"
+    />
+    <link rel="stylesheet" href="../static/assets/styles/layouts/user.css" />
+  </head>
+  <body>
+    <div class="sidebar" id="sidebar">
+      <h2>ALIS</h2>
+
+      <div class="button-cont">
+        <a id="dashboard_nav" href="{% url 'user_dasboard' %}" >
+          <i class="fa-solid fa-table-columns me-1"></i> Dashboard
+        </a>
+      </div>
+      
+      <!-- <div class="button-cont">
+        <a id="requests_nav" class="applyLeaveBtn ">
+          <i class="fa-solid fa-plus"></i> Apply Leave
+        </a>
+      </div> -->
+
+      <div class="button-cont">
+        <a id="" class="active" href="{% url 'my_account' %}">
+          <i class="fa-solid fa-user"></i> Security
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a href="{% url 'logout' %}" class="">
+          <i class="fa-solid fa-right-from-bracket me-1"></i>
+          Log Out
+        </a>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="main-header">
+        <div class="d-flex align-items-center">
+          <button class="mobile-toggle me-3" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+          </button>
+          <h1 class="nav-title">Security</h1>
+        </div>
+        <div class="button-main-cont">
+          <div class="button-main-cont">
+            <div class="main-img-cont">
+              <div class="img-cont">
+                <img
+                  src="../media/{{user.picture}}"
+                  alt=""
+                  id="profilePreview"
+                />
+              </div>
+            </div>
+            <div class="name-cont">
+              <p class="name">
+                {{user.firstname}} {{user.middlename}} {{user.lastname}}
+              </p>
+              <p class="title text-muted">EMPLOYEE</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="dashboardSection" class="dashboard-section">
+        <div class="content-card">
+          <div class="card-header">
+            <h2 class="card-title">Change Password</h2>
+          </div>
+          <div class="form-cont px-3 py-3">
+            <div class="forms pb-3">
+                <label for="" class="form-label">Current Password</label>
+                <input type="password" class="form-control">
+            </div>
+            <div class="forms pb-3">
+                <label for="" class="form-label">New Password</label>
+                <input type="password" class="form-control">
+            </div>
+            <div class="forms">
+                <label for="" class="form-label">Confirm New Password</label>
+                <input type="password" class="form-control">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="applyLeaveSection"
+        class="dashboard-section hidden apply-leave-form"
+      >
+        <div class="content-card">
+          <div class="card-header">
+            <h2 class="card-title">Apply Leave</h2>
+            <a class="back-to-table-btn" style="text-decoration: none;" href="{% url 'user_dasboard' %}">
+              <i class="fas fa-arrow-left"></i>
+              Back to Table
+            </a>
+          </div>
+
+          <div style="padding: var(--padding-2)">
+            <form id="applyLeaveForm" method="post" action="{% url 'user_dasboard' %}" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="form-group">
+                <!-- <label class="form-label">ID</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  value="0902-EMS0-5425"
+                  readonly
+                />
+              </div> -->
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label">Leave Type</label>
+                  <select class="form-select" name="leave_type" id = "leave_type" required>
+                    <option value="" hidden selected>-- Please Select --</option>
+                    
+                    {% for i in lt %}
+                      <option value="{{i.id}}">{{i.leave_type}}</option>
+                    {% endfor %}
+                      
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Commutation</label>
+                  <select class="form-select" name="commutation">
+                    <option value="" hidden selected>--Please Select--</option>
+                    <option value="Requested">Requested</option>
+                    <option value="Not Requested">Not Requested</option>
+                  </select>
+                </div>
+
+                <div class="form-group" id="attached-file" style="display: none;">
+                  <label class="form-label">Attached File</label>
+                  <input type="file" class="form-control" name="attached-file"  />
+                </div>
+
+                <div>
+                  <div class="form-group">
+                    <label class="form-label">Details of Leave</label>
+                    <select class="form-select" id="details" name="details" >
+                      <option value="" hidden selected>--Please Select--</option>
+                      <option value="Other purpose">Other purpose</option>
+                    </select>
+                    <div class="specify-cont mt-3">
+                      <label class="form-label">Please Specify</label>
+                      <input type="text" id="specify-input" class="specify-input" name="specify" required/>
+                      <p>*This field is required</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">NUMBER OF WORKING DAYS APPLIED FOR</label>
+                  <input class="form-control" type="text" name="number_of_working_days" id="">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">INCLUSIVE DATES</label>
+                  <input class="form-control" type="text" name="inclusive-dates" id="" placeholder="january 10, 2000, january 13, 2000">
+                  <p class="text-muted mb-0 mt-1" style="font-size: 0.5rem;">MM/DD/YYYY</p>
+                </div>
+              </div>
+
+              <div class="checkbox-container">
+                <input type="checkbox" id="agreeTerms" required />
+                <label for="agreeTerms" class="checkbox-label">
+                  I have read and agree to the
+                  <a href="{% url 'omnibus'%}" target="_blank">
+                    Omnibus rules
+                  </a>
+                  and
+                  <a href="{% url 'instructions'%}" target="_blank">
+                    Instructions and Requirements
+                  </a>
+                  of leave.
+                </label>
+              </div>
+
+              <button type="submit" class="submit-btn" disabled id="submitBtn">
+                Submit
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../static/assets/scripts/cdn/bootstrap.bundle.min.js"></script>
+    <!-- <script src="../static/assets/scripts/user.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script> -->
+    <script src="../static/assets/scripts/popups/sidebar.js"></script>
+    <script src="../static/assets/scripts/popups/tooltip.js"></script>
+  </body>
+</html>

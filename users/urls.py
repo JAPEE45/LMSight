@@ -3,6 +3,7 @@ from . import views
 urlpatterns = [
     path("",views.login, name="login" ),
     path("user/", views.user_dashboard, name="user_dasboard"),
+    path("user/account", views.my_account, name="my_account"),
     path("user/profile/", views.user_employee_profile, name="user_employee_profile"),
     path("user/omnibus/", views.user_omnibus, name="omnibus"),
     path("user/instructions/", views.user_instruction, name="instructions"),
@@ -19,7 +20,8 @@ urlpatterns = [
     path("hr/request", views.hr_request, name="hr_request"),
     path("api/hr/request", views.getRequestFilter),
     path("api/hr/leave", views.getLeaveReq),
-    path("api/hr/approved", views.approved_leave_request),
+    path("api/hr/action", views.action, name="action"),   
+    path("api/hr/approved", views.approved_leave_request),   
     path("api/hr/reject", views.rejected_leave_request),
     path("api/hr/ongoing", views.apiOngoing),
     path("api/user/delete", views.user_delete_leave),

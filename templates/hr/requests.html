@@ -4,14 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ALIS - Leave Management System</title>
-    <link
+    <!-- <link
       href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
       rel="stylesheet"
     />
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
       rel="stylesheet"
-    />
+    /> -->
+
+    <link rel="stylesheet" href="../../static/assets/styles/cdn/bootstrap.min.css">
+    <link rel="stylesheet" href="../../static/assets/styles/cdn/all.min.css">
 
     <link
       rel="stylesheet"
@@ -358,10 +361,10 @@
                 </div>
               </div>
 
-              <div class="bottom">
+              <!-- <div class="bottom">
                 <div class="line"></div>
                 <p>Signature of Applicant</p>
-              </div>
+              </div> -->
             </form>
 
             <!-- Action Buttons -->
@@ -399,7 +402,8 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <!-- Modal Body -->
-          <div class="modal-body p-4">
+          <form method="POST" action="{% url 'action' %}" class="modal-body p-4">
+            {% csrf_token %}
             <h3 class="mb-4 text-center fw-bold">
               DETAILS OF ACTION ON APPLICATION
             </h3>
@@ -431,10 +435,10 @@
                     <td id="balance_sl"></td>
                   </tr>
                 </table>
-                <div class="bottom">
+                <!-- <div class="bottom">
                   <div class="line"></div>
                   <p>Authorized Officer</p>
-                </div>
+                </div> -->
               </div>
             </div>
 
@@ -519,7 +523,7 @@
             <!-- Action Buttons -->
             <div class="d-flex justify-content-center gap-3">
               <button
-                type="button"
+                type="submit"
                 class="btn btn-success px-4 py-2 fw-bold"
                 id="submitRejectBtn"
                 onclick="submitAction()"
@@ -527,13 +531,15 @@
                 Submit
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> -->
+    <script src="../../static/assets/scripts/cdn/bootstrap.bundle.min.js"></script>
+    <script src="../../static/assets/scripts/cdn/jspdf.umd.min.js"></script>
 
     <script src="../../static/assets/scripts/popups/notification.js"></script>
     <script src="../../static/assets/scripts/popups/sidebar.js"></script>

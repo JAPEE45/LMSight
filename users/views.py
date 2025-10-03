@@ -168,6 +168,12 @@ def user_dashboard(request):
             
             return render(request, "dashboard.html", {"user":user, "leave":user_leave,"leave_status": leave_status, "lt":lt })
         return render(request, "login_interface.html", {"error":True})
+    
+def my_account(request):
+    if request.method == "GET":
+        user_id = request.session.get("user_id")
+        user = USERS.objects.filter(id=user_id).first()
+        return render(request, "my-account.html", {'user': user})
 
 def user_employee_profile(request):
     if request.method == "GET":
@@ -632,10 +638,50 @@ def getLeaveReq(request):
         return JsonResponse({"leave": lv})
 
 
+def action(request):
+    if request.method == "POST":
+        id = request.POST.get("id")
+        recommendationAction = request.POST.get("actionOnLeave")
+        disapprovalReason1 = request.POST.get("disapprovalReason1")
+        disapprovalReason2 = request.POST.get("disapprovalReason2")
+        approved_days = request.POST.get("approved_disapproved_days")
+        date_of_action = request.POST.get("date_of_action")
+        
+        
+        c = LEAVE.objects.filter(id = id).first()
+        # if not c:  return JsonResponse({"message":"data does not exist"})
+        print("id: ", id)
+        print("reas1: ", disapprovalReason1)
+        print("reas2: ", disapprovalReason2)
+        print("days: ", approved_days)
+        print("action: ", recommendationAction)
+
+        if c:
+            c.recommendation_for = recommendationAction
+            c.save()
+            c.recommendation_for_disapproval_due_to = disapprovalReason1
+            c.save()
+            c.approved_for = approved_days
+            c.save()
+            c.disapproved_due_to = disapprovalReason2
+            c.save()
+            c.date_of_action = date_of_action
+            c.save()
+            if disapprovalReason2 == "" and approved_days != "":
+                c.status = "approved"
+                c.save()
+            elif disapprovalReason2 != "":
+                c.status = "rejected"
+                c.save()
+        
+        return redirect("hr_request")
+
 def approved_leave_request(request):
+
     if request.method == "GET":
          if checkIfHr(request): return redirect("login")
          id = request.GET.get("id")
+
          print(id)
          c = LEAVE.objects.filter(id = id).first()
          if not c:  return JsonResponse({"message":"data does not exist"})

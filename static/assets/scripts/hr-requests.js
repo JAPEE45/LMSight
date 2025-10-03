@@ -21,7 +21,7 @@ async function showLeaveModal(id) {
   const json = await data.json();
   console.log(json);
   getData = json;
-  console.log(getData);
+  console.log("get data: ",getData);
 
   const dateStr = json.leave.date_of_request;
   const date = new Date(dateStr);
@@ -86,16 +86,78 @@ async function submitAction() {
   const modal = bootstrap.Modal.getInstance(
     document.getElementById("leaveModal")
   );
-  // approved leave request hehe
+  // leave request id hehe
   const id = localStorage.getItem("selected");
+  const action = document.querySelector("input[name='actionOnLeave']:checked").value;
+  console.log(id)
 
-  const d = await fetch(`/api/hr/approved?id=${id}`, {
-    method: "GET",
-  });
+  const disapprovalReason1 = document.getElementById("disapprovalReason1").value;
+  const disapprovalReason2 = document.getElementById("disapprovalReason2").value;
+
+  const approvedForDaysWithPay = document.getElementById("approvedForDaysWithPay");
+  const approvedForDaysWithoutPay = document.getElementById("approvedForDaysWithoutPay");
+  const approvedForOthers = document.getElementById("approvedForOthers");
+
+  let string = "";
+
+  if (approvedForDaysWithPay.value.trim() != "") string = `${approvedForDaysWithPay.value} day/s with pay`
+  if (approvedForDaysWithoutPay.value.trim() != "") string = `${approvedForDaysWithoutPay.value} days without pay`
+  if (approvedForOthers.value.trim() != "") string = approvedForOthers.value
   
+  const today = new Date().toISOString().split("T")[0];
+  
+  const formData = new FormData();
+  formData.append('id', id)
+  formData.append('actionOnLeave', action);
+  formData.append('disapprovalReason1', disapprovalReason1.trim());
+  formData.append('disapprovalReason2', disapprovalReason2.trim());
+  formData.append('approved_disapproved_days', string);
+  formData.append('date_of_action', getStringDate(today));
+
+
+  const d = await fetch(`/api/hr/action`, {
+    method: "POST",
+    body: formData
+  });
+
+  // })
+
   const status = await d.json();
+  console.log(status.status)
   if (status.status) {
-    downloadPDF();
+    const action = document.querySelector(
+      'input[name="actionOnLeave"]:checked'
+    ).value;
+    const detailsOfAction = {
+      asOfDate: document.getElementById("asOfDate").innerText,
+      totalEarnedVl: document
+        .getElementById("total_earned_vl")
+        .innerText.trim(),
+      totalEarnedSl: document
+        .getElementById("total_earned_sl")
+        .innerText.trim(),
+      lessThisApplicationVl: document
+        .getElementById("less_this_application_vl")
+        .innerText.trim(),
+      lessThisApplicationSl: document
+        .getElementById("less_this_application_sl")
+        .innerText.trim(),
+      balanceVl: document.getElementById("balance_vl").innerText.trim(),
+      balanceSl: document.getElementById("balance_sl").innerText.trim(),
+
+      leaveAction: action,
+      disapprovalReason: document.getElementById("disapprovalReason1").value,
+
+      approvedForDaysWithPay: document.getElementById("approvedForDaysWithPay")
+        .value,
+      approvedForDaysWithoutPay: document.getElementById(
+        "approvedForDaysWithoutPay"
+      ).value,
+      approvedForOthers: document.getElementById("approvedForOthers").value,
+      disapprovalReason2: document.getElementById("disapprovalReason2").value,
+    };
+
+    downloadPDF(detailsOfAction);
     modal.hide();
     window.location.reload();
     return;
@@ -108,17 +170,20 @@ const rejectionModal = document.getElementById("rejectionModal");
 
 rejectionModal.addEventListener("hidden.bs.modal", () => {
   getData = null;
-  rejectionModal.querySelectorAll('input[type="text"], input[type="radio"], textarea').forEach(el => {
-    if (el.type === "radio") {
-      el.checked = false;
-    } else {
-      el.value = "";
-    }
-  });
+  rejectionModal
+    .querySelectorAll('input[type="text"], input[type="radio"], textarea')
+    .forEach((el) => {
+      if (el.type === "radio") {
+        el.checked = false;
+      } else {
+        el.value = "";
+      }
+    });
 
-  rejectionModal.querySelectorAll('td[id], span[id]').forEach(el => el.textContent = "");
+  rejectionModal
+    .querySelectorAll("td[id], span[id]")
+    .forEach((el) => (el.textContent = ""));
 });
-
 
 // async function hideRejectionModal() {
 //   const modal = bootstrap.Modal.getInstance(
@@ -272,35 +337,22 @@ leaveFilter.addEventListener("change", () => {
   fetchData(departmentFilter.value, leaveFilter.value);
 });
 
-function downloadPDF() {
-  const action = document.querySelector(
-    'input[name="actionOnLeave"]:checked'
-  ).value;
-
-  const detailsOfAction = {
-    asOfDate: document.getElementById("asOfDate").innerText,
-    totalEarnedVl: document.getElementById("total_earned_vl").innerText.trim(),
-    totalEarnedSl: document.getElementById("total_earned_sl").innerText.trim(),
-    lessThisApplicationVl: document
-      .getElementById("less_this_application_vl")
-      .innerText.trim(),
-    lessThisApplicationSl: document
-      .getElementById("less_this_application_sl")
-      .innerText.trim(),
-    balanceVl: document.getElementById("balance_vl").innerText.trim(),
-    balanceSl: document.getElementById("balance_sl").innerText.trim(),
-
-    leaveAction: action,
-    disapprovalReason: document.getElementById("disapprovalReason1").value,
-
-    approvedForDaysWithPay: document.getElementById("approvedForDaysWithPay")
-      .value,
-    approvedForDaysWithoutPay: document.getElementById(
-      "approvedForDaysWithoutPay"
-    ).value,
-    approvedForOthers: document.getElementById("approvedForOthers").value,
-    disapprovalReason2: document.getElementById("disapprovalReason2").value,
-  };
+function downloadPDF(details) {
+  const {
+    asOfDate,
+    totalEarnedVl,
+    totalEarnedSl,
+    lessThisApplicationVl,
+    lessThisApplicationSl,
+    balanceVl,
+    balanceSl,
+    leaveAction,
+    disapprovalReason,
+    approvedForDaysWithPay,
+    approvedForDaysWithoutPay,
+    approvedForOthers,
+    disapprovalReason2,
+  } = details;
 
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF("p", "mm", "a4");
@@ -418,16 +470,12 @@ function downloadPDF() {
 
   doc.setFont("helvetica", "normal");
   const today = new Date().toISOString().split("T")[0];
-  doc.text(
-    `7.A CERTIFICATION OF LEAVE CREDITS`,
-    margin,
-    yPosition
-  );
+  doc.text(`7.A CERTIFICATION OF LEAVE CREDITS`, margin, yPosition);
   yPosition += 7;
 
   doc.setFontSize(9);
   doc.setFont("helvetica", "italic");
-  doc.text(`(As of ${getStringDate(today)})`, margin + 63, yPosition)
+  doc.text(`(As of ${getStringDate(today)})`, margin + 63, yPosition);
   yPosition += 5;
 
   // Table
@@ -438,26 +486,26 @@ function downloadPDF() {
   yPosition += 5;
 
   doc.text("Total Earned", margin, yPosition);
-  doc.text(String(detailsOfAction.totalEarnedVl), margin + 80, yPosition);
-  doc.text(String(detailsOfAction.totalEarnedSl), margin + 130, yPosition);
+  doc.text(String(totalEarnedVl), margin + 80, yPosition);
+  doc.text(String(totalEarnedSl), margin + 130, yPosition);
   yPosition += 5;
 
   doc.text("Less this application", margin, yPosition);
   doc.text(
-    String(detailsOfAction.lessThisApplicationVl),
+    String(lessThisApplicationVl),
     margin + 80,
     yPosition
   );
   doc.text(
-    String(detailsOfAction.lessThisApplicationSl),
+    String(lessThisApplicationSl),
     margin + 130,
     yPosition
   );
   yPosition += 5;
 
   doc.text("Balance", margin, yPosition);
-  doc.text(String(detailsOfAction.balanceVl), margin + 80, yPosition);
-  doc.text(String(detailsOfAction.balanceSl), margin + 130, yPosition);
+  doc.text(String(balanceVl), margin + 80, yPosition);
+  doc.text(String(balanceSl), margin + 130, yPosition);
   yPosition += 12;
 
   doc.setFontSize(10);
@@ -490,7 +538,7 @@ function downloadPDF() {
   //     : "disapproval"
   //   : "";
 
-  const disapprovalReason = document.getElementById("disapprovalReason1").value;
+  const disapprovalReasons = document.getElementById("disapprovalReason1").value;
 
   doc.text("7.B RECOMMENDATION", margin, yPosition);
   yPosition += 7;
@@ -501,16 +549,16 @@ function downloadPDF() {
 
     if (
       recommendationText === "disapproval due to:" &&
-      disapprovalReason.trim() !== ""
+      disapprovalReasons.trim() !== ""
     ) {
       yPosition += addParagraph(
-        detailsOfAction.disapprovalReason,
+        disapprovalReason,
         margin + 8,
         yPosition,
         pageWidth - 2 * margin
       );
     }
-    console.log(detailsOfAction.disapprovalReason);
+    console.log(disapprovalReason);
   } else {
     doc.text("For approval", margin + 8, yPosition);
     yPosition += 5;
@@ -525,59 +573,48 @@ function downloadPDF() {
   // === APPROVAL/DISAPPROVAL ===
   doc.text("7.C APPROVED FOR:", margin, yPosition + 5);
   doc.text("7.D DISAPPROVED DUE TO:", pageWidth / 2, yPosition + 5);
-  yPosition += 10; // Move down to start content
+  yPosition += 10;
 
-  // 1. Create an array to hold the lines to be printed.
   const approvalLines = [];
 
-  // 2. Conditionally push data into the array if it exists.
-  //    The .trim() method removes whitespace, so an input with only spaces is treated as empty.
-  if (detailsOfAction.approvedForDaysWithPay.trim()) {
+  if (approvedForDaysWithPay.trim()) {
     approvalLines.push(
-      `${detailsOfAction.approvedForDaysWithPay} days with pay`
+      `${approvedForDaysWithPay} days with pay`
     );
   }
-  if (detailsOfAction.approvedForDaysWithoutPay.trim()) {
+  if (approvedForDaysWithoutPay.trim()) {
     approvalLines.push(
-      `${detailsOfAction.approvedForDaysWithoutPay} days without pay`
+      `${approvedForDaysWithoutPay} days without pay`
     );
   }
-  if (detailsOfAction.approvedForOthers.trim()) {
-    approvalLines.push(`${detailsOfAction.approvedForOthers} others (specify)`);
+  if (approvedForOthers.trim()) {
+    approvalLines.push(`${approvedForOthers} others (specify)`);
   }
 
-  // 3. Print the disapproval reason on the right.
-  // New line with text wrapping
-doc.text(`${detailsOfAction.disapprovalReason2}`, pageWidth / 2, yPosition, {
-  maxWidth: pageWidth / 2 - margin,
-});
+  doc.text(`${disapprovalReason2}`, pageWidth / 2, yPosition, {
+    maxWidth: pageWidth / 2 - margin,
+  });
 
-  // 4. Print the approval lines on the left, if any exist.
-  //    The `doc.text` method can accept an array and will automatically handle line breaks.
   if (approvalLines.length > 0) {
     doc.text(approvalLines, margin, yPosition);
   }
 
-  // 5. Adjust yPosition to move below the section.
-  //    This fixed value maintains a consistent layout similar to your original code.
   yPosition += 20;
 
-  // --- The rest of your code for signatures ---
   doc.text("Authorized Officer", margin, yPosition + 5);
   doc.text("Authorized Officer", pageWidth / 2, yPosition + 5);
   doc.text("_________________________", margin, yPosition);
   doc.text("_________________________", pageWidth / 2, yPosition);
-  // Save
+
   doc.save(
     `Leave_Application_${getData.leave.fullname.replace(/\s+/g, "_")}.pdf`
   );
 }
 
-
 const textareas = document.querySelectorAll(".reasons-disapproval");
 const maxWords = 20;
 
-textareas.forEach(textarea => {
+textareas.forEach((textarea) => {
   textarea.addEventListener("input", () => {
     let words = textarea.value.trim().split(/\s+/);
     if (words[0] === "") words = [];

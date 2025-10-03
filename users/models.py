@@ -68,10 +68,15 @@ class LEAVE(BaseModel):
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
     number_of_days_applied = models.TextField(blank=True)
-    inclusive_dates = models.TextField(blank=True)
+    
     status = models.TextField(blank=True)
+    recommendation_for = models.TextField(blank=True)
+    recommendation_for_disapproval_due_to = models.TextField(blank=True)
+    approved_for = models.TextField(blank=True)
+    disapproved_due_to = models.TextField(blank=True)
     specify = models.TextField(blank=True)
     date_of_request = models.DateField(default=timezone.now)
+    date_of_action = models.TextField(blank=True)
     
     def days_count(self):
         if self.start_date and self.end_date:
