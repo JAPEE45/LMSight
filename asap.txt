@@ -1,0 +1,4 @@
+LEAVE APPLICATION - USER:
+	Date of Filing
+	Salary
+	removal of start and end date
