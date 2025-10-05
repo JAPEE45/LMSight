@@ -18,8 +18,10 @@ urlpatterns = [
     # hr
     path("hr/", views.hr_dasboard, name="hr"),
     path("hr/request", views.hr_request, name="hr_request"),
+    path("hr/request/employee-profile/<int:userID>", views.hr_emp_profile, name="emp-profile"),
     path("api/hr/request", views.getRequestFilter),
     path("api/hr/leave", views.getLeaveReq),
+    path("api/hr/leave_ledger/<int:user_id>", views.leave_ledger),
     path("api/hr/action", views.action, name="action"),   
     path("api/hr/approved", views.approved_leave_request),   
     path("api/hr/reject", views.rejected_leave_request),
@@ -29,6 +31,4 @@ urlpatterns = [
     path("api/admin/addLeaveType", views.addLeaveType),
     path("api/admin/deleteLeaveType", views.deleteLeaveType),
     path("api/user/getDetails", views.getDetails),
-    
-    
 ]

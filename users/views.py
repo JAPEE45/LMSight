@@ -5,15 +5,17 @@ from django.utils import timezone
 from django.utils.timezone import now
 # import datetime
 from datetime import datetime, timedelta, date
+from django.utils.dateformat import DateFormat
 from django.db.models import Q
 import json
 from django.forms.models import model_to_dict
 from django.db.models.functions import ExtractMonth
 from django.db.models import Count
 import calendar
+from django.db.models import Sum
 from django.urls import reverse
 from django.db.models import Count, F
-
+import re
 
 def credit(creditType, user, mult):
     
@@ -182,6 +184,7 @@ def user_employee_profile(request):
         if not user:
             return redirect("login")
         return render(request, "emp_profile.html", {'user': user})
+    
 def user_omnibus(request):
     if request.method == "GET":
         user_id = request.session.get("user_id")
@@ -398,7 +401,6 @@ def checkIfHr(request):
     if user.user_type != 'hr':
         print("dili hr")
         return True
-    print("hr ini")
     return False
     
 def getWeeklyLeave():
@@ -579,6 +581,136 @@ def hr_request(request):
             print("requests ini: ",i.leave_details.details)
         notif = get_status_notification()
         return render(request, 'hr/requests.html', {'user':user, 'request':dt, "notif" : notif})
+    
+
+def hr_emp_profile(request, userID):
+    if request.method == "GET":
+        emp = USERS.objects.filter(id = userID).first()
+        emp_leave = LEAVE.objects.filter(users = emp).first()
+        hr = USERS.objects.filter(id = request.session.get("user_id")).first()
+        notif = get_status_notification()
+        emp = USERS.objects.filter(id=userID).first()
+        total_leave_days = LEAVE.objects.filter(users=emp, status="approved").aggregate(
+        total=Sum('number_of_days_applied')
+        )['total'] or 0
+        print(get_monthly_leave_credits(userID))
+        
+        return render(request, 'hr/emp_profile.html', {'hr': hr, 'user':emp, "notif" : notif, "leave_credits": get_monthly_leave_credits(userID)})
+
+
+def month_range(start_date, end_date):
+    """Yield first day of each month from start_date to end_date."""
+    current = start_date.replace(day=1)
+    while current <= end_date:
+        yield current
+        if current.month == 12:
+            current = current.replace(year=current.year + 1, month=1)
+        else:
+            current = current.replace(month=current.month + 1)
+
+def leave_ledger(request, user_id):
+    if request.method == "GET":
+        # Fetch employee
+        employee = USERS.objects.filter(id=user_id).first()
+        if not employee:
+            return JsonResponse({"error": "Employee not found"}, status=404)
+
+        # Get employee's leaves
+        leaves = LEAVE.objects.filter(users=employee).order_by("start_date")
+
+        ledger_rows = []
+        vacation_balance = 0
+        sick_balance = 0
+
+        VACATION_ACCRUAL = 1.25
+        SICK_ACCRUAL = 1.25
+
+        start_date = leaves.first().start_date if leaves.exists() else date.today()
+        end_date = date.today()
+        
+        # iterate monthly
+        for month in month_range(start_date, end_date):
+            period = DateFormat(month).format("m/Y")
+
+            earned_vl = VACATION_ACCRUAL
+            earned_sl = SICK_ACCRUAL
+            vacation_balance += earned_vl
+            sick_balance += earned_sl
+
+            month_start = date(month.year, month.month, 1)
+            last_day = calendar.monthrange(month.year, month.month)[1]
+            month_end = date(month.year, month.month, last_day)
+
+            month_leaves = leaves.filter(
+                Q(start_date__lte=month_end) & Q(end_date__gte=month_start)
+            )
+
+            absent_vl = absent_sl = 0
+            absent_without_vl = absent_without_sl = 0
+            remarks = ""
+
+            for leave in month_leaves:
+                leave_type = leave.leave_type.leave_type.upper() if leave.leave_type else "N/A"
+                days_with_pay = 0
+                days_without_pay = 0
+
+                if leave.approved_for:
+                    if "with pay" in leave.approved_for.lower():
+                        match = re.search(r"\d+", leave.approved_for)
+                        days_with_pay = int(match.group()) if match else 0
+                    elif "without pay" in leave.approved_for.lower():
+                        match = re.search(r"\d+", leave.approved_for)
+                        days_without_pay = int(match.group()) if match else 0
+
+                if leave_type == "VL":
+                    absent_vl += days_with_pay
+                    vacation_balance -= days_with_pay
+                    absent_without_vl += days_without_pay
+                elif leave_type == "SL":
+                    absent_sl += days_with_pay
+                    sick_balance -= days_with_pay
+                    absent_without_sl += days_without_pay
+
+                if leave.status == "approved":
+                    remarks += f"{leave_type} Availed {days_with_pay}d w/ pay, {days_without_pay}d w/o pay. "
+                if leave.date_of_action:
+                    remarks += f"({leave.date_of_action}) "
+
+            ledger_rows.append({
+                "period": period,
+                "particulars": {
+                    "type": "VL/SL",
+                    "days": absent_vl + absent_sl + absent_without_vl + absent_without_sl,
+                    "hrs": 0,
+                    "mins": 0,
+                },
+                "vacation_leave": {
+                    "earned": earned_vl,
+                    "absent_with_pay": absent_vl,
+                    "balance": round(vacation_balance, 3),
+                    "absent_without_pay": absent_without_vl,
+                },
+                "sick_leave": {
+                    "earned": earned_sl,
+                    "absent_with_pay": absent_sl,
+                    "balance": round(sick_balance, 3),
+                    "absent_without_pay": absent_without_sl,
+                },
+                "remarks": remarks or "Monthly accrual"
+            })
+
+        # Add employee info to the response
+        employee_info = {
+            "full_name": f"{employee.firstname} {employee.middlename} {employee.lastname}" + (f" {employee.suffix}" if employee.suffix else ""),
+            "department": employee.department,
+            "created_at": employee.createdAt.strftime("%Y-%m-%d %H:%M:%S")
+        }
+
+        return JsonResponse({
+            "employee": employee_info,
+            "ledger": ledger_rows
+        })
+
 
 def getRequestFilter(request):
     if request.method == "POST":
@@ -586,7 +718,6 @@ def getRequestFilter(request):
         department = body.get("department") 
         leave_type = body.get("leave_type") 
         val = ""
-        print(department)
         if department and leave_type:
             print("dep and leave type")
             val = LEAVE.objects.filter(users__department = department, status = "pending", leave_type = leave_type)

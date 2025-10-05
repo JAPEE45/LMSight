@@ -16,6 +16,11 @@ function getStringDate(...dates) {
   return formatted.join(", ");
 }
 
+function storeID(id) {
+  console.log(id);
+  localStorage.setItem("selected", id);
+}
+
 async function showLeaveModal(id) {
   const data = await fetch(`/api/hr/leave?id=${id}`);
   const json = await data.json();

@@ -18,10 +18,14 @@ body {
   font-size: 0.85rem;
 }
 
-.btn-delete:hover {
+.btn-delete:hover,
+.btn-submit {
   background-color: #28a745;
   color: white;
 }
+
+
+
 .stats-card {
   background: white;
   border-radius: var(--border-radius-card);

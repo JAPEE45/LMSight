@@ -4,17 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ALIS - Leave Management System</title>
-    <!-- <link
+    <link
       href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
       rel="stylesheet"
     />
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
       rel="stylesheet"
-    /> -->
+    />
 
-    <link rel="stylesheet" href="../../static/assets/styles/cdn/bootstrap.min.css">
-    <link rel="stylesheet" href="../../static/assets/styles/cdn/all.min.css">
+    <!-- <link rel="stylesheet" href="../../static/assets/styles/cdn/bootstrap.min.css">
+    <link rel="stylesheet" href="../../static/assets/styles/cdn/all.min.css"> -->
 
     <link
       rel="stylesheet"
@@ -102,7 +102,7 @@
           </div>
           <div class="button-main-cont">
             <div class="main-img-cont">
-              <div class="img-cont">
+              <div class="img-cont" >
                 <img
                   src="../media/{{user.picture}}"
                   alt=""
@@ -186,9 +186,21 @@
                 <td>
                   <div class="employee-info">
                     <div class="employee-avatar">
-                      <i class="fas fa-user"></i>
+                      <!-- <i class="fas fa-user"></i> -->
+                      <div class="main-img-cont">
+                        <div class="img-cont" style="border: 2px solid var(--primary-background);">
+                          <img
+                            src="../media/{{r.users.picture}}"
+                            alt=""
+                            id="profilePreview"
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <a href="./emp_profile.html">
+                    <a
+                      href="{% url 'emp-profile' r.users.id %}"
+                      onclick="storeID({{r.users.id}})"
+                    >
                       {{r.users.firstname}} {{r.users.middlename}}
                       {{r.users.lastname}}
                     </a>
@@ -402,7 +414,11 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <!-- Modal Body -->
-          <form method="POST" action="{% url 'action' %}" class="modal-body p-4">
+          <form
+            method="POST"
+            action="{% url 'action' %}"
+            class="modal-body p-4"
+          >
             {% csrf_token %}
             <h3 class="mb-4 text-center fw-bold">
               DETAILS OF ACTION ON APPLICATION
@@ -536,10 +552,10 @@
       </div>
     </div>
 
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> -->
-    <script src="../../static/assets/scripts/cdn/bootstrap.bundle.min.js"></script>
-    <script src="../../static/assets/scripts/cdn/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- <script src="../../static/assets/scripts/cdn/bootstrap.bundle.min.js"></script>
+    <script src="../../static/assets/scripts/cdn/jspdf.umd.min.js"></script> -->
 
     <script src="../../static/assets/scripts/popups/notification.js"></script>
     <script src="../../static/assets/scripts/popups/sidebar.js"></script>
