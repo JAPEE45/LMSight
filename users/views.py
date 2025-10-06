@@ -30,36 +30,52 @@ def credit(creditType, user, mult):
         user.credit = str(float(user.credit) - (1.25)* float(mult))
         user.save()
     return True
-    
+
+
 def get_monthly_leave_credits(user_id):
     try:
         user = USERS.objects.get(id=user_id)
         today = date.today()
+
+        # Define start and end of month
         start_of_month = today.replace(day=1)
         if today.month == 12:
-            end_of_month = today.replace(year=today.year+1, month=1, day=1) - timedelta(days=1)
+            end_of_month = today.replace(year=today.year + 1, month=1, day=1) - timedelta(days=1)
         else:
-            end_of_month = today.replace(month=today.month+1, day=1) - timedelta(days=1)
+            end_of_month = today.replace(month=today.month + 1, day=1) - timedelta(days=1)
+
+        # Get approved leaves for this month
         leaves = LEAVE.objects.filter(
             users=user,
             status="approved",
             start_date__gte=start_of_month,
             end_date__lte=end_of_month
         )
+
+        # Sum days from all approved leaves
         used_days = sum([leave.days_count() for leave in leaves])
-        monthly_credit = 10
-        remaining = monthly_credit - used_days
+
+        # Calculate remaining
+        remaining = TOTAL_LEAVE - used_days
+        remaining = max(remaining, 0)  # avoid negative
+
+        # Calculate percentages
+        used_percent = (used_days / TOTAL_LEAVE) * 100 if TOTAL_LEAVE else 0
+        remaining_percent = (remaining / TOTAL_LEAVE) * 100 if TOTAL_LEAVE else 0
 
         return {
             "user": f"{user.firstname} {user.lastname}",
             "month": today.strftime("%B %Y"),
-            "total_credits": monthly_credit,
+            "total_credits": TOTAL_LEAVE,
             "used": used_days,
-            "remaining": max(remaining, 0)
+            "remaining": remaining,
+            "used_percent": round(used_percent, 2),
+            "remaining_percent": round(remaining_percent, 2),
         }
 
     except USERS.DoesNotExist:
         return None
+
 TOTAL_LEAVE = 10
 def login(request):
     if request.method == "GET":
@@ -171,12 +187,37 @@ def user_dashboard(request):
             return render(request, "dashboard.html", {"user":user, "leave":user_leave,"leave_status": leave_status, "lt":lt })
         return render(request, "login_interface.html", {"error":True})
     
-def my_account(request):
+def security(request):
     if request.method == "GET":
         user_id = request.session.get("user_id")
         user = USERS.objects.filter(id=user_id).first()
-        return render(request, "my-account.html", {'user': user})
 
+        return render(request, "security.html", {'user': user})
+    
+def change_password(request):
+    user_id = request.session.get("user_id")
+    user = USERS.objects.filter(id=user_id).first()
+
+    if not user:
+        return JsonResponse({"status": False, "msg": "User not logged in"})
+
+    if request.method == "POST":
+        current_password = request.POST.get("current-password")
+        new_password = request.POST.get("new-password")
+        confirm_password = request.POST.get("confirm-password")
+
+        # Validate current password
+        if current_password != user.password:
+            return JsonResponse({"status": False, "msg": "Current password is incorrect"})
+
+        if new_password != confirm_password:
+            return JsonResponse({"status": False, "msg": "New password and confirm password do not match"})
+
+        user.password = new_password
+        user.save()
+
+        return JsonResponse({"status": True, "msg": "Password changed successfully"})
+    
 def user_employee_profile(request):
     if request.method == "GET":
         user_id = request.session.get("user_id")
@@ -570,7 +611,33 @@ def hr_dasboard(request):
         s['notif'] = notif
         # print(allLeave)
         return render(request, 'hr/dashboard.html',s )
-    
+
+def get_user_leave_string(user_id):
+    try:
+        user = USERS.objects.get(id=user_id)
+        leaves = LEAVE.objects.filter(users=user).order_by("start_date")
+
+        leave_strings = []
+
+        for leave in leaves:
+            if leave.start_date and leave.end_date:
+                start_day = leave.start_date.day
+                end_day = leave.end_date.day
+                month = leave.start_date.month   # ✅ safe for Windows
+                year = leave.start_date.year     # ✅ safe for Windows
+
+                if start_day == end_day:
+                    # Single day leave
+                    leave_strings.append(f"{month}/{start_day}/{year}")
+                else:
+                    # Date range leave
+                    leave_strings.append(f"{month}/{start_day}-{end_day}/{year}")
+
+        return "; ".join(leave_strings)
+
+    except USERS.DoesNotExist:
+        return ""
+
 def hr_request(request):
     if request.method == "GET":
         if checkIfHr(request): return redirect("login")
@@ -586,16 +653,27 @@ def hr_request(request):
 def hr_emp_profile(request, userID):
     if request.method == "GET":
         emp = USERS.objects.filter(id = userID).first()
-        emp_leave = LEAVE.objects.filter(users = emp).first()
+        # emp_leave = LEAVE.objects.filter(users = emp).first()
         hr = USERS.objects.filter(id = request.session.get("user_id")).first()
         notif = get_status_notification()
         emp = USERS.objects.filter(id=userID).first()
         total_leave_days = LEAVE.objects.filter(users=emp, status="approved").aggregate(
         total=Sum('number_of_days_applied')
         )['total'] or 0
-        print(get_monthly_leave_credits(userID))
+        print(get_user_leave_string(userID))
         
-        return render(request, 'hr/emp_profile.html', {'hr': hr, 'user':emp, "notif" : notif, "leave_credits": get_monthly_leave_credits(userID)})
+        return render(
+    request,
+    "hr/emp_profile.html",
+    {
+        "hr": hr,
+        "user": emp,
+        "notif": notif,
+        "leave_credits": get_monthly_leave_credits(userID),
+        "leave_dates": get_user_leave_string(userID),  # fixed spelling
+    }
+)
+
 
 
 def month_range(start_date, end_date):

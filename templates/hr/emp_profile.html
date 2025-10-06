@@ -187,8 +187,8 @@
                 "
               >
                 <div style="text-align: center">
-                  <div style="font-size: 1.2rem">75.8%</div>
-                  <div style="font-size: 0.8rem">24.2%</div>
+                  <div style="font-size: 1.2rem">{{leave_credits.used_percent}}%</div>
+                  <div style="font-size: 0.8rem">{{leave_credits.remaining_percent}}%</div>
                 </div>
               </div>
             </div>
@@ -196,7 +196,7 @@
           <div class="chart-labels">
             <div class="chart-info">
               <h4>Date & Action Take on Application for Leave</h4>
-              <p>6/28, 29, 30/2025</p>
+              <p>{{leave_dates}}</p>
             </div>
             <div class="chart-info">
               <h4>Monthly Accrual Rası</h4>
@@ -210,12 +210,12 @@
               <div class="legend-item">
                 <div class="legend-color remaining"></div>
                 <span><strong>Remaining:</strong> {{leave_credits.remaining}} days</span>
-                <span class="percentage">75.8%</span>
+                <span class="percentage">{{leave_credits.remaining_percent}}%</span>
               </div>
               <div class="legend-item">
                 <div class="legend-color used"></div>
                 <span><strong>Used:</strong> {{leave_credits.used}} days</span>
-                <span class="percentage">24.2%</span>
+                <span class="percentage">{{leave_credits.used_percent}}%</span>
               </div>
             </div>
           </div>
