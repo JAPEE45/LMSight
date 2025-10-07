@@ -18,18 +18,35 @@ from django.db.models import Count, F
 import re
 
 def credit(creditType, user, mult):
-    
-    print(mult)
-    if mult == 0: mult = 1
-    if user.credit  == '0.0':
-        return False
+    if mult == 0: 
+        mult = 1
+
+    current_credit = float(user.credit)
+    change_amount = float(mult)  # 1 day = 1 credit
+
     if creditType == "add":
-        user.credit = str(float(user.credit) + (1.25)* float(mult))
+        user.credit = str(current_credit + change_amount)
         user.save()
-    if creditType == "minus":
-        user.credit = str(float(user.credit) - (1.25)* float(mult))
+        return True
+
+    elif creditType == "minus":
+        user.credit = str(max(current_credit - change_amount, 0))  # prevents negative
         user.save()
-    return True
+        return True
+
+    return False
+    
+    # print(mult)
+    # if mult == 0: mult = 1
+    # if user.credit  == '0.0':
+    #     return False
+    # if creditType == "add":
+    #     user.credit = str(float(user.credit) + (1.25)* float(mult))
+    #     user.save()
+    # if creditType == "minus":
+    #     user.credit = str(float(user.credit) - (1.25)* float(mult))
+    #     user.save()
+    # return True
 
 
 def get_monthly_leave_credits(user_id):
@@ -129,15 +146,17 @@ def user_dashboard(request):
         commutation = request.POST.get("commutation")
         specify = request.POST.get("specify")
 
-        print(attached_file)
+        parts = [p.strip() for p in inclusive_dates.split(",")]
 
-        parts = inclusive_dates.split(", ")
+        if len(parts) < 2:
+            start_str = end_str = ", ".join(parts)
+        else:
+            start_str = ", ".join(parts[:2])
+            end_str = ", ".join(parts[-2:])
 
-        start_str = ", ".join(parts[:2])
-        end_str   = ", ".join(parts[2:])
-
+        # Convert to date objects
         start_date = datetime.strptime(start_str, "%B %d, %Y").date()
-        end_date   = datetime.strptime(end_str, "%B %d, %Y").date()
+        end_date = datetime.strptime(end_str, "%B %d, %Y").date()
 
         print(start_date, end_date)
 
@@ -186,6 +205,7 @@ def user_dashboard(request):
             
             return render(request, "dashboard.html", {"user":user, "leave":user_leave,"leave_status": leave_status, "lt":lt })
         return render(request, "login_interface.html", {"error":True})
+
     
 def security(request):
     if request.method == "GET":

@@ -14,7 +14,7 @@ class USERS(BaseModel):
     firstname = models.TextField(null=False)
     middlename = models.TextField(null=False)
     lastname = models.TextField(null=False)
-    suffix = models.TextField(null=True)
+    suffix = models.TextField(null=True, blank=True)
     email = models.TextField(null=False)
     birthday = models.TextField(null=False)
     phone_number = models.TextField(null=False)
@@ -90,8 +90,9 @@ class LEAVE(BaseModel):
             else:
                 end = self.end_date
 
-            return (end - start).days + 1
+            return (end - start).days  # Remove +1
         return 0
+
 
     def __str__(self):
         return f'{self.status} - {self.users.department} - {self.leave_type.leave_type}'
