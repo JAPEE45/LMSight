@@ -18,24 +18,30 @@ from django.db.models import Count, F
 import re
 
 def credit(creditType, user, mult):
-    if mult == 0: 
-        mult = 1
+    if mult <= 0: mult = 1.0
 
-    current_credit = float(user.credit)
-    change_amount = float(mult)  # 1 day = 1 credit
+    try:
+        current_credit = float(user.credit)
+    except (ValueError, TypeError):
+        current_credit = 0.0
+
+    change_amount = float(mult)
 
     if creditType == "add":
         user.credit = str(current_credit + change_amount)
-        user.save()
+        user.save(update_fields=["credit"])
         return True
 
     elif creditType == "minus":
-        user.credit = str(max(current_credit - change_amount, 0))  # prevents negative
-        user.save()
-        return True
+        if current_credit >= change_amount:
+            user.credit = str(current_credit - change_amount)
+            user.save(update_fields=["credit"])
+            return True
+        else:
+            print(f"Not enough credit: current={current_credit}, deduct={change_amount}")
+            return False
 
     return False
-    
     # print(mult)
     # if mult == 0: mult = 1
     # if user.credit  == '0.0':
@@ -100,111 +106,160 @@ def login(request):
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
-        print(f"p: {password} || e: {username}")
+        # print(f"p: {password} || e: {username}")
         usr = USERS.objects.filter(username = username, password = password).first()
        
         if not usr:
-            print("wrong passsword")
             return render(request, "login_interface.html", {"error":True})
         usr.update_login_time()
-        print(usr.firstname)
         if usr.user_type == "employee":
             request.session["user_id"] = usr.id
             return redirect("user_dasboard")
         elif usr.user_type == "admin":
-            print("nasa admin")
             request.session["user_id"] = usr.id
             return redirect("admins")
         elif usr.user_type == "hr":
-            print("nasa hr")
             request.session["user_id"] = usr.id
-            return redirect("hr")
-       
-        
+            return redirect("hr")    
         
 def get_status_notification():
     try:
         notif = StatusNotif.objects.filter(current_status="pending").order_by("-id")
         return notif
     except Exception as e:
-        print(f"Error fetching notifications: {str(e)}")
         return StatusNotif.objects.none()
-
+    
 def user_dashboard(request):
     if request.method == "POST":
-        user_id = request.session["user_id"]
+        user_id = request.session.get("user_id")
         user = USERS.objects.filter(id=user_id).first()
         if not user:
             return redirect("login")
+
         leave_type = request.POST.get("leave_type")
-        # comment = request.POST.get("comment")
-        # start_date = request.POST.get("start_date")
-        # end_date = request.POST.get("end_date")
         attached_file = request.FILES.get("attached-file")
         number_of_working_days = request.POST.get("number_of_working_days")
         inclusive_dates = request.POST.get("inclusive-dates")
         commutation = request.POST.get("commutation")
         specify = request.POST.get("specify")
 
-        parts = [p.strip() for p in inclusive_dates.split(",")]
+        parts = [p.strip() for p in inclusive_dates.split(",") if p.strip()]
+        print(parts)
 
         if len(parts) < 2:
-            start_str = end_str = ", ".join(parts)
+            return redirect(f"{reverse('user_dasboard')}?error=invalid_dates")
+
+        # If only one date was entered → use same for start and end
+        if len(parts) == 2:
+            start_str = end_str = ", ".join(parts[:2])
         else:
-            start_str = ", ".join(parts[:2])
-            end_str = ", ".join(parts[-2:])
+            # Use first 2 parts for start, last 2 parts for end
+            start_str = ", ".join(parts[:2])     # "OCTOBER 10, 2025"
+            end_str   = ", ".join(parts[-2:])    # "OCTOBER 15, 2025"
 
-        # Convert to date objects
-        start_date = datetime.strptime(start_str, "%B %d, %Y").date()
-        end_date = datetime.strptime(end_str, "%B %d, %Y").date()
+        print("Start:", start_str)
+        print("End:", end_str)
 
-        print(start_date, end_date)
+        try:
+            start_date = datetime.strptime(start_str, "%B %d, %Y").date()
+            end_date   = datetime.strptime(end_str, "%B %d, %Y").date()
+        except ValueError:
+            return redirect(f"{reverse('user_dasboard')}?error=invalid_dates")
 
-        lt = LEAVE_TYPES.objects.filter(id = leave_type).first()
-        ld = LeaveTypeDetails.objects.filter(leave_types = lt).first()
-        
-        lv = LEAVE(users=user, leave_type =  lt, leave_details = ld, commutation = commutation, attached_file = attached_file, number_of_days_applied = number_of_working_days, start_date = start_date, end_date = end_date, status="pending", specify = specify)
-        print(lv.days_count())
-        if not credit("minus", user, lv.days_count()):
-            url = reverse("user_dasboard")
-            return redirect(f"{url}?error=true")
-        lv.save()
-        notif = StatusNotif(
-           leave = lv, current_status = 'pending', user = user
+        lt = LEAVE_TYPES.objects.filter(id=leave_type).first()
+        if not lt:
+            return redirect(f"{reverse('user_dasboard')}?error=invalid_leave_type")
+
+        ld = LeaveTypeDetails.objects.filter(leave_types=lt).first()
+
+        lv = LEAVE(
+            users=user,
+            leave_type=lt,
+            leave_details=ld,
+            commutation=commutation,
+            attached_file=attached_file,
+            number_of_days_applied=number_of_working_days,
+            start_date=start_date,
+            end_date=end_date,
+            status="pending",
+            specify=specify
         )
-       
-        
+        lv.save()
+
+        notif = StatusNotif(
+            leave=lv,
+            current_status='pending',
+            user=user
+        )
         notif.save()
         return redirect("user_dasboard")
+
     if request.method == "GET":
         usr = request.session.get("user_id")
-        if not usr: return redirect("login")
+        if not usr:
+            return redirect("login")
+
         user = USERS.objects.filter(id=usr).first()
-        if user:
-            today = timezone.now().date()
-            lv = LEAVE.objects.filter(users = user, start_date__month = today.month)
-            user_leave = {"vacation_leave": 0, "casual_leave": 0, "sick_leave":0, "pending_leave":0}
-            approved = []
-            rejected = []
-            pending = []
-            for i in lv:
-                if i.status == "pending": user_leave["pending_leave"] +=1
-                if i.status == "approved": approved.append(i)
-                if i.status == "pending": pending.append(i)
-                if i.status == "rejected": rejected.append(i)
-                
-            leave_balance = TOTAL_LEAVE - (user_leave["vacation_leave"] + user_leave["casual_leave"] + user_leave["sick_leave"]) 
-            user_leave["total_leave_this_month"] = lv.count()
-            user_leave["leave_balance"] = user.credit
-            leave_status = {
-                "approved": approved,
-                "pending": pending,
-                "rejected": rejected,
-            }
-            lt = LEAVE_TYPES.objects.all().values("id", "leave_type")
-            
-            return render(request, "dashboard.html", {"user":user, "leave":user_leave,"leave_status": leave_status, "lt":lt })
-        return render(request, "login_interface.html", {"error":True})
+        if not user:
+            return render(request, "login_interface.html", {"error": True})
+
+        today = timezone.now().date()
+        lv = LEAVE.objects.filter(users=user, start_date__month=today.month)
+
+        # Initialize leave summary
+        user_leave = {
+            "vacation_leave": 0,
+            "casual_leave": 0,
+            "sick_leave": 0,
+            "pending_leave": 0
+        }
+
+        approved = []
+        rejected = []
+        pending = []
+
+        total_leave_days_this_month = 0
+
+        # Loop through leaves to summarize
+        for leave in lv:
+            if leave.status == "pending":
+                user_leave["pending_leave"] += 1
+                pending.append(leave)
+
+            elif leave.status == "approved":
+                approved.append(leave)
+                days = int(leave.number_of_days_applied)
+                total_leave_days_this_month += days
+
+                leave_type_lower = leave.leave_type.leave_type.lower()
+                if leave_type_lower == "vacation":
+                    user_leave["vacation_leave"] += days
+                elif leave_type_lower == "casual":
+                    user_leave["casual_leave"] += days
+                elif leave_type_lower == "sick":
+                    user_leave["sick_leave"] += days
+
+            elif leave.status == "rejected":
+                rejected.append(leave)
+
+        # Show total approved leave days and current credit
+        user_leave["total_leave_this_month"] = total_leave_days_this_month
+        user_leave["leave_balance"] = float(user.credit)
+
+        leave_status = {
+            "approved": approved,
+            "pending": pending,
+            "rejected": rejected,
+        }
+
+        lt = LEAVE_TYPES.objects.all().values("id", "leave_type")
+
+        return render(request, "dashboard.html", {
+            "user": user,
+            "leave": user_leave,
+            "leave_status": leave_status,
+            "lt": lt
+        })
 
     
 def security(request):
@@ -306,7 +361,6 @@ def addLeaveType(request):
         data = json.loads(request.body)
         leave_type = data.get("name")
         details = data.get("details")
-        print(type(details))
         lt = LEAVE_TYPES(leave_type = leave_type)
         lt.save()
         for i in details:
@@ -359,7 +413,6 @@ def admin_edit_user(request):
             return redirect("login")
         post_type = request.GET.get("type")
         if post_type == "add":
-            print("Add")
             firstname = request.POST.get("firstname")
             lastname = request.POST.get("lastname")
             middlename = request.POST.get("middlename")
@@ -425,7 +478,6 @@ def admin_edit_user(request):
 
 def delete_user(request):
     if request.method == "POST":
-        print("hi")
         user_id = request.session.get("user_id")
         user = USERS.objects.filter(id = user_id).first()
         if user:
@@ -456,11 +508,11 @@ def checkIfHr(request):
     usr_id =request.session.get("user_id")
     user = USERS.objects.filter(id = usr_id).first()
     if not user: 
-        print("waran user")
+        # print("waran user")
         return False
     
     if user.user_type != 'hr':
-        print("dili hr")
+        # print("dili hr")
         return True
     return False
     
@@ -605,7 +657,7 @@ def hr_dasboard(request):
     if request.method == "GET":
         if checkIfHr(request): return redirect("login")
         user = USERS.objects.filter(id = request.session.get("user_id")).first()
-        print(user.firstname)
+        
         s = {}
         s["weekly"] = getWeeklyLeave()
         s['monthly'] = getLeaveByMonth()
@@ -664,8 +716,8 @@ def hr_request(request):
         user = USERS.objects.filter(id = request.session.get("user_id")).first()
         req = LEAVE.objects.filter(status = "pending")
         dt = list(req)
-        for i in dt:
-            print("requests ini: ",i.leave_details.details)
+        # for i in dt:
+        #     print("requests ini: ",i.leave_details.details)
         notif = get_status_notification()
         return render(request, 'hr/requests.html', {'user':user, 'request':dt, "notif" : notif})
     
@@ -680,7 +732,6 @@ def hr_emp_profile(request, userID):
         total_leave_days = LEAVE.objects.filter(users=emp, status="approved").aggregate(
         total=Sum('number_of_days_applied')
         )['total'] or 0
-        print(get_user_leave_string(userID))
         
         return render(
     request,
@@ -817,14 +868,13 @@ def getRequestFilter(request):
         leave_type = body.get("leave_type") 
         val = ""
         if department and leave_type:
-            print("dep and leave type")
+            
             val = LEAVE.objects.filter(users__department = department, status = "pending", leave_type = leave_type)
         elif department:
-            print("dep only")
+            
             print(department)
             val = LEAVE.objects.filter(users__department = department, status = "pending")
         elif leave_type:
-            print(" leave type only")
             val = LEAVE.objects.filter(leave_type = leave_type, status = "pending")
         else:
             val = LEAVE.objects.all()
@@ -869,40 +919,51 @@ def getLeaveReq(request):
 
 def action(request):
     if request.method == "POST":
-        id = request.POST.get("id")
+        leave_id = request.POST.get("id")
         recommendationAction = request.POST.get("actionOnLeave")
         disapprovalReason1 = request.POST.get("disapprovalReason1")
         disapprovalReason2 = request.POST.get("disapprovalReason2")
-        approved_days = request.POST.get("approved_disapproved_days")
         date_of_action = request.POST.get("date_of_action")
+        approved_days = request.POST.get("approved_disapproved_days")
         
+        leave = LEAVE.objects.filter(id=leave_id).first()
+        if not leave:
+            print("Leave not found for id:", leave_id)
+            return redirect("hr_request")
         
-        c = LEAVE.objects.filter(id = id).first()
-        # if not c:  return JsonResponse({"message":"data does not exist"})
-        print("id: ", id)
-        print("reas1: ", disapprovalReason1)
-        print("reas2: ", disapprovalReason2)
-        print("days: ", approved_days)
-        print("action: ", recommendationAction)
+        # Update leave fields
+        leave.recommendation_for = recommendationAction
+        leave.recommendation_for_disapproval_due_to = disapprovalReason1
+        leave.approved_for = approved_days
+        leave.disapproved_due_to = disapprovalReason2
+        leave.date_of_action = date_of_action
 
-        if c:
-            c.recommendation_for = recommendationAction
-            c.save()
-            c.recommendation_for_disapproval_due_to = disapprovalReason1
-            c.save()
-            c.approved_for = approved_days
-            c.save()
-            c.disapproved_due_to = disapprovalReason2
-            c.save()
-            c.date_of_action = date_of_action
-            c.save()
-            if disapprovalReason2 == "" and approved_days != "":
-                c.status = "approved"
-                c.save()
-            elif disapprovalReason2 != "":
-                c.status = "rejected"
-                c.save()
+        if disapprovalReason2 == "" and approved_days:
+            # Only deduct credit if the leave is not already approved
+            if leave.status != "approved":
+                leave.status = "approved"
+                print(leave.users)
+                credit("minus", leave.users, leave.days_count())
+        elif disapprovalReason2 != "":
+            leave.status = "rejected"
         
+        # Approve or reject
+        if disapprovalReason2 == "" and approved_days:
+            if leave.status != "approved":
+                leave.status = "approved"
+                # Deduct leave credit based on actual inclusive days
+                deducted = credit("minus", leave.users, leave.days_count())
+                if deducted:
+                    print(f"Deducted {leave.days_count()} days from {leave.users.firstname}'s credit.")
+                else:
+                    print(f"Could not deduct credit for {leave.users.firstname}. Not enough balance.")
+        elif disapprovalReason2 != "":
+            leave.status = "rejected"
+
+        leave.save()  # Save all changes at once
+
+        print("User credit after:", leave.users.credit)
+
         return redirect("hr_request")
 
 def approved_leave_request(request):

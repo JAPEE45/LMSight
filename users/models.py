@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from decimal import Decimal
-from datetime import datetime
+from datetime import datetime, date
 
 class BaseModel(models.Model):
     createdAt = models.DateField(auto_now_add = True)
@@ -25,7 +25,7 @@ class USERS(BaseModel):
     username = models.TextField(null=True)
     password = models.TextField(null=True)
     user_type = models.TextField(null=True)
-    credit = models.TextField(null=True, default="1.25")
+    credit = models.TextField(null=True, default="10.0")
     
     last_login = models.DateTimeField(null=True, blank=True)
     last_credit_update = models.DateTimeField(null=True, blank=True)  
@@ -60,9 +60,9 @@ class LeaveTypeDetails(BaseModel):
     details = models.TextField(null = True)
 
 class LEAVE(BaseModel):
-    users = models.ForeignKey(USERS, on_delete = models.CASCADE)
-    leave_type = models.ForeignKey(LEAVE_TYPES, on_delete = models.CASCADE)
-    leave_details = models.ForeignKey(LeaveTypeDetails, on_delete = models.CASCADE)
+    users = models.ForeignKey(USERS, on_delete=models.CASCADE)
+    leave_type = models.ForeignKey(LEAVE_TYPES, on_delete=models.CASCADE)
+    leave_details = models.ForeignKey(LeaveTypeDetails, on_delete=models.CASCADE)
     commutation = models.TextField(blank=True)
     attached_file = models.FileField(upload_to="attached_files/", blank=True)
     start_date = models.DateField(blank=True, null=True)
@@ -77,22 +77,19 @@ class LEAVE(BaseModel):
     specify = models.TextField(blank=True)
     date_of_request = models.DateField(default=timezone.now)
     date_of_action = models.TextField(blank=True)
-    
+
     def days_count(self):
-        if self.start_date and self.end_date:
-            if isinstance(self.start_date, str):
-                start = datetime.strptime(self.start_date, "%Y-%m-%d").date()
-            else:
-                start = self.start_date
+        """
+        Returns total number of days for this leave, inclusive of start and end dates.
+        """
+        if not self.start_date or not self.end_date:
+            return 0
 
-            if isinstance(self.end_date, str):
-                end = datetime.strptime(self.end_date, "%Y-%m-%d").date()
-            else:
-                end = self.end_date
+        start = self.start_date if isinstance(self.start_date, date) else datetime.strptime(self.start_date, "%Y-%m-%d").date()
+        end = self.end_date if isinstance(self.end_date, date) else datetime.strptime(self.end_date, "%Y-%m-%d").date()
 
-            return (end - start).days  # Remove +1
-        return 0
-
+        delta_days = (end - start).days + 1  # inclusive
+        return max(delta_days, 0)
 
     def __str__(self):
         return f'{self.status} - {self.users.department} - {self.leave_type.leave_type}'
