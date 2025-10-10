@@ -11,7 +11,10 @@
     />
 
     <link rel="stylesheet" href="static/assets/styles/general.css" />
-    <link rel="stylesheet" href="static/assets/styles/layouts/login_interface.css" />
+    <link
+      rel="stylesheet"
+      href="static/assets/styles/layouts/login_interface.css"
+    />
   </head>
   <body>
     <main class="main active">
@@ -34,11 +37,16 @@
         <h1>Welcome back!</h1>
         <div class="inputs-container">
           <div class="inputs">
-            <input id="username" placeholder=" " type="text" name="username"/>
+            <input id="username" placeholder=" " type="text" name="username" />
             <label>Username</label>
           </div>
           <div class="inputs">
-            <input id="password" placeholder=" " type="password" name="password"/>
+            <input
+              id="password"
+              placeholder=" "
+              type="password"
+              name="password"
+            />
             <label>Password</label>
           </div>
           <div class="showpasscont">
@@ -60,6 +68,17 @@
         </footer>
       </form>
     </main>
-    <script src="static/assets/scripts/login.js"></script>
+    <script>
+      const passwordInput = document.getElementById("password");
+      const showPassCheckbox = document.getElementById("showpass");
+
+      showPassCheckbox.addEventListener("change", function () {
+        if (this.checked) {
+          passwordInput.type = "text";
+        } else {
+          passwordInput.type = "password";
+        }
+      });
+    </script>
   </body>
 </html>

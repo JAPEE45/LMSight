@@ -1,3 +1,21 @@
+// --- Get CSRF token from cookies ---
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    const cookies = document.cookie.split(";");
+    for (let cookie of cookies) {
+      cookie = cookie.trim();
+      if (cookie.startsWith(name + "=")) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
+const csrftoken = getCookie("csrftoken");
+
 document
   .getElementById("changePasswordForm")
   .addEventListener("submit", async function (e) {
@@ -17,21 +35,35 @@ document
     formData.append("new-password", new_password);
     formData.append("confirm-password", confirm_password);
 
-    const response = await fetch("/user/change_password", {
-      method: "POST",
-      body: formData,
-    });
+    // Absolute URL depending on page type
+    const url = window.location.pathname.includes("/hr/")
+      ? "/hr/change_password/"
+      : "/user/change_password/";
 
-    const result = await response.json();
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        body: formData,
+        headers: {
+          "X-CSRFToken": csrftoken, // ✅ Required by Django
+        },
+      });
 
-    if (!result.status) {
+      const result = await response.json(); // Parse JSON from server
+
+      if (!result.status) {
+        alert(result.msg);
+        return;
+      }
+
       alert(result.msg);
-      return;
+
+      // Clear fields
+      document.getElementById("current_password").value = "";
+      document.getElementById("new_password").value = "";
+      document.getElementById("confirm_password").value = "";
+    } catch (err) {
+      console.error("Error:", err);
+      alert("An error occurred. Make sure you are logged in.");
     }
-
-    alert(result.msg);
-
-    document.getElementById("current_password").value = "";
-    document.getElementById("new_password").value = "";
-    document.getElementById("confirm_password").value = "";
   });

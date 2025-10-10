@@ -87,14 +87,15 @@ async function showLeaveModal(id) {
   modal.show();
 }
 
-async function submitAction() {
+document.getElementById("actionForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  
   const modal = bootstrap.Modal.getInstance(
     document.getElementById("leaveModal")
   );
-  // leave request id hehe
+
   const id = localStorage.getItem("selected");
   const action = document.querySelector("input[name='actionOnLeave']:checked").value;
-  console.log(id)
 
   const disapprovalReason1 = document.getElementById("disapprovalReason1").value;
   const disapprovalReason2 = document.getElementById("disapprovalReason2").value;
@@ -125,10 +126,8 @@ async function submitAction() {
     body: formData
   });
 
-  // })
-
   const status = await d.json();
-  console.log(status.status)
+  console.log("json status: ", status.status)
   if (status.status) {
     const action = document.querySelector(
       'input[name="actionOnLeave"]:checked'
@@ -169,7 +168,8 @@ async function submitAction() {
   }
   alert("Fail to approve");
   alert(status.message);
-}
+});
+
 
 const rejectionModal = document.getElementById("rejectionModal");
 
@@ -315,34 +315,8 @@ function showResult(data) {
   });
 }
 
-const departmentFilter = document.getElementById("departmentFilter");
-const leaveFilter = document.getElementById("leaveFilter");
-async function fetchData(dep, lt) {
-  const data = await fetch("/api/hr/request", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-CSRFToken": getCookie("csrftoken"),
-    },
-    body: JSON.stringify({
-      department: dep,
-      leave_type: lt,
-    }),
-  });
-
-  const fd = await data.json();
-  console.log(fd);
-  showResult(fd);
-  localStorage.setItem("search", JSON.stringify(fd));
-}
-departmentFilter.addEventListener("change", () => {
-  fetchData(departmentFilter.value, leaveFilter.value);
-});
-leaveFilter.addEventListener("change", () => {
-  fetchData(departmentFilter.value, leaveFilter.value);
-});
-
 function downloadPDF(details) {
+  console.log("Details: ", details);
   const {
     asOfDate,
     totalEarnedVl,

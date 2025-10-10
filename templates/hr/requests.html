@@ -39,9 +39,22 @@
           <i class="fa-solid fa-table-columns me-1"></i> Dashboard
         </a>
       </div>
+
       <div class="button-cont">
         <a id="requests_nav" href="#" class="active">
           <i class="fa-solid fa-file-circle-check"></i> Pending Requests
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a id="" href="{% url 'employee_reports' %}">
+          <i class="fa-solid fa-file-csv"></i> Reports
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a id="" href="{% url 'hr_security' %}">
+          <i class="fa-solid fa-user"></i> Security
         </a>
       </div>
 
@@ -121,53 +134,6 @@
       </div>
 
       <div class="col-md-9" style="width: 100%">
-        <div class="container-fluid">
-          <div class="row g-2 align-items-center filters-section">
-            <!-- Search -->
-            <div class="col-12 col-md-4">
-              <div class="input-group">
-                <span class="input-group-text"
-                  ><i class="fas fa-search"></i
-                ></span>
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Search..."
-                />
-              </div>
-            </div>
-
-            <!-- Filter Button -->
-            <div class="col-6 col-md-auto">
-              <button
-                onclick="window.location.reload()"
-                class="btn btn-outline-primary w-100 w-md-auto"
-              >
-                <i class="fas fa-filter"></i> Filters
-              </button>
-            </div>
-
-            <!-- Department Dropdown -->
-            <div class="col-6 col-md-auto">
-              <select class="form-select" id="departmentFilter">
-                <option disabled selected value="">-- Department --</option>
-                <option value="HR">HR</option>
-                <option value="finance">Sales</option>
-                <option value="IT">IT</option>
-              </select>
-            </div>
-
-            <!-- Leave Type Dropdown -->
-            <div class="col-6 col-md-auto">
-              <select class="form-select" id="leaveFilter">
-                <option value="" disabled selected>-- Leave Type --</option>
-                <option value="casual leave">Casual Leave</option>
-                <option value="sick leave">Sick Leave</option>
-                <option value="maternity leave">Maternity Leave</option>
-              </select>
-            </div>
-          </div>
-        </div>
 
         <div class="requests-table">
           <table class="mb-0">
@@ -417,6 +383,7 @@
             method="POST"
             action="{% url 'action' %}"
             class="modal-body p-4"
+            id="actionForm"
           >
             {% csrf_token %}
             <h3 class="mb-4 text-center fw-bold">
@@ -541,7 +508,6 @@
                 type="submit"
                 class="btn btn-success px-4 py-2 fw-bold"
                 id="submitRejectBtn"
-                onclick="submitAction()"
               >
                 Submit
               </button>

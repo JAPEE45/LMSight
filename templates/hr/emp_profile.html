@@ -45,6 +45,18 @@
       </div>
 
       <div class="button-cont">
+        <a id="" href="{% url 'employee_reports' %}">
+          <i class="fa-solid fa-file-csv"></i> Reports
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a id="" href="{% url 'hr_security' %}">
+          <i class="fa-solid fa-user"></i> Security
+        </a>
+      </div>
+
+      <div class="button-cont">
         <a href="{% url 'logout' %}" class="">
           <i class="fa-solid fa-right-from-bracket me-1"></i>
           Log Out
@@ -52,7 +64,6 @@
       </div>
     </div>
 
-    <!-- Main Content -->
     <div class="main-content">
       <div class="main-header">
         <div class="d-flex align-items-center">
@@ -68,7 +79,6 @@
             </button>
             <p class="popup">Notification</p>
             <div class="notif-marker active"></div>
-            <!-- Notifications Panel -->
             <div class="notifications-panel" id="notificationsPanel">
               <div class="notifications-header">
                 <h5>Notifications</h5>
@@ -102,11 +112,7 @@
           <div class="button-main-cont">
             <div class="main-img-cont">
               <div class="img-cont">
-                <img
-                  src="{{hr.picture.url}}"
-                  alt=""
-                  id="profilePreview"
-                />
+                <img src="{{hr.picture.url}}" alt="" id="profilePreview" />
               </div>
             </div>
             <div class="name-cont">
@@ -119,16 +125,11 @@
         </div>
       </div>
 
-      <!-- User Header -->
       <div class="user-info">
         <div class="user-avatar">
           <div class="main-img-cont">
-            <div class="img-cont" style="box-shadow: 0 0 0.1rem white;">
-              <img
-                src="{{user.picture.url}}"
-                alt=""
-                id="profilePreview"
-              />
+            <div class="img-cont" style="box-shadow: 0 0 0.1rem white">
+              <img src="{{user.picture.url}}" alt="" id="profilePreview" />
             </div>
           </div>
         </div>
@@ -141,10 +142,10 @@
         </span>
       </div>
 
-      <!-- Leave Credits Section -->
       <div class="head d-flex align-items-center justify-content-between">
         <h3 style="color: var(--primary-background); margin-bottom: 1rem">
-          Leave Credits as of <span class="currentMonth"></span> <span id="currentYear"></span>
+          Leave Credits as of <span class="currentMonth"></span>
+          <span id="currentYear"></span>
         </h3>
         <button class="btn btn-primary" onclick="exportLedgerToExcel()">
           Generate Monthly Report
@@ -155,7 +156,9 @@
           <div class="stats-card earned">
             <h3>Earned Leave</h3>
             <div class="number">{{leave_credits.total_credits}} days</div>
-            <div class="subtitle">(as of <span class="currentMonth"></span>)</div>
+            <div class="subtitle">
+              (as of <span class="currentMonth"></span>)
+            </div>
           </div>
         </div>
         <div class="col-lg-4 col-md-6 mb-3">
@@ -172,7 +175,6 @@
         </div>
       </div>
 
-      <!-- Vacation Leave Utilization -->
       <div class="vacation-section">
         <h2>Vacation Leave Utilization</h2>
         <div class="chart-container">
@@ -187,8 +189,10 @@
                 "
               >
                 <div style="text-align: center">
-                  <div style="font-size: 1.2rem">{{leave_credits.used_percent}}%</div>
-                  <div style="font-size: 0.8rem">{{leave_credits.remaining_percent}}%</div>
+                  <div class="remaining-percent" style="font-size: 1.2rem">0%</div>
+                  <div class="used-percent" style="font-size: 0.8rem">
+                    0%
+                  </div>
                 </div>
               </div>
             </div>
@@ -209,8 +213,13 @@
             <div class="legend">
               <div class="legend-item">
                 <div class="legend-color remaining"></div>
-                <span><strong>Remaining:</strong> {{leave_credits.remaining}} days</span>
-                <span class="percentage">{{leave_credits.remaining_percent}}%</span>
+                <span
+                  ><strong>Remaining:</strong> {{leave_credits.remaining}}
+                  days</span
+                >
+                <span class="percentage"
+                  >{{leave_credits.remaining_percent}}%</span
+                >
               </div>
               <div class="legend-item">
                 <div class="legend-color used"></div>
@@ -225,8 +234,62 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    
+
     <script src="{% static 'assets/scripts/leave_ledger.js' %}"></script>
+    <script>
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+          const cookies = document.cookie.split(";");
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            
+            if (cookie.substring(0, name.length + 1) === name + "=") {
+              cookieValue = decodeURIComponent(
+                cookie.substring(name.length + 1)
+              );
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }
+
+      async function getLeaveDatas() {
+        const userID = localStorage.getItem("selected");
+        const response = await fetch(`/hr/request/employee-profile/${userID}`, {
+          method: "POST",
+          headers: {
+            "X-CSRFToken": getCookie("csrftoken"),
+          },
+        });
+
+        const data = await response.json();
+        console.log(data);
+
+        const usedPercent = data.leave_credits.used_percent;
+        const remainingPercent = data.leave_credits.remaining_percent;
+        console.log("usedPercent: ", usedPercent);
+        updateDonutChart(usedPercent, remainingPercent);
+      }
+
+      function updateDonutChart(usedPercent, remainingPercent) {
+        const donut = document.querySelector(".donut-chart");
+        const usedText = document.querySelector(".used-percent");
+        const remainingText = document.querySelector(".remaining-percent");
+
+        const usedDeg = (usedPercent / 100) * 360;
+
+        donut.style.background = `conic-gradient(
+          #238b45 0deg ${usedDeg}deg,
+          #8b5cf6 ${usedDeg}deg 360deg
+        )`;
+
+        usedText.textContent = `${usedPercent}%`;
+        remainingText.textContent = `${remainingPercent}%`;
+      }
+      document.addEventListener("DOMContentLoaded", getLeaveDatas);
+    </script>
 
     <script src="{% static 'assets/scripts/popups/sidebar.js' %}"></script>
     <script src="{% static 'assets/scripts/popups/notification.js' %}"></script>

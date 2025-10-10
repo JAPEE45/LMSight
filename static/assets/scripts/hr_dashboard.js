@@ -113,32 +113,75 @@ const ongoingLeaveData = [
 
 let currentLeaveIndex = 0;
 
-async function updateLeaveCard(index) {
-  console.log("this is ongoing")
-    const d = await fetch("/api/hr/ongoing")
-    const c = await d.json()
-    console.log(c)
+// async function updateLeaveCard(index) {
+//   console.log("this is ongoing")
+//     const d = await fetch("/api/hr/ongoing")
+//     const c = await d.json()
+//     console.log(c)
 
-    const data = c.o[index];
-    console.log(c)
-    const content = document.getElementById('ongoingContent');
+//     const data = c.o[index];
+//     console.log(c)
+//     const content = document.getElementById('ongoingContent');
     
-    console.log(data)
-    document.getElementById('employeeName').textContent = `${data.users__firstname} ${data.users__middlename} ${data.users__lastname}`;
-    document.getElementById('employeeDept').textContent = data.department;
-    document.getElementById('leaveTypeBadge').textContent = data.leave_type__leave_type;
-    document.getElementById('startDate').textContent = data.start_date;
-    document.getElementById('endDate').textContent = data.end_date;
+//     console.log(data)
+//     console.log(`${data.users__firstname} ${data.users__middlename} ${data.users__lastname}`)
+//     document.getElementById('employeeName').textContent = `${data.users__firstname} ${data.users__middlename} ${data.users__lastname}`;
+//     document.getElementById('employeeDept').textContent = data.department;
+//     document.getElementById('leaveTypeBadge').textContent = data.leave_type__leave_type;
+//     document.getElementById('startDate').textContent = data.start_date;
+//     document.getElementById('endDate').textContent = data.end_date;
     
-    // Update indicators
-    document.querySelectorAll('.indicator').forEach((indicator, i) => {
-        indicator.classList.toggle('active', i === index);
-    });
+//     // Update indicators
+//     document.querySelectorAll('.indicator').forEach((indicator, i) => {
+//         indicator.classList.toggle('active', i === index);
+//     });
     
-    // Update button states
-    document.getElementById('prevBtn').disabled = index === 0;
-    document.getElementById('nextBtn').disabled = index === ongoingLeaveData.length - 1;
+//     // Update button states
+//     document.getElementById('prevBtn').disabled = index === 0;
+//     document.getElementById('nextBtn').disabled = index === ongoingLeaveData.length - 1;
+// }
+
+async function updateLeaveCard(index) {
+  console.log("this is ongoing");
+  
+  const d = await fetch("/api/hr/ongoing");
+  const c = await d.json();
+  console.log(c);
+
+  // Check if data exists
+  if (!c.o || c.o.length === 0) {
+    console.warn("No ongoing leaves found.");
+    document.getElementById('employeeName').textContent = "No records found";
+    document.getElementById('employeeDept').textContent = "-";
+    document.getElementById('leaveTypeBadge').textContent = "-";
+    document.getElementById('startDate').textContent = "-";
+    document.getElementById('endDate').textContent = "-";
+    return; // stop here
+  }
+
+  const data = c.o[index];
+  if (!data) {
+    console.warn(`Invalid index ${index} for ongoing leaves.`);
+    return;
+  }
+
+  document.getElementById('employeeName').textContent =
+    `${data.users__firstname} ${data.users__middlename ?? ""} ${data.users__lastname}`;
+  document.getElementById('employeeDept').textContent = data.department;
+  document.getElementById('leaveTypeBadge').textContent = data.leave_type__leave_type;
+  document.getElementById('startDate').textContent = data.start_date;
+  document.getElementById('endDate').textContent = data.end_date;
+
+  // Update indicators
+  document.querySelectorAll('.indicator').forEach((indicator, i) => {
+    indicator.classList.toggle('active', i === index);
+  });
+
+  // Update button states safely
+  document.getElementById('prevBtn').disabled = index === 0;
+  document.getElementById('nextBtn').disabled = index === c.o.length - 1;
 }
+
 
 function navigateLeave(direction) {
     const newIndex = currentLeaveIndex + direction;

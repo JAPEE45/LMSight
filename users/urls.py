@@ -4,7 +4,8 @@ urlpatterns = [
     path("",views.login, name="login" ),
     path("user/", views.user_dashboard, name="user_dasboard"),
     path("user/security", views.security, name="security"),
-    path("user/change_password", views.change_password, name="change_password"),
+    path("user/change_password/", views.change_password, name="user_change_password"),
+    path("hr/change_password/", views.change_password, name="hr_change_password"),
     path("user/profile/", views.user_employee_profile, name="user_employee_profile"),
     path("user/omnibus/", views.user_omnibus, name="omnibus"),
     path("user/instructions/", views.user_instruction, name="instructions"),
@@ -19,6 +20,8 @@ urlpatterns = [
     # hr
     path("hr/", views.hr_dasboard, name="hr"),
     path("hr/request", views.hr_request, name="hr_request"),
+    path("hr/reports", views.hr_emp_reports, name="employee_reports"),
+    path("hr/security", views.hr_security, name="hr_security"),
     path("hr/request/employee-profile/<int:userID>", views.hr_emp_profile, name="emp-profile"),
     path("api/hr/request", views.getRequestFilter),
     path("api/hr/leave", views.getLeaveReq),

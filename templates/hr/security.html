@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome User - Dashboard</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- <link rel="stylesheet" href="../static/assets/styles/cdn/all.min.css">
+    <link rel="stylesheet" href="../static/assets/styles/cdn/bootstrap.min.css"> -->
+
+    <link rel="stylesheet" href="../static/assets/styles/components/sidebar.css" />
+    <link rel="stylesheet" href="../static/assets/styles/components/navbar.css" />
+    <link
+      rel="stylesheet"
+      href="../static/assets/styles/components/notification.css"
+    />
+    <link rel="stylesheet" href="../static/assets/styles/layouts/user.css" />
+    
+  </head>
+  <body>
+    <div class="sidebar" id="sidebar">
+      <h2>ALIS</h2>
+
+      <div class="button-cont">
+        <a id="dashboard_nav" href="{% url 'hr' %}">
+          <i class="fa-solid fa-table-columns me-1"></i> Dashboard
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a id="requests_nav" href="{% url 'hr_request' %}">
+          <i class="fa-solid fa-file-circle-check"></i> Pending Requests
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a id="" href="{% url 'employee_reports' %}">
+          <i class="fa-solid fa-file-csv"></i> Reports
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a id="" href="{% url 'hr_security' %}" class="active">
+          <i class="fa-solid fa-user"></i> Security
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a href="{% url 'logout' %}" class="">
+          <i class="fa-solid fa-right-from-bracket me-1"></i>
+          Log Out
+        </a>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="main-header">
+        <div class="d-flex align-items-center">
+          <button class="mobile-toggle me-3" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+          </button>
+          <h1 class="nav-title">Security</h1>
+        </div>
+        <div class="button-main-cont">
+          <div class="button-main-cont">
+            <div class="main-img-cont">
+              <div class="img-cont">
+                <img
+                  src="../media/{{user.picture}}"
+                  alt=""
+                  id="profilePreview"
+                />
+              </div>
+            </div>
+            <div class="name-cont">
+              <p class="name">
+                {{user.firstname}} {{user.middlename}} {{user.lastname}}
+              </p>
+              <p class="title text-muted">EMPLOYEE</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="dashboardSection" class="dashboard-section">
+        <form id="changePasswordForm" method="post" class="content-card">
+          {% csrf_token %}
+          <div class="card-header">
+            <h2 class="card-title">Change Password</h2>
+          </div>
+          <div class="form-cont px-3 py-3">
+            <div class="forms pb-3">
+                <label for="" class="form-label">Current Password</label>
+                <input name="current_password" id="current_password" type="password" class="form-control">
+            </div>
+            <div class="forms pb-3">
+                <label for="" class="form-label">New Password</label>
+                <input name="new_password" id="new_password" type="password" class="form-control">
+            </div>
+            <div class="forms">
+                <label for="" class="form-label">Confirm New Password</label>
+                <input name="confirm_password" id="confirm_password" type="password" class="form-control">
+            </div>
+            <button type="submit" id="saveBtn" class="btn btn-submit mt-3">Save</button>
+          </div>
+        </form>
+      </div>
+
+      
+    </div>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="../../static/assets/scripts/change_pass.js"></script>
+    <script src="../../static/assets/scripts/popups/sidebar.js"></script>
+    <script src="../../static/assets/scripts/popups/tooltip.js"></script>
+  </body>
+</html>
