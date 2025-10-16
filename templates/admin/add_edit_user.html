@@ -151,9 +151,9 @@
                 <label class="form-label">Last Name</label>
                 
                 {% if user %}
-                  <input type="text" class="form-control" name="lastname" value="{{user.lastname}}" />
+                  <input type="text" id="lastname" class="form-control" name="lastname" value="{{user.lastname}}" required/>
                 {% else %}
-                  <input type="text" name="lastname" class="form-control" value="" />
+                  <input type="text" id="lastname" name="lastname" class="form-control" value="" required/>
                 {% endif %}
                   
               </div>
@@ -161,9 +161,9 @@
                 <label class="form-label">First Name</label>
                 
                 {% if user %}
-                  <input type="text" class="form-control" name="firstname" value="{{user.firstname}}" />
+                  <input type="text" id="firstname" class="form-control" name="firstname" value="{{user.firstname}}" required/>
                 {% else %}
-                  <input type="text" class="form-control" value="" name="firstname" />
+                  <input type="text" id="firstname" class="form-control" value="" name="firstname" required/>
                 {% endif %}
                   
               </div>
@@ -171,9 +171,9 @@
                 <label class="form-label">Middle Name</label>
                 
                 {% if user %}
-                  <input type="text" class="form-control" name="middlename" value="{{user.middlename}}" />
+                  <input type="text" id="middlename" class="form-control" name="middlename" value="{{user.middlename}}" required/>
                 {% else %}
-                  <input type="text" class="form-control" name="middlename" value="Pimentel" />
+                  <input type="text" id="middlename" class="form-control" name="middlename" value="" required/>
                 {% endif %}
                   
               </div>
@@ -199,6 +199,7 @@
                   type="email"
                   class="form-control"
                   value="{{user.email}}"
+                  required
                 />
                {% else %}
                  <input
@@ -206,6 +207,7 @@
                   type="email"
                   class="form-control"
                   value=""
+                  required
                 />
                {% endif %}
                 
@@ -223,6 +225,7 @@
                   type="date"
                   class="form-control"
                   value="{{user.birthday}}"
+                  required
                 />
                {% else %}
                  <input
@@ -230,6 +233,7 @@
                   type="date"
                   class="form-control"
                   placeholder="dd/mm/yyyy"
+                  required
                 />
                {% endif %}
                 
@@ -238,9 +242,9 @@
                 <label class="form-label">Phone number</label>
                 
                 {% if user %}
-                  <input type="tel" class="form-control" name="phone_number" value="{{user.phone_number}}" />
+                  <input type="tel" class="form-control" name="phone_number" value="{{user.phone_number}}" required/>
                 {% else %}
-                  <input type="tel" class="form-control" value="09123456789" name="phone_number" />
+                  <input type="tel" class="form-control" value="09123456789" name="phone_number" required/>
                 {% endif %}
                   
               </div>
@@ -266,7 +270,7 @@
           <div class="row">
             <div class="col-md-4 mb-3">
               <label class="form-label">Office</label>
-              <select  class="form-control" name="department">
+              <select  class="form-control" name="department" required>
                 <option disabled selected hidden>--Please Select--</option>
                 <option {% if user.department == "MBO" %} selected {% endif %}>MBO</option>
                 <option {% if user.department == "MACCO" %} selected {% endif %}>MACCO</option>
@@ -286,11 +290,11 @@
             </div>
             <div class="col-md-4 mb-3">
               <label class="form-label">Position</label>
-              <input type="text" class="form-control" name="job_title" value="">
+              <input type="text" class="form-control" name="job_title" value="" required>
             </div>
             <div class="col-md-4 mb-3">
               <label class="form-label">Employment</label>
-              <select class="form-control" name="employee_type">
+              <select class="form-control" name="employee_type" required>
                 <option disabled>--Please Select--</option>
                 <option value="Permanent" {% if user.employee_type == "Permanent" %} selected {% endif %}>Permanent</option>
                 <option value="Elective Official" {% if user.employee_type == "Elective Official" %} selected {% endif %}>Elective Official</option>
@@ -299,7 +303,7 @@
             </div>
             <div class="col-md-4 mb-3">
               <label class="form-label">Section</label>
-              <select class="form-control" name="user_type">
+              <select class="form-control" name="user_type" required>
                 <option disabled selected>--Please Select--</option>
                 <option value="NUTRITION">NUTRITION</option>
                 <option value="TOURISM">TOURISM</option>
@@ -314,11 +318,11 @@
             </div>
             <div class="col-md-4 mb-3">
               <label class="form-label">Designation</label>
-              <input type="text" class="form-control" name="designation" value="">
+              <input type="text" class="form-control" name="designation" value="" required>
             </div>
             <div class="col-md-4 mb-3">
               <label class="form-label">User Role</label>
-              <select class="form-control" name="user_type">
+              <select class="form-control" name="user_type" required>
                 <option disabled selected>--Please Select--</option>
                 <option value="hr" {% if user.user_type == "hr" %} selected {% endif %}>HR</option>
                 <option value="admin" {% if user.user_type == "admin" %} selected {% endif %}>Admin</option>
