@@ -24,6 +24,26 @@ body {
   color: white;
 }
 
+table {
+  width: 100%;
+  padding: 0.5rem;
+}
+
+thead {
+  background: #b8336a;
+  color: white;
+}
+
+th,
+td {
+  padding: var(--padding-1);
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+tr:nth-child(even) {
+  background-color: #ffeef8; /* Light gray */
+}
 
 
 .stats-card {

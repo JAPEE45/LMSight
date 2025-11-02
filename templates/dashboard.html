@@ -83,13 +83,43 @@
 
     <div class="main-content">
       <div class="main-header">
+
         <div class="d-flex align-items-center">
           <button class="mobile-toggle me-3" onclick="toggleSidebar()">
             <i class="fas fa-bars"></i>
           </button>
-          <h1 class="nav-title">Welcome, User!</h1>
+          <h1 class="nav-title">Welcome {{user.firstname}}!</h1>
         </div>
         <div class="button-main-cont">
+          <div class="button-cont">
+            <button class="notif-btn" id="notification-btn">
+              <i class="fa-solid fa-bell"></i>
+            </button>
+            <p class="popup">Notification</p>
+            <div class="notif-marker active"></div>
+            <!-- Notifications Panel -->
+            <div class="notifications-panel" id="notificationsPanel">
+              <div class="notifications-header">
+                <h5>Notifications</h5>
+              </div>
+               <div class="notifications-list">
+              
+              {% for i in notif %}
+                 <div class="notification-item">
+                  <div class="notification-avatar" style="width: 50px;height:50px">
+                    <img src="/media/{{i.user.picture}}" width="50" height="50" style="border-radius: 100px;"/>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>{{i.user.firstname}} {{i.user.lastname}}</strong>'s request has been {{i.leave.status}} for {{i.leave.leave_type}}.
+                    </p>
+                    <span class="notification-time">{{i.createdAt}}</span>
+                  </div>
+                </div>
+              {% endfor %}
+              </div>
+            </div>
+          </div>
           <div class="button-main-cont">
             <div class="main-img-cont">
               <div class="img-cont">
@@ -104,7 +134,7 @@
               <p class="name">
                 {{user.firstname}} {{user.middlename}} {{user.lastname}}
               </p>
-              <p class="title text-muted">EMPLOYEE</p>
+              <p class="title text-muted">Employee</p>
             </div>
           </div>
         </div>
@@ -310,7 +340,7 @@
                     </select>
                     <div class="specify-cont mt-3">
                       <label class="form-label">Please Specify</label>
-                      <input type="text" id="specify-input" class="specify-input" name="specify" required/>
+                      <input type="text" id="specify-input" class="specify-input" name="specify"/>
                       <p>*This field is required</p>
                     </div>
                   </div>
@@ -324,7 +354,7 @@
                 <div class="form-group">
                   <label class="form-label">INCLUSIVE DATES</label>
                   <input class="form-control" type="text" name="inclusive-dates" id="" placeholder="january 10, 2000, january 13, 2000">
-                  <p class="text-muted mb-0 mt-1" style="font-size: 0.5rem;">MM/DD/YYYY</p>
+                  <p class="text-muted mb-0 mt-1" style="font-size: 0.5rem;">MONTH DD, YYYY</p>
                 </div>
               </div>
 
@@ -492,6 +522,7 @@
     <script src="../static/assets/scripts/user.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script> -->
     <script src="../static/assets/scripts/popups/sidebar.js"></script>
+    <script src="../static/assets/scripts/popups/notification.js"></script>
     <script src="../static/assets/scripts/popups/tooltip.js"></script>
   </body>
 </html>

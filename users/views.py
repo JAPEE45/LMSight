@@ -135,6 +135,8 @@ def user_dashboard(request):
         inclusive_dates = request.POST.get("inclusive-dates")
         commutation = request.POST.get("commutation")
         specify = request.POST.get("specify")
+        details = request.POST.get("details")
+        print(details)
 
         parts = [p.strip() for p in inclusive_dates.split(",") if p.strip()]
         print(parts)
@@ -161,7 +163,8 @@ def user_dashboard(request):
         if not lt:
             return redirect(f"{reverse('user_dasboard')}?error=invalid_leave_type")
 
-        ld = LeaveTypeDetails.objects.filter(leave_types=lt).first()
+        ld = LeaveTypeDetails.objects.filter(id=details, leave_types=lt).first()
+        print(ld)
 
         lv = LEAVE(
             users=user,
@@ -241,15 +244,16 @@ def user_dashboard(request):
         }
 
         lt = LEAVE_TYPES.objects.all().values("id", "leave_type")
+        notif = StatusNotif.objects.filter(user=user)
 
         return render(request, "dashboard.html", {
             "user": user,
             "leave": user_leave,
             "leave_status": leave_status,
-            "lt": lt
+            "lt": lt,
+            "notif": notif
         })
 
-    
 def security(request):
     if request.method == "GET":
         user_id = request.session.get("user_id")
@@ -422,13 +426,15 @@ def admin_edit_user(request):
             user_type = request.POST.get("user_type")
             picture = request.FILES['picture']
             employee_type = request.POST.get("employee_type")
+            designation = request.POST.get("designation")
+            salary = request.POST.get("salary")
             user = USERS(
                 firstname = firstname, lastname = lastname, middlename = middlename,
                 suffix = suffix, email = email, birthday = birthday,
                 phone_number = phone_number, department = department,
                 job_title = job_title, username = username, password = password,
-                picture = picture, employee_type = employee_type, user_type = user_type                                                    
-                
+                picture = picture, employee_type = employee_type, user_type = user_type,
+                designation = designation, salary = salary
             )
             user.save()
             return redirect("admin_manage_users")
@@ -450,6 +456,8 @@ def admin_edit_user(request):
             password = request.POST.get("password")
             user_type = request.POST.get("user_type")
             employee_type = request.POST.get("employee_type")
+            designation = request.POST.get("designation")
+            salary = request.POST.get("salary")
             user.firstname = firstname
             user.lastname = lastname
             user.middlename = middlename
@@ -463,6 +471,8 @@ def admin_edit_user(request):
             user.password = password
             user.user_type = user_type
             user.employee_type = employee_type
+            user.designation = designation
+            user.salary = salary
             if 'picture' in request.FILES:
                 user.picture = request.FILES['picture']
             user.save()
@@ -648,6 +658,7 @@ def getLeaveRequestsPerMonth(year=None):
         months[m['month'] - 1] = m['total']
 
     return months
+
 def hr_dasboard(request):
     if request.method == "GET":
         if checkIfHr(request): return redirect("login")
@@ -923,6 +934,7 @@ def getLeaveReq(request):
 
         lv["fullname"] = f"{leave.users.firstname} {leave.users.middlename} {leave.users.lastname}"
         lv["job_title"] = leave.users.job_title
+        lv["salary"] = leave.users.salary
         lv["department"] = leave.users.department
         lv["picture"] = leave.users.picture.url if leave.users.picture else None
         lv["credit"] = credit
@@ -953,10 +965,10 @@ def action(request):
         leave.disapproved_due_to = disapprovalReason2
         leave.date_of_action = date_of_action
 
-        # Approval logic
         if disapprovalReason2 == "" and approved_days:
             if leave.status != "approved":
                 leave.status = "approved"
+                notif = StatusNotif(user=leave.users, leave=leave, current_status="approved")
                 deducted = credit("minus", leave.users, leave.days_count())
                 if deducted:
                     msg = f"Deducted {leave.days_count()} days from {leave.users.firstname}'s credit."
@@ -964,11 +976,13 @@ def action(request):
                     msg = f"Not enough balance for {leave.users.firstname}."
         elif disapprovalReason2 != "":
             leave.status = "rejected"
+            notif = StatusNotif(user=leave.users, leave=leave, current_status="rejected")
             msg = f"Leave rejected for {leave.users.firstname}."
         else:
             msg = "No action taken."
 
         leave.save()
+        notif.save()
 
         return JsonResponse({
             "status": True,

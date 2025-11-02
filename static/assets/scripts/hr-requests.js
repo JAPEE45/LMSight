@@ -44,6 +44,8 @@ async function showLeaveModal(id) {
   document.getElementById("user_fullname").textContent = json.leave.fullname;
   document.getElementById("jobTitleModal").textContent =
     json.leave.job_title.toUpperCase();
+  document.getElementById("salaryModal").textContent =
+    json.leave.salary;
   document.getElementById("departmentModal").textContent =
     json.leave.department.toUpperCase();
   document.getElementById("leaveTypeModal").value = json.leave.leave_type;
@@ -389,7 +391,7 @@ function downloadPDF(details) {
     yPosition
   );
   doc.text(
-    `4. POSITION: ${getData.leave.position || ""}`,
+    `4. POSITION: ${getData.leave.job_title || ""}`,
     pageWidth / 2,
     yPosition
   );

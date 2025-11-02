@@ -501,6 +501,14 @@ tr:nth-child(even) {
   justify-content: center;
 }
 
+#noImage {
+  display: none;
+  font-size: 0.7rem;
+  font-style: italic;
+  color: red;
+  font-weight: 550;
+}
+
 .success-checkmark::after {
   content: "✓";
   color: white;
