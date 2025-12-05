@@ -1,0 +1,159 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome User - Dashboard</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- <link rel="stylesheet" href="../static/assets/styles/cdn/all.min.css">
+    <link rel="stylesheet" href="../static/assets/styles/cdn/bootstrap.min.css"> -->
+
+    <link
+      rel="stylesheet"
+      href="{% static '../static/assets/styles/components/sidebar.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static '../static/assets/styles/components/navbar.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static '../static/assets/styles/components/notification.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static '../static/assets/styles/layouts/user.css' %}"
+    />
+  </head>
+  <body>
+    <div class="sidebar" id="sidebar">
+      <h2>ALIS</h2>
+
+      <div class="button-cont">
+        <a id="dashboard_nav" href="{% url 'user_dasboard' %}" class="active">
+          <i class="fa-solid fa-table-columns me-1"></i> Dashboard
+        </a>
+      </div>
+
+      <!-- <div class="button-cont">
+        <a id="requests_nav" class="applyLeaveBtn ">
+          <i class="fa-solid fa-plus"></i> Apply Leave
+        </a>
+      </div> -->
+
+      <div class="button-cont">
+        <a id="" href="{% url 'security' %}">
+          <i class="fa-solid fa-user"></i> Security
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a href="{% url 'logout' %}" class="">
+          <i class="fa-solid fa-right-from-bracket me-1"></i>
+          Log Out
+        </a>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="main-header">
+        <div class="d-flex align-items-center">
+          <button class="mobile-toggle me-3" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+          </button>
+          <h1 class="nav-title">Welcome {{user.firstname}}!</h1>
+        </div>
+        <div class="button-main-cont">
+          <div class="button-cont">
+            <button class="notif-btn" id="notification-btn">
+              <i class="fa-solid fa-bell"></i>
+            </button>
+            <p class="popup">Notification</p>
+            <div class="notif-marker active"></div>
+            <!-- Notifications Panel -->
+            <div class="notifications-panel" id="notificationsPanel">
+              <div class="notifications-header">
+                <h5>Notifications</h5>
+              </div>
+              <div class="notifications-list">
+                {% for i in notif %}
+                <div class="notification-item">
+                  <div
+                    class="notification-avatar"
+                    style="width: 50px; height: 50px"
+                  >
+                    <img
+                      src="/media/{{i.user.picture}}"
+                      width="50"
+                      height="50"
+                      style="border-radius: 100px"
+                    />
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>{{i.user.firstname}} {{i.user.lastname}}</strong
+                      >'s request has been {{i.leave.status}} for
+                      {{i.leave.leave_type}}.
+                    </p>
+                    <span class="notification-time">{{i.createdAt}}</span>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div class="button-main-cont">
+            <div class="main-img-cont">
+              <div class="img-cont">
+                <img
+                  src="../media/{{user.picture}}"
+                  alt=""
+                  id="profilePreview"
+                />
+              </div>
+            </div>
+            <div class="name-cont">
+              <p class="name">
+                {{user.firstname}} {{user.middlename}} {{user.lastname}}
+              </p>
+              <p class="title text-muted">Employee</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="dashboardSection" class="dashboard-section">
+        <div class="row mb-4">
+          <div class="col-lg-4 col-md-6 mb-3">
+            <div
+              class="stats-card profile green"
+              data-bs-toggle="tooltip"
+              data-bs-placement="bottom"
+              title="Total number of leave days taken this month"
+            >
+              <div class="leave-name">Vacation Leave</div>
+              <div class="stats-subtitle">10 days available</div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+    </div>
+
+    <script src="../static/assets/scripts/cdn/bootstrap.bundle.min.js"></script>
+    <script src="../static/assets/scripts/user.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script> -->
+    <script src="../static/assets/scripts/popups/sidebar.js"></script>
+    <script src="{% static '../static/assets/scripts/popups/notification.js' %}"></script>
+  </body>
+</html>

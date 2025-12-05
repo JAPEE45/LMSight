@@ -26,7 +26,8 @@ class USERS(BaseModel):
     password = models.TextField(null=True)
     user_type = models.TextField(null=True)
     credit = models.TextField(null=True, default="10.0")
-    
+    designation = models.TextField(null=True, blank=True)
+    salary = models.TextField(null=True, blank=True)
     last_login = models.DateTimeField(null=True, blank=True)
     last_credit_update = models.DateTimeField(null=True, blank=True)  
 

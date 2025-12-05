@@ -301,7 +301,7 @@
                 <option value="Co-terminous" {% if user.employee_type == "Co-terminous" %} selected {% endif %}>Co-terminous</option>
               </select>
             </div>
-            <div class="col-md-4 mb-3">
+            <div class="col-md-3 mb-3">
               <label class="form-label">Section</label>
               <select class="form-control" name="user_type" required>
                 <option disabled selected>--Please Select--</option>
@@ -316,15 +316,21 @@
                 <option value="HRMO">HRMO</option>
               </select>
             </div>
-            <div class="col-md-4 mb-3">
+            <div class="col-md-3 mb-3">
               <label class="form-label">Designation</label>
               <input type="text" class="form-control" name="designation" value="" required>
             </div>
-            <div class="col-md-4 mb-3">
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Salary</label>
+              <input type="text" class="form-control" name="salary" value="" required>
+            </div>
+            <div class="col-md-3 mb-3">
               <label class="form-label">User Role</label>
               <select class="form-control" name="user_type" required>
                 <option disabled selected>--Please Select--</option>
                 <option value="hr" {% if user.user_type == "hr" %} selected {% endif %}>HR</option>
+                <option value="supervisor" {% if user.user_type == "supervisor" %} selected {% endif %}>Supervisor</option>
+                <option value="mayor" {% if user.user_type == "mayor" %} selected {% endif %}>Mayor</option>
                 <option value="admin" {% if user.user_type == "admin" %} selected {% endif %}>Admin</option>
                 <option value="employee" {% if user.user_type == "employee" %} selected {% endif %}>Employee</option>
               </select>

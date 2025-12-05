@@ -101,8 +101,11 @@ def login(request):
         username = request.POST.get("username")
         password = request.POST.get("password")
         usr = USERS.objects.filter(username = username, password = password).first()
-       
+        print(username)
+        print(password)
+        print(usr)
         if not usr:
+            print(usr)
             return render(request, "login_interface.html", {"error":True})
         usr.update_login_time()
         if usr.user_type == "employee":
@@ -111,6 +114,10 @@ def login(request):
         elif usr.user_type == "admin":
             request.session["user_id"] = usr.id
             return redirect("admins")
+        elif usr.user_type == "supervisor":
+            print('sypervisor ini')
+            request.session["user_id"] = usr.id
+            return redirect("supervisor")    
         elif usr.user_type == "hr":
             request.session["user_id"] = usr.id
             return redirect("hr")    
@@ -135,6 +142,8 @@ def user_dashboard(request):
         inclusive_dates = request.POST.get("inclusive-dates")
         commutation = request.POST.get("commutation")
         specify = request.POST.get("specify")
+        details = request.POST.get("details")
+        print(details)
 
         parts = [p.strip() for p in inclusive_dates.split(",") if p.strip()]
         print(parts)
@@ -161,7 +170,8 @@ def user_dashboard(request):
         if not lt:
             return redirect(f"{reverse('user_dasboard')}?error=invalid_leave_type")
 
-        ld = LeaveTypeDetails.objects.filter(leave_types=lt).first()
+        ld = LeaveTypeDetails.objects.filter(id=details, leave_types=lt).first()
+        print(ld)
 
         lv = LEAVE(
             users=user,
@@ -241,15 +251,16 @@ def user_dashboard(request):
         }
 
         lt = LEAVE_TYPES.objects.all().values("id", "leave_type")
+        notif = StatusNotif.objects.filter(user=user)
 
         return render(request, "dashboard.html", {
             "user": user,
             "leave": user_leave,
             "leave_status": leave_status,
-            "lt": lt
+            "lt": lt,
+            "notif": notif
         })
 
-    
 def security(request):
     if request.method == "GET":
         user_id = request.session.get("user_id")
@@ -311,6 +322,31 @@ def user_instruction(request):
             return redirect("login")
         return render(request, "instructions.html")
 
+def leave_balances(request):
+    if request.method == "GET":
+        usr = request.session.get("user_id")
+        if not usr:
+            return redirect("login")
+
+        user = USERS.objects.filter(id=usr).first()
+        if not user:
+            return render(request, "login_interface.html", {"error": True})
+
+        lt = LEAVE_TYPES.objects.all().values("id", "leave_type")
+        notif = StatusNotif.objects.filter(user=user)
+
+        user_id = request.session.get("user_id")
+        user = USERS.objects.filter(id=user_id).first()
+        if not user:
+            return redirect("login")
+        return render(request, "leave_balances.html", {
+            "user": user,
+            "lt": lt,
+            "notif": notif
+        })
+
+
+
  # -> [10,0 10] : para sa graph
 def count_user_type(user) -> []:
     arr = [0,0,0]
@@ -323,6 +359,87 @@ def count_user_type(user) -> []:
     arr[1] = (arr[1] /total) *100 # hr
     arr[2] = (arr[2] /total) *100 # admin
     return arr
+
+def supervisor_dashboard(request):
+    if request.method == "GET":
+        
+        user = USERS.objects.filter(id = request.session.get("user_id")).first()
+        
+        s = {}
+        s["weekly"] = getWeeklyLeave()
+        s['monthly'] = getLeaveByMonth()
+        s['upcoming'] = getUpcomingLeaves()
+        s['user'] = user
+       
+        s['history'] = getLeaveHistory()
+        b = getLeaveCountByType()
+        lb = []
+        val = []
+        for i in b:
+            lb.append(i['type'])
+            val.append(i['total'])
+        s['leave_type'] = json.dumps([lb, val])
+     
+        s['status'] = getLeaveCountByStatus()
+        
+        dep = getLeaveMatrix(lb)
+        s['dep'] = dep
+        s['perMonth'] = getLeaveRequestsPerMonth()
+        s['all_leave'] = getLeaveDaysPerMonth()
+        notif = get_status_notification()
+        s['notif'] = notif
+        # print(allLeave)
+        return render(request, 'supervisor/dashboard.html',s )
+
+def supervisor_requests(request):
+    if request.method == "GET":
+        user = USERS.objects.filter(id = request.session.get("user_id")).first()
+        req = LEAVE.objects.filter(status = "pending")
+        dt = list(req)
+        # for i in dt:
+        #     print("requests ini: ",i.leave_details.details)
+        notif = get_status_notification()
+        return render(request, 'supervisor/requests.html', {'user':user, 'request':dt, "notif" : notif})
+
+def supervisor_emp_profile(request, userID):
+    emp = USERS.objects.filter(id=userID).first()
+    print("baby ko ganda ", emp)
+    if not emp:
+        print("hannah not found")
+        return JsonResponse({"error": "Employee not found"}, status=404)
+
+    hr = USERS.objects.filter(id=request.session.get("user_id")).first()
+    notif = get_status_notification()
+    total_leave_days = (
+        LEAVE.objects.filter(users=emp, status="approved")
+        .aggregate(total=Sum("number_of_days_applied"))["total"] or 0
+    )
+
+    if request.method == "GET":
+        print("baby ko ganda ganda hannah uwu: ", get_monthly_leave_credits(userID))
+        # 🟢 Renders the normal employee profile page
+        return render(
+            request,
+            "supervisor/emp_profile.html",
+            {
+                "hr": hr,
+                "user": emp,
+                "notif": notif,
+                "leave_credits": get_monthly_leave_credits(userID),
+                "leave_dates": get_user_leave_string(userID),
+                "total_leave_days": total_leave_days,
+            },
+        )
+
+    if request.method == "POST":
+        print("baby hannah", userID)
+        return JsonResponse({
+            "leave_credits": get_monthly_leave_credits(userID),
+            "leave_dates": get_user_leave_string(userID),
+            "total_leave_days": total_leave_days,
+        })
+
+
 def admin(request):
     if request.method == "GET":
         user_id = request.session.get("user_id")
@@ -422,13 +539,15 @@ def admin_edit_user(request):
             user_type = request.POST.get("user_type")
             picture = request.FILES['picture']
             employee_type = request.POST.get("employee_type")
+            designation = request.POST.get("designation")
+            salary = request.POST.get("salary")
             user = USERS(
                 firstname = firstname, lastname = lastname, middlename = middlename,
                 suffix = suffix, email = email, birthday = birthday,
                 phone_number = phone_number, department = department,
                 job_title = job_title, username = username, password = password,
-                picture = picture, employee_type = employee_type, user_type = user_type                                                    
-                
+                picture = picture, employee_type = employee_type, user_type = user_type,
+                designation = designation, salary = salary
             )
             user.save()
             return redirect("admin_manage_users")
@@ -450,6 +569,8 @@ def admin_edit_user(request):
             password = request.POST.get("password")
             user_type = request.POST.get("user_type")
             employee_type = request.POST.get("employee_type")
+            designation = request.POST.get("designation")
+            salary = request.POST.get("salary")
             user.firstname = firstname
             user.lastname = lastname
             user.middlename = middlename
@@ -463,6 +584,8 @@ def admin_edit_user(request):
             user.password = password
             user.user_type = user_type
             user.employee_type = employee_type
+            user.designation = designation
+            user.salary = salary
             if 'picture' in request.FILES:
                 user.picture = request.FILES['picture']
             user.save()
@@ -648,6 +771,7 @@ def getLeaveRequestsPerMonth(year=None):
         months[m['month'] - 1] = m['total']
 
     return months
+
 def hr_dasboard(request):
     if request.method == "GET":
         if checkIfHr(request): return redirect("login")
@@ -729,6 +853,7 @@ def hr_emp_reports(request):
 def hr_emp_profile(request, userID):
     emp = USERS.objects.filter(id=userID).first()
     if not emp:
+        print("hannah teodoro not found")
         return JsonResponse({"error": "Employee not found"}, status=404)
 
     hr = USERS.objects.filter(id=request.session.get("user_id")).first()
@@ -923,6 +1048,7 @@ def getLeaveReq(request):
 
         lv["fullname"] = f"{leave.users.firstname} {leave.users.middlename} {leave.users.lastname}"
         lv["job_title"] = leave.users.job_title
+        lv["salary"] = leave.users.salary
         lv["department"] = leave.users.department
         lv["picture"] = leave.users.picture.url if leave.users.picture else None
         lv["credit"] = credit
@@ -953,10 +1079,10 @@ def action(request):
         leave.disapproved_due_to = disapprovalReason2
         leave.date_of_action = date_of_action
 
-        # Approval logic
         if disapprovalReason2 == "" and approved_days:
             if leave.status != "approved":
                 leave.status = "approved"
+                notif = StatusNotif(user=leave.users, leave=leave, current_status="approved")
                 deducted = credit("minus", leave.users, leave.days_count())
                 if deducted:
                     msg = f"Deducted {leave.days_count()} days from {leave.users.firstname}'s credit."
@@ -964,11 +1090,13 @@ def action(request):
                     msg = f"Not enough balance for {leave.users.firstname}."
         elif disapprovalReason2 != "":
             leave.status = "rejected"
+            notif = StatusNotif(user=leave.users, leave=leave, current_status="rejected")
             msg = f"Leave rejected for {leave.users.firstname}."
         else:
             msg = "No action taken."
 
         leave.save()
+        notif.save()
 
         return JsonResponse({
             "status": True,

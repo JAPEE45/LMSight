@@ -20,6 +20,53 @@ body {
   margin-bottom: var(--margin-bottom-2);
 }
 
+.stats-card {
+  background: white;
+  border-radius: var(--border-radius-card);
+  padding: var(--padding-2);
+  box-shadow: var(--shadow-1);
+  text-align: center;
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.stats-card.blue {
+  background: linear-gradient(135deg, var(--twitter-blue), #0056a3);
+  color: white;
+}
+
+.stats-card.green {
+  background: linear-gradient(135deg, var(--green-color), #1a5f2e);
+  color: white;
+}
+
+.stats-card.yellow {
+  background: linear-gradient(135deg, var(--yellow-color), #b8930b);
+  color: white;
+}
+
+.stats-number {
+  font-size: 48px;
+  font-weight: bold;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.stats-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.stats-subtitle {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+
 .chart-card {
   background-color: white;
   border-radius: var(--border-radius-card);

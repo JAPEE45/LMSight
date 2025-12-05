@@ -1,0 +1,301 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ALIS - Employee Profile</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{% static 'assets/styles/components/sidebar.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static '/assets/styles/components/navbar.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'assets/styles/components/notification.css' %}"
+    />
+    <link rel="stylesheet" href="{% static 'assets/styles/layouts/hr.css' %}" />
+  </head>
+  <body>
+    <div class="sidebar" id="sidebar">
+      <h2>ALIS</h2>
+
+      <div class="button-cont">
+        <a id="dashboard_nav" href="{% url 'supervisor' %}">
+          <i class="fa-solid fa-table-columns me-1"></i> Dashboard
+        </a>
+      </div>
+      <div class="button-cont">
+        <a id="requests_nav" href="{% url 'supervisor_request' %}" class="active">
+          <i class="fa-solid fa-file-circle-check"></i> Pending Requests
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a id="" href="{% url 'employee_reports' %}">
+          <i class="fa-solid fa-file-csv"></i> Reports
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a id="" href="{% url 'hr_security' %}">
+          <i class="fa-solid fa-user"></i> Security
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a href="{% url 'logout' %}" class="">
+          <i class="fa-solid fa-right-from-bracket me-1"></i>
+          Log Out
+        </a>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="main-header">
+        <div class="d-flex align-items-center">
+          <button class="mobile-toggle me-3" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+          </button>
+          <h1 class="nav-title pending-request-h1">Employee Profile</h1>
+        </div>
+        <div class="button-main-cont">
+          <div class="button-cont">
+            <button class="notif-btn" id="notification-btn">
+              <i class="fa-solid fa-bell"></i>
+            </button>
+            <p class="popup">Notification</p>
+            <div class="notif-marker active"></div>
+            <div class="notifications-panel" id="notificationsPanel">
+              <div class="notifications-header">
+                <h5>Notifications</h5>
+              </div>
+              <div class="notifications-list">
+                {% for i in notif %}
+                <div class="notification-item">
+                  <div
+                    class="notification-avatar"
+                    style="width: 50px; height: 50px"
+                  >
+                    <img
+                      src="/media/{{i.user.picture}}"
+                      width="50"
+                      height="50"
+                      style="border-radius: 100px"
+                    />
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>{{i.user.firstname}} {{i.user.lastname}}</strong>
+                      has requested for {{i.leave.leave_type}}.
+                    </p>
+                    <span class="notification-time">{{i.createdAt}}</span>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div class="button-main-cont">
+            <div class="main-img-cont">
+              <div class="img-cont">
+                <img src="{{hr.picture.url}}" alt="" id="profilePreview" />
+              </div>
+            </div>
+            <div class="name-cont">
+              <p class="name">
+                {{hr.firstname}} {{hr.middlename}} {{hr.lastname}}
+              </p>
+              <p class="title text-muted">HR</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="user-info">
+        <div class="user-avatar">
+          <div class="main-img-cont">
+            <div class="img-cont" style="box-shadow: 0 0 0.1rem white">
+              <img src="{{user.picture.url}}" alt="" id="profilePreview" />
+            </div>
+          </div>
+        </div>
+        <span style="font-weight: 500">
+          {{user.firstname}} {{user.middlename}} {{user.lastname}}
+          {{user.suffix}}
+        </span>
+        <span style="margin-left: auto; font-weight: 500">
+          {{user.department}}
+        </span>
+      </div>
+
+      <div class="head d-flex align-items-center justify-content-between">
+        <h3 style="color: var(--primary-background); margin-bottom: 1rem">
+          Leave Credits as of <span class="currentMonth"></span>
+          <span id="currentYear"></span>
+        </h3>
+        <button class="btn btn-primary" onclick="exportLedgerToExcel()">
+          Generate Monthly Report
+        </button>
+      </div>
+      <div class="row stats-cards">
+        <div class="col-lg-4 col-md-6 mb-3">
+          <div class="stats-card earned">
+            <h3>Earned Leave</h3>
+            <div class="number">{{leave_credits.total_credits}} days</div>
+            <div class="subtitle">
+              (as of <span class="currentMonth"></span>)
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-3">
+          <div class="stats-card used">
+            <h3>Used Leave</h3>
+            <div class="number">{{leave_credits.used}} days</div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-3">
+          <div class="stats-card remaining">
+            <h3>Remaining Balance</h3>
+            <div class="number">{{leave_credits.remaining}} days</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vacation-section">
+        <h2>Vacation Leave Utilization</h2>
+        <div class="chart-container">
+          <div class="chart">
+            <div class="donut-chart">
+              <div
+                style="
+                  position: absolute;
+                  color: var(--primary-background);
+                  font-weight: bold;
+                  z-index: 10;
+                "
+              >
+                <div style="text-align: center">
+                  <div class="remaining-percent" style="font-size: 1.2rem">0%</div>
+                  <div class="used-percent" style="font-size: 0.8rem">
+                    0%
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="chart-labels">
+            <div class="chart-info">
+              <h4>Date & Action Take on Application for Leave</h4>
+              <p>{{leave_dates}}</p>
+            </div>
+            <div class="chart-info">
+              <h4>Monthly Accrual Rası</h4>
+              <p>{{leave_credits.total_credits}} days/month</p>
+            </div>
+            <div class="chart-info">
+              <h4>Next Accrual Date</h4>
+              <p><span id="nextAccrual"></span> 1, 2025</p>
+            </div>
+            <div class="legend">
+              <div class="legend-item">
+                <div class="legend-color remaining"></div>
+                <span
+                  ><strong>Remaining:</strong> {{leave_credits.remaining}}
+                  days</span
+                >
+                <span class="percentage"
+                  >{{leave_credits.remaining_percent}}%</span
+                >
+              </div>
+              <div class="legend-item">
+                <div class="legend-color used"></div>
+                <span><strong>Used:</strong> {{leave_credits.used}} days</span>
+                <span class="percentage">{{leave_credits.used_percent}}%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <script src="{% static 'assets/scripts/leave_ledger.js' %}"></script>
+    <script>
+      
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+          const cookies = document.cookie.split(";");
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            
+            if (cookie.substring(0, name.length + 1) === name + "=") {
+              cookieValue = decodeURIComponent(
+                cookie.substring(name.length + 1)
+              );
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }
+
+      async function getLeaveDatas() {
+        
+        const userID = localStorage.getItem("selected");
+        console.log(userID)
+        const response = await fetch(`/supervisor/request/employee-profile/${userID}`, {
+          method: "POST",
+          headers: {
+            "X-CSRFToken": getCookie("csrftoken"),
+          },
+        });
+
+        const data = await response.json();
+        console.log("hannah kyut: ", data);
+        console.log("owo: ", data.leave_credits.used_percent)
+
+        const usedPercent = data.leave_credits.used_percent;
+        const remainingPercent = data.leave_credits.remaining_percent;
+        console.log("usedPercent: ", usedPercent);
+        updateDonutChart(usedPercent, remainingPercent);
+      }
+
+      function updateDonutChart(usedPercent, remainingPercent) {
+        const donut = document.querySelector(".donut-chart");
+        const usedText = document.querySelector(".used-percent");
+        const remainingText = document.querySelector(".remaining-percent");
+
+        const usedDeg = (usedPercent / 100) * 360;
+
+        donut.style.background = `conic-gradient(
+          #238b45 0deg ${usedDeg}deg,
+          #8b5cf6 ${usedDeg}deg 360deg
+        )`;
+
+        usedText.textContent = `${usedPercent}%`;
+        remainingText.textContent = `${remainingPercent}%`;
+      }
+      document.addEventListener("DOMContentLoaded", getLeaveDatas);
+    </script>
+
+    <script src="{% static 'assets/scripts/popups/sidebar.js' %}"></script>
+    <script src="{% static 'assets/scripts/popups/notification.js' %}"></script>
+  </body>
+</html>

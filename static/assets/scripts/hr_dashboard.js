@@ -87,29 +87,7 @@ const monthlyChart = new Chart(monthlyCtx, {
 });
 
 // Sample ongoing leave data
-const ongoingLeaveData = [
-    {
-        name: "Divine R. Torcuator",
-        department: "IT",
-        leaveType: "Sick Leave",
-        startDate: "June 5, 2025",
-        endDate: "June 10, 2025"
-    },
-    {
-        name: "Maria Santos",
-        department: "HR",
-        leaveType: "Vacation Leave",
-        startDate: "June 12, 2025",
-        endDate: "June 16, 2025"
-    },
-    {
-        name: "John Doe",
-        department: "Finance",
-        leaveType: "Emergency Leave",
-        startDate: "June 18, 2025",
-        endDate: "June 20, 2025"
-    }
-];
+const ongoingLeaveData = [];
 
 let currentLeaveIndex = 0;
 

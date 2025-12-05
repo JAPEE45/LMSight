@@ -1,3 +1,4 @@
+console.log("im here")
 let selectedReasons = [];
 let getData;
 
@@ -215,10 +216,6 @@ function showRejectionModal() {
     document.getElementById("leaveModal")
   );
   leaveModal.hide();
-
-  const today = new Date().toISOString().split("T")[0];
-
-  document.getElementById("asOfDate").innerText = getStringDate(today);
 
   setTimeout(() => {
     const rejectionModal = new bootstrap.Modal(

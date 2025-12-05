@@ -154,5 +154,12 @@ document.getElementById("leave_type").addEventListener("change",(e)=>{
 })
 details.addEventListener("change", function () {
   document.getElementById("specify-input").value = "";
-  document.querySelector(".specify-cont").classList.add("show");
+  if (details.value == "3") {
+    
+    document.querySelector(".specify-cont").classList.remove("show");
+  }
+  else {
+    document.querySelector(".specify-cont").classList.add("show");
+  }
+  console.log(details.value);
 });

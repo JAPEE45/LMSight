@@ -8,6 +8,7 @@ urlpatterns = [
     path("hr/change_password/", views.change_password, name="hr_change_password"),
     path("user/profile/", views.user_employee_profile, name="user_employee_profile"),
     path("user/omnibus/", views.user_omnibus, name="omnibus"),
+    path("user/leave-balances/", views.leave_balances, name="leaveBalances"),
     path("user/instructions/", views.user_instruction, name="instructions"),
     path("admin/", views.admin, name="admins"),
     path("admin/manage_users", views.admin_manage_users, name="admin_manage_users"),
@@ -23,6 +24,15 @@ urlpatterns = [
     path("hr/reports", views.hr_emp_reports, name="employee_reports"),
     path("hr/security", views.hr_security, name="hr_security"),
     path("hr/request/employee-profile/<int:userID>", views.hr_emp_profile, name="emp-profile"),
+
+    # supervisor
+    path("supervisor/", views.supervisor_dashboard, name="supervisor"),
+    path("supervisor/request", views.supervisor_requests, name="supervisor_request"),
+    path("supervisor/request/employee-profile/<int:userID>", views.supervisor_emp_profile, name="supervisor_emp_profile"),
+    path("supervisor/security", views.hr_security, name="supervisor_security"),
+    # path("hr/request/employee-profile/<int:userID>", views.hr_emp_profile, name="emp-profile"),
+
+    # api
     path("api/hr/request", views.getRequestFilter),
     path("api/hr/leave", views.getLeaveReq),
     path("api/hr/leave_ledger/<int:user_id>", views.leave_ledger),

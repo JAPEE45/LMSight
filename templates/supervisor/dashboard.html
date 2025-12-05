@@ -1,0 +1,301 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ALIS - Supervisor Dashboard</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+
+    <!-- <link rel="stylesheet" href="../../static/assets/styles/cdn/bootstrap.min.css">
+    <link rel="stylesheet" href="../../static/assets/styles/cdn/all.min.css"> -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+    <link
+      rel="stylesheet"
+      href="{% static './assets/styles/components/sidebar.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static './assets/styles/components/navbar.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static './assets/styles/components/notification.css' %}"
+    />
+    <link rel="stylesheet" href="{% static './assets/styles/layouts/hr.css' %}" />
+  </head>
+  <body>
+    <div class="sidebar" id="sidebar">
+      <h2>ALIS</h2>
+
+      <div class="button-cont">
+        <a id="dashboard_nav" href="#" class="active">
+          <i class="fa-solid fa-table-columns me-1"></i> Dashboard
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a id="requests_nav" href="{% url 'supervisor_request' %}">
+          <i class="fa-solid fa-file-circle-check"></i> Pending Requests
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a id="requests_nav" href="{% url 'supervisor_request' %}">
+          <i class="fa-solid fa-file-circle-check"></i> Employee Lists
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a id="" href="{% url 'hr_security' %}">
+          <i class="fa-solid fa-user"></i> Security
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a href="{% url 'logout' %}" class="">
+          <i class="fa-solid fa-right-from-bracket me-1"></i>
+          Log Out
+        </a>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Top Navigation -->
+      <div class="main-header">
+        <div class="d-flex align-items-center">
+          <button class="mobile-toggle me-3" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+          </button>
+          <h1 class="nav-title">Supervisor Dashboard</h1>
+        </div>
+        <div class="button-main-cont">
+          <div class="button-cont">
+            <button class="notif-btn" id="notification-btn">
+              <i class="fa-solid fa-bell"></i>
+            </button>
+            <p class="popup">Notification</p>
+            <div class="notif-marker active"></div>
+            <!-- Notifications Panel -->
+            <div class="notifications-panel" id="notificationsPanel">
+              <div class="notifications-header">
+                <h5>Notifications</h5>
+              </div>
+              <div class="notifications-list">
+                {% for i in notif %}
+                <div class="notification-item">
+                  <div
+                    class="notification-avatar"
+                    style="width: 50px; height: 50px"
+                  >
+                    <img
+                      src="/media/{{i.user.picture}}"
+                      width="50"
+                      height="50"
+                      style="border-radius: 100px"
+                    />
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>{{i.user.firstname}} {{i.user.lastname}}</strong>
+                      has requested for {{i.leave.leave_type}}.
+                    </p>
+                    <span class="notification-time">{{i.createdAt}}</span>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div class="button-main-cont">
+            <div class="main-img-cont">
+              <div class="img-cont">
+                <img
+                  src="../media/{{user.picture}}"
+                  alt=""
+                  id="profilePreview"
+                />
+              </div>
+            </div>
+            <div class="name-cont">
+              <p class="name">
+                {{user.firstname}} {{user.middlename}} {{user.lastname}}
+              </p>
+              <p class="title text-muted">SUPERVISOR</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-row" style="display: block">
+        <div class="row mb-4">
+          <div class="col-lg-4 col-md-6 mb-3">
+            <div class="stats-card profile blue">
+              <div class="stats-number">0</div>
+              <div class="stats-title">Total Employees</div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-3">
+            <div class="stats-card profile green">
+              <div class="stats-number">0</div>
+              <div class="stats-title">Employees Currently on Leave</div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-3">
+            <div
+              class="stats-card yellow"
+              data-bs-toggle="tooltip"
+              data-bs-placement="bottom"
+              title="Leave requests awaiting approval"
+            >
+              <div class="stats-number">0</div>
+              <div class="stats-title filters">Pending Requests</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- datas -->
+      <p id="weeklyData" style="display: none">{{weekly}}</p>
+      <p id="monthlyData" style="display: none">{{monthly}}</p>
+      <p id="leave_type_data" style="display: none">{{leave_type}}</p>
+      <p id="leave_status" style="display: none">{{status}}</p>
+      <p id="departmentData" style="display: none">{{dep}}</p>
+      <p id="all_leave" style="display: none">{{all_leave}}</p>
+      <div class="row" style="row-gap: 20px">
+        <div class="col-lg-8">
+          <div class="table-card">
+            <h5>Upcoming Leave</h5>
+            <div class="table-cont">
+              <table class="table custom-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>From</th>
+                    <th>To</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for u in upcoming %}
+                  <tr>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="employee-avatar">
+                          <i class="fas fa-user"></i>
+                        </div>
+                        {{u.users.firstname}} {{u.users.middlename}}
+                        {{u.users.lastname}}
+                      </div>
+                    </td>
+                    <td>{{u.leave_type}}</td>
+                    <td>{{u.start_date}}</td>
+                    <td>{{u.end_date}}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="ongoing-leave-card">
+            <div class="ongoing-header">
+              <h6>Ongoing Leave</h6>
+              <span class="sick-leave-badge" id="leaveTypeBadge">Null</span>
+            </div>
+
+            <div class="ongoing-content" id="ongoingContent">
+              <div class="ongoing-profile">
+                <div class="ongoing-avatar">
+                  <i class="fas fa-user"></i>
+                </div>
+                <div class="ongoing-name" id="employeeName">Null</div>
+                <div class="ongoing-dept" id="employeeDept">Null</div>
+              </div>
+
+              <div class="date-range">
+                <div class="date-item">
+                  <div class="date-label">Start From</div>
+                  <div class="date-value" id="startDate">Null</div>
+                </div>
+                <div class="date-item">
+                  <div class="date-label">End To</div>
+                  <div class="date-value" id="endDate">Null</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="nav-arrows">
+              <button
+                class="arrow-btn"
+                id="prevBtn"
+                onclick="navigateLeave(-1)"
+              >
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <button class="arrow-btn" id="nextBtn" onclick="navigateLeave(1)">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+
+            <!-- Progress indicator -->
+            <div class="leave-indicators">
+              <span class="indicator active" data-index="0"></span>
+              <span class="indicator" data-index="1"></span>
+              <span class="indicator" data-index="2"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-card">
+        <div class="card-header">
+          <h2 class="card-title">Leave History</h2>
+        </div>
+        <div class="table-container">
+          <table class="">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Days</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for h in history %}
+              <tr>
+                <td>{{h.start_date}}</td>
+                <td>{{h.leave_type}}</td>
+                <td>{{h.getDay}}</td>
+                <td class="status-approved">Approved</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="../../static/assets/scripts/cdn/bootstrap.bundle.min.js"></script> -->
+    <script src="{% static './assets/scripts/supervisor_dashboard.js' %}"></script>
+    <script src="{% static './assets/scripts/popups/sidebar.js' %}"></script>
+    <script src="{% static './assets/scripts/popups/notification.js' %}"></script>
+    <script src="{% static './assets/scripts/popups/tooltip.js' %}"></script>
+  </body>
+</html>

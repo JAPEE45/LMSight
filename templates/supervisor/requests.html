@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -18,24 +20,24 @@
 
     <link
       rel="stylesheet"
-      href="../../static/assets/styles/components/sidebar.css"
+      href="{% static './assets/styles/components/sidebar.css' %}"
     />
     <link
       rel="stylesheet"
-      href="../../static/assets/styles/components/navbar.css"
+      href="{% static './assets/styles/components/navbar.css' %}"
     />
     <link
       rel="stylesheet"
-      href="../../static/assets/styles/components/notification.css"
+      href="{% static './assets/styles/components/notification.css' %}"
     />
-    <link rel="stylesheet" href="../../static/assets/styles/layouts/hr.css" />
+    <link rel="stylesheet" href="{% static './assets/styles/layouts/hr.css' %}" />
   </head>
   <body>
     <div class="sidebar" id="sidebar">
       <h2>ALIS</h2>
 
       <div class="button-cont">
-        <a id="dashboard_nav" href="{% url 'hr' %}">
+        <a id="dashboard_nav" href="{% url 'supervisor' %}">
           <i class="fa-solid fa-table-columns me-1"></i> Dashboard
         </a>
       </div>
@@ -164,7 +166,7 @@
                       </div>
                     </div>
                     <a
-                      href="{% url 'emp-profile' r.users.id %}"
+                      href="{% url 'supervisor_emp_profile' r.users.id %}"
                       onclick="storeID({{r.users.id}})"
                     >
                       {{r.users.firstname}} {{r.users.middlename}}
@@ -390,40 +392,6 @@
               DETAILS OF ACTION ON APPLICATION
             </h3>
 
-            <!-- Rejection Reason Buttons -->
-            <div class="row g-3 mb-4">
-              <em class="">7.A Certification of Leave Credits</em>
-              <div class="col-md-12">
-                <p>As of: <span id="asOfDate"></span></p>
-                <table>
-                  <tr>
-                    <th></th>
-                    <th>Vacation Leave</th>
-                    <th>Sick Leave</th>
-                  </tr>
-                  <tr>
-                    <td>Total Earned</td>
-                    <td id="total_earned_vl"></td>
-                    <td id="total_earned_sl"></td>
-                  </tr>
-                  <tr>
-                    <td>Less this application</td>
-                    <td id="less_this_application_vl"></td>
-                    <td id="less_this_application_sl"></td>
-                  </tr>
-                  <tr>
-                    <td>Balance</td>
-                    <td id="balance_vl"></td>
-                    <td id="balance_sl"></td>
-                  </tr>
-                </table>
-                <!-- <div class="bottom">
-                  <div class="line"></div>
-                  <p>Authorized Officer</p>
-                </div> -->
-              </div>
-            </div>
-
             <div class="row g-3 mb-4">
               <em class="">7.B Recommendation</em>
               <div class="col-md-12">
@@ -463,45 +431,6 @@
                 </div> -->
             </div>
 
-            <!-- Other Concerns -->
-            <div class="row g-3 mb-4">
-              <div class="col-md-6">
-                <em>7.C APPROVED FOR</em>
-                <input
-                  type="text"
-                  id="approvedForDaysWithPay"
-                  placeholder="days with pay"
-                  class="form-control w-26 mt-3"
-                />
-                <input
-                  type="text"
-                  id="approvedForDaysWithoutPay"
-                  placeholder="days without pay"
-                  class="form-control w-26 mb-3 mt-3"
-                />
-                <input
-                  type="text"
-                  id="approvedForOthers"
-                  placeholder="others (specify)"
-                  class="form-control w-26"
-                />
-              </div>
-              <div class="col-md-6">
-                <em class="mb-3">7.D DISAPPROVED DUE TO:</em>
-                <textarea
-                  class="form-control mt-3 reasons-disapproval"
-                  id="disapprovalReason2"
-                  rows="3"
-                  cols="25"
-                  maxlength="100"
-                ></textarea>
-              </div>
-              <!-- <div class="bottom">
-                <div class="line"></div>
-                <p>Authorized Officer</p>
-              </div> -->
-            </div>
-
             <!-- Action Buttons -->
             <div class="d-flex justify-content-center gap-3">
               <button
@@ -522,8 +451,8 @@
     <!-- <script src="../../static/assets/scripts/cdn/bootstrap.bundle.min.js"></script>
     <script src="../../static/assets/scripts/cdn/jspdf.umd.min.js"></script> -->
 
-    <script src="../../static/assets/scripts/popups/notification.js"></script>
-    <script src="../../static/assets/scripts/popups/sidebar.js"></script>
-    <script src="../../static/assets/scripts/hr-requests.js"></script>
+    <script src="{% static './assets/scripts/popups/notification.js' %}"></script>
+    <script src="{% static './assets/scripts/popups/sidebar.js' %}"></script>
+    <script src="{% static './assets/scripts/supervisor_requests.js' %}"></script>
   </body>
 </html>
