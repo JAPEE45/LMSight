@@ -275,6 +275,12 @@ def hr_security(request):
 
         return render(request, "hr/security.html", {'user': user})
 
+def supervisor_security(request):
+    if request.method == "GET":
+        user_id = request.session.get("user_id")
+        user = USERS.objects.filter(id=user_id).first()
+
+        return render(request, "supervisor/security.html", {'user': user})
 
 def change_password(request):
     user_id = request.session.get("user_id")
@@ -438,6 +444,16 @@ def supervisor_emp_profile(request, userID):
             "leave_dates": get_user_leave_string(userID),
             "total_leave_days": total_leave_days,
         })
+
+def employee_list(request):
+    if request.method == "GET":
+        user_id = request.session.get("user_id")
+        user = USERS.objects.filter(id=user_id).first()
+        if not user or user.user_type != "supervisor":
+            return redirect("login")
+        users = USERS.objects.filter(user_type="employee")
+        notif = get_status_notification()
+        return render(request, "supervisor/emp_lists.html", {"users":users, "user_count":users.count(), 'user':user, "notif": notif})
 
 
 def admin(request):

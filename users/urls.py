@@ -10,6 +10,8 @@ urlpatterns = [
     path("user/omnibus/", views.user_omnibus, name="omnibus"),
     path("user/leave-balances/", views.leave_balances, name="leaveBalances"),
     path("user/instructions/", views.user_instruction, name="instructions"),
+
+    # admin
     path("admin/", views.admin, name="admins"),
     path("admin/manage_users", views.admin_manage_users, name="admin_manage_users"),
     path("admin/edit_user", views.admin_edit_user, name="admin_edit_user"),
@@ -29,7 +31,8 @@ urlpatterns = [
     path("supervisor/", views.supervisor_dashboard, name="supervisor"),
     path("supervisor/request", views.supervisor_requests, name="supervisor_request"),
     path("supervisor/request/employee-profile/<int:userID>", views.supervisor_emp_profile, name="supervisor_emp_profile"),
-    path("supervisor/security", views.hr_security, name="supervisor_security"),
+    path("supervisor/emp-list", views.employee_list, name="emp_list"),
+    path("supervisor/security", views.supervisor_security, name="supervisor_security"),
     # path("hr/request/employee-profile/<int:userID>", views.hr_emp_profile, name="emp-profile"),
 
     # api
