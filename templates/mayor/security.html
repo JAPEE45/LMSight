@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Welcome User - Dashboard</title>
+    <title>Welcome! - Mayor Dashboard</title>
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
       rel="stylesheet"
@@ -31,19 +31,19 @@
       <h2>ALIS</h2>
 
       <div class="button-cont">
-        <a id="dashboard_nav" href="{% url 'supervisor' %}" class="">
+        <a id="dashboard_nav" href="{% url 'mayor' %}" class="">
           <i class="fa-solid fa-table-columns me-1"></i> Dashboard
         </a>
       </div>
 
       <div class="button-cont">
-        <a id="requests_nav" href="{% url 'supervisor_request' %}">
+        <a id="requests_nav" href="{% url 'mayor_request' %}">
           <i class="fa-solid fa-file-circle-check"></i> Pending Requests
         </a>
       </div>
 
       <div class="button-cont">
-        <a id="requests_nav" href="{% url 'emp_list' %}">
+        <a id="requests_nav" href="{% url 'mayor_emp_list' %}">
           <i class="fa-solid fa-file-circle-check"></i> Employee List
         </a>
       </div>

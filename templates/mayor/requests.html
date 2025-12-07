@@ -1,0 +1,457 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ALIS - Leave Management System</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- <link rel="stylesheet" href="../../static/assets/styles/cdn/bootstrap.min.css">
+    <link rel="stylesheet" href="../../static/assets/styles/cdn/all.min.css"> -->
+
+    <link
+      rel="stylesheet"
+      href="{% static './assets/styles/components/sidebar.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static './assets/styles/components/navbar.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static './assets/styles/components/notification.css' %}"
+    />
+    <link rel="stylesheet" href="{% static './assets/styles/layouts/hr.css' %}" />
+  </head>
+  <body>
+    <div class="sidebar" id="sidebar">
+      <h2>ALIS</h2>
+
+      <div class="button-cont">
+        <a id="dashboard_nav" href="{% url 'mayor' %}">
+          <i class="fa-solid fa-table-columns me-1"></i> Dashboard
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a id="requests_nav" href="#" class="active">
+          <i class="fa-solid fa-file-circle-check"></i> Pending Requests
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a id="" href="{% url 'mayor_emp_list' %}">
+          <i class="fa-solid fa-file-csv"></i> Employee List
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a id="" href="{% url 'mayor_security' %}">
+          <i class="fa-solid fa-user"></i> Security
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a href="{% url 'logout' %}" class="">
+          <i class="fa-solid fa-right-from-bracket me-1"></i>
+          Log Out
+        </a>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="main-header">
+        <div class="d-flex align-items-center">
+          <button class="mobile-toggle me-3" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+          </button>
+          <h1 class="nav-title pending-request-h1">Pending Requests</h1>
+        </div>
+        <div class="button-main-cont">
+          <div class="button-cont">
+            <button class="notif-btn" id="notification-btn">
+              <i class="fa-solid fa-bell"></i>
+            </button>
+            <p class="popup">Notification</p>
+            <div class="notif-marker active"></div>
+            <!-- Notifications Panel -->
+            <div class="notifications-panel" id="notificationsPanel">
+              <div class="notifications-header">
+                <h5>Notifications</h5>
+              </div>
+              <div class="notifications-list">
+                {% for i in notif %}
+                <div class="notification-item">
+                  <div
+                    class="notification-avatar"
+                    style="width: 50px; height: 50px"
+                  >
+                    <img
+                      src="/media/{{i.user.picture}}"
+                      width="50"
+                      height="50"
+                      style="border-radius: 100px"
+                    />
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>{{i.user.firstname}} {{i.user.lastname}}</strong>
+                      has requested for {{i.leave.leave_type}}.
+                    </p>
+                    <span class="notification-time">{{i.createdAt}}</span>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div class="button-main-cont">
+            <div class="main-img-cont">
+              <div class="img-cont" >
+                <img
+                  src="../media/{{user.picture}}"
+                  alt=""
+                  id="profilePreview"
+                />
+              </div>
+            </div>
+            <div class="name-cont">
+              <p class="name">
+                {{user.firstname}} {{user.middlename}} {{user.lastname}}
+              </p>
+              <p class="title text-muted">HR</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-9" style="width: 100%">
+
+        <div class="requests-table">
+          <table class="mb-0">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Dates</th>
+                <th>Details of leave</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="resultContainer">
+              {% for r in request %}
+              <tr>
+                <td>
+                  <div class="employee-info">
+                    <div class="employee-avatar">
+                      <!-- <i class="fas fa-user"></i> -->
+                      <div class="main-img-cont">
+                        <div class="img-cont" style="border: 2px solid var(--primary-background);">
+                          <img
+                            src="../media/{{r.users.picture}}"
+                            alt=""
+                            id="profilePreview"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <a
+                      href="{% url 'mayor_emp_profile' r.users.id %}"
+                      onclick="storeID({{r.users.id}})"
+                    >
+                      {{r.users.firstname}} {{r.users.middlename}}
+                      {{r.users.lastname}}
+                    </a>
+                  </div>
+                </td>
+                <td>{{r.leave_type}}</td>
+                <td>{{r.start_date}} - {{r.end_date}}</td>
+                <td>{{r.leave_details.details}}</td>
+                <td>
+                  <button
+                    class="btn btn-view-details"
+                    onclick="showLeaveModal({{r.id}})"
+                  >
+                    <i class="fas fa-eye me-1"></i>View Details
+                  </button>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="leaveModal"
+      tabindex="-1"
+      aria-labelledby="requestLeaveModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h1 class="modal-title" id="requestLeaveModalLabel">
+              Request Leave
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <!-- Modal Body -->
+          <div class="modal-body">
+            <!-- Profile Section -->
+            <div class="profile-section">
+              <div class="row align-items-center">
+                <div class="col-md-8">
+                  <div class="d-flex align-items-center">
+                    <div class="profile-img">
+                      <img
+                        src=""
+                        id="user_image"
+                        width="80"
+                        height="80"
+                        style="
+                          border-radius: 100px;
+                          border: 2px solid rgb(82, 81, 81);
+                        "
+                      />
+                    </div>
+                    <div class="profile-details">
+                      <h5 id="user_fullname">Juan Dela Cruz</h5>
+                      <p>
+                        Office/Department:
+                        <strong id="departmentModal"
+                          >Sales and Marketing</strong
+                        >
+                      </p>
+                      <p>
+                        Job title:
+                        <strong id="jobTitleModal">Sales Manager</strong>
+                      </p>
+                      <p>
+                        Salary: <strong id="salaryModal">&#8369; </strong>
+                      </p>
+                      <p class="date-filing">
+                        Date of Filing: <strong id="dateOfReqModal"></strong>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="leave-credits-section">
+                    <h6>Leave Credits</h6>
+                    <div class="donut-center-value" id="creditModal">1.25</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Form Fields -->
+            <form>
+              <!-- Row 1: Leave Type, Start Date, End Date -->
+              <div class="row mb-3">
+                <div class="col-md-6 mb-3">
+                  <label for="leaveType" class="form-label">Leave Type</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="leaveTypeModal"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="detailsLeave" class="form-label"
+                    >Details of Leave</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="detailsLeaveModal"
+                    disabled
+                  />
+                </div>
+              </div>
+
+              <!-- Row 2: Commutation, Details of Leave -->
+              <div class="row mb-3">
+                <div class="col-md-6 mb-3">
+                  <label for="commutation" class="form-label"
+                    >Commutation</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="commutationModal"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-6 mb-3" id="attachedDocCont">
+                  <label for="attachedDoc" class="form-label"
+                    >Attached Document</label
+                  >
+                  <div>
+                    <button type="button" class="download-btn" id="downloadBtn">
+                      Click here to download
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Inclusive Dates -->
+              <div class="row mb-3">
+                <div class="col-md-4 mb-3">
+                  <label class="form-label">Number of Days Applied</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="numberOfDaysModal"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-8 mb-3">
+                  <label for="comment" class="form-label"
+                    >Inclusive Dates</label
+                  >
+                  <input
+                    class="form-control"
+                    disabled
+                    id="inclusiveDatesModal"
+                  />
+                </div>
+              </div>
+
+              <!-- <div class="bottom">
+                <div class="line"></div>
+                <p>Signature of Applicant</p>
+              </div> -->
+            </form>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+              <div class="d-flex justify-content-center gap-3">
+                <button
+                  type="button"
+                  class="btn btn-approve"
+                  onclick="showRejectionModal()"
+                >
+                  Details of Action
+                </button>
+                <!-- <button
+                  type="button"
+                  class="btn btn-reject"
+                  onclick="showRejectionModal()"
+                >
+                  Reject
+                </button> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rejection Reason Modal -->
+    <div
+      class="modal fade"
+      id="rejectionModal"
+      tabindex="-1"
+      aria-labelledby="rejectionReasonModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <!-- Modal Body -->
+          <form
+            method="POST"
+            action="{% url 'action' %}"
+            class="modal-body p-4"
+            id="actionForm"
+          >
+            {% csrf_token %}
+            <h3 class="mb-4 text-center fw-bold">
+              DETAILS OF ACTION ON APPLICATION
+            </h3>
+
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <em>7.C APPROVED FOR</em>
+                <input
+                  type="text"
+                  id="approvedForDaysWithPay"
+                  placeholder="days with pay"
+                  class="form-control w-26 mt-3"
+                />
+                <input
+                  type="text"
+                  id="approvedForDaysWithoutPay"
+                  placeholder="days without pay"
+                  class="form-control w-26 mb-3 mt-3"
+                />
+                <input
+                  type="text"
+                  id="approvedForOthers"
+                  placeholder="others (specify)"
+                  class="form-control w-26"
+                />
+              </div>
+              <div class="col-md-6">
+                <em class="mb-3">7.D DISAPPROVED DUE TO:</em>
+                <textarea
+                  class="form-control mt-3 reasons-disapproval"
+                  id="disapprovalReason2"
+                  rows="3"
+                  cols="25"
+                  maxlength="100"
+                ></textarea>
+              </div>
+              <!-- <div class="bottom">
+                <div class="line"></div>
+                <p>Authorized Officer</p>
+              </div> -->
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-flex justify-content-center gap-3">
+              <button
+                type="submit"
+                class="btn btn-success px-4 py-2 fw-bold"
+                id="submitRejectBtn"
+              >
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- <script src="../../static/assets/scripts/cdn/bootstrap.bundle.min.js"></script>
+    <script src="../../static/assets/scripts/cdn/jspdf.umd.min.js"></script> -->
+
+    <script src="{% static './assets/scripts/popups/notification.js' %}"></script>
+    <script src="{% static './assets/scripts/popups/sidebar.js' %}"></script>
+    <script src="{% static './assets/scripts/supervisor_requests.js' %}"></script>
+  </body>
+</html>

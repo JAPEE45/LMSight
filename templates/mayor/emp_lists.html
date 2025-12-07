@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ALIS - Employee List</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="../../static/assets/styles/components/sidebar.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../../static/assets/styles/components/navbar.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../../static/assets/styles/components/notification.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../../static/assets/styles/layouts/admin.css"
+    />
+  </head>
+  <body>
+    <div class="sidebar" id="sidebar">
+      <h2>ALIS</h2>
+
+      <div class="button-cont">
+        <a id="dashboard_nav" href="{% url 'mayor' %}" class="">
+          <i class="fa-solid fa-table-columns me-1"></i> Dashboard
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a id="requests_nav" href="{% url 'mayor_request' %}">
+          <i class="fa-solid fa-file-circle-check"></i> Pending Requests
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a id="requests_nav" href="#" class="active">
+          <i class="fa-solid fa-file-circle-check"></i> Employee List
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a id="" href="{% url 'mayor_security' %}">
+          <i class="fa-solid fa-user"></i> Security
+        </a>
+      </div>
+
+      <div class="button-cont">
+        <a href="{% url 'logout' %}" class="">
+          <i class="fa-solid fa-right-from-bracket me-1"></i>
+          Log Out
+        </a>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="main-header">
+        <div class="d-flex align-items-center">
+          <button class="mobile-toggle me-3" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+          </button>
+          <h1 class="nav-title pending-request-h1">Employee Lists</h1>
+        </div>
+        <div class="button-main-cont">
+          <div class="button-main-cont">
+            <div class="main-img-cont">
+              <div class="img-cont">
+                <img
+                  src="../media/{{user.picture}}"
+                  alt=""
+                  id="profilePreview"
+                />
+              </div>
+            </div>
+            <div class="name-cont">
+              <p class="name">
+                {{user.firstname}} {{user.middlename}} {{user.lastname}}
+              </p>
+              <p class="title text-muted">MAYOR</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="user-management-card">
+        <div class="user-list-header">
+          <div class="user-list-title">
+            Employees
+            <span class="user-count">
+              {{ user_count }}
+              {% if user_count > 1 %}
+                  users
+              {% else %}
+                  user
+              {% endif %}
+            </span>
+          </div>
+
+          <div class="search-filters">
+            <div class="search-box">
+              <input type="text" placeholder="Search..." id="searchInput" />
+              <i class="fas fa-search"></i>
+            </div>
+          </div>
+        </div>
+        <div class="delete-selected" id="deleteSelected">Delete selected</div>
+
+        <div class="table-responsive">
+          <table class="user-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th class="hide-mobile">Joined Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for u in users %}
+              <tr>
+                <td>
+                  <div class="user-info">
+                    <p id="table_user_id" style="display: none">{{u.id}}</p>
+                    <div
+                      class="user-avatar"
+                      style="
+                        width: 50px;
+                        height: 50px;
+                        border-radius: 100px !important;
+                      "
+                    >
+                      <img
+                        src="/media/{{ u.picture }}"
+                        style="width: 100%; height: 100%"
+                      />
+                    </div>
+                    <span class="user-name"
+                      >{{u.firstname}} {{u.middlename}} {{u.lastname}}</span
+                    >
+                  </div>
+                </td>
+                <td style="display: none" id="id">{{u.id}}</td>
+                <td id="department">{{u.department}}</td>
+                <td id="job_title">{{u.job_title}}</td>
+                <td>
+                  <span class="status-badge status-inactive"
+                    >{{u.employee_type}}</span
+                  >
+                </td>
+                <td class="hide-mobile">{{u.createdAt}}</td>
+              </tr>
+
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="../../static/assets/scripts/popups/notification.js"></script> -->
+    <script src="../../static/assets/scripts/popups/sidebar.js"></script>
+    <script src="../../static/assets/scripts/admin_user_management.js"></script>
+  </body>
+</html>

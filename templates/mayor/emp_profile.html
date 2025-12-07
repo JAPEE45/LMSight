@@ -34,24 +34,24 @@
       <h2>ALIS</h2>
 
       <div class="button-cont">
-        <a id="dashboard_nav" href="{% url 'supervisor' %}">
+        <a id="dashboard_nav" href="{% url 'mayor' %}">
           <i class="fa-solid fa-table-columns me-1"></i> Dashboard
         </a>
       </div>
       <div class="button-cont">
-        <a id="requests_nav" href="{% url 'supervisor_request' %}" class="active">
+        <a id="requests_nav" href="{% url 'mayor_request' %}" class="active">
           <i class="fa-solid fa-file-circle-check"></i> Pending Requests
         </a>
       </div>
 
       <div class="button-cont">
-        <a id="" href="{% url 'emp_list' %}">
+        <a id="" href="{% url 'mayor_emp_list' %}">
           <i class="fa-solid fa-file-csv"></i> Employee List
         </a>
       </div>
 
       <div class="button-cont">
-        <a id="" href="{% url 'supervisor_security' %}">
+        <a id="" href="{% url 'mayor_security' %}">
           <i class="fa-solid fa-user"></i> Security
         </a>
       </div>
@@ -260,7 +260,7 @@
         
         const userID = localStorage.getItem("selected");
         console.log(userID)
-        const response = await fetch(`/supervisor/request/employee-profile/${userID}`, {
+        const response = await fetch(`/mayor/request/employee-profile/${userID}`, {
           method: "POST",
           headers: {
             "X-CSRFToken": getCookie("csrftoken"),

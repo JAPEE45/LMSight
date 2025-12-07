@@ -117,7 +117,11 @@ def login(request):
         elif usr.user_type == "supervisor":
             print('sypervisor ini')
             request.session["user_id"] = usr.id
-            return redirect("supervisor")    
+            return redirect("supervisor")
+        elif usr.user_type == "mayor":   
+            print('mayor ini')
+            request.session["user_id"] = usr.id
+            return redirect("mayor")
         elif usr.user_type == "hr":
             request.session["user_id"] = usr.id
             return redirect("hr")    
@@ -282,6 +286,14 @@ def supervisor_security(request):
 
         return render(request, "supervisor/security.html", {'user': user})
 
+def mayor_security(request):
+    if request.method == "GET":
+        user_id = request.session.get("user_id")
+        user = USERS.objects.filter(id=user_id).first()
+
+        return render(request, "mayor/security.html", {'user': user})
+
+
 def change_password(request):
     user_id = request.session.get("user_id")
     user = USERS.objects.filter(id=user_id).first()
@@ -305,6 +317,10 @@ def change_password(request):
 
         return JsonResponse({"status": True, "msg": "Password changed successfully"})
     
+
+
+    
+
 def user_employee_profile(request):
     if request.method == "GET":
         user_id = request.session.get("user_id")
@@ -455,6 +471,96 @@ def employee_list(request):
         notif = get_status_notification()
         return render(request, "supervisor/emp_lists.html", {"users":users, "user_count":users.count(), 'user':user, "notif": notif})
 
+def mayor_dashboard(request):
+    if request.method == "GET":
+        
+        user = USERS.objects.filter(id = request.session.get("user_id")).first()
+        
+        s = {}
+        s["weekly"] = getWeeklyLeave()
+        s['monthly'] = getLeaveByMonth()
+        s['upcoming'] = getUpcomingLeaves()
+        s['user'] = user
+       
+        s['history'] = getLeaveHistory()
+        b = getLeaveCountByType()
+        lb = []
+        val = []
+        for i in b:
+            lb.append(i['type'])
+            val.append(i['total'])
+        s['leave_type'] = json.dumps([lb, val])
+     
+        s['status'] = getLeaveCountByStatus()
+        
+        dep = getLeaveMatrix(lb)
+        s['dep'] = dep
+        s['perMonth'] = getLeaveRequestsPerMonth()
+        s['all_leave'] = getLeaveDaysPerMonth()
+        notif = get_status_notification()
+        s['notif'] = notif
+        # print(allLeave)
+        return render(request, 'mayor/dashboard.html',s )
+
+def mayor_requests(request):
+    if request.method == "GET":
+        user = USERS.objects.filter(id = request.session.get("user_id")).first()
+        req = LEAVE.objects.filter(status = "pending")
+        dt = list(req)
+        # for i in dt:
+        #     print("requests ini: ",i.leave_details.details)
+        notif = get_status_notification()
+        return render(request, 'mayor/requests.html', {'user':user, 'request':dt, "notif" : notif})
+
+def mayor_emp_profile(request, userID):
+    emp = USERS.objects.filter(id=userID).first()
+    print("baby ko ganda ", emp)
+    if not emp:
+        print("hannah not found")
+        return JsonResponse({"error": "Employee not found"}, status=404)
+
+    hr = USERS.objects.filter(id=request.session.get("user_id")).first()
+    notif = get_status_notification()
+    total_leave_days = (
+        LEAVE.objects.filter(users=emp, status="approved")
+        .aggregate(total=Sum("number_of_days_applied"))["total"] or 0
+    )
+
+    if request.method == "GET":
+        print("baby ko ganda ganda hannah uwu: ", get_monthly_leave_credits(userID))
+        # 🟢 Renders the normal employee profile page
+        return render(
+            request,
+            "mayor/emp_profile.html",
+            {
+                "hr": hr,
+                "user": emp,
+                "notif": notif,
+                "leave_credits": get_monthly_leave_credits(userID),
+                "leave_dates": get_user_leave_string(userID),
+                "total_leave_days": total_leave_days,
+            },
+        )
+
+    if request.method == "POST":
+        print("baby hannah", userID)
+        return JsonResponse({
+            "leave_credits": get_monthly_leave_credits(userID),
+            "leave_dates": get_user_leave_string(userID),
+            "total_leave_days": total_leave_days,
+        })
+
+
+def mayor_list(request):
+    if request.method == "GET":
+        user_id = request.session.get("user_id")
+        user = USERS.objects.filter(id=user_id).first()
+        if not user or user.user_type != "mayor":
+            return redirect("login")
+        users = USERS.objects.filter(user_type="employee")
+        notif = get_status_notification()
+        return render(request, "mayor/emp_lists.html", {"users":users, "user_count":users.count(), 'user':user, "notif": notif})
+
 
 def admin(request):
     if request.method == "GET":
@@ -472,6 +578,7 @@ def admin(request):
         notif = get_status_notification()
         all = {"dash":dashboard, "user_arr":user_arr, "users":users.order_by("-last_login"),  'user':user, "notif":notif}
         return render(request, "admin/dashboard.html",all)
+
 def getLeaveTypes(request):
     if request.method == "GET":
         lt = LEAVE_TYPES.objects.all().values("leave_type","id")

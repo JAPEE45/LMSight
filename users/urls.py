@@ -33,7 +33,13 @@ urlpatterns = [
     path("supervisor/request/employee-profile/<int:userID>", views.supervisor_emp_profile, name="supervisor_emp_profile"),
     path("supervisor/emp-list", views.employee_list, name="emp_list"),
     path("supervisor/security", views.supervisor_security, name="supervisor_security"),
-    # path("hr/request/employee-profile/<int:userID>", views.hr_emp_profile, name="emp-profile"),
+    
+    # mayor
+    path("mayor/", views.mayor_dashboard, name="mayor"),
+    path("mayor/request", views.mayor_requests, name="mayor_request"),
+    path("mayor/request/employee-profile/<int:userID>", views.mayor_emp_profile, name="mayor_emp_profile"),
+    path("mayor/emp-list", views.mayor_list, name="mayor_emp_list"),
+    path("mayor/security", views.mayor_security, name="mayor_security"),
 
     # api
     path("api/hr/request", views.getRequestFilter),
