@@ -163,7 +163,8 @@ document.getElementById("actionForm").addEventListener("submit", async (e) => {
       disapprovalReason2: document.getElementById("disapprovalReason2").value,
     };
 
-    downloadPDF(detailsOfAction);
+    // DOWNLOAD PDF REMOVED
+    // downloadPDF(detailsOfAction);
     modal.hide();
     window.location.reload();
     return;

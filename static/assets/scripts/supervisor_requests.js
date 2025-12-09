@@ -101,7 +101,7 @@ document.getElementById("actionForm").addEventListener("submit", async (e) => {
   const action = document.querySelector("input[name='actionOnLeave']:checked").value;
 
   const disapprovalReason1 = document.getElementById("disapprovalReason1").value;
-  const disapprovalReason2 = document.getElementById("disapprovalReason2").value;
+  // const disapprovalReason2 = document.getElementById("disapprovalReason2").value;
 
   const approvedForDaysWithPay = document.getElementById("approvedForDaysWithPay");
   const approvedForDaysWithoutPay = document.getElementById("approvedForDaysWithoutPay");
@@ -109,9 +109,9 @@ document.getElementById("actionForm").addEventListener("submit", async (e) => {
 
   let string = "";
 
-  if (approvedForDaysWithPay.value.trim() != "") string = `${approvedForDaysWithPay.value} day/s with pay`
-  if (approvedForDaysWithoutPay.value.trim() != "") string = `${approvedForDaysWithoutPay.value} days without pay`
-  if (approvedForOthers.value.trim() != "") string = approvedForOthers.value
+  // if (approvedForDaysWithPay.value.trim() != "") string = `${approvedForDaysWithPay.value} day/s with pay`
+  // if (approvedForDaysWithoutPay.value.trim() != "") string = `${approvedForDaysWithoutPay.value} days without pay`
+  // if (approvedForOthers.value.trim() != "") string = approvedForOthers.value
   
   const today = new Date().toISOString().split("T")[0];
   
@@ -119,7 +119,7 @@ document.getElementById("actionForm").addEventListener("submit", async (e) => {
   formData.append('id', id)
   formData.append('actionOnLeave', action);
   formData.append('disapprovalReason1', disapprovalReason1.trim());
-  formData.append('disapprovalReason2', disapprovalReason2.trim());
+  // formData.append('disapprovalReason2', disapprovalReason2.trim());
   formData.append('approved_disapproved_days', string);
   formData.append('date_of_action', getStringDate(today));
 
@@ -136,35 +136,35 @@ document.getElementById("actionForm").addEventListener("submit", async (e) => {
       'input[name="actionOnLeave"]:checked'
     ).value;
     const detailsOfAction = {
-      asOfDate: document.getElementById("asOfDate").innerText,
-      totalEarnedVl: document
-        .getElementById("total_earned_vl")
-        .innerText.trim(),
-      totalEarnedSl: document
-        .getElementById("total_earned_sl")
-        .innerText.trim(),
-      lessThisApplicationVl: document
-        .getElementById("less_this_application_vl")
-        .innerText.trim(),
-      lessThisApplicationSl: document
-        .getElementById("less_this_application_sl")
-        .innerText.trim(),
-      balanceVl: document.getElementById("balance_vl").innerText.trim(),
-      balanceSl: document.getElementById("balance_sl").innerText.trim(),
+      // asOfDate: document.getElementById("asOfDate").innerText,
+      // totalEarnedVl: document
+      //   .getElementById("total_earned_vl")
+      //   .innerText.trim(),
+      // totalEarnedSl: document
+      //   .getElementById("total_earned_sl")
+      //   .innerText.trim(),
+      // lessThisApplicationVl: document
+      //   .getElementById("less_this_application_vl")
+      //   .innerText.trim(),
+      // lessThisApplicationSl: document
+      //   .getElementById("less_this_application_sl")
+      //   .innerText.trim(),
+      // balanceVl: document.getElementById("balance_vl").innerText.trim(),
+      // balanceSl: document.getElementById("balance_sl").innerText.trim(),
 
       leaveAction: action,
       disapprovalReason: document.getElementById("disapprovalReason1").value,
 
-      approvedForDaysWithPay: document.getElementById("approvedForDaysWithPay")
-        .value,
-      approvedForDaysWithoutPay: document.getElementById(
-        "approvedForDaysWithoutPay"
-      ).value,
-      approvedForOthers: document.getElementById("approvedForOthers").value,
-      disapprovalReason2: document.getElementById("disapprovalReason2").value,
+      // approvedForDaysWithPay: document.getElementById("approvedForDaysWithPay")
+      //   .value,
+      // approvedForDaysWithoutPay: document.getElementById(
+      //   "approvedForDaysWithoutPay"
+      // ).value,
+      // approvedForOthers: document.getElementById("approvedForOthers").value,
+      // disapprovalReason2: document.getElementById("disapprovalReason2").value,
     };
 
-    downloadPDF(detailsOfAction);
+    // downloadPDF(detailsOfAction);
     modal.hide();
     window.location.reload();
     return;
@@ -555,19 +555,19 @@ function downloadPDF(details) {
 
   const approvalLines = [];
 
-  if (approvedForDaysWithPay.trim()) {
-    approvalLines.push(
-      `${approvedForDaysWithPay} days with pay`
-    );
-  }
-  if (approvedForDaysWithoutPay.trim()) {
-    approvalLines.push(
-      `${approvedForDaysWithoutPay} days without pay`
-    );
-  }
-  if (approvedForOthers.trim()) {
-    approvalLines.push(`${approvedForOthers} others (specify)`);
-  }
+  // if (approvedForDaysWithPay.trim()) {
+  //   approvalLines.push(
+  //     `${approvedForDaysWithPay} days with pay`
+  //   );
+  // }
+  // if (approvedForDaysWithoutPay.trim()) {
+  //   approvalLines.push(
+  //     `${approvedForDaysWithoutPay} days without pay`
+  //   );
+  // }
+  // if (approvedForOthers.trim()) {
+  //   approvalLines.push(`${approvedForOthers} others (specify)`);
+  // }
 
   doc.text(`${disapprovalReason2}`, pageWidth / 2, yPosition, {
     maxWidth: pageWidth / 2 - margin,

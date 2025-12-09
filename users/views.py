@@ -147,7 +147,6 @@ def user_dashboard(request):
         commutation = request.POST.get("commutation")
         specify = request.POST.get("specify")
         details = request.POST.get("details")
-        print(details)
 
         parts = [p.strip() for p in inclusive_dates.split(",") if p.strip()]
         print(parts)
@@ -177,13 +176,15 @@ def user_dashboard(request):
         ld = LeaveTypeDetails.objects.filter(id=details, leave_types=lt).first()
         print(ld)
 
+        number_of_days_applied = (end_date - start_date).days + 1
+
         lv = LEAVE(
             users=user,
             leave_type=lt,
             leave_details=ld,
             commutation=commutation,
             attached_file=attached_file,
-            number_of_days_applied=number_of_working_days,
+            number_of_days_applied=number_of_days_applied,
             start_date=start_date,
             end_date=end_date,
             status="pending",
@@ -411,6 +412,7 @@ def supervisor_dashboard(request):
         notif = get_status_notification()
         s['notif'] = notif
         # print(allLeave)
+        print(s['history'])
         return render(request, 'supervisor/dashboard.html',s )
 
 def supervisor_requests(request):
@@ -937,8 +939,8 @@ def get_user_leave_string(user_id):
             if leave.start_date and leave.end_date:
                 start_day = leave.start_date.day
                 end_day = leave.end_date.day
-                month = leave.start_date.month   # ✅ safe for Windows
-                year = leave.start_date.year     # ✅ safe for Windows
+                month = leave.start_date.month
+                year = leave.start_date.year     
 
                 if start_day == end_day:
                     # Single day leave
