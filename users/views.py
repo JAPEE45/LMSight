@@ -15,6 +15,7 @@ from django.db.models import Sum
 from django.urls import reverse
 from django.db.models import Count, F
 import re
+from users.email_utils import send_email_notification
 
 def credit(creditType, user, mult):
     if mult <= 0: mult = 1.0
@@ -135,9 +136,12 @@ def login(request):
             request.session["user_id"] = usr.id
             return redirect("hr")    
         
-def get_status_notification():
+def get_status_notification(current_status=None):
     try:
-        notif = StatusNotif.objects.filter(current_status="pending").order_by("-id")
+        if current_status:
+            notif = StatusNotif.objects.filter(current_status=current_status).order_by("-id")
+        else:
+            notif = StatusNotif.objects.all().order_by("-id")
         return notif
     except Exception as e:
         return StatusNotif.objects.none()
@@ -565,7 +569,7 @@ def supervisor_dashboard(request):
         s['all_leave'] = getLeaveDaysPerMonth(user=user)
         
         # Add Cards Data
-        s['total_employees'] = USERS.objects.filter(user_type='employee', department=user.department).count()
+        s['total_employees'] = USERS.objects.filter(user_type='employee').count()
         
         today = now().date()
         s['on_leave_count'] = LEAVE.objects.filter(
@@ -580,7 +584,7 @@ def supervisor_dashboard(request):
             users__department=user.department
         ).count()
 
-        notif = get_status_notification()
+        notif = get_status_notification(current_status="pending")
         s['notif'] = notif
         # print(allLeave)
         print(s['history'])
@@ -593,7 +597,7 @@ def supervisor_requests(request):
         dt = list(req)
         # for i in dt:
         #     print("requests ini: ",i.leave_details.details)
-        notif = get_status_notification()
+        notif = get_status_notification(current_status="pending")
         return render(request, 'supervisor/requests.html', {'user':user, 'request':dt, "notif" : notif})
 
 def supervisor_emp_profile(request, userID):
@@ -666,11 +670,24 @@ def mayor_dashboard(request):
      
         s['status'] = getLeaveCountByStatus()
         
-        dep = getLeaveMatrix(lb)
-        s['dep'] = dep
         s['perMonth'] = getLeaveRequestsPerMonth()
         s['all_leave'] = getLeaveDaysPerMonth()
-        notif = get_status_notification()
+        
+        # Add Cards Data for Mayor
+        s['total_employees'] = USERS.objects.filter(user_type='employee').count()
+        
+        today = now().date()
+        s['on_leave_count'] = LEAVE.objects.filter(
+            status='approved', 
+            start_date__lte=today, 
+            end_date__gte=today
+        ).count()
+        
+        s['pending_requests_count'] = LEAVE.objects.filter(
+            status='pending_mayor'
+        ).count()
+
+        notif = get_status_notification(current_status="pending_mayor")
         s['notif'] = notif
         # print(allLeave)
         return render(request, 'mayor/dashboard.html',s )
@@ -682,7 +699,7 @@ def mayor_requests(request):
         dt = list(req)
         # for i in dt:
         #     print("requests ini: ",i.leave_details.details)
-        notif = get_status_notification()
+        notif = get_status_notification(current_status="pending_mayor")
         return render(request, 'mayor/requests.html', {'user':user, 'request':dt, "notif" : notif})
 
 def mayor_emp_profile(request, userID):
@@ -1184,7 +1201,7 @@ def hr_dasboard(request):
         
         s['perMonth'] = getLeaveRequestsPerMonth()
         s['all_leave'] = getLeaveDaysPerMonth()
-        notif = get_status_notification()
+        notif = get_status_notification(current_status="pending_hr")
         s['notif'] = notif
         # print(allLeave)
         return render(request, 'hr/dashboard.html',s )
@@ -1223,7 +1240,7 @@ def hr_request(request):
         dt = list(req)
         # for i in dt:
         #     print("requests ini: ",i.leave_details.details)
-        notif = get_status_notification()
+        notif = get_status_notification(current_status="pending_hr")
         return render(request, 'hr/requests.html', {'user':user, 'request':dt, "notif" : notif})
     
 def hr_emp_reports(request):
@@ -1493,10 +1510,24 @@ def action(request):
                 leave.status = "pending" # Move to Supervisor
                 msg = f"Leave verified by HR. Forwarded to Supervisor."
                 notif = StatusNotif(user=leave.users, leave=leave, current_status="pending")
+                
+                # Email Notification
+                send_email_notification(
+                    leave.users.email,
+                    "Leave Application Verified",
+                    f"Dear {leave.users.firstname},\n\nYour leave application has been verified by HR and forwarded to your Supervisor for recommendation."
+                )
             else:
                 leave.status = "rejected"
                 msg = f"Leave rejected by HR."
                 notif = StatusNotif(user=leave.users, leave=leave, current_status="rejected")
+                
+                # Email Notification
+                send_email_notification(
+                    leave.users.email,
+                    "Leave Application Rejected",
+                    f"Dear {leave.users.firstname},\n\nYour leave application has been rejected by HR."
+                )
 
         # SUPERVISOR ACTION
         elif is_supervisor:
@@ -1507,10 +1538,24 @@ def action(request):
                 leave.status = "pending_mayor" # Move to Mayor
                 msg = f"Leave recommended for approval by Supervisor. Forwarded to Mayor."
                 notif = StatusNotif(user=leave.users, leave=leave, current_status="pending_mayor")
+                
+                # Email Notification
+                send_email_notification(
+                    leave.users.email,
+                    "Leave Application Recommended",
+                    f"Dear {leave.users.firstname},\n\nYour leave application has been recommended for approval by your Supervisor and forwarded to the Mayor."
+                )
             else:
                 leave.status = "rejected"
                 msg = f"Leave rejected by Supervisor."
                 notif = StatusNotif(user=leave.users, leave=leave, current_status="rejected")
+                
+                # Email Notification
+                send_email_notification(
+                    leave.users.email,
+                    "Leave Application Rejected",
+                    f"Dear {leave.users.firstname},\n\nYour leave application has been rejected by your Supervisor."
+                )
 
         # MAYOR ACTION
         elif is_mayor:
@@ -1526,6 +1571,13 @@ def action(request):
                 leave.status = "rejected"
                 msg = f"Leave rejected by Mayor."
                 notif = StatusNotif(user=leave.users, leave=leave, current_status="rejected")
+                
+                # Email Notification
+                send_email_notification(
+                    leave.users.email,
+                    "Leave Application Disapproved",
+                    f"Dear {leave.users.firstname},\n\nYour leave application has been disapproved by the Mayor. Reason: {disapprovalReason2}"
+                )
             else:
                  # Approval
                 if leave.status != "approved":
@@ -1544,6 +1596,13 @@ def action(request):
                         # Or maybe we shouldn't approve? 
                         # For now, following existing logic:
                         msg = f"Leave approved by Mayor. Note: User had insufficient credit."
+                    
+                    # Email Notification
+                    send_email_notification(
+                        leave.users.email,
+                        "Leave Application Approved",
+                        f"Dear {leave.users.firstname},\n\nYour leave application has been fully approved by the Mayor."
+                    )
         
         # Fallback / Admin logic (if needed, or existing logic)
         else: 
@@ -1576,6 +1635,14 @@ def approved_leave_request(request):
          if not c:  return JsonResponse({"message":"data does not exist"})
          c.status = "approved"
          c.save()
+         
+         # Email Notification
+         send_email_notification(
+            c.users.email,
+            "Leave Application Approved",
+            f"Dear {c.users.firstname},\n\nYour leave application has been approved."
+         )
+         
          return JsonResponse({"status":True})
      
          
@@ -1587,6 +1654,14 @@ def rejected_leave_request(request):
             if not c:  return JsonResponse({"message":"data does not exist"})
             c.status = "rejected"
             c.save()
+            
+            # Email Notification
+            send_email_notification(
+                c.users.email,
+                "Leave Application Rejected",
+                f"Dear {c.users.firstname},\n\nYour leave application has been rejected."
+            )
+            
             return JsonResponse({"status":True})
         
      

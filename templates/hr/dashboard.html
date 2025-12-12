@@ -150,9 +150,21 @@
       <div class="row" style="row-gap: 20px">
         <div class="col-lg-8">
           <div class="table-card">
-            <h5>Upcoming Leave</h5>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="mb-0">Upcoming Leave</h5>
+              <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fas fa-sort me-1"></i> Sort by
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="sortDropdown">
+                  <li><a class="dropdown-item active" href="#" onclick="sortUpcomingTable('time', this)">Time (Default)</a></li>
+                  <li><a class="dropdown-item" href="#" onclick="sortUpcomingTable('name', this)">Name</a></li>
+                  <li><a class="dropdown-item" href="#" onclick="sortUpcomingTable('type', this)">Leave Type</a></li>
+                </ul>
+              </div>
+            </div>
             <div class="table-cont">
-              <table class="table custom-table">
+              <table class="table custom-table" id="upcomingTable">
                 <thead>
                   <tr>
                     <th>Name</th>
@@ -161,11 +173,11 @@
                     <th>To</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id="upcomingTableBody">
                  
                  {% for u in upcoming %}
                    <tr>
-                    <td>
+                    <td data-name="{{u.users.firstname}} {{u.users.middlename}} {{u.users.lastname}}">
                       <div class="d-flex align-items-center">
                         <div class="employee-avatar">
                           <i class="fas fa-user"></i>
@@ -173,8 +185,8 @@
                        {{u.users.firstname}} {{u.users.middlename}} {{u.users.lastname}}
                       </div>
                     </td>
-                    <td>{{u.leave_type}}</td>
-                    <td>{{u.start_date}}</td>
+                    <td data-type="{{u.leave_type}}">{{u.leave_type}}</td>
+                    <td data-time="{{u.start_date|date:'Y-m-d'}}">{{u.start_date}}</td>
                     <td>{{u.end_date}}</td>
                   </tr>
                  {% endfor %}
@@ -326,5 +338,38 @@
     <script src="../../static/assets/scripts/popups/sidebar.js"></script>
     <script src="../../static/assets/scripts/popups/notification.js"></script>
     <script src="../../static/assets/scripts/popups/tooltip.js"></script>
+    <script>
+      function sortUpcomingTable(sortBy, element) {
+        const tableBody = document.getElementById('upcomingTableBody');
+        const rows = Array.from(tableBody.querySelectorAll('tr'));
+        
+        // Update active state in dropdown
+        document.querySelectorAll('.dropdown-item').forEach(item => {
+          item.classList.remove('active');
+        });
+        element.classList.add('active');
+
+        rows.sort((a, b) => {
+          let valA, valB;
+
+          if (sortBy === 'time') {
+            valA = new Date(a.querySelector('[data-time]').getAttribute('data-time'));
+            valB = new Date(b.querySelector('[data-time]').getAttribute('data-time'));
+            return valA - valB;
+          } else if (sortBy === 'name') {
+            valA = a.querySelector('[data-name]').getAttribute('data-name').toLowerCase();
+            valB = b.querySelector('[data-name]').getAttribute('data-name').toLowerCase();
+            return valA.localeCompare(valB);
+          } else if (sortBy === 'type') {
+            valA = a.querySelector('[data-type]').getAttribute('data-type').toLowerCase();
+            valB = b.querySelector('[data-type]').getAttribute('data-type').toLowerCase();
+            return valA.localeCompare(valB);
+          }
+        });
+
+        // Re-append rows in sorted order
+        rows.forEach(row => tableBody.appendChild(row));
+      }
+    </script>
   </body>
 </html>
