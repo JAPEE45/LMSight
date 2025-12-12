@@ -44,9 +44,29 @@ async function showLeaveModal(id) {
 
   const radio = document.querySelector(`input[name='actionOnLeave'][value='${recommendationAction}']`)
   if (radio) radio.checked = true;
-  document.getElementById("disapprovalReason1").value = json.leave.recommendation_for_disapproval_due_to
+  const recDisapproval = json.leave.recommendation_for_disapproval_due_to;
+  const mayorDisapproval = json.leave.disapproved_due_to;
+  const recommendation = json.leave.recommendation_for;
+
+  document.getElementById("disapprovalReason1").value = recDisapproval;
   document.getElementById("approvedDays").value = json.leave.approved_for;
-  document.getElementById("disapprovalReason2").value = json.leave.disapproved_due_to;
+  document.getElementById("disapprovalReason2").value = mayorDisapproval;
+
+  const container7c = document.getElementById("container-7c");
+  const container7d = document.getElementById("container-7d");
+
+  // Reset visibility
+  if(container7c) container7c.style.display = "block";
+  if(container7d) container7d.style.display = "block";
+
+  if (recommendation === "disapproval") {
+      // Supervisor Rejection: Hide 7.C and 7.D
+      if(container7c) container7c.style.display = "none";
+      if(container7d) container7d.style.display = "none";
+  } else if (mayorDisapproval && mayorDisapproval.trim() !== "") {
+      // Mayor Rejection: Hide 7.C only
+      if(container7c) container7c.style.display = "none";
+  }
 
   localStorage.setItem("selected", id);
 
@@ -227,6 +247,10 @@ async function downloadApplicationForm() {
         const check = (type) => (data.leave_type && data.leave_type.toLowerCase().includes(type.toLowerCase())) ? "X" : "";
         const checkCommutation = (val) => (data.commutation && data.commutation.toLowerCase() === val.toLowerCase()) ? "X" : "";
         const checkRec = (val) => (data.recommendation_for && data.recommendation_for.toLowerCase() === val.toLowerCase()) ? "X" : "";
+        
+        // Helper for Details 6.B
+        const checkDetail = (keyword) => (data.leave_details && data.leave_details.toLowerCase().includes(keyword.toLowerCase())) ? "X" : "";
+        const getSpecify = (keyword) => (data.leave_details && data.leave_details.toLowerCase().includes(keyword.toLowerCase())) ? `<span class="dynamic-underline">${data.specify || ""}</span>` : `<span class="dynamic-underline"></span>`;
 
         const printContent = `
 <!DOCTYPE html>
@@ -235,6 +259,17 @@ async function downloadApplicationForm() {
     <meta charset="UTF-8">
     <title>CS Form No. 6 - ${data.fullname}</title>
     <style>
+        /* ADD THIS NEW CLASS */
+        .dynamic-underline { 
+            border-bottom: 1px solid black; 
+            display: inline-block; 
+            padding-bottom: 2px; 
+            min-width: 50px; /* Adjust as needed */
+            white-space: nowrap; /* Keep text on one line */
+            overflow: hidden; /* Hide overflow */
+            text-overflow: ellipsis; /* Add ellipsis for long text */
+        }
+        /* General Reset and Print Settings */
         * { box-sizing: border-box; -webkit-print-color-adjust: exact; }
         body { font-family: Arial, sans-serif; font-size: 10pt; margin: 0; padding: 20px; }
         .page-container { width: 210mm; margin: 0 auto; background: white; padding: 10mm; border: 1px solid #ccc; }
@@ -293,27 +328,60 @@ async function downloadApplicationForm() {
             <div class="cell col-7 no-bottom-border">
                 <div class="text-bold">6.A TYPE OF LEAVE TO BE AVAILED OF</div>
                 <div class="checkbox-group" style="margin-top: 5px;">
-                    <div class="checkbox-item"><div class="box">${check("vacation")}</div> <span class="cb-label">Vacation Leave</span></div>
-                    <div class="checkbox-item"><div class="box">${check("mandatory")}</div> <span class="cb-label">Mandatory/Forced Leave</span></div>
-                    <div class="checkbox-item"><div class="box">${check("sick")}</div> <span class="cb-label">Sick Leave</span></div>
-                    <div class="checkbox-item"><div class="box">${check("maternity")}</div> <span class="cb-label">Maternity Leave</span></div>
-                    <div class="checkbox-item"><div class="box">${check("paternity")}</div> <span class="cb-label">Paternity Leave</span></div>
-                    <div class="checkbox-item"><div class="box">${check("special privilege")}</div> <span class="cb-label">Special Privilege Leave</span></div>
-                    <div class="checkbox-item"><div class="box">${check("solo parent")}</div> <span class="cb-label">Solo Parent Leave</span></div>
-                    <div class="checkbox-item"><div class="box">${check("study")}</div> <span class="cb-label">Study Leave</span></div>
-                    <div class="checkbox-item"><div class="box">${check("vawc")}</div> <span class="cb-label">10-Day VAWC Leave</span></div>
-                    <div class="checkbox-item"><div class="box">${check("rehabilitation")}</div> <span class="cb-label">Rehabilitation Privilege</span></div>
-                    <div class="checkbox-item"><div class="box">${check("special leave benefits")}</div> <span class="cb-label">Special Leave Benefits for Women</span></div>
-                    <div class="checkbox-item"><div class="box">${check("special emergency")}</div> <span class="cb-label">Special Emergency (Calamity) Leave</span></div>
-                    <div class="checkbox-item"><div class="box">${check("adoption")}</div> <span class="cb-label">Adoption Leave</span></div>
+                    <div class="checkbox-item"><div class="box">${check("vacation")}</div> <span class="cb-label">Vacation Leave <span class="text-xs">(Sec. 51, Rule XVI, Omnibus Rules Implementing E.O. No. 292)</span></span></div>
+                    <div class="checkbox-item"><div class="box">${check("mandatory")}</div> <span class="cb-label">Mandatory/Forced Leave <span class="text-xs">(Sec. 25, Rule XVI, Omnibus Rules Implementing E.O. No. 292)</span></span></div>
+                    <div class="checkbox-item"><div class="box">${check("sick")}</div> <span class="cb-label">Sick Leave <span class="text-xs">(Sec. 43, Rule XVI, Omnibus Rules Implementing E.O. No. 292)</span></span></div>
+                    <div class="checkbox-item"><div class="box">${check("maternity")}</div> <span class="cb-label">Maternity Leave <span class="text-xs">(R.A. No. 11210 / IRR issued by CSC, DOLE and SSS)</span></span></div>
+                    <div class="checkbox-item"><div class="box">${check("paternity")}</div> <span class="cb-label">Paternity Leave <span class="text-xs">(R.A. No. 8187 / CSC MC No. 71, s. 1998, as amended)</span></span></div>
+                    <div class="checkbox-item"><div class="box">${check("special privilege")}</div> <span class="cb-label">Special Privilege Leave <span class="text-xs">(Sec. 21, Rule XVI, Omnibus Rules Implementing E.O. No. 292)</span></span></div>
+                    <div class="checkbox-item"><div class="box">${check("solo parent")}</div> <span class="cb-label">Solo Parent Leave <span class="text-xs">(R.A. No. 8972 / CSC MC No. 8, s. 2004)</span></span></div>
+                    <div class="checkbox-item"><div class="box">${check("study")}</div> <span class="cb-label">Study Leave <span class="text-xs">(Sec. 68, Rule XVI, Omnibus Rules Implementing E.O. No. 292)</span></span></div>
+                    <div class="checkbox-item"><div class="box">${check("vawc")}</div> <span class="cb-label">10-Day VAWC Leave <span class="text-xs">(R.A. No. 9262 / CSC MC No. 15, s. 2005)</span></span></div>
+                    <div class="checkbox-item"><div class="box">${check("rehabilitation")}</div> <span class="cb-label">Rehabilitation Privilege <span class="text-xs">(Sec. 55, Rule XVI, Omnibus Rules Implementing E.O. No. 292)</span></span></div>
+                    <div class="checkbox-item"><div class="box">${check("special leave benefits")}</div> <span class="cb-label">Special Leave Benefits for Women <span class="text-xs">(R.A. No. 9710 / CSC MC No. 25, s. 2010)</span></span></div>
+                    <div class="checkbox-item"><div class="box">${check("special emergency")}</div> <span class="cb-label">Special Emergency (Calamity) Leave <span class="text-xs">(CSC MC No. 2, s. 2012, as amended)</span></span></div>
+                    <div class="checkbox-item"><div class="box">${check("adoption")}</div> <span class="cb-label">Adoption Leave <span class="text-xs">(R.A. No. 8552)</span></span></div>
                     <div class="checkbox-item"><div class="box">${(!["vacation", "mandatory", "sick", "maternity", "paternity", "special privilege", "solo parent", "study", "vawc", "rehabilitation", "special leave benefits", "special emergency", "adoption"].some(t => data.leave_type && data.leave_type.toLowerCase().includes(t))) && data.leave_type ? "X" : ""}</div> <span class="cb-label">Others: ${(!["vacation", "mandatory", "sick", "maternity", "paternity", "special privilege", "solo parent", "study", "vawc", "rehabilitation", "special leave benefits", "special emergency", "adoption"].some(t => data.leave_type && data.leave_type.toLowerCase().includes(t))) ? data.leave_type : ""}</span></div>
                 </div>
             </div>
 
             <div class="cell col-5 no-right-border no-bottom-border">
                 <div class="text-bold">6.B DETAILS OF LEAVE</div>
-                <div style="margin-top: 5px; font-size: 9pt;">
-                    ${data.leave_details || ""} <br> ${data.specify || ""}
+                <div class="checkbox-group" style="margin-top: 5px;">
+                    <div class="text-italic text-small">In case of Vacation/Special Privilege Leave:</div>
+                    <div class="checkbox-item">
+                        <div class="box">${checkDetail("Philippines")}</div> <span class="cb-label">Within the Philippines ${getSpecify("Philippines")}</span>
+                    </div>
+                    <div class="checkbox-item">
+                        <div class="box">${checkDetail("Abroad")}</div> <span class="cb-label">Abroad (Specify) ${getSpecify("Abroad")}</span>
+                    </div>
+
+                    <div class="text-italic text-small" style="margin-top:5px;">In case of Sick Leave:</div>
+                    <div class="checkbox-item">
+                        <div class="box">${checkDetail("Hospital")}</div> <span class="cb-label">In Hospital (Specify Illness) ${getSpecify("Hospital")}</span>
+                    </div>
+                    <div class="checkbox-item">
+                        <div class="box">${checkDetail("Out Patient")}</div> <span class="cb-label">Out Patient (Specify Illness) ${getSpecify("Out Patient")}</span>
+                    </div>
+
+                    <div class="text-italic text-small" style="margin-top:5px;">In case of Special Leave Benefits for Women:</div>
+                    <div class="checkbox-item">
+                        <span class="cb-label">(Specify Illness) ${getSpecify("Special Leave Benefits")}</span>
+                    </div>
+
+                    <div class="text-italic text-small" style="margin-top:5px;">In case of Study Leave:</div>
+                    <div class="checkbox-item">
+                        <div class="box">${checkDetail("Master's Degree")}</div> <span class="cb-label">Completion of Master's Degree</span>
+                    </div>
+                    <div class="checkbox-item">
+                        <div class="box">${checkDetail("Board Examination")}</div> <span class="cb-label">BAR/Board Examination Review Other purpose:</span>
+                    </div>
+                    <div class="checkbox-item">
+                        <div class="box">${checkDetail("Monetization")}</div> <span class="cb-label">Monetization of Leave Credits</span>
+                    </div>
+                    <div class="checkbox-item">
+                        <div class="box">${checkDetail("Terminal")}</div> <span class="cb-label">Terminal Leave</span>
+                    </div>
                 </div>
             </div>
 
@@ -330,6 +398,10 @@ async function downloadApplicationForm() {
                 <div class="checkbox-group" style="margin-top: 5px;">
                     <div class="checkbox-item"><div class="box">${checkCommutation("not requested")}</div> <span class="cb-label">Not Requested</span></div>
                     <div class="checkbox-item"><div class="box">${checkCommutation("requested")}</div> <span class="cb-label">Requested</span></div>
+                </div>
+                <br><br>
+                <div class="text-center" style="margin-top: 10px;">
+                    <div style="border-top: 1px solid black; width: 90%; margin: 0 auto;">(Signature of Applicant)</div>
                 </div>
             </div>
 

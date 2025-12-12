@@ -1,25 +1,37 @@
 let currentLeaveIndex = 0;
-const ongoingLeaveData = [];
+let ongoingLeaveData = [];
 
-async function updateLeaveCard(index) {
-  console.log("this is ongoing");
-  
-  const d = await fetch("/api/hr/ongoing");
-  const c = await d.json();
-  console.log(c);
+async function fetchOngoingLeaves() {
+  try {
+    const d = await fetch("/api/hr/ongoing");
+    const c = await d.json();
+    if (c.o) {
+      ongoingLeaveData = c.o;
+    }
+    updateLeaveCard(currentLeaveIndex);
+  } catch (e) {
+    console.error("Failed to fetch ongoing leaves", e);
+  }
+}
+
+function updateLeaveCard(index) {
+  console.log("Updating leave card", index);
 
   // Check if data exists
-  if (!c.o || c.o.length === 0) {
+  if (!ongoingLeaveData || ongoingLeaveData.length === 0) {
     console.warn("No ongoing leaves found.");
     document.getElementById('employeeName').textContent = "No records found";
     document.getElementById('employeeDept').textContent = "-";
     document.getElementById('leaveTypeBadge').textContent = "-";
     document.getElementById('startDate').textContent = "-";
     document.getElementById('endDate').textContent = "-";
-    return; // stop here
+    
+    document.getElementById('prevBtn').disabled = true;
+    document.getElementById('nextBtn').disabled = true;
+    return;
   }
 
-  const data = c.o[index];
+  const data = ongoingLeaveData[index];
   if (!data) {
     console.warn(`Invalid index ${index} for ongoing leaves.`);
     return;
@@ -27,19 +39,26 @@ async function updateLeaveCard(index) {
 
   document.getElementById('employeeName').textContent =
     `${data.users__firstname} ${data.users__middlename ?? ""} ${data.users__lastname}`;
-  document.getElementById('employeeDept').textContent = data.department;
+  document.getElementById('employeeDept').textContent = data.users__department;
   document.getElementById('leaveTypeBadge').textContent = data.leave_type__leave_type;
   document.getElementById('startDate').textContent = data.start_date;
   document.getElementById('endDate').textContent = data.end_date;
 
   // Update indicators
-  document.querySelectorAll('.indicator').forEach((indicator, i) => {
+  const indicators = document.querySelectorAll('.indicator');
+  indicators.forEach((indicator, i) => {
     indicator.classList.toggle('active', i === index);
+    // Hide extra indicators if we have fewer items
+    if (i < ongoingLeaveData.length) {
+        indicator.style.display = 'inline-block';
+    } else {
+        indicator.style.display = 'none';
+    }
   });
 
   // Update button states safely
   document.getElementById('prevBtn').disabled = index === 0;
-  document.getElementById('nextBtn').disabled = index === c.o.length - 1;
+  document.getElementById('nextBtn').disabled = index === ongoingLeaveData.length - 1;
 }
 
 
@@ -83,15 +102,16 @@ function navigateLeave(direction) {
 
 // Initialize the leave card on page load
 document.addEventListener('DOMContentLoaded', function() {
-    updateLeaveCard(0);
+    fetchOngoingLeaves();
     
     // Add click handlers for indicators
     document.querySelectorAll('.indicator').forEach((indicator, index) => {
         indicator.addEventListener('click', () => {
-            if (index !== currentLeaveIndex) {
+            if (index < ongoingLeaveData.length && index !== currentLeaveIndex) {
                 const direction = index > currentLeaveIndex ? 1 : -1;
-                currentLeaveIndex = index - direction; // Adjust for the navigation function
-                navigateLeave(direction);
+                currentLeaveIndex = index; // Directly set index
+                // We could use navigateLeave logic for animation, but simplify for click
+                updateLeaveCard(currentLeaveIndex);
             }
         });
     });
