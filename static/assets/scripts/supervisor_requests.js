@@ -98,20 +98,22 @@ document.getElementById("actionForm").addEventListener("submit", async (e) => {
   );
 
   const id = localStorage.getItem("selected");
-  const action = document.querySelector("input[name='actionOnLeave']:checked").value;
+  const actionRadio = document.querySelector("input[name='actionOnLeave']:checked");
+  const action = actionRadio ? actionRadio.value : "mayor_action";
 
-  const disapprovalReason1 = document.getElementById("disapprovalReason1").value;
-  // const disapprovalReason2 = document.getElementById("disapprovalReason2").value;
+  const disapprovalReason1 = document.getElementById("disapprovalReason1") ? document.getElementById("disapprovalReason1").value : "";
+  const disapprovalReason2 = document.getElementById("disapprovalReason2") ? document.getElementById("disapprovalReason2").value : "";
 
   const approvedForDaysWithPay = document.getElementById("approvedForDaysWithPay");
   const approvedForDaysWithoutPay = document.getElementById("approvedForDaysWithoutPay");
   const approvedForOthers = document.getElementById("approvedForOthers");
 
-  let string = "";
-
-  // if (approvedForDaysWithPay.value.trim() != "") string = `${approvedForDaysWithPay.value} day/s with pay`
-  // if (approvedForDaysWithoutPay.value.trim() != "") string = `${approvedForDaysWithoutPay.value} days without pay`
-  // if (approvedForOthers.value.trim() != "") string = approvedForOthers.value
+  let parts = [];
+  if (approvedForDaysWithPay && approvedForDaysWithPay.value.trim()) parts.push(`${approvedForDaysWithPay.value} day/s with pay`);
+  if (approvedForDaysWithoutPay && approvedForDaysWithoutPay.value.trim()) parts.push(`${approvedForDaysWithoutPay.value} day/s without pay`);
+  if (approvedForOthers && approvedForOthers.value.trim()) parts.push(approvedForOthers.value);
+  
+  let string = parts.join(", ");
   
   const today = new Date().toISOString().split("T")[0];
   
@@ -119,7 +121,7 @@ document.getElementById("actionForm").addEventListener("submit", async (e) => {
   formData.append('id', id)
   formData.append('actionOnLeave', action);
   formData.append('disapprovalReason1', disapprovalReason1.trim());
-  // formData.append('disapprovalReason2', disapprovalReason2.trim());
+  formData.append('disapprovalReason2', disapprovalReason2.trim());
   formData.append('approved_disapproved_days', string);
   formData.append('date_of_action', getStringDate(today));
 
@@ -132,9 +134,8 @@ document.getElementById("actionForm").addEventListener("submit", async (e) => {
   const status = await d.json();
   console.log("json status: ", status.status)
   if (status.status) {
-    const action = document.querySelector(
-      'input[name="actionOnLeave"]:checked'
-    ).value;
+    const actionRadio = document.querySelector('input[name="actionOnLeave"]:checked');
+    const action = actionRadio ? actionRadio.value : "mayor_action";
     const detailsOfAction = {
       // asOfDate: document.getElementById("asOfDate").innerText,
       // totalEarnedVl: document
@@ -153,7 +154,7 @@ document.getElementById("actionForm").addEventListener("submit", async (e) => {
       // balanceSl: document.getElementById("balance_sl").innerText.trim(),
 
       leaveAction: action,
-      disapprovalReason: document.getElementById("disapprovalReason1").value,
+      disapprovalReason: document.getElementById("disapprovalReason1") ? document.getElementById("disapprovalReason1").value : "",
 
       // approvedForDaysWithPay: document.getElementById("approvedForDaysWithPay")
       //   .value,
@@ -227,22 +228,24 @@ function showRejectionModal() {
   const disapproved = document.getElementById("disapproved");
   const disapprovalReason1 = document.getElementById("disapprovalReason1");
 
-  // Function to toggle textarea
-  function toggleReason() {
-    if (disapproved.checked) {
-      disapprovalReason1.disabled = false; // enable
-    } else {
-      disapprovalReason1.disabled = true; // disable
-      disapprovalReason1.value = ""; // optional: clear text
+  if (approved && disapproved && disapprovalReason1) {
+    // Function to toggle textarea
+    function toggleReason() {
+      if (disapproved.checked) {
+        disapprovalReason1.disabled = false; // enable
+      } else {
+        disapprovalReason1.disabled = true; // disable
+        disapprovalReason1.value = ""; // optional: clear text
+      }
     }
+
+    // Run once immediately
+    toggleReason();
+
+    // Remove any existing listeners before adding new ones
+    approved.onchange = toggleReason;
+    disapproved.onchange = toggleReason;
   }
-
-  // Run once immediately
-  toggleReason();
-
-  // Remove any existing listeners before adding new ones
-  approved.onchange = toggleReason;
-  disapproved.onchange = toggleReason;
 }
 
 function getCookie(name) {

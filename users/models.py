@@ -79,6 +79,15 @@ class LEAVE(BaseModel):
     date_of_request = models.DateField(default=timezone.now)
     date_of_action = models.TextField(blank=True)
 
+    # HR Certification Details (7.A)
+    hr_certification_as_of = models.TextField(blank=True, null=True)
+    hr_total_earned_vl = models.TextField(blank=True, null=True)
+    hr_total_earned_sl = models.TextField(blank=True, null=True)
+    hr_less_this_application_vl = models.TextField(blank=True, null=True)
+    hr_less_this_application_sl = models.TextField(blank=True, null=True)
+    hr_balance_vl = models.TextField(blank=True, null=True)
+    hr_balance_sl = models.TextField(blank=True, null=True)
+
     def days_count(self):
         """
         Returns total number of days for this leave, inclusive of start and end dates.
@@ -100,4 +109,14 @@ class StatusNotif(BaseModel):
     leave = models.ForeignKey(LEAVE, on_delete=models.CASCADE, related_name="LEAVEs", null=True)
     current_status = models.TextField(null=True)
     notif_type = models.TextField(null=True)
+
+class UserMonthlyBalance(BaseModel):
+    user = models.ForeignKey(USERS, on_delete=models.CASCADE)
+    leave_type = models.ForeignKey(LEAVE_TYPES, on_delete=models.CASCADE)
+    year = models.IntegerField()
+    month = models.IntegerField()
+    remaining_credits = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return f"{self.user.firstname} - {self.leave_type.leave_type} - {self.month}/{self.year}: {self.remaining_credits}"
 

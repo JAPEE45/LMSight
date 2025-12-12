@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Leave File</title>
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+    <button onclick="generateExcel()">Download Leave Form Excel</button>
+
+    <script>
+        function generateExcel() {
+            // 1. Define the Data Structure (Rows)
+            const data = [
+                // Row 1: Employee Header Info
+                [
+                    "NAME:", "", "", "", "", "", 
+                    "DIVISION OFFICE:", "", "", "", 
+                    "FIRST DAY OF SERVICE:", "", "", "", "", 
+                    "Balance", "" // 'Balance' Header spans 2 cols
+                ],
+                // Row 2: Main Table Headers
+                [
+                    "PERIOD", 
+                    "PARTICULARS", "", "", "", // Particulars spans 4 cols (Type, Day, Hrs, Min)
+                    "VACATION LEAVE", "", "", "", // Vacation Leave spans 4 cols
+                    "SICK LEAVE", "", "", "",     // Sick Leave spans 4 cols
+                    "Date & Action Take on Application for Leave", "", // Spans 2 cols width-wise usually? Or just one wide col.
+                    "VL", "SL" // Sub-headers for Balance
+                ],
+                // Row 3: Sub-headers
+                [
+                    "", // Under Period
+                    "Type of Leave", "Day", "Hrs", "Min",
+                    "EARNED", "ABSENT UND. WITH PAY", "BALANCE", "ABSENT UND. WITH W/O PAY",
+                    "EARNED", "ABSENT UND. WITH PAY", "BALANCE", "ABSENT UND. WITH W/O PAY",
+                    "", // Under Date & Action
+                    "", // Under Date & Action (if merged)
+                    "", "" // Under VL/SL
+                ],
+                // Row 4: Empty row for data entry (example)
+                ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]
+            ];
+
+            // 2. Create Workbook and Worksheet
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(data);
+
+            // 3. Define Merges (Start Row/Col -> End Row/Col)
+            // Note: Indexing starts at 0. (Row 0 is the first row, Col 0 is Column A)
+            const merges = [
+                // Top Header Merges
+                { s: { r: 0, c: 0 }, e: { r: 0, c: 5 } },   // NAME: (A1:F1)
+                { s: { r: 0, c: 6 }, e: { r: 0, c: 9 } },   // DIVISION OFFICE: (G1:J1)
+                { s: { r: 0, c: 10 }, e: { r: 0, c: 14 } }, // FIRST DAY OF SERVICE: (K1:O1)
+                { s: { r: 0, c: 15 }, e: { r: 0, c: 16 } }, // Balance (P1:Q1)
+
+                // Table Header Merges
+                { s: { r: 1, c: 0 }, e: { r: 2, c: 0 } },   // PERIOD (Vertical merge A2:A3)
+                { s: { r: 1, c: 1 }, e: { r: 1, c: 4 } },   // PARTICULARS (Horizontal merge B2:E2)
+                { s: { r: 1, c: 5 }, e: { r: 1, c: 8 } },   // VACATION LEAVE (Horizontal merge F2:I2)
+                { s: { r: 1, c: 9 }, e: { r: 1, c: 12 } },  // SICK LEAVE (Horizontal merge J2:M2)
+                { s: { r: 1, c: 13 }, e: { r: 2, c: 14 } }, // Date & Action... (Merge N2:O3 - wider area)
+            ];
+
+            ws['!merges'] = merges;
+
+            // 4. Set Column Widths (Optional, for better look)
+            ws['!cols'] = [
+                { wch: 15 }, // A: Period
+                { wch: 20 }, // B: Type
+                { wch: 5 },  // C: Day
+                { wch: 5 },  // D: Hrs
+                { wch: 5 },  // E: Min
+                { wch: 10 }, // F: Earned
+                { wch: 22 }, // G: Absent w/ Pay
+                { wch: 10 }, // H: Balance
+                { wch: 25 }, // I: Absent w/o Pay
+                { wch: 10 }, // J: Earned
+                { wch: 22 }, // K: Absent w/ Pay
+                { wch: 10 }, // L: Balance
+                { wch: 25 }, // M: Absent w/o Pay
+                { wch: 30 }, // N: Date & Action
+                { wch: 5 },  // O: Extra space for Date & Action merge
+                { wch: 8 },  // P: VL
+                { wch: 8 }   // Q: SL
+            ];
+
+            // 5. Append Worksheet and Save
+            XLSX.utils.book_append_sheet(wb, ws, "Leave Card");
+            XLSX.writeFile(wb, "Leave_Record_Form.xlsx");
+        }
+    </script>
+</body>
+</html>

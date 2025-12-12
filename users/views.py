@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import JsonResponse
-from .models import USERS, LEAVE,StatusNotif, LEAVE_TYPES,LeaveTypeDetails
+from .models import USERS, LEAVE,StatusNotif, LEAVE_TYPES,LeaveTypeDetails, UserMonthlyBalance
 from django.utils import timezone
 from django.utils.timezone import now
 from datetime import datetime, timedelta, date
@@ -57,14 +57,17 @@ def credit(creditType, user, mult):
 def get_monthly_leave_credits(user_id):
     try:
         user = USERS.objects.get(id=user_id)
-        today = date.today()
+        
+        GLOBAL_MONTHLY_LIMIT = 10.0
 
+        today = date.today()
         start_of_month = today.replace(day=1)
         if today.month == 12:
             end_of_month = today.replace(year=today.year + 1, month=1, day=1) - timedelta(days=1)
         else:
             end_of_month = today.replace(month=today.month + 1, day=1) - timedelta(days=1)
 
+        # Calculate used days this month
         leaves = LEAVE.objects.filter(
             users=user,
             status="approved",
@@ -73,17 +76,23 @@ def get_monthly_leave_credits(user_id):
         )
 
         used_days = sum([leave.days_count() for leave in leaves])
+        
+        remaining = max(0, GLOBAL_MONTHLY_LIMIT - used_days)
 
-        remaining = TOTAL_LEAVE - used_days
-        remaining = max(remaining, 0)
-
-        used_percent = (used_days / TOTAL_LEAVE) * 100 if TOTAL_LEAVE else 0
-        remaining_percent = (remaining / TOTAL_LEAVE) * 100 if TOTAL_LEAVE else 0
+        # Total credits is the limit
+        total_credits = GLOBAL_MONTHLY_LIMIT
+        
+        if total_credits > 0:
+            used_percent = (used_days / total_credits) * 100
+            remaining_percent = (remaining / total_credits) * 100
+        else:
+            used_percent = 0
+            remaining_percent = 0
 
         return {
             "user": f"{user.firstname} {user.lastname}",
             "month": today.strftime("%B %Y"),
-            "total_credits": TOTAL_LEAVE,
+            "total_credits": total_credits, 
             "used": used_days,
             "remaining": remaining,
             "used_percent": round(used_percent, 2),
@@ -142,32 +151,24 @@ def user_dashboard(request):
 
         leave_type = request.POST.get("leave_type")
         attached_file = request.FILES.get("attached-file")
-        number_of_working_days = request.POST.get("number_of_working_days")
-        inclusive_dates = request.POST.get("inclusive-dates")
+        # number_of_working_days is calculated from dates
+        start_date_str = request.POST.get("start_date")
+        end_date_str = request.POST.get("end_date")
         commutation = request.POST.get("commutation")
         specify = request.POST.get("specify")
         details = request.POST.get("details")
 
-        parts = [p.strip() for p in inclusive_dates.split(",") if p.strip()]
-        print(parts)
-
-        if len(parts) < 2:
-            return redirect(f"{reverse('user_dasboard')}?error=invalid_dates")
-
-        if len(parts) == 2:
-            start_str = end_str = ", ".join(parts[:2])
-        else:
-            start_str = ", ".join(parts[:2])
-            end_str   = ", ".join(parts[-2:])
-
-        print("Start:", start_str)
-        print("End:", end_str)
+        if not start_date_str or not end_date_str:
+             return redirect(f"{reverse('user_dasboard')}?error=missing_dates")
 
         try:
-            start_date = datetime.strptime(start_str, "%B %d, %Y").date()
-            end_date   = datetime.strptime(end_str, "%B %d, %Y").date()
+            start_date = datetime.strptime(start_date_str, "%Y-%m-%d").date()
+            end_date   = datetime.strptime(end_date_str, "%Y-%m-%d").date()
         except ValueError:
             return redirect(f"{reverse('user_dasboard')}?error=invalid_dates")
+
+        if start_date > end_date:
+             return redirect(f"{reverse('user_dasboard')}?error=invalid_range")
 
         lt = LEAVE_TYPES.objects.filter(id=leave_type).first()
         if not lt:
@@ -187,14 +188,14 @@ def user_dashboard(request):
             number_of_days_applied=number_of_days_applied,
             start_date=start_date,
             end_date=end_date,
-            status="pending",
+            status="pending_hr",
             specify=specify
         )
         lv.save()
 
         notif = StatusNotif(
             leave=lv,
-            current_status='pending',
+            current_status='pending_hr',
             user=user
         )
         notif.save()
@@ -210,7 +211,7 @@ def user_dashboard(request):
             return render(request, "login_interface.html", {"error": True})
 
         today = timezone.now().date()
-        lv = LEAVE.objects.filter(users=user, start_date__month=today.month)
+        lv = LEAVE.objects.filter(users=user).order_by('-createdAt')
 
         user_leave = {
             "vacation_leave": 0,
@@ -226,28 +227,37 @@ def user_dashboard(request):
         total_leave_days_this_month = 0
 
         for leave in lv:
-            if leave.status == "pending":
+            # Check if leave is in current month/year for stats
+            is_this_month = False
+            if leave.start_date and leave.start_date.month == today.month and leave.start_date.year == today.year:
+                is_this_month = True
+
+            if leave.status in ["pending", "pending_hr", "pending_mayor"]:
                 user_leave["pending_leave"] += 1
                 pending.append(leave)
 
             elif leave.status == "approved":
                 approved.append(leave)
-                days = int(leave.number_of_days_applied)
-                total_leave_days_this_month += days
+                
+                if is_this_month:
+                    days = int(leave.number_of_days_applied)
+                    total_leave_days_this_month += days
 
-                leave_type_lower = leave.leave_type.leave_type.lower()
-                if leave_type_lower == "vacation":
-                    user_leave["vacation_leave"] += days
-                elif leave_type_lower == "casual":
-                    user_leave["casual_leave"] += days
-                elif leave_type_lower == "sick":
-                    user_leave["sick_leave"] += days
+                    leave_type_lower = leave.leave_type.leave_type.lower()
+                    if leave_type_lower == "vacation":
+                        user_leave["vacation_leave"] += days
+                    elif leave_type_lower == "casual":
+                        user_leave["casual_leave"] += days
+                    elif leave_type_lower == "sick":
+                        user_leave["sick_leave"] += days
 
             elif leave.status == "rejected":
                 rejected.append(leave)
 
         user_leave["total_leave_this_month"] = total_leave_days_this_month
-        user_leave["leave_balance"] = float(user.credit)
+        
+        GLOBAL_MONTHLY_LIMIT = 10.0
+        user_leave["leave_balance"] = max(0, GLOBAL_MONTHLY_LIMIT - total_leave_days_this_month)
 
         leave_status = {
             "approved": approved,
@@ -345,6 +355,83 @@ def user_instruction(request):
             return redirect("login")
         return render(request, "instructions.html")
 
+def recalculate_monthly_balances(user, year, month):
+    # 1. Global Monthly Limit
+    GLOBAL_MONTHLY_LIMIT = 10
+
+    # 2. Per-Type Limits
+    TYPE_LIMITS = {
+        "Vacation": 10,
+        "Sick": 10,
+        "Maternity": 10,
+        "Paternity": 10,
+        "Special Privilege": 10,
+        "Solo Parent": 10,
+        "Study": 10,
+        "VAWC": 10,
+        "Special Emergency": 10
+    }
+
+    # 3. Fetch all approved leaves for the target month
+    leaves_this_month = LEAVE.objects.filter(
+        users=user,
+        status="approved",
+        start_date__month=month,
+        start_date__year=year
+    )
+
+    # 4. Calculate Usages
+    total_used_this_month = 0
+    type_usage = {k: 0 for k in TYPE_LIMITS.keys()}
+
+    for l in leaves_this_month:
+        days = l.days_count()
+        total_used_this_month += days
+        
+        # Identify type
+        l_type_name = l.leave_type.leave_type
+        for key in TYPE_LIMITS:
+            if key.lower() in l_type_name.lower():
+                type_usage[key] += days
+                break
+    
+    # 5. Calculate Global Remaining
+    global_remaining = max(0, GLOBAL_MONTHLY_LIMIT - total_used_this_month)
+
+    # 6. Update/Create UserMonthlyBalance entries
+    for name, type_limit in TYPE_LIMITS.items():
+        # Find matching LEAVE_TYPE object
+        # Note: This relies on LEAVE_TYPES having names matching keys or subsets. 
+        # Ideally we fetch the ID. For now, we search by string matching which is brittle but consistent with current app logic.
+        lt_obj = LEAVE_TYPES.objects.filter(leave_type__icontains=name).first()
+        
+        # Fallback if specific name not found in DB (e.g. if DB has "Vacation Leave" and key is "Vacation")
+        if not lt_obj:
+             # Try exact or whatever available. If not found, skip or create? 
+             # Assuming standard seed data exists. If not, we can't store FK.
+             continue
+
+        # Calculate Effective Remaining
+        type_used = type_usage[name]
+        type_remaining = max(0, type_limit - type_used)
+        
+        # The core rule: "deducted equally based on 10 overall".
+        # So effective balance is min(Type-Specific-Rem, Global-Rem).
+        effective_remaining = min(type_remaining, global_remaining)
+
+        # Update DB
+        balance_entry, created = UserMonthlyBalance.objects.get_or_create(
+            user=user,
+            leave_type=lt_obj,
+            year=year,
+            month=month,
+            defaults={'remaining_credits': effective_remaining}
+        )
+        
+        if not created:
+            balance_entry.remaining_credits = effective_remaining
+            balance_entry.save()
+
 def leave_balances(request):
     if request.method == "GET":
         usr = request.session.get("user_id")
@@ -355,16 +442,83 @@ def leave_balances(request):
         if not user:
             return render(request, "login_interface.html", {"error": True})
 
-        lt = LEAVE_TYPES.objects.all().values("id", "leave_type")
         notif = StatusNotif.objects.filter(user=user)
+        
+        today = timezone.now().date()
+        
+        # Ensure balances are up-to-date in DB
+        recalculate_monthly_balances(user, today.year, today.month)
 
-        user_id = request.session.get("user_id")
-        user = USERS.objects.filter(id=user_id).first()
-        if not user:
-            return redirect("login")
+        # Fetch from DB
+        db_balances = UserMonthlyBalance.objects.filter(
+            user=user,
+            year=today.year,
+            month=today.month
+        )
+        
+        # Convert DB results to a dict for easy lookup: {"Vacation": 8.0, ...}
+        # Matching based on containment of name in leave_type string
+        db_map = {}
+        for b in db_balances:
+            db_map[b.leave_type.leave_type] = b.remaining_credits
+
+        # Re-calculate global remaining for fallback (in case DB entry missing)
+        GLOBAL_MONTHLY_LIMIT = 10
+        leaves_this_month = LEAVE.objects.filter(
+            users=user,
+            status="approved",
+            start_date__month=today.month,
+            start_date__year=today.year
+        )
+        total_used = sum(l.days_count() for l in leaves_this_month)
+        global_remaining = max(0, GLOBAL_MONTHLY_LIMIT - total_used)
+        
+        # Define Limits again to ensure order and completeness
+        TYPE_LIMITS = {
+            "Vacation": 10,
+            "Sick": 10,
+            "Maternity": 10,
+            "Paternity": 10,
+            "Special Privilege": 10,
+            "Solo Parent": 10,
+            "Study": 10,
+            "VAWC": 10,
+            "Special Emergency": 10
+        }
+
+        balances = []
+        for name, limit in TYPE_LIMITS.items():
+            # Try to find value in DB map
+            # We look for keys in db_map that contain our target 'name' (e.g. "Vacation" in "Vacation Leave")
+            val = None
+            for db_key, db_val in db_map.items():
+                if name.lower() in db_key.lower():
+                    val = db_val
+                    break
+            
+            # Fallback if not in DB
+            if val is None:
+                val = min(limit, global_remaining)
+
+            # Format
+            if isinstance(val, float) and val.is_integer():
+                val = int(val)
+                
+            avail_str = f"{val} days available"
+            if val == 1:
+                avail_str = f"{val} day available"
+
+            balances.append({
+                "name": name,
+                "available": avail_str
+            })
+            
+        # If DB was empty (e.g. no LEAVE_TYPES found matching), fallback or empty? 
+        # recalculate_monthly_balances handles creation.
+
         return render(request, "leave_balances.html", {
             "user": user,
-            "lt": lt,
+            "balances": balances,
             "notif": notif
         })
 
@@ -507,7 +661,7 @@ def mayor_dashboard(request):
 def mayor_requests(request):
     if request.method == "GET":
         user = USERS.objects.filter(id = request.session.get("user_id")).first()
-        req = LEAVE.objects.filter(status = "pending")
+        req = LEAVE.objects.filter(status = "pending_mayor")
         dt = list(req)
         # for i in dt:
         #     print("requests ini: ",i.leave_details.details)
@@ -529,7 +683,7 @@ def mayor_emp_profile(request, userID):
     )
 
     if request.method == "GET":
-        print("baby ko ganda ganda hannah uwu: ", get_monthly_leave_credits(userID))
+        # print("baby ko ganda ganda hannah uwu: ", get_monthly_leave_credits(userID))
         # 🟢 Renders the normal employee profile page
         return render(
             request,
@@ -897,6 +1051,50 @@ def getLeaveRequestsPerMonth(year=None):
 
     return months
 
+def get_monthly_requests_data():
+    today = now().date()
+    labels = []
+    data = []
+    
+    for i in range(6):
+        month_idx = today.month - i
+        year = today.year
+        while month_idx <= 0:
+            month_idx += 12
+            year -= 1
+        
+        d = date(year, month_idx, 1)
+        labels.append(d.strftime("%b"))
+        
+        count = LEAVE.objects.filter(
+            start_date__year=year,
+            start_date__month=month_idx
+        ).count()
+        data.append(count)
+        
+    return {"labels": labels, "data": data}
+
+def getLeaveMatrixDynamic(lt):
+    departments = list(USERS.objects.values_list('department', flat=True).distinct())
+    departments = [d for d in departments if d]
+    departments.sort()
+
+    matrix = []
+    for leave_type in lt:
+        row = []
+        lv_qs = LEAVE_TYPES.objects.filter(leave_type=leave_type)
+        if lv_qs.exists():
+            lv = lv_qs.first()
+            for dept in departments:
+                count = LEAVE.objects.filter(leave_type=lv, users__department=dept).count()
+                row.append(count)
+        else:
+            row = [0] * len(departments)
+        
+        matrix.append(row)
+
+    return {"departments": departments, "matrix": matrix}
+
 def hr_dasboard(request):
     if request.method == "GET":
         if checkIfHr(request): return redirect("login")
@@ -904,7 +1102,11 @@ def hr_dasboard(request):
         
         s = {}
         s["weekly"] = getWeeklyLeave()
-        s['monthly'] = getLeaveByMonth()
+        
+        # Dynamic Monthly Data
+        monthly_data = get_monthly_requests_data()
+        s['monthly'] = json.dumps(monthly_data)
+        
         s['upcoming'] = getUpcomingLeaves()
         s['user'] = user
        
@@ -919,8 +1121,10 @@ def hr_dasboard(request):
      
         s['status'] = getLeaveCountByStatus()
         
-        dep = getLeaveMatrix(lb)
-        s['dep'] = dep
+        # Dynamic Department Data
+        dep_data = getLeaveMatrixDynamic(lb)
+        s['dep'] = json.dumps(dep_data)
+        
         s['perMonth'] = getLeaveRequestsPerMonth()
         s['all_leave'] = getLeaveDaysPerMonth()
         notif = get_status_notification()
@@ -958,7 +1162,7 @@ def hr_request(request):
     if request.method == "GET":
         if checkIfHr(request): return redirect("login")
         user = USERS.objects.filter(id = request.session.get("user_id")).first()
-        req = LEAVE.objects.filter(status = "pending")
+        req = LEAVE.objects.filter(status = "pending_hr")
         dt = list(req)
         # for i in dt:
         #     print("requests ini: ",i.leave_details.details)
@@ -1025,100 +1229,99 @@ def month_range(start_date, end_date):
 
 def leave_ledger(request, user_id):
     if request.method == "GET":
-        # Fetch employee
         employee = USERS.objects.filter(id=user_id).first()
         if not employee:
             return JsonResponse({"error": "Employee not found"}, status=404)
 
-        # Get employee's leaves
-        leaves = LEAVE.objects.filter(users=employee).order_by("start_date")
+        events = []
+        
+        start_date = employee.createdAt if employee.createdAt else date.today()
+        today = date.today()
+        
+        if isinstance(start_date, datetime):
+            start_date = start_date.date()
+            
+        current = start_date.replace(day=1)
+        while current <= today:
+            events.append({
+                "date": current,
+                "type": "ACCRUAL",
+                "period": DateFormat(current).format("m/Y")
+            })
+            if current.month == 12:
+                current = current.replace(year=current.year + 1, month=1)
+            else:
+                current = current.replace(month=current.month + 1)
+
+        leaves = LEAVE.objects.filter(users=employee, status="approved")
+        for leave in leaves:
+            events.append({
+                "date": leave.start_date,
+                "type": "LEAVE",
+                "obj": leave
+            })
+
+        events.sort(key=lambda x: (x['date'], 0 if x['type'] == 'ACCRUAL' else 1))
 
         ledger_rows = []
-        vacation_balance = 0
-        sick_balance = 0
-
+        vacation_balance = 10.0 
+        sick_balance = 10.0     
+        
         VACATION_ACCRUAL = 1.25
         SICK_ACCRUAL = 1.25
 
-        start_date = leaves.first().start_date if leaves.exists() else date.today()
-        end_date = date.today()
-        
-        # iterate monthly
-        for month in month_range(start_date, end_date):
-            period = DateFormat(month).format("m/Y")
+        for event in events:
+            row = {
+                "period": "",
+                "particulars": {"type": "", "days": "", "hrs": "", "mins": ""},
+                "vacation_leave": {"earned": "", "absent_with_pay": "", "balance": "", "absent_without_pay": ""},
+                "sick_leave": {"earned": "", "absent_with_pay": "", "balance": "", "absent_without_pay": ""},
+                "remarks": ""
+            }
 
-            earned_vl = VACATION_ACCRUAL
-            earned_sl = SICK_ACCRUAL
-            vacation_balance += earned_vl
-            sick_balance += earned_sl
+            if event['type'] == "ACCRUAL":
+                vacation_balance += VACATION_ACCRUAL
+                sick_balance += SICK_ACCRUAL
+                
+                row["period"] = event['period']
+                row["vacation_leave"]["earned"] = VACATION_ACCRUAL
+                row["vacation_leave"]["balance"] = round(vacation_balance, 3)
+                row["sick_leave"]["earned"] = SICK_ACCRUAL
+                row["sick_leave"]["balance"] = round(sick_balance, 3)
+                row["remarks"] = "Monthly Accrual"
 
-            month_start = date(month.year, month.month, 1)
-            last_day = calendar.monthrange(month.year, month.month)[1]
-            month_end = date(month.year, month.month, last_day)
+            elif event['type'] == "LEAVE":
+                leave = event['obj']
+                days = leave.days_count()
+                
+                is_vl = "vacation" in leave.leave_type.leave_type.lower()
+                is_sl = "sick" in leave.leave_type.leave_type.lower()
+                
+                target = "VL" if not is_sl else "SL"
+                
+                row["particulars"]["type"] = leave.leave_type.leave_type
+                row["particulars"]["days"] = days
+                row["remarks"] = f"Inclusive Dates: {leave.start_date} to {leave.end_date}"
 
-            month_leaves = leaves.filter(
-                Q(start_date__lte=month_end) & Q(end_date__gte=month_start)
-            )
+                if target == "VL":
+                    vacation_balance -= days
+                    row["vacation_leave"]["absent_with_pay"] = days
+                    
+                    row["vacation_leave"]["balance"] = round(vacation_balance, 3)
+                    row["sick_leave"]["balance"] = round(sick_balance, 3)
 
-            absent_vl = absent_sl = 0
-            absent_without_vl = absent_without_sl = 0
-            remarks = ""
+                elif target == "SL":
+                    sick_balance -= days
+                    row["sick_leave"]["absent_with_pay"] = days
+                    row["sick_leave"]["balance"] = round(sick_balance, 3)
+                    row["vacation_leave"]["balance"] = round(vacation_balance, 3)
 
-            for leave in month_leaves:
-                leave_type = leave.leave_type.leave_type.upper() if leave.leave_type else "N/A"
-                days_with_pay = 0
-                days_without_pay = 0
+            ledger_rows.append(row)
 
-                if leave.approved_for:
-                    if "with pay" in leave.approved_for.lower():
-                        match = re.search(r"\d+", leave.approved_for)
-                        days_with_pay = int(match.group()) if match else 0
-                    elif "without pay" in leave.approved_for.lower():
-                        match = re.search(r"\d+", leave.approved_for)
-                        days_without_pay = int(match.group()) if match else 0
-
-                if leave_type == "VL":
-                    absent_vl += days_with_pay
-                    vacation_balance -= days_with_pay
-                    absent_without_vl += days_without_pay
-                elif leave_type == "SL":
-                    absent_sl += days_with_pay
-                    sick_balance -= days_with_pay
-                    absent_without_sl += days_without_pay
-
-                if leave.status == "approved":
-                    remarks += f"{leave_type} Availed {days_with_pay}d w/ pay, {days_without_pay}d w/o pay. "
-                if leave.date_of_action:
-                    remarks += f"({leave.date_of_action}) "
-
-            ledger_rows.append({
-                "period": period,
-                "particulars": {
-                    "type": "VL/SL",
-                    "days": absent_vl + absent_sl + absent_without_vl + absent_without_sl,
-                    "hrs": 0,
-                    "mins": 0,
-                },
-                "vacation_leave": {
-                    "earned": earned_vl,
-                    "absent_with_pay": absent_vl,
-                    "balance": round(vacation_balance, 3),
-                    "absent_without_pay": absent_without_vl,
-                },
-                "sick_leave": {
-                    "earned": earned_sl,
-                    "absent_with_pay": absent_sl,
-                    "balance": round(sick_balance, 3),
-                    "absent_without_pay": absent_without_sl,
-                },
-                "remarks": remarks or "Monthly accrual"
-            })
-
-        # Add employee info to the response
         employee_info = {
             "full_name": f"{employee.firstname} {employee.middlename} {employee.lastname}" + (f" {employee.suffix}" if employee.suffix else ""),
             "department": employee.department,
-            "created_at": employee.createdAt.strftime("%Y-%m-%d %H:%M:%S")
+            "created_at": employee.createdAt.strftime("%Y-%m-%d %H:%M:%S") if employee.createdAt else ""
         }
 
         return JsonResponse({
@@ -1180,16 +1383,28 @@ def getLeaveReq(request):
 
         lv["leave_type"] = leave.leave_type.leave_type
         lv["leave_details"] = leave.leave_details.details
+        
+        # Add HR Certification Fields
+        lv["hr_certification_as_of"] = leave.hr_certification_as_of
+        lv["hr_total_earned_vl"] = leave.hr_total_earned_vl
+        lv["hr_total_earned_sl"] = leave.hr_total_earned_sl
+        lv["hr_less_this_application_vl"] = leave.hr_less_this_application_vl
+        lv["hr_less_this_application_sl"] = leave.hr_less_this_application_sl
+        lv["hr_balance_vl"] = leave.hr_balance_vl
+        lv["hr_balance_sl"] = leave.hr_balance_sl
 
         return JsonResponse({"leave": lv})
 
 
 def action(request):
     if request.method == "POST":
+        user_id = request.session.get("user_id")
+        current_user = USERS.objects.filter(id=user_id).first()
+        
         leave_id = request.POST.get("id")
         recommendationAction = request.POST.get("actionOnLeave")
-        disapprovalReason1 = request.POST.get("disapprovalReason1")
-        disapprovalReason2 = request.POST.get("disapprovalReason2")
+        disapprovalReason1 = request.POST.get("disapprovalReason1") # Supervisor reason
+        disapprovalReason2 = request.POST.get("disapprovalReason2") # Mayor reason
         date_of_action = request.POST.get("date_of_action")
         approved_days = request.POST.get("approved_disapproved_days")
 
@@ -1197,31 +1412,91 @@ def action(request):
         if not leave:
             return JsonResponse({"status": False, "msg": f"Leave not found for id {leave_id}"})
         
-        # Update leave fields
-        leave.recommendation_for = recommendationAction
-        leave.recommendation_for_disapproval_due_to = disapprovalReason1
-        leave.approved_for = approved_days
-        leave.disapproved_due_to = disapprovalReason2
-        leave.date_of_action = date_of_action
+        # Determine who is acting
+        is_hr = current_user and current_user.user_type == "hr"
+        is_supervisor = current_user and current_user.user_type == "supervisor"
+        is_mayor = current_user and current_user.user_type == "mayor"
 
-        if disapprovalReason2 == "" and approved_days:
-            if leave.status != "approved":
-                leave.status = "approved"
-                notif = StatusNotif(user=leave.users, leave=leave, current_status="approved")
-                deducted = credit("minus", leave.users, leave.days_count())
-                if deducted:
-                    msg = f"Deducted {leave.days_count()} days from {leave.users.firstname}'s credit."
-                else:
-                    msg = f"Not enough balance for {leave.users.firstname}."
-        elif disapprovalReason2 != "":
-            leave.status = "rejected"
-            notif = StatusNotif(user=leave.users, leave=leave, current_status="rejected")
-            msg = f"Leave rejected for {leave.users.firstname}."
-        else:
-            msg = "No action taken."
+        msg = "No action taken."
+
+        # HR ACTION
+        if is_hr:
+            leave.recommendation_for = recommendationAction
+            
+            # Save HR Certification Details
+            leave.hr_certification_as_of = date_of_action
+            leave.hr_total_earned_vl = request.POST.get('hr_total_earned_vl')
+            leave.hr_total_earned_sl = request.POST.get('hr_total_earned_sl')
+            leave.hr_less_this_application_vl = request.POST.get('hr_less_this_application_vl')
+            leave.hr_less_this_application_sl = request.POST.get('hr_less_this_application_sl')
+            leave.hr_balance_vl = request.POST.get('hr_balance_vl')
+            leave.hr_balance_sl = request.POST.get('hr_balance_sl')
+
+            if recommendationAction == "approval":
+                leave.status = "pending" # Move to Supervisor
+                msg = f"Leave verified by HR. Forwarded to Supervisor."
+                notif = StatusNotif(user=leave.users, leave=leave, current_status="pending")
+            else:
+                leave.status = "rejected"
+                msg = f"Leave rejected by HR."
+                notif = StatusNotif(user=leave.users, leave=leave, current_status="rejected")
+
+        # SUPERVISOR ACTION
+        elif is_supervisor:
+            leave.recommendation_for = recommendationAction
+            leave.recommendation_for_disapproval_due_to = disapprovalReason1
+            
+            if recommendationAction == "approval":
+                leave.status = "pending_mayor" # Move to Mayor
+                msg = f"Leave recommended for approval by Supervisor. Forwarded to Mayor."
+                notif = StatusNotif(user=leave.users, leave=leave, current_status="pending_mayor")
+            else:
+                leave.status = "rejected"
+                msg = f"Leave rejected by Supervisor."
+                notif = StatusNotif(user=leave.users, leave=leave, current_status="rejected")
+
+        # MAYOR ACTION
+        elif is_mayor:
+            leave.approved_for = approved_days
+            leave.disapproved_due_to = disapprovalReason2
+            leave.date_of_action = date_of_action or str(timezone.now().date())
+
+            # Check if it's an approval (no disapproval reason provided)
+            # The UI logic usually implies if there's a disapproval reason, it's rejected.
+            # If approved_days is filled and disapprovalReason2 is empty, it's approved.
+            
+            if disapprovalReason2:
+                leave.status = "rejected"
+                msg = f"Leave rejected by Mayor."
+                notif = StatusNotif(user=leave.users, leave=leave, current_status="rejected")
+            else:
+                 # Approval
+                if leave.status != "approved":
+                    leave.status = "approved"
+                    notif = StatusNotif(user=leave.users, leave=leave, current_status="approved")
+                    
+                    # Update the new monthly tracking
+                    if leave.start_date:
+                        recalculate_monthly_balances(leave.users, leave.start_date.year, leave.start_date.month)
+
+                    deducted = credit("minus", leave.users, leave.days_count())
+                    if deducted:
+                        msg = f"Leave approved by Mayor. Deducted {leave.days_count()} days."
+                    else:
+                        # Even if deduction fails, we might still mark it approved but warn? 
+                        # Or maybe we shouldn't approve? 
+                        # For now, following existing logic:
+                        msg = f"Leave approved by Mayor. Note: User had insufficient credit."
+        
+        # Fallback / Admin logic (if needed, or existing logic)
+        else: 
+             # Keep generic logic for fallback or if user type isn't strictly checked above
+             # But best to rely on roles.
+             pass
 
         leave.save()
-        notif.save()
+        if 'notif' in locals():
+            notif.save()
 
         return JsonResponse({
             "status": True,

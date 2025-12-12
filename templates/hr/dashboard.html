@@ -90,7 +90,7 @@
                <div class="notifications-list">
               
               {% for i in notif %}
-                 <div class="notification-item">
+                 <div class="notification-item" onclick="window.location.href='{% url 'hr_request' %}'" style="cursor: pointer;">
                   <div class="notification-avatar" style="width: 50px;height:50px">
                     <img src="/media/{{i.user.picture}}" width="50" height="50" style="border-radius: 100px;"/>
                   </div>

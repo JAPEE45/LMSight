@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS Form No. 6 - Application for Leave</title>
+    <style>
+        /* General Reset and Print Settings */
+        * {
+            box-sizing: border-box;
+            -webkit-print-color-adjust: exact;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 10pt; /* Slightly smaller to ensure fit */
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* The Paper Sheet (A4) */
+        .page-container {
+            width: 210mm; /* A4 Width */
+            min-height: 297mm; /* A4 Height */
+            background: white;
+            padding: 10mm 10mm;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        /* Typography Utilities */
+        h1, h2, h3, h4, p { margin: 0; padding: 0; }
+        .text-center { text-align: center; }
+        .text-bold { font-weight: bold; }
+        .text-italic { font-style: italic; }
+        .text-uppercase { text-transform: uppercase; }
+        .text-small { font-size: 8pt; }
+        .text-xs { font-size: 7pt; }
+        
+        /* Grid Layout for the Form */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            border: 2px solid black;
+        }
+
+        /* Cell Styling */
+        .cell {
+            padding: 4px 6px;
+            border-right: 1px solid black;
+            border-bottom: 1px solid black;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 45px; /* Ensures space for label + handwritten text */
+        }
+        
+        .no-right-border { border-right: none; }
+        .no-bottom-border { border-bottom: none; }
+        .thick-bottom { border-bottom: 2px solid black; }
+        
+        /* Spanning Columns */
+        .col-12 { grid-column: span 12; }
+        .col-6  { grid-column: span 6; }
+        .col-5  { grid-column: span 5; } /* Adjusted for better spacing */
+        .col-4  { grid-column: span 4; }
+        .col-3  { grid-column: span 3; } /* Narrower for Date */
+        .col-8  { grid-column: span 8; }
+        .col-7  { grid-column: span 7; }
+        .col-9  { grid-column: span 9; }
+        
+        /* Header Section */
+        .header-section {
+            position: relative;
+            margin-bottom: 10px;
+        }
+        .annex-text {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-style: italic;
+            font-weight: bold;
+        }
+        .form-number {
+            font-size: 8pt;
+            font-style: italic;
+        }
+        
+        /* Input Underlines */
+        .input-area {
+            font-weight: bold;
+            font-size: 11pt;
+            margin-top: auto; /* Pushes text to bottom of cell */
+            padding-top: 5px;
+            white-space: nowrap; /* Prevents text wrapping */
+            overflow: hidden;    /* Hides overflow if text is too long */
+        }
+
+        /* Checkbox list styling */
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2px;
+        }
+        .box {
+            width: 12px;
+            height: 12px;
+            border: 1px solid black;
+            margin-right: 6px;
+            margin-top: 2px;
+            flex-shrink: 0;
+            display: inline-block;
+        }
+        .cb-label {
+            font-size: 8pt;
+            line-height: 1.1;
+        }
+
+        /* Special Sections */
+        .header-logo-left {
+            position: absolute;
+            left: 20px;
+            top: 10px;
+            width: 60px;
+            height: 60px;
+            border: 1px dashed #999; 
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            text-align: center;
+        }
+        
+        .stamp-box {
+            position: absolute;
+            right: 0;
+            top: 10px;
+            width: 100px;
+            height: 50px;
+            border: 1px solid transparent; 
+            font-size: 8pt;
+            text-align: right;
+        }
+
+        /* Leave Credits Table */
+        .credits-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 5px;
+            font-size: 9pt;
+        }
+        .credits-table th, .credits-table td {
+            border: 1px solid black;
+            text-align: center;
+            padding: 2px;
+        }
+
+        /* Print Media Query */
+        @media print {
+            body {
+                background: white;
+                margin: 0;
+                padding: 0;
+            }
+            .page-container {
+                box-shadow: none;
+                border: none;
+                width: 100%;
+                height: 100%;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Print Button -->
+    <div style="position: fixed; top: 20px; right: 20px;" class="no-print">
+        <button onclick="window.print()" style="padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer; font-weight: bold;">PRINT FORM</button>
+    </div>
+
+    <div class="page-container">
+        <!-- Header -->
+        <div class="header-section">
+            <div class="annex-text">ANNEX A</div>
+            <div class="form-number">Civil Service Form No. 6<br>Revised 2020</div>
+            
+            <div class="header-logo-left">
+                [Insert<br>Logo]
+            </div>
+
+            <div class="text-center">
+                <div class="text-small">Republic of the Philippines</div>
+                <div class="text-bold text-uppercase">LOCAL GOVERNMENT UNIT OF VIRAC</div>
+                <div class="text-small">VIRAC, CATANDUANES</div>
+                <br>
+                <h2 class="text-uppercase text-bold" style="text-decoration: underline;">APPLICATION FOR LEAVE</h2>
+            </div>
+
+            <div class="stamp-box">
+                Stamp of Date of<br>Receipt
+            </div>
+        </div>
+
+        <!-- Form Grid -->
+        <div class="form-grid">
+            <!-- Row 1 -->
+            <div class="cell col-4">
+                1. OFFICE/DEPARTMENT
+                <div class="input-area">&nbsp;</div>
+            </div>
+            <div class="cell col-8 no-right-border">
+                2. NAME: &nbsp;&nbsp;&nbsp;&nbsp; (Last) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (First) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Middle)
+                <div class="input-area">&nbsp;</div>
+            </div>
+
+            <!-- Row 2: Fixed Overlap Here -->
+            <div class="cell col-3"> <!-- Narrower -->
+                3. DATE OF FILING
+                <div class="input-area">&nbsp;</div>
+            </div>
+            <div class="cell col-5"> <!-- Wider -->
+                4. POSITION
+                <div class="input-area">&nbsp;</div>
+            </div>
+            <div class="cell col-4 no-right-border"> <!-- Standard -->
+                5. SALARY
+                <div class="input-area">&nbsp;</div>
+            </div>
+
+            <!-- Row 3: Section 6 Header -->
+            <div class="cell col-12 text-center text-bold thick-bottom no-right-border" style="background:#ddd; min-height: 25px; justify-content: center;">
+                6. DETAILS OF APPLICATION
+            </div>
+
+            <!-- Row 4: 6.A and 6.B split -->
+            <div class="cell col-7 no-bottom-border" style="display: block;">
+                <div class="text-bold">6.A TYPE OF LEAVE TO BE AVAILED OF</div>
+                <div class="checkbox-group" style="margin-top: 5px;">
+                    <div class="checkbox-item">
+                        <div class="box"></div> <span class="cb-label">Vacation Leave <span class="text-xs">(Sec. 51, Rule XVI, Omnibus Rules Implementing E.O. No. 292)</span></span>
+                    </div>
+                    <div class="checkbox-item">
+                        <div class="box"></div> <span class="cb-label">Mandatory/Forced Leave <span class="text-xs">(Sec. 25, Rule XVI, Omnibus Rules Implementing E.O. No. 292)</span></span>
+                    </div>
+                    <div class="checkbox-item">
+                        <div class="box"></div> <span class="cb-label">Sick Leave <span class="text-xs">(Sec. 43, Rule XVI, Omnibus Rules Implementing E.O. No. 292)</span></span>
+                    </div>
+                    <div class="checkbox-item">
+                        <div class="box"></div> <span class="cb-label">Maternity Leave <span class="text-xs">(R.A. No. 11210 / IRR issued by CSC, DOLE and SSS)</span></span>
+                    </div>
+                    <div class="checkbox-item">
+                        <div class="box"></div> <span class="cb-label">Paternity Leave <span class="text-xs">(R.A. No. 8187 / CSC MC No. 71, s. 1998, as amended)</span></span>
+                    </div>
+                    <div class="checkbox-item">
+                        <div class="box"></div> <span class="cb-label">Special Privilege Leave <span class="text-xs">(Sec. 21, Rule XVI, Omnibus Rules Implementing E.O. No. 292)</span></span>
+                    </div>
+                    <div class="checkbox-item">
+                        <div class="box"></div> <span class="cb-label">Solo Parent Leave <span class="text-xs">(R.A. No. 8972 / CSC MC No. 8, s. 2004)</span></span>
+                    </div>
+                    <div class="checkbox-item">
+                        <div class="box"></div> <span class="cb-label">Study Leave <span class="text-xs">(Sec. 68, Rule XVI, Omnibus Rules Implementing E.O. No. 292)</span></span>
+                    </div>
+                    <div class="checkbox-item">
+                        <div class="box"></div> <span class="cb-label">10-Day VAWC Leave <span class="text-xs">(R.A. No. 9262 / CSC MC No. 15, s. 2005)</span></span>
+                    </div>
+                    <div class="checkbox-item">
+                        <div class="box"></div> <span class="cb-label">Rehabilitation Privilege <span class="text-xs">(Sec. 55, Rule XVI, Omnibus Rules Implementing E.O. No. 292)</span></span>
+                    </div>
+                    <div class="checkbox-item">
+                        <div class="box"></div> <span class="cb-label">Special Leave Benefits for Women <span class="text-xs">(R.A. No. 9710 / CSC MC No. 25, s. 2010)</span></span>
+                    </div>
+                    <div class="checkbox-item">
+                        <div class="box"></div> <span class="cb-label">Special Emergency (Calamity) Leave <span class="text-xs">(CSC MC No. 2, s. 2012, as amended)</span></span>
+                    </div>
+                    <div class="checkbox-item">
+                        <div class="box"></div> <span class="cb-label">Adoption Leave <span class="text-xs">(R.A. No. 8552)</span></span>
+                    </div>
+                    <div class="checkbox-item">
+                        <div class="box"></div> <span class="cb-label">Others: _______________</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cell col-5 no-right-border no-bottom-border" style="display: block;">
+                <div class="text-bold">6.B DETAILS OF LEAVE</div>
+                <div class="checkbox-group" style="margin-top: 5px;">
+                    <div class="text-italic text-small">In case of Vacation/Special Privilege Leave:</div>
+                    <div class="checkbox-item">
+                        <div class="box"></div> <span class="cb-label">Within the Philippines ________________</span>
+                    </div>
+                    <div class="checkbox-item">
+                        <div class="box"></div> <span class="cb-label">Abroad (Specify) ____________________</span>
+                    </div>
+
+                    <div class="text-italic text-small" style="margin-top:5px;">In case of Sick Leave:</div>
+                    <div class="checkbox-item">
+                        <div class="box"></div> <span class="cb-label">In Hospital (Specify Illness) ____________</span>
+                    </div>
+                    <div class="checkbox-item">
+                        <div class="box"></div> <span class="cb-label">Out Patient (Specify Illness) ____________</span>
+                    </div>
+
+                    <div class="text-italic text-small" style="margin-top:5px;">In case of Special Leave Benefits for Women:</div>
+                    <div class="checkbox-item">
+                        <span class="cb-label">(Specify Illness) ______________________</span>
+                    </div>
+
+                    <div class="text-italic text-small" style="margin-top:5px;">In case of Study Leave:</div>
+                    <div class="checkbox-item">
+                        <div class="box"></div> <span class="cb-label">Completion of Master's Degree</span>
+                    </div>
+                    <div class="checkbox-item">
+                        <div class="box"></div> <span class="cb-label">BAR/Board Examination Review Other purpose:</span>
+                    </div>
+                    <div class="checkbox-item">
+                        <div class="box"></div> <span class="cb-label">Monetization of Leave Credits</span>
+                    </div>
+                    <div class="checkbox-item">
+                        <div class="box"></div> <span class="cb-label">Terminal Leave</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 5: 6.C and 6.D -->
+            <div class="cell col-7 thick-bottom" style="display: block;">
+                <div class="text-bold">6.C NUMBER OF WORKING DAYS APPLIED FOR</div>
+                <div style="margin-top: 15px; border-bottom: 1px solid black; width: 80%;"> &nbsp;</div>
+                <br>
+                <div class="text-bold">INCLUSIVE DATES</div>
+                <div style="margin-top: 15px; border-bottom: 1px solid black; width: 80%;"> &nbsp;</div>
+            </div>
+            <div class="cell col-5 no-right-border thick-bottom" style="display: block;">
+                <div class="text-bold">6.D COMMUTATION</div>
+                <div class="checkbox-group" style="margin-top: 5px;">
+                    <div class="checkbox-item">
+                        <div class="box"></div> <span class="cb-label">Not Requested</span>
+                    </div>
+                    <div class="checkbox-item">
+                        <div class="box"></div> <span class="cb-label">Requested</span>
+                    </div>
+                </div>
+                <br><br>
+                <div class="text-center" style="margin-top: 10px;">
+                    <div style="border-top: 1px solid black; width: 90%; margin: 0 auto;">(Signature of Applicant)</div>
+                </div>
+            </div>
+
+            <!-- Row 6: Section 7 Header -->
+            <div class="cell col-12 text-center text-bold thick-bottom no-right-border" style="background:#ddd; min-height: 25px; justify-content: center;">
+                7. DETAILS OF ACTION ON APPLICATION
+            </div>
+
+            <!-- Row 7: 7.A and 7.B -->
+            <div class="cell col-7 no-bottom-border" style="display: block;">
+                <div class="text-bold">7.A CERTIFICATION OF LEAVE CREDITS</div>
+                <div class="text-center" style="margin: 5px 0;">As of _______________</div>
+                
+                <table class="credits-table">
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th>Vacation Leave</th>
+                        <th>Sick Leave</th>
+                    </tr>
+                    <tr>
+                        <td class="text-left">Total Earned</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="text-left">Less this application</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="text-left">Balance</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+
+                <br><br>
+                <div class="text-center" style="margin-top: 20px;">
+                    <div style="border-top: 1px solid black; width: 80%; margin: 0 auto;">Authorized Officer</div>
+                </div>
+            </div>
+
+            <div class="cell col-5 no-right-border no-bottom-border" style="display: block;">
+                <div class="text-bold">7.B RECOMMENDATION</div>
+                <div class="checkbox-group" style="margin-top: 10px;">
+                    <div class="checkbox-item">
+                        <div class="box"></div> <span class="cb-label">For approval</span>
+                    </div>
+                    <div class="checkbox-item">
+                        <div class="box"></div> <span class="cb-label">For disapproval due to _________________</span>
+                    </div>
+                    <div style="margin-left: 20px; font-size: 8pt;">
+                        ______________________________________<br>
+                        ______________________________________<br>
+                        ______________________________________
+                    </div>
+                </div>
+
+                <br>
+                <div class="text-center" style="margin-top: 20px;">
+                    <div style="border-top: 1px solid black; width: 90%; margin: 0 auto;">Authorized Officer</div>
+                </div>
+            </div>
+
+            <!-- Row 8: 7.C and 7.D -->
+            <div class="cell col-6 no-right-border" style="display: block;">
+                <div class="text-bold">7.C APPROVED FOR:</div>
+                <div style="margin-top: 5px; font-size: 9pt; padding-left: 10px;">
+                    _______ days with pay<br>
+                    _______ days without pay<br>
+                    _______ others (Specify)
+                </div>
+            </div>
+            <div class="cell col-6 no-right-border" style="display: block;">
+                <div class="text-bold">7.D DISAPPROVED DUE TO:</div>
+                <div style="margin-top: 5px; font-size: 9pt; padding-left: 10px;">
+                    ______________________________________<br>
+                    ______________________________________<br>
+                    ______________________________________
+                </div>
+            </div>
+
+            <!-- Row 9: Final Signature -->
+            <div class="cell col-12 text-center no-right-border" style="padding-top: 40px; border-bottom: none; display: block;">
+                <div style="width: 40%; margin: 0 auto; border-top: 1px solid black; font-weight: bold;">Authorized Officer</div>
+            </div>
+        </div>
+        <!-- End Grid -->
+
+    </div>
+</body>
+</html>

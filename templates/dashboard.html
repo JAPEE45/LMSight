@@ -105,7 +105,7 @@
                <div class="notifications-list">
               
               {% for i in notif %}
-                 <div class="notification-item">
+                 <div class="notification-item" onclick="window.location.href='{% url 'user_dasboard' %}'" style="cursor: pointer;">
                   <div class="notification-avatar" style="width: 50px;height:50px">
                     <img src="/media/{{i.user.picture}}" width="50" height="50" style="border-radius: 100px;"/>
                   </div>
@@ -349,10 +349,15 @@
                 </div>
 
 
-                <div class="form-group">
-                  <label class="form-label">INCLUSIVE DATES</label>
-                  <input class="form-control" type="text" name="inclusive-dates" id="" placeholder="january 10, 2000, january 13, 2000">
-                  <p class="text-muted mb-0 mt-1" style="font-size: 0.5rem;">MONTH DD, YYYY</p>
+                <div class="row">
+                  <div class="col-md-6 form-group">
+                    <label class="form-label">Start Date</label>
+                    <input class="form-control" type="date" name="start_date" id="start_date" required>
+                  </div>
+                  <div class="col-md-6 form-group">
+                    <label class="form-label">End Date</label>
+                    <input class="form-control" type="date" name="end_date" id="end_date" required>
+                  </div>
                 </div>
               </div>
 
@@ -512,6 +517,10 @@
               </button>
             </div> -->
           </form>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="downloadApplicationForm()">Download Form</button>
+          </div>
         </div>
       </div>
     </div>
