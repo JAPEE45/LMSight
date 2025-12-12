@@ -543,13 +543,13 @@ def supervisor_dashboard(request):
         user = USERS.objects.filter(id = request.session.get("user_id")).first()
         
         s = {}
-        s["weekly"] = getWeeklyLeave()
-        s['monthly'] = getLeaveByMonth()
-        s['upcoming'] = getUpcomingLeaves()
+        s["weekly"] = getWeeklyLeave(user)
+        s['monthly'] = getLeaveByMonth(user=user)
+        s['upcoming'] = getUpcomingLeaves(user)
         s['user'] = user
        
-        s['history'] = getLeaveHistory()
-        b = getLeaveCountByType()
+        s['history'] = getLeaveHistory(user)
+        b = getLeaveCountByType(user)
         lb = []
         val = []
         for i in b:
@@ -557,12 +557,29 @@ def supervisor_dashboard(request):
             val.append(i['total'])
         s['leave_type'] = json.dumps([lb, val])
      
-        s['status'] = getLeaveCountByStatus()
+        s['status'] = getLeaveCountByStatus(user)
         
-        dep = getLeaveMatrix(lb)
+        dep = getLeaveMatrix(lb, user)
         s['dep'] = dep
-        s['perMonth'] = getLeaveRequestsPerMonth()
-        s['all_leave'] = getLeaveDaysPerMonth()
+        s['perMonth'] = getLeaveRequestsPerMonth(user=user)
+        s['all_leave'] = getLeaveDaysPerMonth(user=user)
+        
+        # Add Cards Data
+        s['total_employees'] = USERS.objects.filter(user_type='employee', department=user.department).count()
+        
+        today = now().date()
+        s['on_leave_count'] = LEAVE.objects.filter(
+            status='approved', 
+            start_date__lte=today, 
+            end_date__gte=today,
+            users__department=user.department
+        ).count()
+        
+        s['pending_requests_count'] = LEAVE.objects.filter(
+            status='pending',
+            users__department=user.department
+        ).count()
+
         notif = get_status_notification()
         s['notif'] = notif
         # print(allLeave)
@@ -913,15 +930,19 @@ def checkIfHr(request):
         return True
     return False
     
-def getWeeklyLeave():
+def getWeeklyLeave(user=None):
     today = now().date()
     start_of_week = today - timedelta(days=today.weekday())  # Monday
     end_of_week = start_of_week + timedelta(days=6)  # Sunday
 
-    weekly_leaves = LEAVE.objects.filter(
-    start_date__gte=start_of_week,
-    start_date__lte=end_of_week
+    qs = LEAVE.objects.filter(
+        start_date__gte=start_of_week,
+        start_date__lte=end_of_week
     )
+    if user and user.user_type == 'supervisor':
+        qs = qs.filter(users__department=user.department)
+
+    weekly_leaves = qs
     days = [0,0,0,0,0,0,0]
     for i in weekly_leaves:
         if(i.start_date.strftime("%a") == "Mon"): days[0] += 1
@@ -933,77 +954,104 @@ def getWeeklyLeave():
         if(i.start_date.strftime("%a") == "Sun"): days[6] += 1
     return days
 
-def getLeaveByMonth(year=None):
+def getLeaveByMonth(year=None, user=None):
     if year is None:
-        year = now().year  # default: current year
+        year = now().year
 
-    # group leaves by month number
+    qs = LEAVE.objects.filter(start_date__year=year, status="approved")
+    if user and user.user_type == 'supervisor':
+        qs = qs.filter(users__department=user.department)
+
     monthly_leaves = (
-        LEAVE.objects.filter(start_date__year=year, status = "approved")
+        qs
         .annotate(month=ExtractMonth('start_date'))
         .values('month')
         .annotate(total=Count('id'))
         .order_by('month')
     )
 
-    # prepare array [Jan, Feb, ..., Dec]
     months = [0] * 12
     for m in monthly_leaves:
         months[m['month'] - 1] = m['total']
 
     return months
-def getUpcomingLeaves():
-    today = now().date()
-    return LEAVE.objects.filter(start_date__gte=today).order_by('start_date')
 
-def getOngoingLeaves():
+def getUpcomingLeaves(user=None):
     today = now().date()
-    return LEAVE.objects.filter(
-        status__iexact="approved",        # only approved
-        start_date__lte=today,            # already started
-        end_date__gte=today               # not yet ended
-    ).order_by('end_date').values("users__firstname", "users__middlename", "users__lastname", "users__department","leave_type__leave_type","start_date","end_date")
+    qs = LEAVE.objects.filter(start_date__gte=today)
+    if user and user.user_type == 'supervisor':
+        qs = qs.filter(users__department=user.department)
+    return qs.order_by('start_date')
+
+def getOngoingLeaves(user=None):
+    today = now().date()
+    qs = LEAVE.objects.filter(
+        status__iexact="approved",
+        start_date__lte=today,
+        end_date__gte=today
+    )
+    if user and user.user_type == 'supervisor':
+        qs = qs.filter(users__department=user.department)
+
+    return qs.order_by('end_date').values("users__firstname", "users__middlename", "users__lastname", "users__department","leave_type__leave_type","start_date","end_date")
+
 def apiOngoing(request):
     if request.method == "GET":
-        o = list(getOngoingLeaves())
+        user_id = request.session.get("user_id")
+        user = USERS.objects.filter(id=user_id).first()
+        o = list(getOngoingLeaves(user))
         return JsonResponse({"o": o})
-def getLeaveHistory():
+def getLeaveHistory(user=None):
     today = now().date()
-    return LEAVE.objects.filter(
-        status__iexact="approved",   # only approved
-        end_date__lt=today           # already ended
-    ).order_by('-end_date')       
-    
-def getLeaveCountByType():
+    qs = LEAVE.objects.filter(
+        status__iexact="approved",
+        end_date__lt=today
+    )
+    if user and user.user_type == 'supervisor':
+        qs = qs.filter(users__department=user.department)
+    return qs.order_by('-end_date')
+
+def getLeaveCountByType(user=None):
+    qs = LEAVE.objects.all()
+    if user and user.user_type == 'supervisor':
+        qs = qs.filter(users__department=user.department)
     return (
-        LEAVE.objects
-        .values(type=F("leave_type__leave_type"))  
+        qs
+        .values(type=F("leave_type__leave_type"))
         .annotate(total=Count("id"))
         .order_by("-total")
-    )   
-    
-def getLeaveCountByStatus():
-    leave = LEAVE.objects.values('status').annotate(total=Count('id')).order_by('-total')
+    )
+
+def getLeaveCountByStatus(user=None):
+    qs = LEAVE.objects.all()
+    if user and user.user_type == 'supervisor':
+        qs = qs.filter(users__department=user.department)
+        
+    leave = qs.values('status').annotate(total=Count('id')).order_by('-total')
     arr = [0, 0, 0]
 
     for l in leave:
-        if l['status'].lower() == 'pending': 
+        if l['status'].lower() in ['pending', 'pending_hr', 'pending_mayor']: 
             arr[1] += l['total']
-        if l['status'].lower() == 'approved': 
+        elif l['status'].lower() == 'approved': 
             arr[0] += l['total']
-        if l['status'].lower() == 'rejected': 
+        elif l['status'].lower() == 'rejected': 
             arr[2] += l['total']
     return arr
 
-def getLeaveMatrix(lt):
-    
+def getLeaveMatrix(lt, user=None):
     departments = ["HR", "IT", "Finance", "Operation"]
     matrix = []
     for leave_type in lt:
         row = [0] * len(departments)
         lv = LEAVE_TYPES.objects.filter(leave_type = leave_type).first()
+        
+        qs = LEAVE.objects.filter(leave_type=lv)
+        if user and user.user_type == 'supervisor':
+            qs = qs.filter(users__department=user.department)
+            
         leave_counts = (
-            LEAVE.objects.filter(leave_type=lv)
+            qs
             .values("users__department")
             .annotate(total=Count("id"))
         )
@@ -1018,17 +1066,20 @@ def getLeaveMatrix(lt):
 
     return matrix
 
-def getLeaveDaysPerMonth(year=None):
+def getLeaveDaysPerMonth(year=None, user=None):
     if year is None:
         year = now().year
     months = [0] * 12  
 
-    leaves = LEAVE.objects.filter(
+    qs = LEAVE.objects.filter(
         start_date__year=year,
         end_date__year=year,
         status = "approved"
     )
-    for leave in leaves:
+    if user and user.user_type == 'supervisor':
+        qs = qs.filter(users__department=user.department)
+
+    for leave in qs:
         current = leave.start_date
         while current <= leave.end_date:
             if current.year == year:
@@ -1036,12 +1087,18 @@ def getLeaveDaysPerMonth(year=None):
             current += timedelta(days=1)
 
     return months
-def getLeaveRequestsPerMonth(year=None):
+
+def getLeaveRequestsPerMonth(year=None, user=None):
     if year is None:
         year = now().year
     months = [0] * 12  
+    
+    qs = LEAVE.objects.filter(start_date__year=year)
+    if user and user.user_type == 'supervisor':
+        qs = qs.filter(users__department=user.department)
+        
     monthly_counts = (
-        LEAVE.objects.filter(start_date__year=year)
+        qs
         .annotate(month=ExtractMonth('start_date'))
         .values('month')
         .annotate(total=Count('id'))
