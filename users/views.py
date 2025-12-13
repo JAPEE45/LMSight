@@ -1519,6 +1519,8 @@ def action(request):
                 )
             else:
                 leave.status = "rejected"
+                leave.recommendation_for = None
+                leave.recommendation_for_disapproval_due_to = None
                 msg = f"Leave rejected by HR."
                 notif = StatusNotif(user=leave.users, leave=leave, current_status="rejected")
                 

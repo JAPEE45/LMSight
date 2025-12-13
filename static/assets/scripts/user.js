@@ -18,7 +18,7 @@ async function clicked(id){
 async function showLeaveModal(id) {
   const data = await fetch(`/api/hr/leave?id=${id}`);
   const json = await data.json();
-  console.log(json);
+  console.log(json.leave);
 
   // const dateStr = json.leave.date_of_request;
   // const date = new Date(dateStr);
@@ -44,20 +44,25 @@ async function showLeaveModal(id) {
 
   const radio = document.querySelector(`input[name='actionOnLeave'][value='${recommendationAction}']`)
   if (radio) radio.checked = true;
+
   const recDisapproval = json.leave.recommendation_for_disapproval_due_to;
   const mayorDisapproval = json.leave.disapproved_due_to;
+  const approved_for = json.leave.approved_for;
   const recommendation = json.leave.recommendation_for;
 
   document.getElementById("disapprovalReason1").value = recDisapproval;
   document.getElementById("approvedDays").value = json.leave.approved_for;
   document.getElementById("disapprovalReason2").value = mayorDisapproval;
 
+  const container7b = document.getElementById("container-7b");
   const container7c = document.getElementById("container-7c");
   const container7d = document.getElementById("container-7d");
 
   // Reset visibility
+  if(container7b) container7b.style.display = "block";
   if(container7c) container7c.style.display = "block";
   if(container7d) container7d.style.display = "block";
+
 
   if (recommendation === "disapproval") {
       // Supervisor Rejection: Hide 7.C and 7.D
@@ -66,6 +71,10 @@ async function showLeaveModal(id) {
   } else if (mayorDisapproval && mayorDisapproval.trim() !== "") {
       // Mayor Rejection: Hide 7.C only
       if(container7c) container7c.style.display = "none";
+  } else if (recommendation === null && mayorDisapproval === null && recDisapproval === null && approved_for === null){
+    if(container7b) container7b.style.display = "none";
+    if(container7c) container7c.style.display = "none";
+    if(container7d) container7d.style.display = "none";
   }
 
   localStorage.setItem("selected", id);

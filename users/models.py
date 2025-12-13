@@ -71,7 +71,7 @@ class LEAVE(BaseModel):
     number_of_days_applied = models.TextField(blank=True)
     
     status = models.TextField(blank=True)
-    recommendation_for = models.TextField(blank=True)
+    recommendation_for = models.TextField(blank=True, null=True)
     recommendation_for_disapproval_due_to = models.TextField(blank=True, null=True)
     approved_for = models.TextField(blank=True, null=True)
     disapproved_due_to = models.TextField(blank=True, null=True)
